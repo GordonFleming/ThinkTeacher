@@ -33,60 +33,70 @@
 
 .x1 {
     left: 50vw;
+    z-index: -9999;
     transform: scale(0.9);
     opacity: 0.22;
     animation: moveclouds 15s linear infinite, sideWays 4s ease-in-out infinite alternate;
 }
 .x2 {
     left: 25vw;
+    z-index: -9999;
     transform: scale(0.6);
     opacity: 0.5;
     animation: moveclouds 25s linear infinite, sideWays 5s ease-in-out infinite alternate;
 }
 .x3 {
     left: 30vw;
+    z-index: -9999;
     transform: scale(0.95);
     opacity: 0.31;
     animation: moveclouds 20s linear infinite, sideWays 4s ease-in-out infinite alternate;
 }
 .x4 {
     left: 90vw;
+    z-index: -9999;
     transform: scale(0.75);
     opacity: 0.39;
     animation: moveclouds 18s linear infinite, sideWays 7s ease-in-out infinite alternate;
 }
 .x5 {
     left: 10vw;
+    z-index: -9999;
     transform: scale(0.8);
     opacity: 0.38; 
     animation: moveclouds 12s linear infinite, sideWays 4s ease-in-out infinite alternate;
 }
 .x6 {
     left: 75vw;
+    z-index: -9999;
     transform: scale(1.1);
     opacity: 0.32; 
     animation: moveclouds 14s linear infinite, sideWays 6s ease-in-out infinite alternate;
 }
 .x7 {
     left: 5vw;
+    z-index: -9999;
     transform: scale(0.65);
     opacity: 0.48; 
     animation: moveclouds 16s linear infinite, sideWays 4s ease-in-out infinite alternate;
 }
 .x8 {
     left: 15vw;
+    z-index: -9999;
     transform: scale(1.05);
     opacity: 0.28; 
     animation: moveclouds 28s linear infinite, sideWays 5s ease-in-out infinite alternate;
 }
 .x9 {
     left: 86vw;
+    z-index: -9999;
     transform: scale(0.52);
     opacity: 0.54; 
     animation: moveclouds 16s linear infinite, sideWays 6s ease-in-out infinite alternate;
 }
 .x10 {
     left: 42vw;
+    z-index: -9999;
     transform: scale(0.87);
     opacity: 0.53; 
     animation: moveclouds 24s linear infinite, sideWays 3s ease-in-out infinite alternate;
