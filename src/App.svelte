@@ -31,11 +31,11 @@
     h1{
         margin-top: 5rem;
         font-size: 3em;
-        color: rgb(31, 30, 30);
+        color: var(--logo-orange);
     }
     h2{
-        color: var(--logo-blue);
-        font-size: 2.8em;
+        color: var(--text);
+        font-size: 2.4em;
         margin: 1rem;
     }
 </style>

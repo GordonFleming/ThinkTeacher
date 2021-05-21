@@ -101,9 +101,6 @@
     opacity: 0.53; 
     animation: moveclouds 24s linear infinite, sideWays 3s ease-in-out infinite alternate;
 }
-.x1:hover,.x2:hover,.x3:hover,.x4:hover,.x5:hover,.x6:hover,.x7:hover,.x8:hover,.x9:hover,.x10:hover{
-    opacity: 0;
-}
 
 @keyframes moveclouds {     
     0% { 
