@@ -1,6 +1,4 @@
-*Looking for a shareable component template? Go here --> [sveltejs/component-template](https://github.com/sveltejs/component-template)*
-
----
+[![Netlify Status](https://api.netlify.com/api/v1/badges/79f26124-2822-42a2-a651-ea2078550cfd/deploy-status)](https://app.netlify.com/sites/thinkteacher/deploys)
 
 # svelte app
 
