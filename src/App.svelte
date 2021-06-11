@@ -17,7 +17,7 @@
         <h2 in:fly="{{ x: 200, delay: 500, duration: 1000 }}">Internships</h2>
         <h2 in:fly="{{ y: 150, delay: 1000, duration: 800 }}">Discounts</h2>
         <h2 in:fly="{{ x: -120, delay: 1500, duration: 600 }}">Vacancies</h2>
-        <h2 in:fly="{{ y: -110, delay: 2000, duration: 400 }}">Care</h2>
+        <h2 in:fly="{{ y: -110, delay: 2000, duration: 400 }}">Wellness</h2>
         <h2 in:fly="{{ x: 100, delay: 2500, duration: 200 }}">Benefits</h2>
     {/if}
     <Bubble/>
