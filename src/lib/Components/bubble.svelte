@@ -13,7 +13,7 @@
 
 <style>
 #bubbles { 
-    height: 100%;
+    /* height: 100%; */
     padding: 200px 0;
 }
 .bubble-orange {

@@ -1,16 +1,9 @@
 <script>
     import { fade } from 'svelte/transition';
-    import { onMount } from 'svelte';
-    
-    let begin = false;
-    onMount(() => {
-        begin = true;
-	});
 </script>
 
 <div id="logo-box">
-    {#if begin}
-    <svg transition:fade="{{duration:3000}}" version="1.1" id="thinkTeacherLogo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+    <svg transition:fade="{{duration:2500}}" version="1.1" id="thinkTeacherLogo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
         viewBox="0 0 853.1 198.8" style="enable-background:new 0 0 853.1 198.8;" xml:space="preserve">
     <style type="text/css">
         .st0{fill:#ED8D1B;}
@@ -215,7 +208,6 @@
             </g>
         </g>
     </svg>
-    {/if}
 </div>
 
 
@@ -233,8 +225,8 @@
         }
     }
     circle{
-        transition: ease 0.8s;
-        animation: expand 4s ease-in-out alternate;
+        transition: ease 0.5s;
+        animation: expand 0.8s ease-in-out alternate;
     }
     @keyframes expand {     
         from { 
