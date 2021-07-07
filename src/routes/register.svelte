@@ -2,23 +2,21 @@
     import axios from 'axios';
 
     let username, email, password;
-    let errorMsg;
+    let msg, errorMsg;
 
-    function registerUser(){
-        axios
+    async function registerUser(){
+        await axios
         .post('http://localhost:1337/auth/local/register', {
             username: username,
             email: email,
             password: password,
         })
         .then(response => {
-            // Handle success.
-            console.log('Well done!');
             console.log('User profile', response.data.user);
-            console.log('User token', response.data.jwt);
+            msg = response.data.user.username + ", you have been successfully registered with ThinkTeacher.";
+            document.getElementById("register").reset();
         })
         .catch(error => {
-            // Handle error.
             console.log('An error occurred:', error.response);
             errorMsg = error.response.data.message[0].messages[0].message;
         });
@@ -42,22 +40,27 @@
 
                     {#if errorMsg != undefined}
                         <h4 class="error-col">{errorMsg}</h4>
+                    {:else if msg != undefined}
+                        <h4 class="success-col">{msg}</h4>
                     {/if}
-    
-                    <div class="form-outline form-white mb-2">
-                        <label class="form-label" for="Username">Username</label>
-                        <input type="text" name="username" id="username" class="form-control form-control-lg" placeholder="Enter username" bind:value={username} required />
-                    </div>
-                    <div class="form-outline form-white mb-2">
-                        <label class="form-label" for="Email">Email</label>
-                        <input type="email" id="Email" class="form-control form-control-lg" placeholder="Enter email or username" bind:value={email} required />
-                    </div>
-                    <div class="form-outline form-white mb-4 text-left">
-                        <label class="form-label" for="Password">Password</label>
-                        <input type="password" id="Password" class="form-control form-control-lg" placeholder="Password" bind:value={password} required />
-                    </div>
-    
-                    <button class="btn btn-outline-light btn-lg px-4" type="submit" on:click|preventDefault={registerUser}>Register</button>
+                    
+                    <form id="register">
+                        <div class="form-outline form-white mb-2">
+                            <label class="form-label" for="Username">Username</label>
+                            <input type="text" name="username" id="username" class="form-control form-control-lg" placeholder="Enter username" bind:value={username} required />
+                        </div>
+                        <div class="form-outline form-white mb-2">
+                            <label class="form-label" for="Email">Email</label>
+                            <input type="email" id="Email" class="form-control form-control-lg" placeholder="Enter email or username" bind:value={email} required />
+                        </div>
+                        <div class="form-outline form-white mb-4 text-left">
+                            <label class="form-label" for="Password">Password</label>
+                            <input type="password" id="Password" class="form-control form-control-lg" placeholder="Password" bind:value={password} required />
+                        </div>
+        
+                        <button class="btn btn-outline-light btn-lg px-4" type="submit" on:click|preventDefault={registerUser}>Register</button>
+                    </form>
+
                 </div>
     
                 <div>

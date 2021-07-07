@@ -3,15 +3,18 @@
 
     let email;
     let errorMsg;
+    let res = false;
 
-    function forgotPassword(){
-        // Request API.
-        axios
+    async function forgotPassword(){
+        await axios
         .post('http://localhost:1337/auth/forgot-password', {
-            email: email, // user's email
+            email: email,
         })
         .then(response => {
             console.log('An email has been sent to you.');
+            console.log(response)
+            res = true
+            email = ""
         })
         .catch(error => {
             console.log('An error occurred:', error.response);
@@ -35,6 +38,10 @@
 
                     {#if errorMsg != undefined}
                         <h4 class="error-col">{errorMsg}</h4>
+                    {/if}
+
+                    {#if res}
+                        <h4 class="success-col">Sent!</h4>
                     {/if}
     
                     <div class="form-outline form-white mb-4">

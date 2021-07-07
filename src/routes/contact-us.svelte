@@ -11,21 +11,29 @@
                     <h2 class="fw-bold mb-2 text-uppercase">Contact</h2>
                     <p class="text-white-50 mb-3">Please feel free to contact us.</p>
 
-    
-                    <div class="form-outline form-white mb-2">
-                        <label class="form-label" for="Name">Name</label>
-                        <input type="text" id="Name" class="form-control form-control-lg" placeholder="Enter your name" required />
-                    </div>
-                    <div class="form-outline form-white mb-4">
-                        <label class="form-label" for="Email">Email</label>
-                        <input type="email" id="Email" class="form-control form-control-lg" placeholder="Enter your email" required />
-                    </div>
-                    <div class="form-outline form-white mb-4">
-                        <label class="form-label" for="Message">Email</label>
-                        <textarea id="Message" name="message" class="form-control" rows="8" placeholder="Enter your message" required></textarea>
-                    </div>
+                    <form name="contact" method="POST" netlify-honeypot="bot-field" data-netlify="true">
 
-                    <button class="btn btn-outline-light btn-lg px-4" type="submit">Submit</button>
+                        <p class="hidden">
+                            <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+                        </p>
+
+                        <input type="hidden" name="form-name" value="contact">
+
+                        <div class="form-outline form-white mb-2">
+                            <label class="form-label" for="Name">Name</label>
+                            <input type="text" id="Name" class="form-control form-control-lg" placeholder="Enter your name" required />
+                        </div>
+                        <div class="form-outline form-white mb-4">
+                            <label class="form-label" for="Email">Email</label>
+                            <input type="email" id="Email" class="form-control form-control-lg" placeholder="Enter your email" required />
+                        </div>
+                        <div class="form-outline form-white mb-4">
+                            <label class="form-label" for="Message">Email</label>
+                            <textarea id="Message" name="message" class="form-control" rows="8" placeholder="Enter your message" required></textarea>
+                        </div>
+    
+                        <button class="btn btn-outline-light btn-lg px-4" type="submit">Submit</button>
+                    </form>
     
                 </div>
             </div>

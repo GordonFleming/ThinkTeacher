@@ -6,7 +6,7 @@
     --default-text: rgb(255, 255, 255);
 }
 
-#svelte{
+#svelte {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -23,25 +23,37 @@ body {
     /* overflow: hidden; */
 }
 
-h1{
+h1 {
     margin-top: 5rem;
     font-size: 3em;
     color: var(--logo-orange);
 }
 
-h2{
+h2 {
     color: var(--default-text);
     font-size: 2.4em;
     margin: 1rem;
 }
 
-footer{
+footer {
     margin-top: auto;
     border-top: var(--logo-blue) 5px solid;
 }
 
-.error-col{
+a {
+    color: var(--logo-blue);
+}
+
+.error-col {
     color: red;
+}
+
+.success-col {
+    color: green;
+}
+
+.hidden {
+    display: none;
 }
 
 /* Bootsrap mods */

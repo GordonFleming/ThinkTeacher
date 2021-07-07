@@ -7,14 +7,14 @@
 
     let urlParams;
     let myParam;
+    let res;
     onMount(() => {
         urlParams = new URLSearchParams(window.location.search);
         myParam = urlParams.get('code');
 	});
 
-    function resetPassword(){
-        // Request API.
-        axios
+    async function resetPassword(){
+        await axios
         .post('http://localhost:1337/auth/reset-password', {
             code: myParam,
             password: password,
@@ -22,6 +22,7 @@
         })
         .then(response => {
             console.log("Your password has been reset.");
+            console.log(response)
         })
         .catch(error => {
             console.log('An error occurred:', error.response);

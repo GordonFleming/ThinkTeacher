@@ -2,25 +2,23 @@
     import axios from 'axios';
     import Icon from 'svelte-awesome';
     import { facebook, twitter, instagram, linkedin } from 'svelte-awesome/icons';
+    import { browserSet } from '$lib/re_utils';
+
 
     let usernameEmail, password;
     let errorMsg;
 
-    function loginUser(){
-        // Request API.
-        axios
+    async function loginUser(){
+        await axios
         .post('http://localhost:1337/auth/local', {
             identifier: usernameEmail,
             password: password,
         })
         .then(response => {
-            // Handle success.
-            console.log('Well done!');
-            console.log('User profile', response.data.user);
-            console.log('User token', response.data.jwt);
+            browserSet("jwt", response.data.jwt);
+            window.location.replace("/auth");
         })
         .catch(error => {
-            // Handle error.
             console.log('An error occurred:', error.response);
             errorMsg = error.response.data.message[0].messages[0].message;
         });
@@ -45,24 +43,27 @@
                     {#if errorMsg != undefined}
                         <h4 class="error-col">{errorMsg}</h4>
                     {/if}
-    
-                    <div class="form-outline form-white mb-2">
-                        <label class="form-label" for="Email">Email</label>
-                        <input type="email" id="Email" class="form-control form-control-lg" placeholder="Enter email or username" bind:value={usernameEmail} required />
-                    </div>
-                    <div class="form-outline form-white mb-2 text-left">
-                        <label class="form-label" for="Password">Password</label>
-                        <input type="password" id="Password" class="form-control form-control-lg" placeholder="Password" bind:value={password} required />
-                    </div>
-                    <p class="small mb-3 pb-lg-2"><a class="text-white-50" href="/forgot-password">Forgot password?</a></p>
-    
-                    <button class="btn btn-outline-light btn-lg px-4" type="submit" on:click|preventDefault={loginUser}>Login</button>
-    
+                    
+                    <form name="login">
+                        <div class="form-outline form-white mb-2">
+                            <label class="form-label" for="Email">Email</label>
+                            <input type="email" id="Email" class="form-control form-control-lg" placeholder="Enter email or username" bind:value={usernameEmail} required />
+                        </div>
+                        <div class="form-outline form-white mb-2 text-left">
+                            <label class="form-label" for="Password">Password</label>
+                            <input type="password" id="Password" class="form-control form-control-lg" placeholder="Password" bind:value={password} required />
+                        </div>
+                        <p class="small mb-3 pb-lg-2"><a class="text-white-50" href="/forgot-password">Forgot password?</a></p>
+        
+                        <button class="btn btn-outline-light btn-lg px-4" type="submit" on:click|preventDefault={loginUser}>Login</button>
+                    </form>
+                  
                     <div class="d-flex justify-content-center text-center mt-2 pt-1">
                         <a href="#!" class="text-white px-2"><Icon data={facebook} scale="1.4"/></a>
                         <a href="#!" class="text-white px-2"><Icon data={twitter} scale="1.4"/></a>
                         <a href="#!" class="text-white px-2"><Icon data={instagram} scale="1.4"/></a>
                     </div>
+                    
                 </div>
     
                 <div>
