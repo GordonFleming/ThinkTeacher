@@ -71,7 +71,7 @@
                         <a href="/register" class="text-white">Register</a>
                     </li>
                     <li>
-                        <a href="/contact" class="text-white">Contact</a>
+                        <a href="/contact-us" class="text-white">Contact</a>
                     </li>
                 </ul>
             </div>
