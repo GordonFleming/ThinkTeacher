@@ -1,11 +1,19 @@
 <script>
+    import { onMount } from 'svelte';
+
+    onMount(() => {
+        document.querySelector('.third-button').addEventListener('click', function () {
+
+        document.querySelector('.animated-icon3').classList.toggle('open');
+        });
+	});
 </script>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid justify-content-center">
         <a class="navbar-brand hidden-md" href="/">Think Teacher</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <button class="navbar-toggler third-button" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <div class="animated-icon3"><span></span><span></span><span></span></div>
         </button>
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav nav-fill me-auto w-100">

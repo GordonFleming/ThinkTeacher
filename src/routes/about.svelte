@@ -20,7 +20,7 @@
                 <h3 class="card-header">Bridget Fleming</h3>
                     <div class="card-body">
                         <h5 class="card-title">Founder</h5>
-                        <h6 class="card-subtitle text-muted">MSc</h6>
+                        <h6 class="card-subtitle text-muted">MSc | HDE (Wits)</h6>
                     </div>
                     <img class="d-block user-select-none img-fluid" src="https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Bridget.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL0JyaWRnZXQuanBnIiwiaWF0IjoxNjI1NzY0MjY1LCJleHAiOjE5NDExMjQyNjV9.xZomw1kpuood2PFxS81KJzDw4VlQTNAAHoVppiO_DHs" alt="profile img">
                     <div class="card-body">
@@ -55,7 +55,7 @@
                     <img class="d-block user-select-none img-fluid" src="https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Rebecca.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL1JlYmVjY2EuanBnIiwiaWF0IjoxNjI1NzY1NDA5LCJleHAiOjE5NDExMjU0MDl9.R3if5ZEbhRmE9mV-2eFpP-QATKO6uCZ88jK4P3SoiQQ" alt="profile img">
                     <div class="card-body">
                         <p class="card-text">
-                            Rebecca Maluka is a School Operations Manager at one of the leading schools in South Africa and has been in the education field for 14 years. She also has experience in student enrollment within the sales and marketing environment. <br><br>
+                            Rebecca Maluka is a School Operations Manager at Spark schools and has been in the education field for 14 years. She also has experience in student enrollment within the sales and marketing environment. <br><br>
                             She is passionate about education and leadership. She had the opportunity to travel to the US as an ambassador. Rebecca was part of the future leaders’ programme at one the schools at which she worked. She has been involved in numerous non-profit organisations in the community of Alexandra. 
                             She is driven by her desire for all South African children to have access to quality education and strives to assist young people both to achieve success and to overcome generational barriers.
                         </p>
