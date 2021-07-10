@@ -21,13 +21,19 @@
                     <a style="width: 10vw;" class="nav-link fromLeft" sveltekit:prefetch href="/about">About</a>
                 </li>
                 <li class="nav-item pt-lg-3">
-                    <a style="width: 10vw;" class="nav-link fromLeft" href="/register">Register</a>
+                    <a style="width: 10vw;" class="nav-link fromLeft" sveltekit:prefetch href="/membership">Membership</a>
+                </li>
+                <li class="nav-item pt-lg-3">
+                    <a style="width: 10vw;" class="nav-link fromLeft" sveltekit:prefetch href="/blog">Blog</a>
                 </li>
                 <a class="navbar-brand" sveltekit:prefetch href="/">
-                    <img src="https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Favicon.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvRmF2aWNvbi5wbmciLCJpYXQiOjE2MjU1Nzc1MDEsImV4cCI6MTk0MDkzNzUwMX0.awqc470jnyg9IidstlVNYoFdUNmYY6jFbJcHvNm8Nxg" alt="ThinkTeacher logo" width="100" height="100" class="center block d-inline-block align-text-center">
+                    <img src="https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Favicon.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvRmF2aWNvbi5wbmciLCJpYXQiOjE2MjU1Nzc1MDEsImV4cCI6MTk0MDkzNzUwMX0.awqc470jnyg9IidstlVNYoFdUNmYY6jFbJcHvNm8Nxg" alt="ThinkTeacher logo" width="100" height="100">
                 </a>
                 <li class="nav-item pt-lg-3">
                     <a style="width: 10vw;" class="nav-link fromLeft" href="/login">Login</a>
+                </li>
+                <li class="nav-item pt-lg-3">
+                    <a style="width: 10vw;" class="nav-link fromLeft" href="/register">Register</a>
                 </li>
                 <li class="nav-item pt-lg-3">
                     <a style="width: 10vw;" class="nav-link fromLeft" href="/contact-us">Contact</a>
@@ -74,6 +80,9 @@
             display: inline-block;
             line-height: 3rem;
             width: auto;
+            text-align: center;
+        }
+        li {
             text-align: center;
         }
     }

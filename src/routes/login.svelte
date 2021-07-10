@@ -1,6 +1,8 @@
 <script>
     import axios from 'axios';
+    import { goto } from '$app/navigation';
     import Icon from 'svelte-awesome';
+    import user from '$lib/stores';
     import { facebook, twitter, instagram, linkedin } from 'svelte-awesome/icons';
     import { browserSet } from '$lib/re_utils';
 
@@ -16,7 +18,9 @@
         })
         .then(response => {
             browserSet("jwt", response.data.jwt);
-            window.location.replace("/auth");
+            $user = response.data.user;
+            console.log("The stored user: " + JSON.stringify($user))
+            goto('/auth');
         })
         .catch(error => {
             console.log('An error occurred:', error.response);
