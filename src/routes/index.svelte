@@ -3,7 +3,6 @@
 </script>
 
 <script>
-    import Bubble from '$lib/Components/bubble.svelte'
     import Logo from '$lib/Components/logo.svelte'
     import { fade, fly } from 'svelte/transition'
     import { onMount } from 'svelte'
@@ -18,7 +17,7 @@
 	<title>Home</title>
 </svelte:head>
 
-<div class="">
+<div>
     <Logo />
 
     <div class="text-center">
