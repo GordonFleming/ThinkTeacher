@@ -9,7 +9,7 @@
 </script>
 
 <script>
-    export let title;
+    export let title
 </script>
 
 <div class="container p-4 text-center">

@@ -1,8 +1,8 @@
 <script>
-    import axios from 'axios';
+    import axios from 'axios'
 
-    let username, email, password;
-    let msg, errorMsg;
+    let username, email, password
+    let msg, errorMsg
 
     async function registerUser(){
         await axios
@@ -12,14 +12,14 @@
             password: password,
         })
         .then(response => {
-            console.log('User profile', response.data.user);
-            msg = response.data.user.username + ", you have been successfully registered with ThinkTeacher.";
-            document.getElementById("register").reset();
+            console.log('User profile', response.data.user)
+            msg = response.data.user.username + ", you have been successfully registered with ThinkTeacher."
+            document.getElementById("register").reset()
         })
         .catch(error => {
-            console.log('An error occurred:', error.response);
-            errorMsg = error.response.data.message[0].messages[0].message;
-        });
+            console.log('An error occurred:', error.response)
+            errorMsg = error.response.data.message[0].messages[0].message
+        })
     }
 </script>
 

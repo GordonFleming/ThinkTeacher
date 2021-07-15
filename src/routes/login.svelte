@@ -1,14 +1,14 @@
 <script>
-    import axios from 'axios';
-    import { goto } from '$app/navigation';
-    import Icon from 'svelte-awesome';
-    import user from '$lib/stores';
-    import { facebook, twitter, instagram, linkedin } from 'svelte-awesome/icons';
-    import { browserSet } from '$lib/re_utils';
+    import axios from 'axios'
+    import { goto } from '$app/navigation'
+    import Icon from 'svelte-awesome'
+    import user from '$lib/stores'
+    import { facebook, twitter, instagram, linkedin } from 'svelte-awesome/icons'
+    import { browserSet } from '$lib/re_utils'
 
 
-    let usernameEmail, password;
-    let errorMsg;
+    let usernameEmail, password
+    let errorMsg
 
     async function loginUser(){
         await axios
@@ -17,14 +17,14 @@
             password: password,
         })
         .then(response => {
-            browserSet("jwt", response.data.jwt);
+            browserSet("jwt", response.data.jwt)
             $user = response.data.user;
             console.log("The stored user: " + JSON.stringify($user))
-            goto('/auth');
+            goto('/auth')
         })
         .catch(error => {
-            console.log('An error occurred:', error.response);
-            errorMsg = error.response.data.message[0].messages[0].message;
+            console.log('An error occurred:', error.response)
+            errorMsg = error.response.data.message[0].messages[0].message
         });
     }
 </script>
@@ -66,6 +66,7 @@
                         <a href="#!" class="text-white px-2"><Icon data={facebook} scale="1.4"/></a>
                         <a href="#!" class="text-white px-2"><Icon data={twitter} scale="1.4"/></a>
                         <a href="#!" class="text-white px-2"><Icon data={instagram} scale="1.4"/></a>
+                        <a href="#!" class="text-white px-2"><Icon data={linkedin} scale="1.4"/></a>
                     </div>
                     
                 </div>

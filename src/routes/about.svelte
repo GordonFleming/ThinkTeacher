@@ -1,10 +1,10 @@
 <script context="module">
-	export const prerender = true;
+	export const prerender = true
 </script>
 
 <script>
     import Icon from 'svelte-awesome';
-    import { facebook, twitter, linkedin, linkedinSquare } from 'svelte-awesome/icons';
+    import { linkedinSquare } from 'svelte-awesome/icons'
 </script>
 
 <svelte:head>

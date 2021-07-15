@@ -2,13 +2,13 @@
 
     // __layout.reset.svelte ??
 
-    import axios from 'axios';
-    import { goto } from '$app/navigation';
-    import { onMount } from 'svelte';
+    import axios from 'axios'
+    import { goto } from '$app/navigation'
+    import { onMount } from 'svelte'
 
-    let name = "";
-    let API_URL = 'http://localhost:1337/users/me';
-    let errMsg;
+    let name = ""
+    let API_URL = 'http://localhost:1337/users/me'
+    let errMsg
 
     onMount(async() =>{
         const res = await axios.get(API_URL, {
@@ -22,11 +22,11 @@
             } else {
                 console.log('Error', error.message);
             }
-            goto("/login");
+            goto("/login")
         });
 
         if(localStorage.getItem("jwt")){
-            name = res.data.username;
+            name = res.data.username
         };
     })
 </script>

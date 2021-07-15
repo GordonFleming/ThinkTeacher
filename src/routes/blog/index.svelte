@@ -1,14 +1,16 @@
 <script>
-	import { goto } from '$app/navigation';
-    import { onMount } from 'svelte';
-    import axios from 'axios';
+	import { goto } from '$app/navigation'
+    import { onMount } from 'svelte'
+    import axios from 'axios'
 
-    const API_URL = 'http://localhost:1337/posts';
+    const API_URL = 'http://localhost:1337/posts'
+    let loading = true
 
     onMount(async () => {
         try {
-            const res = await axios.get(API_URL);
+            const res = await axios.get(API_URL)
             posts = res.data
+            loading = false
             console.log(posts)
         } catch (e) {
             error = e
@@ -24,15 +26,15 @@
 </div>
 
 <div class="container mx-auto mt-4">
-    {#if posts.length <= 0}
+    {#if posts.length <= 0 && !loading}
         <h3 class="text-center">No posts are on the blog yet, check back another time.</h3>
     {:else}
         <div class="row">
             {#each posts as post}
                 <div class="col-sm-12 col-md-6 col-lg-4 text-center">
                     <div class="blog-block bg-dark p-3" on:click={() => goto('/blog/' + post.id)}>
-                        <h4 class="font-bold">{post.Title}</h4>
-                        <p class="mt-2 text-white">{post.Description}</p>
+                        <h4 class="font-bold">{post.title}</h4>
+                        <p class="mt-2 text-white">{post.description}</p>
                         <p class="text-white-50">By: {post.author.username}</p>
                     </div>
                 </div>

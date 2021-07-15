@@ -1,12 +1,12 @@
 <script>
-    import { onMount } from 'svelte';
+    import { onMount } from 'svelte'
 
     onMount(() => {
         document.querySelector('.third-button').addEventListener('click', function () {
 
-        document.querySelector('.animated-icon3').classList.toggle('open');
-        });
-	});
+        document.querySelector('.animated-icon3').classList.toggle('open')
+        })
+	})
 </script>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">

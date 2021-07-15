@@ -1,9 +1,9 @@
 <script>
-    import axios from 'axios';
+    import axios from 'axios'
 
-    let email;
-    let errorMsg;
-    let res = false;
+    let email
+    let errorMsg
+    let res = false
 
     async function forgotPassword(){
         await axios
@@ -11,15 +11,15 @@
             email: email,
         })
         .then(response => {
-            console.log('An email has been sent to you.');
+            console.log('An email has been sent to you.')
             console.log(response)
             res = true
             email = ""
         })
         .catch(error => {
-            console.log('An error occurred:', error.response);
-            errorMsg = error.response.data.message[0].messages[0].message;
-        });
+            console.log('An error occurred:', error.response)
+            errorMsg = error.response.data.message[0].messages[0].message
+        })
     }
 </script>
 

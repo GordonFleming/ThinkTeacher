@@ -1,16 +1,16 @@
 <script context="module">
-	export const prerender = true;
+	export const prerender = true
 </script>
 
 <script>
     import Bubble from '$lib/Components/bubble.svelte'
     import Logo from '$lib/Components/logo.svelte'
-    import { fade, fly } from 'svelte/transition';
-    import { onMount } from 'svelte';
+    import { fade, fly } from 'svelte/transition'
+    import { onMount } from 'svelte'
 
-    let begin = false;
+    let begin = false
     onMount(() => {
-        begin = true;
+        begin = true
 	});
 </script>
 

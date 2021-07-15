@@ -1,17 +1,17 @@
 <script>
-    import { onMount } from 'svelte';
-    import axios from 'axios';
+    import { onMount } from 'svelte'
+    import axios from 'axios'
 
-    let password, passwordConfirmation;
-    let errorMsg;
+    let password, passwordConfirmation
+    let errorMsg
 
-    let urlParams;
-    let myParam;
-    let res;
+    let urlParams
+    let myParam
+    let res
     onMount(() => {
-        urlParams = new URLSearchParams(window.location.search);
-        myParam = urlParams.get('code');
-	});
+        urlParams = new URLSearchParams(window.location.search)
+        myParam = urlParams.get('code')
+	})
 
     async function resetPassword(){
         await axios
@@ -21,14 +21,14 @@
             passwordConfirmation: passwordConfirmation,
         })
         .then(response => {
-            console.log("Your password has been reset.");
+            console.log("Your password has been reset.")
             console.log(response)
         })
         .catch(error => {
-            console.log('An error occurred:', error.response);
-            errorMsg = error.response.data.message[0].messages[0].message;
+            console.log('An error occurred:', error.response)
+            errorMsg = error.response.data.message[0].messages[0].message
 
-        });
+        })
     }
 
     // const urlParams = new URLSearchParams(window.location.search);
