@@ -1,6 +1,6 @@
 <script>
-    import Icon from 'svelte-awesome';
-    import { facebook, twitter, instagram, linkedin } from 'svelte-awesome/icons';
+    import Icon from 'svelte-awesome'
+    import { facebook, twitter, instagram, linkedin } from 'svelte-awesome/icons'
 
     function toTop(){
         window.scrollTo({

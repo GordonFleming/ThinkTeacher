@@ -7,7 +7,7 @@
 
     let urlParams
     let myParam
-    let res
+    let res = false
     onMount(() => {
         urlParams = new URLSearchParams(window.location.search)
         myParam = urlParams.get('code')
@@ -22,7 +22,7 @@
         })
         .then(response => {
             console.log("Your password has been reset.")
-            console.log(response)
+            res = true
         })
         .catch(error => {
             console.log('An error occurred:', error.response)
@@ -55,17 +55,22 @@
                     {#if errorMsg != undefined}
                         <h4 class="error-col">{errorMsg}</h4>
                     {/if}
-    
-                    <div class="form-outline form-white mb-2 text-left">
-                        <label class="form-label" for="Password">Password</label>
-                        <input type="password" id="Password" class="form-control form-control-lg" placeholder="Password" bind:value={password} required />
-                    </div>      
-                    <div class="form-outline form-white mb-4 text-left">
-                        <label class="form-label" for="PasswordConfirm">Password Confirmation</label>
-                        <input type="password" id="PasswordConfirm" class="form-control form-control-lg" placeholder="Password (again)" bind:value={passwordConfirmation} required />
-                    </div>
-    
-                    <button class="btn btn-outline-light btn-lg px-4" type="submit" on:click|preventDefault={resetPassword}>Submit</button>
+
+                    {#if res}
+                        <h4 class="success-col">Password Reset</h4>
+                    {/if}
+                    <form>
+                        <div class="form-outline form-white mb-2 text-left">
+                            <label class="form-label" for="Password">Password</label>
+                            <input type="password" id="Password" class="form-control form-control-lg" placeholder="Password" bind:value={password} required />
+                        </div>      
+                        <div class="form-outline form-white mb-4 text-left">
+                            <label class="form-label" for="PasswordConfirm">Password Confirmation</label>
+                            <input type="password" id="PasswordConfirm" class="form-control form-control-lg" placeholder="Password (again)" bind:value={passwordConfirmation} required />
+                        </div>
+        
+                        <button class="btn btn-outline-light btn-lg px-4" type="submit" on:click|preventDefault={resetPassword}>Submit</button>
+                    </form>
                 </div>
             </div>
             </div>
