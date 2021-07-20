@@ -7,7 +7,7 @@
     "preview": "svelte-kit preview"
   },
   "devDependencies": {
-    "@sveltejs/adapter-netlify": "^1.0.0-next.19",
+    "@sveltejs/adapter-netlify": "^1.0.0-next.25",
     "@sveltejs/kit": "next",
     "svelte": "^3.34.0"
   },
@@ -18,7 +18,6 @@
     "axios": "^0.21.1",
     "cookie": "^0.4.1",
     "snarkdown": "^2.0.0",
-    "supports-color": "^9.0.2",
     "svelte-awesome": "^2.3.2"
   }
 }

@@ -21,6 +21,10 @@
 	let posts = [];
 </script>
 
+<svelte:head>
+	<title>Blog</title>
+</svelte:head>
+
 <div class="my-4">
 	<h1 class="text-center text-3xl font-bold">ThinkTeacher Blog</h1>
 </div>

@@ -17,6 +17,10 @@
 	};
 </script>
 
+<svelte:head>
+	<title>{post.title}</title>
+</svelte:head>
+
 <script>
     import snarkdown from 'snarkdown'
     import Icon from 'svelte-awesome'
