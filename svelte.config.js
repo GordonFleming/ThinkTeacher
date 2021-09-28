@@ -1,4 +1,3 @@
-/** @type {import('@sveltejs/kit').Config} */
 import adapter from '@sveltejs/adapter-netlify';
 
 export default {
@@ -7,5 +6,3 @@ export default {
 		target: '#svelte'
 	}
 };
-
-export default config;
