@@ -1,5 +1,5 @@
 {
-  "name": "~TODO~",
+  "name": "frontend-thinkteacher",
   "version": "0.0.1",
   "scripts": {
     "dev": "svelte-kit dev",
@@ -7,18 +7,14 @@
     "preview": "svelte-kit preview"
   },
   "devDependencies": {
-    "@sveltejs/adapter-netlify": "^1.0.0-next.25",
     "@sveltejs/kit": "next",
-    "svelte": "^3.34.0"
+    "svelte": "^3.42.6"
   },
   "type": "module",
   "dependencies": {
-    "@fontsource/fira-mono": "^4.2.2",
-    "@lukeed/uuid": "^2.0.0",
-    "axios": "^0.21.1",
-    "cookie": "^0.4.1",
+    "axios": "^0.21.4",
     "snarkdown": "^2.0.0",
-    "supports-color": "^9.0.2",
-    "svelte-awesome": "^2.3.2"
+    "svelte-awesome": "^2.3.2",
+    "svelte-loading-spinners": "^0.1.7"
   }
 }

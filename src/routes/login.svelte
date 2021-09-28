@@ -2,7 +2,7 @@
     import axios from 'axios'
     import { goto } from '$app/navigation'
     import Icon from 'svelte-awesome'
-    import user from '$lib/stores'
+    import {user, name} from '$lib/stores'
     import { facebook, twitter, instagram, linkedin } from 'svelte-awesome/icons'
     import { browserSet } from '$lib/re_utils'
 
@@ -19,6 +19,8 @@
         .then(response => {
             browserSet("jwt", response.data.jwt)
             $user = response.data.user;
+            browserSet("name", response.data.user.username)
+            $name = response.data.username;
             console.log("The stored user: " + JSON.stringify($user))
             goto('/auth')
         })

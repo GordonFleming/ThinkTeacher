@@ -3,16 +3,16 @@
 		// The params object will contain all of the parameters in the route.
 		const { slug } = params
 		// Now, we'll fetch the blog post from Strapi
-		const res = await fetch('http://localhost:1337/posts/' + slug)
+		const res = await fetch('http://localhost:1337/posts?slug=' + slug)
 		// A 404 status means "NOT FOUND"
 		if (res.status === 404) {
 			// We can create a custom error and return it.
 			// SvelteKit will automatically show us an error page that we'll learn to customise later on.
-			const error = new Error(`The post with ID ${slug} was not found`)
+			const error = new Error(`The post with slug of ${slug} was not found`)
 			return { status: 404, error }
 		} else {
 			const data = await res.json()
-			return { props: { post: data } }
+			return { props: { post: data[0] } }
 		}
 	};
 </script>
