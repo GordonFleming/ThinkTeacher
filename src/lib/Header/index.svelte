@@ -29,7 +29,7 @@ import { goto } from '$app/navigation';
         <div class="collapse navbar-collapse justify-content-center" id="navbar">
             <ul class="navbar-nav">
                 <div class="nav-img mx-auto">
-                    <a class="navbar-brand" href="/"><img src="static\thinkteacherlogo-final.png" alt="logo" width="200" ></a>
+                    <a class="navbar-brand" href="/"><img src="/thinkteacherlogo-final.png" alt="logo" width="200" ></a>
                 </div>
                 <li class="nav-item">
                     <a class="nav-link fromLeft" sveltekit:prefetch href="/about">About</a>
