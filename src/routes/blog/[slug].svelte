@@ -1,13 +1,9 @@
 <script context="module">
 	export const load = async ({ page: { params }, fetch }) => {
-		// The params object will contain all of the parameters in the route.
 		const { slug } = params
-		// Now, we'll fetch the blog post from Strapi
 		const res = await fetch('http://localhost:1337/posts?slug=' + slug)
-		// A 404 status means "NOT FOUND"
+
 		if (res.status === 404) {
-			// We can create a custom error and return it.
-			// SvelteKit will automatically show us an error page that we'll learn to customise later on.
 			const error = new Error(`The post with slug of ${slug} was not found`)
 			return { status: 404, error }
 		} else {
@@ -26,14 +22,14 @@
     import Icon from 'svelte-awesome'
     import { arrowLeft } from 'svelte-awesome/icons'
 
-	export let post
+    export let post
     let date = new Date(post.published_at)
     let publish = date.toLocaleString('en-ZA', { month: 'long', day: '2-digit', year: 'numeric'})
     
     let mdContent = snarkdown(post.content)
 </script>
 
-<div class="container bg-dark mt-4">
+<div class="container bg-dark mt-4 border-custom">
     <a href="/blog"><Icon data={ arrowLeft } scale="1.8"/></a>
     <img class="img-fluid mx-auto d-block mt-2" src='http://localhost:1337{post.image.url}' alt="Blog banner">
 
@@ -68,4 +64,11 @@
     p{
         color: #fff;
     }
+    .border-custom{
+        border-top: 3px solid var(--logo-blue);
+        border-left: 3px solid var(--logo-blue);
+
+        border-bottom: 3px solid var(--logo-orange);
+        border-right: 3px solid var(--logo-orange);
+            }
 </style>

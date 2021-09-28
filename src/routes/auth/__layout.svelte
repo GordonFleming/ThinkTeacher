@@ -42,15 +42,15 @@
         <h3>Checking if you are a valid member...</h3>
     </div>
 {:else} 
-    <div class="pt-2">
-        {#if errMsg !== undefined}
-            <h1>{errMsg}</h1>
-            <h3>You need to <a href="/login">login</a></h3>
-        {/if}
-
-        <h3>Hello, <strong>{name}</strong> this is where all the membership content will be available.</h3>
-    </div>
     <div class="container text-center p-3">
+        <div class="pt-2">
+            {#if errMsg !== undefined}
+                <h1>{errMsg}</h1>
+                <h3>You need to <a href="/login">login</a></h3>
+            {/if}
+    
+            <h3>Hello, <strong>{name}</strong> this is where all the membership content will be available.</h3>
+        </div>
         <nav>
             <a href="/auth">Home</a>
             <a href="/auth/vacancies">Vacancies</a>

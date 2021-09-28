@@ -26,7 +26,7 @@
         <button class="navbar-toggler third-button mx-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
             <div class="animated-icon3"><span></span><span></span><span></span></div>
         </button>
-        <div class="collapse navbar-collapse justify-content-center" id="navbar">
+        <div class="collapse navbar-collapse justify-content-end" id="navbar">
             <ul class="navbar-nav">
                 <div class="nav-img mx-auto">
                     <a class="navbar-brand" href="/"><img src="/thinkteacherlogo-final.png" alt="logo" width="200" ></a>
@@ -35,16 +35,13 @@
                     <a class="nav-link fromLeft" sveltekit:prefetch href="/about">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fromLeft" sveltekit:prefetch href="/membership">Membership</a>
+                    <a class="nav-link fromLeft" sveltekit:prefetch href="/partners">Partners</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link fromLeft" sveltekit:prefetch href="/blog">Blog</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fromLeft" href="/">Something...</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fromLeft" href="/register">Register</a>
+                    <a class="nav-link fromLeft" href="/events">Events</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link fromLeft" href="/contact-us">Contact</a>
@@ -53,11 +50,13 @@
         </div>
         <div class="collapse navbar-collapse justify-content-end" id="navbar">
                 <!-- Right elements -->
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center align-top">
                     {#if $name}
-                        <h6>Welcome {$name}, <span id="logout" on:click={logoutUser}>Logout?</span></h6>
+                        <h6>Welcome {$name}, <span id="logout" style="color: var(--logo-blue);" on:click={logoutUser}>Logout?</span></h6>
                     {:else}
-                        <h6><a href="/login" class="nav-link" style="color: #1E4FE4; font-size: 1.18em;">Login</a></h6>
+                        <p><a href="/login" class="nav-link align-top" style="color: var(--logo-blue); font-size: 1.16em;">Login</a></p>
+                        <h5 class="text-white">/</h5>
+                        <p><a href="/register" class="nav-link" style="color: var(--logo-orange); font-size: 1.16em;">Register</a></p>
                     {/if}
                 </div>
         </div>
@@ -67,7 +66,7 @@
 <style>
     @media screen and (min-width: 1200px) {
         li {
-            font-size: 1.3em;
+            font-size: 1.16em;
             font-weight: 500;
         }
         a {
@@ -84,7 +83,7 @@
 
     @media screen and (max-width: 1200px) {
         li {
-            font-size: 1.2em;
+            font-size: 1.15em;
             font-weight: 400;
         }
         a {
@@ -98,7 +97,7 @@
             height: auto;
         }
         a {
-            font-size: 1.2em;
+            font-size: 1.14em;
             line-height: 3rem;
             text-align: center;
         }
@@ -122,10 +121,11 @@
         transition: 0.2s;
     }
     h6{
-        color: #1E4FE4;
+        color: var(--logo-orange);
+        margin-right: 1rem;
     }
     span{
-        color: var(--logo-orange);
+        
     }
     #logout:hover{
         font-size: 1.17em;

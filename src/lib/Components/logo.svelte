@@ -225,8 +225,8 @@
         }
     }
     circle{
-        transition: ease 0.5s;
-        animation: expand 0.8s ease-in-out alternate;
+        transition: ease 0.7s;
+        animation: expand 1s ease-in-out alternate;
     }
     @keyframes expand {     
         from { 

@@ -51,7 +51,7 @@
         <button class="btn btn-dark btn-group-lg" on:click={logoutUser}>Please logout first</button>
     </div>
 {:else}
-    <section class="vh-50 gradient-custom">
+    <section class="vh-50 gradient-custom container">
         <div class="py-3 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-8 col-lg-6 col-xl-6">

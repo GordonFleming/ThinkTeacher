@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation'
     import { onMount } from 'svelte'
     import axios from 'axios'
+    import { Jumper } from 'svelte-loading-spinners'
 
     const API_URL = 'http://localhost:1337/posts'
     let loading = true
@@ -30,6 +31,11 @@
 </div>
 
 <div class="container mx-auto mt-4">
+    {#if loading}
+        <div class="d-flex justify-content-center mt-5">
+            <Jumper size="150" color="#5C677D" unit="px" duration="1s"></Jumper>
+        </div>
+    {/if}
     {#if posts.length <= 0 && !loading}
         <h3 class="text-center">No posts are on the blog yet, check back another time.</h3>
     {:else}
@@ -48,6 +54,9 @@
 </div>
 
 <style>
+    h4{
+        color: #fff;
+    }
     .blog-block {
         border-radius: 20px;
         border: 3px solid var(--logo-blue);

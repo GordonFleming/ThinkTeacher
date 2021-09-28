@@ -25,7 +25,7 @@
                     <img class="d-block user-select-none img-fluid" src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/Bio/Bridget_New.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL0JyaWRnZXRfTmV3LmpwZyIsImlhdCI6MTYzMjg0NjYwNiwiZXhwIjoxOTQ4MjA2NjA2fQ.HwyEWrK_IWIfX3zfIG4gKQMgP858eAP90cxaAAkob9k" alt="profile img">
                     <div class="card-body">
                         <p class="card-text">
-                            Bridget Fleming is a passionate advocate for using Open Geo-technologies in the classroom. <br><br>
+                            Bridget Fleming is a passionate advocate for teacher well-being. <br><br>
                             Having taught secondary school Geography for the past 30 years, primarily in the private sector, Bridget is the IEB NSC Geography Internal Moderator and the founder of the Southern 
                             African Geography Teachers’ Association (SAGTA). <br><br>
                             She has authored many textbooks and digital classroom resources. She left the classroom recently (where she was HOD Geography, St John’s College) to start <span class="think">ThinkTeacher</span>, 

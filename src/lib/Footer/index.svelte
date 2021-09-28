@@ -1,6 +1,6 @@
 <script>
     import Icon from 'svelte-awesome'
-    import { facebook, twitter, instagram, linkedin } from 'svelte-awesome/icons'
+    import { facebook, twitter, instagram, linkedin, youtubePlay, youtubeSquare } from 'svelte-awesome/icons'
 
     function toTop(){
         window.scrollTo({
@@ -13,7 +13,7 @@
 
 <footer class="bg-dark text-center text-black mt-5">
     <div class="container-fluid p-4">
-      <section class="mb-4">
+      <section class="mb-3">
         <!-- Facebook -->
         <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><Icon data={facebook} scale="1.8"/></a>  
         <!-- Twitter -->
@@ -22,14 +22,15 @@
         <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><Icon data={instagram} scale="1.8"/></a>
         <!-- Linkedin -->
         <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><Icon data={linkedin} scale="1.8"/></a>
+        <!-- Youtube -->
+        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><Icon data={youtubeSquare} scale="1.8" /></a>
+        <i class="fab fa-youtube"></i>
       </section>
   
       <!-- Section: Text -->
       <section class="mb-4">
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt distinctio earum
-          repellat quaerat voluptatibus placeat nam, commodi optio pariatur est quia magnam
-          eum harum corrupti dicta, aliquam sequi voluptate quas.
+            --------------------------------------------
         </p>
       </section>
   
