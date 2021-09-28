@@ -35,7 +35,7 @@
     {:else}
         <div class="row">
             {#each posts as post}
-                <div class="col-sm-12 col-md-6 col-lg-4 text-center">
+                <div class="col-sm-12 col-md-6 col-lg-4 text-center mt-3">
                     <div class="blog-block bg-dark p-3" on:click={() => goto('/blog/' + post.slug)}>
                         <h4 class="font-bold">{post.title}</h4>
                         <p class="mt-2 text-white">{post.description}</p>

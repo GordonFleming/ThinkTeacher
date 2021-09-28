@@ -43,7 +43,7 @@
     <h5>Author: {post.author.username}</h5>
     <time datetime="{publish}">{publish}</time>  
     
-    {@html mdContent}
+    <p class="mt-4">{@html mdContent}</p>
 </div>
 
 <style>
@@ -64,5 +64,8 @@
     .container {
         border-radius: 20px;
         padding: 5rem;
+    }
+    p{
+        color: #fff;
     }
 </style>

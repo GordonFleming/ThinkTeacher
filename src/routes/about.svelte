@@ -15,14 +15,14 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-12 col-md-7 col-lg-7">
+        <div class="col-sm-12 col-md-6 col-lg-7">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Bridget Fleming</h3>
                     <div class="card-body">
                         <h5 class="card-title">Founder</h5>
                         <h6 class="card-subtitle text-muted">MSc | HDE (Wits)</h6>
                     </div>
-                    <img class="d-block user-select-none img-fluid" src="https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Bridget.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL0JyaWRnZXQuanBnIiwiaWF0IjoxNjI1NzY0MjY1LCJleHAiOjE5NDExMjQyNjV9.xZomw1kpuood2PFxS81KJzDw4VlQTNAAHoVppiO_DHs" alt="profile img">
+                    <img class="d-block user-select-none img-fluid" src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/Bio/Bridget_New.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL0JyaWRnZXRfTmV3LmpwZyIsImlhdCI6MTYzMjg0NjYwNiwiZXhwIjoxOTQ4MjA2NjA2fQ.HwyEWrK_IWIfX3zfIG4gKQMgP858eAP90cxaAAkob9k" alt="profile img">
                     <div class="card-body">
                         <p class="card-text">
                             Bridget Fleming is a passionate advocate for using Open Geo-technologies in the classroom. <br><br>
@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-5 col-lg-5">
+        <div class="col-sm-12 col-md-6 col-lg-5">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Rebecca Maluka</h3>
                     <div class="card-body">
@@ -66,7 +66,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-5 col-lg-5">
+        <div class="col-sm-12 col-md-6 col-lg-5">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Paul Edey</h3>
                     <div class="card-body">
@@ -88,7 +88,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-7 col-lg-7">
+        <div class="col-sm-12 col-md-6 col-lg-7">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Kim Forbes</h3>
                     <div class="card-body">
@@ -117,7 +117,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-7 col-lg-7">
+        <div class="col-sm-12 col-md-6 col-lg-7">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Zanele Masuku</h3>
                     <div class="card-body">
@@ -191,7 +191,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-7 col-lg-7">
+        <div class="col-sm-12 col-md-6 col-lg-7">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Malcolm Williams</h3>
                     <div class="card-body">

@@ -214,7 +214,7 @@
 <style>
     #logo-box{
         margin: auto;
-        padding-top: 5%;
+        padding-top: 0%;
         text-align: center;
         max-width: 800px;
         height:auto;
