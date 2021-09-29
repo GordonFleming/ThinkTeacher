@@ -40,9 +40,8 @@
 
 <!-- Content Start -->
 
-<div class="container">
+<div class="container mt-5">
     <div class="row">
-        <h2>Vision Statement</h2>
         <h4>Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
             and nurturing networks. Think Teacher's vision is further to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
         </h4>

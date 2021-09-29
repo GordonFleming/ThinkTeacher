@@ -15,15 +15,15 @@
     <div class="container-fluid p-4">
       <section class="mb-3">
         <!-- Facebook -->
-        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><Icon data={facebook} scale="1.8"/></a>  
+        <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/thinkteacher" target="_blank" role="button"><Icon data={facebook} scale="1.8"/></a>  
         <!-- Twitter -->
-        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><Icon data={twitter} scale="1.8"/></a>
+        <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/thinkteacher_sa" target="_blank" role="button"><Icon data={twitter} scale="1.8"/></a>
         <!-- Instagram -->
-        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><Icon data={instagram} scale="1.8"/></a>
+        <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/thinkteacher_rsa" target="_blank" role="button"><Icon data={instagram} scale="1.8"/></a>
         <!-- Linkedin -->
-        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><Icon data={linkedin} scale="1.8"/></a>
+        <a class="btn btn-outline-light btn-floating m-1" href="https://www.linkedin.com/company/think-teacher" target="_blank" role="button"><Icon data={linkedin} scale="1.8"/></a>
         <!-- Youtube -->
-        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><Icon data={youtubeSquare} scale="1.8" /></a>
+        <a class="btn btn-outline-light btn-floating m-1" href="https://www.youtube.com/channel/UCN-byMa-sTVbwKWNkbMM9bQ" target="_blank" role="button"><Icon data={youtubeSquare} scale="1.8" /></a>
         <i class="fab fa-youtube"></i>
       </section>
   

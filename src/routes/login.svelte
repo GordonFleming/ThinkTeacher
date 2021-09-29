@@ -81,10 +81,9 @@
                         </form>
                     
                         <div class="mt-2 pt-1">
-                            <a href="#!" class="text-white px-2"><Icon data={facebook} scale="1.4"/></a>
-                            <a href="#!" class="text-white px-2"><Icon data={twitter} scale="1.4"/></a>
-                            <a href="#!" class="text-white px-2"><Icon data={instagram} scale="1.4"/></a>
-                            <a href="#!" class="text-white px-2"><Icon data={linkedin} scale="1.4"/></a>
+                            <a href="https://www.facebook.com/thinkteacher" class="text-white px-2"><Icon data={facebook} scale="1.4"/></a>
+                            <a href="https://twitter.com/thinkteacher_sa" class="text-white px-2"><Icon data={twitter} scale="1.4"/></a>
+                            <a href="https://www.instagram.com/thinkteacher_rsa" class="text-white px-2"><Icon data={instagram} scale="1.4"/></a>
                         </div>
                         
                     </div>
