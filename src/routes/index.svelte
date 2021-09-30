@@ -19,7 +19,7 @@
 	<title>Home</title>
 </svelte:head>
 
-<div class="p-5 bg-banner text-white">
+<div class="p-5 bg-banner text-white test">
     <Logo />
 </div>
 
@@ -41,23 +41,62 @@
 <!-- Content Start -->
 
 <div class="container mt-5">
-    <div class="row">
-        <h4>Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
+    <div class="row text-center">
+        <h2 class="mb-4">Offerings In</h2>
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
+            <img class="img-fluid offer" src="/wellness-blue.svg" alt="wellness">
+            <h3 class="mt-3">Wellness</h3>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
+            <img class="img-fluid offer" src="/travel-orange.svg" alt="travel">
+            <h3 class="mt-3">Travel</h3>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
+            <img class="img-fluid offer" src="/invest-blue.svg" alt="invest">
+            <h3 class="mt-3">Investment</h3>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
+            <img class="img-fluid offer" src="/legal-orange.svg" alt="legal">
+            <h3 class="mt-3">Legal</h3>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
+            <img class="img-fluid offer" src="/teaching-blue.svg" alt="teaching">
+            <h3 class="mt-3">Teaching</h3>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
+            <img class="img-fluid offer" src="/health-orange.svg" alt="health">
+            <h3 class="mt-3">Health</h3>
+        </div>
+    </div>
+
+    <div class="row text-center mt-5 bg-banner rounded text-white p-5">
+        <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
             and nurturing networks. Think Teacher's vision is further to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
-        </h4>
+        </h3>
     </div>
 
-    <div class="row">
-        <h2>Partners</h2>
-    </div>
-
-    <div class="row">
-        <h2>Offerings / Benefits</h2>
-        <button class="btn btn-lg btn-dark mx-auto mt-3" style="width: 15rem;" on:click={() => goto("/register")}>Become a member!</button>
+    <div class="row text-center mt-5">
+        <h4>Don't forget to...</h4>
+        <button class="btn btn-lg btn-dark mx-auto" style="width: 15rem;" on:click={() => goto("/register")}>Become a member!</button>
     </div>
 </div>
 
 <style>
+    @media screen and (min-width: 1800px) {
+        .test{
+            background-image: url("Frame.svg");
+            background-repeat: no-repeat; /* Do not repeat the image */
+            background-size: cover;
+        }
+    }
+    @media screen and (min-width: 765px) and (max-width: 1800px) {
+        .test{
+            background-image: url("FrameSmall.svg");
+            background-repeat: no-repeat; /* Do not repeat the image */
+            background-size: cover;
+        }
+    }
+
     h1{
         margin-top: 5rem;
         font-size: 3em;
@@ -68,7 +107,24 @@
         font-size: 2.4em;
         text-align: center;
     }
+    h3{
+        font-family: 'Mulish', sans-serif;
+    }
+    .read{
+        line-height: 2;
+    }
     .bg-banner{
         background-color: #252638;
+    }
+    .offer{
+        max-width: 250px;
+        transition: all 0.5s;
+    }
+    .offer:hover{
+        transform: scale(1.08);
+        cursor: pointer;
+    }
+    .btn-lg{
+        padding: 2rem 1rem 2rem 1rem;
     }
 </style>
