@@ -47,6 +47,11 @@ a {
     color: var(--logo-blue);
 }
 
+select option{
+    color: black;
+}
+
+
 .error-col {
     color: red;
 }

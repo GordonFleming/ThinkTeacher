@@ -5,14 +5,6 @@
 <script>
     import Logo from '$lib/Components/logo.svelte'
     import { goto } from '$app/navigation';
-
-    import { fade, fly } from 'svelte/transition'
-    import { onMount } from 'svelte'
-
-    // let begin = false
-    // onMount(() => {
-    //     begin = true
-	// });
 </script>
 
 <svelte:head>
@@ -28,17 +20,6 @@
     c23.6,2.1,48.7,3.5,103.4-2.5c54.7-6,106.2-25.6,106.2-25.6V0H0v30.3c0,0,72,32.6,158.4,30.5c39.2-0.7,92.8-6.7,134-22.4
     c21.2-8.1,52.2-18.2,79.7-24.2C399.3,7.9,411.6,7.5,421.9,6.5z"></path>
 </svg>
-
-<!-- {#if begin}
-    <h1 class="text-center" in:fade="{{ duration: 500 }}">Watch this space!</h1>
-    <h2 in:fly="{{ x: 200, delay: 500, duration: 1000 }}">Internships</h2>
-    <h2 in:fly="{{ y: 150, delay: 800, duration: 800 }}">Discounts</h2>
-    <h2 in:fly="{{ x: -120, delay: 1000, duration: 600 }}">Vacancies</h2>
-    <h2 in:fly="{{ y: -110, delay: 1200, duration: 400 }}">Wellness</h2>
-    <h2 in:fly="{{ x: 100, delay: 1500, duration: 200 }}">Benefits</h2>
-{/if} -->
-
-<!-- Content Start -->
 
 <div class="container mt-5">
     <div class="row text-center">
