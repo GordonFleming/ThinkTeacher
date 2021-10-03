@@ -31,6 +31,10 @@
                             <label class="form-label" for="Email">Email</label>
                             <input type="email" id="Email" class="form-control form-control-lg" placeholder="Enter your email" required />
                         </div>
+                        <div class="form-outline form-white mb-2">
+                            <label class="form-label" for="Subject">Subject</label>
+                            <input type="text" id="Subject" class="form-control form-control-lg" placeholder="Enter your subject" required />
+                        </div>
                         <div class="form-outline form-white mb-4">
                             <label class="form-label" for="Message">Message</label>
                             <textarea id="Message" name="message" class="form-control" rows="8" placeholder="Enter your message" required></textarea>
