@@ -25,7 +25,7 @@
 
                         <div class="form-outline form-white mb-2">
                             <label class="form-label" for="Name">Name</label>
-                            <input type="text" id="Name" class="form-control form-control-lg" placeholder="Enter your name" required />
+                            <input type="text" name="Name" id="Name" class="form-control form-control-lg" placeholder="Enter your name" required />
                         </div>
                         <div class="form-outline form-white mb-4">
                             <label class="form-label" for="Email">Email</label>
@@ -33,7 +33,7 @@
                         </div>
                         <div class="form-outline form-white mb-2">
                             <label class="form-label" for="Subject">Subject</label>
-                            <input type="text" id="Subject" class="form-control form-control-lg" placeholder="Enter your subject" required />
+                            <input type="text" name="subject" id="Subject" class="form-control form-control-lg" placeholder="Enter your subject" required />
                         </div>
                         <div class="form-outline form-white mb-4">
                             <label class="form-label" for="Message">Message</label>
