@@ -12,7 +12,7 @@
     
     async function registerUser(){
         await axios
-        .post('http://localhost:1337/auth/local/register', {
+        .post('https://thinkteacher-strapi.glass.splyce.dev/auth/local/register', {
             username: username,
             email: email,
             password: password,
@@ -29,7 +29,7 @@
         })
 
         await axios
-        .post('http://localhost:1337/user-infos', {
+        .post('https://thinkteacher-strapi.glass.splyce.dev/user-infos', {
             firstName: firstName,
             lastName: lastName,
             idNum: idNum,
