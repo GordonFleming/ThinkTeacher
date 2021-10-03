@@ -5,6 +5,27 @@
 <script>
     import Logo from '$lib/Components/logo.svelte'
     import { goto } from '$app/navigation';
+    import { CountUp } from 'countup.js';
+    import { onMount } from 'svelte'
+    import axios from 'axios'
+
+    let loading = true
+    let countUp, userCount = 102
+    const API_URL = 'http://localhost:1337/users/count'
+
+    onMount(async () =>{
+        try {
+            const res = await axios.get(API_URL)
+            userCount = res.data
+            loading = false
+            console.log(userCount)
+        } catch (e) {
+            error = e
+        }
+        countUp = new CountUp('countUser', userCount);
+        countUp.start();
+	})
+
 </script>
 
 <svelte:head>
@@ -14,12 +35,16 @@
 <div class="p-5 bg-banner text-white test">
     <Logo />
 </div>
-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
     <path class="" fill="#252638" d="M421.9,6.5c22.6-2.5,51.5,0.4,75.5,5.3c23.6,4.9,70.9,23.5,100.5,35.7c75.8,32.2,133.7,44.5,192.6,49.7
     c23.6,2.1,48.7,3.5,103.4-2.5c54.7-6,106.2-25.6,106.2-25.6V0H0v30.3c0,0,72,32.6,158.4,30.5c39.2-0.7,92.8-6.7,134-22.4
     c21.2-8.1,52.2-18.2,79.7-24.2C399.3,7.9,411.6,7.5,421.9,6.5z"></path>
 </svg>
+
+
+<!-- svelte-ignore a11y-missing-content -->
+<h1 class="text-center" id="countUser"></h1>
+<h3 class="text-center">Members and counting!</h3>
 
 <div class="container mt-5">
     <div class="row text-center">
@@ -67,14 +92,16 @@
         .test{
             background-image: url("Frame.svg");
             background-repeat: no-repeat; /* Do not repeat the image */
-            background-size: cover;
+            background-size: contain;
+            background-attachment: fixed;
         }
     }
-    @media screen and (min-width: 765px) and (max-width: 1800px) {
+    @media screen and (min-width: 1200px) and (max-width: 1800px) {
         .test{
             background-image: url("FrameSmall.svg");
             background-repeat: no-repeat; /* Do not repeat the image */
-            background-size: cover;
+            background-size: contain;
+            background-attachment: fixed;
         }
     }
 

@@ -2,20 +2,15 @@
     import axios from 'axios'
     import Icon from 'svelte-awesome'
     import { arrowLeft } from 'svelte-awesome/icons'
-    import sgMail from '@sendgrid/mail'
+	import { sgKey } from '$lib/env.js'
 
     let username, email, password
     let msg, errorMsg
     let registerNext = false
-
     let firstName, lastName, idNum, altMail, cell, eduPhase, qualification, sace, workplace
-
     let userObj
-
-    sgMail.setApiKey('<API-Key>')
     
     async function registerUser(){
-        console.log('User object', userObj)
         await axios
         .post('http://localhost:1337/auth/local/register', {
             username: username,
@@ -51,14 +46,15 @@
         })
 
         await axios
-            .put('https://sendgrid.com/v3/marketing/contacts',
-                { email: email },
-                { Authorization: `Bearer ${'<API-Key>'}` }
-            )
-            .catch((error) => {
-                console.error(error)
-            })
-        }
+        .put('https://sendgrid.com/v3/marketing/contacts', {
+                    "list_ids": ["57df636d-5399-423f-bf72-35424b5644b5"],
+                    "contacts": [{"email":email}]},
+                { headers: { Authorization: `Bearer ${sgKey}`}
+        })
+        .catch((error) => {
+            console.error(error)
+        })
+    }
 </script>
 
 <svelte:head>

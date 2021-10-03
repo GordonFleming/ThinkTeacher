@@ -1,0 +1,1 @@
+export const sgKey = import.meta.env.VITE_SENDGRID_API_KEY;
