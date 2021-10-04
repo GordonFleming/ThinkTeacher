@@ -3,15 +3,19 @@
     import axios from 'axios'
     import { Jumper } from 'svelte-loading-spinners'
     import snarkdown from 'snarkdown'
+    import { prod } from '$lib/env.js'
 
-    const API_URL = 'http://localhost:1337/partners'
     let loading = true
+    let API_URL = 'http://localhost:1337'
+    if(prod === "true"){
+        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+    }
 
     let partners
 
     onMount(async () => {
         try {
-            const res = await axios.get(API_URL)
+            const res = await axios.get(`${API_URL}/partners`)
             partners = res.data
             loading = false
             console.log(partners)

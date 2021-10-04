@@ -4,19 +4,24 @@
 
 <script>
     import Logo from '$lib/Components/logo.svelte'
-    import { goto } from '$app/navigation';
-    import { CountUp } from 'countup.js';
+    import { goto } from '$app/navigation'
+    import { CountUp } from 'countup.js'
     import { onMount } from 'svelte'
+    import { prod } from '$lib/env.js'
     import axios from 'axios'
 
+    let API_URL = 'http://localhost:1337'
+    if(prod === "true"){
+        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+    }
+
     let loading = true
-    let countUp, userCount = 516
-    const API_URL = 'http://localhost:1337/users/count'
+    let countUp, userCount = 515
 
     onMount(async () =>{
         try {
-            const res = await axios.get(API_URL)
-            // userCount = res.data
+            const res = await axios.get(`${API_URL}/users/count`)
+            userCount += res.data
             loading = false
             console.log(userCount)
         } catch (e) {

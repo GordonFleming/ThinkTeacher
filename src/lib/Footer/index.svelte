@@ -78,17 +78,11 @@
             </div>
 
             <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                <h5 class="text-uppercase">Legal / Contact???</h5>
+                <h5 class="text-uppercase">Contact</h5>
     
                 <ul class="list-unstyled mb-0">
                     <li>
-                        <a href="#!" class="text-white">Privacy Policy</a>
-                    </li>
-                    <li>
-                        <a href="#!" class="text-white">Link 2</a>
-                    </li>
-                    <li>
-                        <a href="#!" class="text-white">Link 3</a>
+                        <a href="mailto:zani@thinkteacher.co.za" class="text-white">zani@thinkteacher.co.za</a>
                     </li>
                 </ul>
             </div>

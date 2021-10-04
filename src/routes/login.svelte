@@ -6,7 +6,12 @@
     import {user, name} from '$lib/stores'
     import { facebook, twitter, instagram, linkedin } from 'svelte-awesome/icons'
     import { browserSet } from '$lib/re_utils'
+    import { prod } from '$lib/env.js'
 
+    let API_URL = 'http://localhost:1337'
+    if(prod === "true"){
+        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+    }
 
     let usernameEmail, password
     let errorMsg
@@ -23,7 +28,7 @@
 
     async function loginUser(){
         await axios
-        .post('http://localhost:1337/auth/local', {
+        .post(`${API_URL}/auth/local`, {
             identifier: usernameEmail,
             password: password,
         })

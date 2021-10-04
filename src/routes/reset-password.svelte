@@ -1,6 +1,12 @@
 <script>
     import { onMount } from 'svelte'
     import axios from 'axios'
+    import { prod } from '$lib/env.js'
+
+    let API_URL = 'http://localhost:1337'
+    if(prod === "true"){
+        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+    }
 
     let password, passwordConfirmation
     let errorMsg
@@ -15,7 +21,7 @@
 
     async function resetPassword(){
         await axios
-        .post('http://localhost:1337/auth/reset-password', {
+        .post(`${API_URL}/auth/reset-password`, {
             code: myParam,
             password: password,
             passwordConfirmation: passwordConfirmation,

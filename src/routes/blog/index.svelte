@@ -3,13 +3,18 @@
     import { onMount } from 'svelte'
     import axios from 'axios'
     import { Jumper } from 'svelte-loading-spinners'
+    import { prod } from '$lib/env.js'
 
-    const API_URL = 'http://localhost:1337/posts'
+    let API_URL = 'http://localhost:1337'
+    if(prod === "true"){
+        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+    }
+
     let loading = true
 
     onMount(async () => {
         try {
-            const res = await axios.get(API_URL)
+            const res = await axios.get(`${API_URL}/posts`)
             posts = res.data
             loading = false
             console.log(posts)

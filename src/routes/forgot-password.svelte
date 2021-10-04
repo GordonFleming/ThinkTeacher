@@ -1,5 +1,11 @@
 <script>
     import axios from 'axios'
+    import { prod } from '$lib/env.js'
+
+    let API_URL = 'http://localhost:1337'
+    if(prod === "true"){
+        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+    }
 
     let email
     let errorMsg
@@ -7,7 +13,7 @@
 
     async function forgotPassword(){
         await axios
-        .post('http://localhost:1337/auth/forgot-password', {
+        .post(`${API_URL}/auth/forgot-password`, {
             email: email,
         })
         .then(response => {

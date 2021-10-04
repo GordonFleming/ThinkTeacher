@@ -1,7 +1,7 @@
 <script context="module">
 	export const load = async ({ page: { params }, fetch }) => {
 		const { slug } = params
-		const res = await fetch('http://localhost:1337/posts?slug=' + slug)
+		const res = await fetch(`${API_URL}/posts?slug=` + slug)
 
 		if (res.status === 404) {
 			const error = new Error(`The post with slug of ${slug} was not found`)
@@ -21,6 +21,12 @@
     import snarkdown from 'snarkdown'
     import Icon from 'svelte-awesome'
     import { arrowLeft } from 'svelte-awesome/icons'
+    import { prod } from '$lib/env.js'
+
+    let API_URL = 'http://localhost:1337'
+    if(prod === "true"){
+        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+    }
 
     export let post
     let date = new Date(post.published_at)
@@ -31,7 +37,7 @@
 
 <div class="container bg-dark mt-4 border-custom">
     <a href="/blog"><Icon data={ arrowLeft } scale="1.8"/></a>
-    <img class="img-fluid mx-auto d-block mt-2" src='http://localhost:1337{post.image.url}' alt="Blog banner">
+    <img class="img-fluid mx-auto d-block mt-2" src='{API_URL}{post.image.url}' alt="Blog banner">
 
     <h1 class="text-center">{post.title}</h1>
     <h3 class="text-center bg-dark">{post.description}</h3>

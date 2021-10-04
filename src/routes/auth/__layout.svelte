@@ -6,13 +6,18 @@
     import { goto } from '$app/navigation'
     import { onMount } from 'svelte'
     import { Jumper } from 'svelte-loading-spinners'
+    import { prod } from '$lib/env.js'
+
+    let API_URL = 'http://localhost:1337'
+    if(prod === "true"){
+        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+    }
 
     let name
-    let API_URL = 'http://localhost:1337/users/me'
     let errMsg
 
     onMount(async() =>{
-        const res = await axios.get(API_URL, {
+        const res = await axios.get(`${API_URL}/users/me`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem("jwt"),
             },

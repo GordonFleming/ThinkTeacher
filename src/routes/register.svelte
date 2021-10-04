@@ -4,6 +4,7 @@
     import { arrowLeft } from 'svelte-awesome/icons'
 	import { sgKey } from '$lib/env.js'
     import z from 'zxcvbn'
+    import { prod } from '$lib/env.js'
 
     let barCol = ""
     $: s = z(password).score > 3
@@ -14,8 +15,10 @@
         barCol = "bg-danger"
     }
 
-    const API_URL = 'https://thinkteacher-strapi.glass.splyce.dev'
-    //'http://localhost:1337'
+    let API_URL = 'http://localhost:1337'
+    if(prod === "true"){
+        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+    }
 
     let username, email, password = ""
     let msg, errorMsg, errorDetails
