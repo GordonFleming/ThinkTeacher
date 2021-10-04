@@ -4,6 +4,12 @@
     --text: rgb(36, 34, 34);
     --bg-primary: #f8f9fa;
     --default-text: rgb(255, 255, 255);
+    --bg-other: #252638;
+    --bg-banner: #BEE9E8;
+}
+
+.bg-other{
+    background-color: var(--bg-other);
 }
 
 #svelte {

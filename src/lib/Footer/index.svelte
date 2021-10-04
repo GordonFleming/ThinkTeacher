@@ -11,7 +11,7 @@
     }
 </script>
 
-<footer class="bg-dark text-center text-black mt-5">
+<footer class="bg-other text-center text-black mt-5">
     <div class="container-fluid p-4">
       <section class="mb-3">
         <!-- Facebook -->
