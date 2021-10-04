@@ -51,7 +51,9 @@ select option{
     color: black;
 }
 
-
+.text-logo-orange{
+    color: var(--logo-orange)
+}
 .error-col {
     color: red;
 }

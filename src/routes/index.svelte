@@ -41,37 +41,39 @@
     c21.2-8.1,52.2-18.2,79.7-24.2C399.3,7.9,411.6,7.5,421.9,6.5z"></path>
 </svg>
 
-
 <!-- svelte-ignore a11y-missing-content -->
 <h1 class="text-center" id="countUser"></h1>
 <h3 class="text-center">Members and counting!</h3>
 
 <div class="container mt-5">
     <div class="row text-center">
-        <h2 class="mb-4">Offerings In</h2>
+        <h2 class="mb-4">Benefits</h2>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <img class="img-fluid offer" src="/wellness-blue.svg" alt="wellness">
-            <h3 class="mt-3">Wellness</h3>
+            <img class="img-fluid offer offer-img" src="/wellness-blue.svg" alt="well being">
+            <h3 class="mt-3">Well-being</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <img class="img-fluid offer" src="/travel-orange.svg" alt="travel">
+            <img class="img-fluid offer offer-img" src="/travel-orange.svg" alt="travel">
             <h3 class="mt-3">Travel</h3>
+        </div>        
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
+            <img class="img-fluid offer offer-img" src="/health-blue.svg" alt="medical aid">
+            <h3 class="mt-3">Medical Aid</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <img class="img-fluid offer" src="/invest-blue.svg" alt="invest">
-            <h3 class="mt-3">Investment</h3>
+            <img class="img-fluid offer-img" src="/invest-blue.svg" alt="invest">
+            <h3 class="mt-3">Insurance</h3>
+            <h5 class="text-logo-orange">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <img class="img-fluid offer" src="/legal-orange.svg" alt="legal">
+            <img class="img-fluid offer-img" src="/legal-orange.svg" alt="legal">
             <h3 class="mt-3">Legal</h3>
+            <h5 class="text-logo-orange">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <img class="img-fluid offer" src="/teaching-blue.svg" alt="teaching">
-            <h3 class="mt-3">Teaching</h3>
-        </div>
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <img class="img-fluid offer" src="/health-orange.svg" alt="health">
-            <h3 class="mt-3">Health</h3>
+            <img class="img-fluid offer-img" src="/teaching-blue.svg" alt="courses">
+            <h3 class="mt-3">Courses</h3>
+            <h5 class="text-logo-orange">coming soon</h5>
         </div>
     </div>
 
@@ -124,8 +126,10 @@
     .bg-banner{
         background-color: #252638;
     }
-    .offer{
+    .offer-img{
         max-width: 250px;
+    }
+    .offer{
         transition: all 0.5s;
     }
     .offer:hover{
