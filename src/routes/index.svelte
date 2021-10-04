@@ -20,7 +20,8 @@
             loading = false
             console.log(userCount)
         } catch (e) {
-            error = e
+            let error = e
+            console.log(error)
         }
         countUp = new CountUp('countUser', userCount);
         countUp.start();
