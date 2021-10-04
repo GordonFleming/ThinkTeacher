@@ -44,18 +44,21 @@
     
                 <ul class="list-unstyled mb-0">
                     <li>
-                        <a href="#!" class="text-white">Facebook</a>
+                        <a href="https://www.facebook.com/thinkteacher" target="_blank" class="text-white">Facebook</a>
                     </li>
                     <li>
-                        <a href="#!" class="text-white">Twitter</a>
+                        <a href="https://twitter.com/thinkteacher_sa" target="_blank" class="text-white">Twitter</a>
                     </li>
                     <li>
-                        <a href="#!" class="text-white">Instagram</a>
+                        <a href="https://www.instagram.com/thinkteacher_rsa" target="_blank" class="text-white">Instagram</a>
                     </li>
                     <li>
-                        <a href="#!" class="text-white">Linkedin</a>
+                        <a href="https://www.linkedin.com/company/think-teacher" target="_blank" class="text-white">Linkedin</a>
                     </li>
-                    </ul>
+                    <li>
+                        <a href="https://www.youtube.com/channel/UCN-byMa-sTVbwKWNkbMM9bQ" target="_blank" class="text-white">YouTube</a>
+                    </li>
+                </ul>
             </div>
 
             <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
