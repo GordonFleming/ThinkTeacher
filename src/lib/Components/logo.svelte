@@ -3,11 +3,11 @@
 </script>
 
 <div id="logo-box">
-    <svg in:fade="{{duration:2500}}" version="1.1" id="thinkTeacherLogo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+    <svg in:fade="{{duration:2250}}" version="1.1" id="thinkTeacherLogo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
         viewBox="0 0 853.1 198.8" style="enable-background:new 0 0 853.1 198.8;" xml:space="preserve">
     <style type="text/css">
-        .st0{fill:#ED8D1B;}
-        .st1{fill:#1E4EE5;}
+        .st0{fill:var(--logo-blue);}
+        .st1{fill:var(--logo-orange);}
     </style>
         <g>
             <g>
@@ -216,10 +216,10 @@
         margin: auto;
         padding-top: 0%;
         text-align: center;
-        max-width: 800px;
+        max-width: 850px;
         height:auto;
     }
-    @media screen and (max-width: 800px) {
+    @media screen and (max-width: 850px) {
         #logo-box{
             max-width: 360px;
         }

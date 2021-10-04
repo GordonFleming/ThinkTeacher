@@ -1,6 +1,6 @@
 :root {
-    --logo-blue: #1E4EE5;
-    --logo-orange: #ED8D1B;
+    --logo-blue: #D9B73D;
+    --logo-orange: #4F5D89;
     --text: rgb(36, 34, 34);
     --bg-primary: #f8f9fa;
     --default-text: rgb(255, 255, 255);
@@ -12,21 +12,23 @@
     background-color: var(--bg-other);
 }
 
+html{
+    height: 100%;
+}
 #svelte {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 100%;
     margin: 0;
 }
 
 body {
+    height: 100%;
     position: relative;
     background-color: var(--bg-primary);
 	color: var(--text);
 	box-sizing: border-box;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-
-    /* overflow: hidden; */
 }
 
 h1 {

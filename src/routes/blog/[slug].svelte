@@ -35,7 +35,7 @@
     let mdContent = snarkdown(post.content)
 </script>
 
-<div class="container bg-dark mt-4 border-custom">
+<div class="container bg-dark mt-4 border-custom mt-5 mb-5">
     <a href="/blog"><Icon data={ arrowLeft } scale="1.8"/></a>
     <img class="img-fluid mx-auto d-block mt-2" src='{post.image.url}' alt="Blog banner">
 

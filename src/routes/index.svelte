@@ -6,8 +6,9 @@
     import Logo from '$lib/Components/logo.svelte'
     import { goto } from '$app/navigation'
     import { CountUp } from 'countup.js'
-    import { onMount } from 'svelte'
+    import { onMount, afterUpdate } from 'svelte'
     import { prod } from '$lib/env.js'
+    import {name} from '$lib/stores'
     import axios from 'axios'
 
     let API_URL = 'http://localhost:1337'
@@ -16,7 +17,7 @@
     }
 
     let loading = true
-    let countUp, userCount = 515
+    let countUp, userCount = 100
 
     onMount(async () =>{
         try {
@@ -32,13 +33,17 @@
         countUp.start();
 	})
 
+    afterUpdate(() =>{
+        $name = localStorage.getItem("name");
+        console.log($name)
+	})
 </script>
 
 <svelte:head>
 	<title>Home</title>
 </svelte:head>
 
-<div class="p-5 bg-banner text-white test">
+<div class="p-5 bg-banner text-white test text-center">
     <Logo />
 </div>
 
@@ -53,10 +58,13 @@
 <h3 class="text-center">Members and counting!</h3>
 
 <div class="container mt-5">
-    <div class="row text-center">
-        <button class="btn btn-lg btn-dark mx-auto" style="width: 300px;" on:click={() => goto("/register")}><h4 class="text-white">Become a member!</h4></button>
-    </div>
-    <div class="row text-center mt-5 bg-banner rounded text-white p-5">
+    {#if !$name}
+        <div class="row text-center">
+            <button class="btn btn-lg btn-dark mx-auto" style="width: 300px;" on:click={() => goto("/register")}><h4 class="text-white">Become a member!</h4></button>
+        </div>
+    {/if}
+
+    <div class="row text-center mt-5 bg-other rounded text-white p-5">
         <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
             and nurturing networks. Think Teacher's vision is further to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
         </h3>

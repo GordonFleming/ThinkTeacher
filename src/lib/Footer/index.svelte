@@ -13,7 +13,7 @@
 
 <footer class="bg-other text-center text-black mt-5">
     <div class="container-fluid p-4">
-      <section class="mb-3">
+      <section class="mb-2">
         <!-- Facebook -->
         <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/thinkteacher" target="_blank" role="button"><Icon data={facebook} scale="1.8"/></a>  
         <!-- Twitter -->
@@ -30,7 +30,7 @@
       <!-- Section: Text -->
       <section class="mb-4">
         <p>
-            --------------------------------------------
+            ________________________________________________________
         </p>
       </section>
   
@@ -106,6 +106,9 @@
 </footer>
 
 <style>
+    footer{
+        margin-top: auto !important;
+    }
     h5, p {
         color: var(--default-text);
     }

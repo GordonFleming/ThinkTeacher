@@ -106,7 +106,7 @@
         }
     }
     nav {
-        border-bottom: var(--logo-orange) 2px solid;
+        border-bottom: var(--logo-blue) 2px solid;
     }
     .navbar-light .navbar-nav .nav-link {
         color: #fff;

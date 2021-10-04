@@ -20,6 +20,7 @@
         $name = localStorage.getItem("name");
         console.log($name)
 	})
+
     function logoutUser(){
         localStorage.clear()
         $name = null
@@ -56,7 +57,7 @@
         <button class="btn btn-dark btn-group-lg" on:click={logoutUser}>Please logout first</button>
     </div>
 {:else}
-    <section class="vh-50 gradient-custom container">
+    <section class="vh-50 gradient-custom container mt-4 mb-4">
         <div class="py-3 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-8 col-lg-6 col-xl-6">
