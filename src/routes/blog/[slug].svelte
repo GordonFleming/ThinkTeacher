@@ -1,4 +1,10 @@
 <script context="module">
+    import { prod } from '$lib/env.js'
+    let API_URL = 'http://localhost:1337'
+    if(prod === "true"){
+        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+    }
+
 	export const load = async ({ page: { params }, fetch }) => {
 		const { slug } = params
 		const res = await fetch(`${API_URL}/posts?slug=` + slug)
