@@ -1,12 +1,7 @@
 <script context="module">
-    API_URL = 'http://localhost:1337'
-    if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
-    }
-
 	export const load = async ({ page: { params }, fetch }) => {
 		const { slug } = params
-		const res = await fetch(`${API_URL}/posts?slug=` + slug)
+		const res = await fetch('https://thinkteacher-strapi.glass.splyce.dev/posts?slug=' + slug)
 
 		if (res.status === 404) {
 			const error = new Error(`The post with slug of ${slug} was not found`)
