@@ -14,6 +14,9 @@
         barCol = "bg-danger"
     }
 
+    const API_URL = 'https://thinkteacher-strapi.glass.splyce.dev'
+    //'http://localhost:1337'
+
     let username, email, password = ""
     let msg, errorMsg, errorDetails
     let registerNext = false
@@ -25,7 +28,7 @@
             errorMsg = null
             if(!errorDetails){
                 await axios
-                .post('http://localhost:1337/auth/local/register', {
+                .post(`${API_URL}/auth/local/register`, {
                     username: username,
                     email: email,
                     password: password,
@@ -42,7 +45,7 @@
 
                 await axios
                 .put('https://sendgrid.com/v3/marketing/contacts', {
-                            "list_ids": ["57df636d-5399-423f-bf72-35424b5644b5"],
+                            "list_ids": ["75b1cd1c-6bb0-406b-bc94-d7c2f04bc9f8"],
                             "contacts": [{
                                 "email":email,
                                 "alternate_emails":[altMail],
@@ -65,7 +68,7 @@
 
             if(!errorMsg){
                 await axios
-                .post('http://localhost:1337/user-infos', {
+                .post(`${API_URL}/user-infos`, {
                     firstName: firstName,
                     lastName: lastName,
                     idNum: idNum,
@@ -80,12 +83,12 @@
                 }).then( response => {
                     console.log('UserDetails', response.data)
                     registerNext = false
-                    document.getElementById("register").reset()
                 })
                 .catch(error => {
                     errorDetails = error.response
                     console.log('An error occurred:', error.response)
                 })
+                document.getElementById("register").reset()
             }
         }else{
             errorMsg = "Password not strong enough"
