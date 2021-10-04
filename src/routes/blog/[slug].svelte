@@ -37,7 +37,7 @@
 
 <div class="container bg-dark mt-4 border-custom">
     <a href="/blog"><Icon data={ arrowLeft } scale="1.8"/></a>
-    <img class="img-fluid mx-auto d-block mt-2" src='{API_URL}{post.image.url}' alt="Blog banner">
+    <img class="img-fluid mx-auto d-block mt-2" src='{post.image.url}' alt="Blog banner">
 
     <h1 class="text-center">{post.title}</h1>
     <h3 class="text-center bg-dark">{post.description}</h3>
