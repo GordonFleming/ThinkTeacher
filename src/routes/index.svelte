@@ -10,13 +10,13 @@
     import axios from 'axios'
 
     let loading = true
-    let countUp, userCount = 102
+    let countUp, userCount = 116
     const API_URL = 'http://localhost:1337/users/count'
 
     onMount(async () =>{
         try {
             const res = await axios.get(API_URL)
-            userCount = res.data
+            // userCount = res.data
             loading = false
             console.log(userCount)
         } catch (e) {
@@ -33,16 +33,9 @@
 </svelte:head>
 
 <div class="p-5 bg-banner text-white test">
-    <div class="row">
-        <div class="col-8">
-            <Logo />
-
-        </div>
-        <div class="col-4">
-            <h4 class="p-4">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities and nurturing networks. Think Teacher's vision is further to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.</h4>
-        </div>
-    </div>
+    <Logo />
 </div>
+
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
     <path class="" fill="var(--bg-banner)" d="M421.9,6.5c22.6-2.5,51.5,0.4,75.5,5.3c23.6,4.9,70.9,23.5,100.5,35.7c75.8,32.2,133.7,44.5,192.6,49.7
     c23.6,2.1,48.7,3.5,103.4-2.5c54.7-6,106.2-25.6,106.2-25.6V0H0v30.3c0,0,72,32.6,158.4,30.5c39.2-0.7,92.8-6.7,134-22.4
@@ -54,7 +47,12 @@
 <h3 class="text-center">Members and counting!</h3>
 
 <div class="container mt-5">
-    <div class="row text-center">
+    <div class="row text-center mt-5 bg-banner rounded text-white p-5">
+        <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
+            and nurturing networks. Think Teacher's vision is further to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
+        </h3>
+    </div>
+    <div class="row text-center mt-5">
         <h2 class="mb-4">Benefits</h2>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
             <img class="img-fluid offer offer-img" src="/wellness-blue.svg" alt="well being">
@@ -83,12 +81,6 @@
             <h3 class="mt-3">Courses</h3>
             <h5 class="text-logo-orange">coming soon</h5>
         </div>
-    </div>
-
-    <div class="row text-center mt-5 bg-banner rounded text-white p-5">
-        <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
-            and nurturing networks. Think Teacher's vision is further to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
-        </h3>
     </div>
 
     <div class="row text-center mt-5">
@@ -137,7 +129,7 @@
         background-color: var(--bg-banner);
     }
     .offer-img{
-        max-width: 250px;
+        max-height: 220px;
     }
     .offer{
         transition: all 0.5s;
