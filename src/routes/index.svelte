@@ -10,7 +10,7 @@
     import axios from 'axios'
 
     let loading = true
-    let countUp, userCount = 116
+    let countUp, userCount = 516
     const API_URL = 'http://localhost:1337/users/count'
 
     onMount(async () =>{
@@ -48,6 +48,9 @@
 <h3 class="text-center">Members and counting!</h3>
 
 <div class="container mt-5">
+    <div class="row text-center">
+        <button class="btn btn-lg btn-dark mx-auto" style="width: 300px;" on:click={() => goto("/register")}><h4 class="text-white">Become a member!</h4></button>
+    </div>
     <div class="row text-center mt-5 bg-banner rounded text-white p-5">
         <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
             and nurturing networks. Think Teacher's vision is further to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
@@ -83,11 +86,6 @@
             <h5 class="text-logo-orange">coming soon</h5>
         </div>
     </div>
-
-    <div class="row text-center mt-5">
-        <h4>Don't forget to...</h4>
-        <button class="btn btn-lg btn-dark mx-auto" style="width: 15rem;" on:click={() => goto("/register")}>Become a member!</button>
-    </div>
 </div>
 
 <!-- @media screen and (min-width: 1800px) {
@@ -108,8 +106,6 @@
 } -->
 
 <style>
-
-
     h1{
         margin-top: 5rem;
         font-size: 3em;
@@ -129,6 +125,8 @@
     .bg-banner{
         background-color: var(--bg-banner);
     }
+    /* TODO */
+    /* Make max height smaller for smaller screeens */
     .offer-img{
         max-height: 220px;
     }
@@ -140,6 +138,6 @@
         cursor: pointer;
     }
     .btn-lg{
-        padding: 2rem 1rem 2rem 1rem;
+        padding: 2rem 1rem 1rem 1rem;
     }
 </style>
