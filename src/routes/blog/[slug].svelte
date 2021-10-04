@@ -1,5 +1,5 @@
 <script context="module">
-    let API_URL = 'http://localhost:1337'
+    API_URL = 'http://localhost:1337'
     if(prod === "true"){
         API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
     }
