@@ -222,7 +222,7 @@
     }
     @media screen and (max-width: 850px) {
         #logo-box{
-            max-width: 360px;
+            max-width: 600px;
         }
     }
     circle{

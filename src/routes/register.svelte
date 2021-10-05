@@ -3,9 +3,8 @@
     import { goto } from '$app/navigation'
     import Icon from 'svelte-awesome'
     import { arrowLeft } from 'svelte-awesome/icons'
-	import { sgKey } from '$lib/env.js'
+	import { sgKey, prod } from '$lib/env.js'
     import z from 'zxcvbn'
-    import { prod } from '$lib/env.js'
     import saIdParser from 'south-african-id-parser';
 
     let API_URL = 'http://localhost:1337'

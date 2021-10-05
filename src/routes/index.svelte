@@ -54,7 +54,7 @@
     <div class="bg-overlay"></div>
     <div class="p-5 bg-banner text-center">
         {#if test}
-            <h1 style="font-size: 8em; margin-top:0;" in:fly="{{ x: -200, duration: 3000 }}" >Welcome to</h1>
+            <h1 id="welcome" in:fly="{{ x: -200, duration: 3000 }}" >Welcome to</h1>
         {:else if test !== null && !test}
             <Logo />
         {/if}
@@ -171,20 +171,29 @@
     }
     .bg-banner{
         background-color: var(--bg-banner);
-        /* background-image: linear-gradient(130deg, #CACFD9 0%, rgb(187, 190, 196) 89%);; */
     }
-    .bg-overlay{
-        background-image: url("/shape-overly.png");
-        background-position: center center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        opacity: 0.15;
-        height: 100%;
-        width: 100%;
-        top: 0;
-        left: 0;
-        position: absolute;
+    @media screen and (min-width: 1000px) {
+        .bg-overlay{
+            background-image: url("/shape-overly.png");
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            opacity: 0.15;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            position: absolute;
+        }
+        #welcome{
+            font-size: 7em; 
+        }
     }
+
+    #welcome{
+        margin-top:0;
+    }
+
     /* TODO */
     /* Make max height smaller for smaller screeens */
     .offer-img{
