@@ -11,19 +11,19 @@
     }
 </script>
 
-<footer class="bg-other text-center text-black mt-5">
+<footer style="background-color: var(--default-text);" class="text-center text-black mt-5">
     <div class="container-fluid p-4">
       <section class="mb-2">
         <!-- Facebook -->
-        <a class="btn btn-outline-dark btn-floating m-1" href="https://www.facebook.com/thinkteacher" target="_blank" role="button"><Icon data={facebook} scale="1.8"/></a>  
+        <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/thinkteacher" target="_blank" role="button"><Icon data={facebook} scale="1.8"/></a>  
         <!-- Twitter -->
-        <a class="btn btn-outline-dark btn-floating m-1" href="https://twitter.com/thinkteacher_sa" target="_blank" role="button"><Icon data={twitter} scale="1.8"/></a>
+        <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/thinkteacher_sa" target="_blank" role="button"><Icon data={twitter} scale="1.8"/></a>
         <!-- Instagram -->
-        <a class="btn btn-outline-dark btn-floating m-1" href="https://www.instagram.com/thinkteacher_rsa" target="_blank" role="button"><Icon data={instagram} scale="1.8"/></a>
+        <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/thinkteacher_rsa" target="_blank" role="button"><Icon data={instagram} scale="1.8"/></a>
         <!-- Linkedin -->
-        <a class="btn btn-outline-dark btn-floating m-1" href="https://www.linkedin.com/company/think-teacher" target="_blank" role="button"><Icon data={linkedin} scale="1.8"/></a>
+        <a class="btn btn-outline-light btn-floating m-1" href="https://www.linkedin.com/company/think-teacher" target="_blank" role="button"><Icon data={linkedin} scale="1.8"/></a>
         <!-- Youtube -->
-        <a class="btn btn-outline-dark btn-floating m-1" href="https://www.youtube.com/channel/UCN-byMa-sTVbwKWNkbMM9bQ" target="_blank" role="button"><Icon data={youtubeSquare} scale="1.8" /></a>
+        <a class="btn btn-outline-light btn-floating m-1" href="https://www.youtube.com/channel/UCN-byMa-sTVbwKWNkbMM9bQ" target="_blank" role="button"><Icon data={youtubeSquare} scale="1.8" /></a>
         <i class="fab fa-youtube"></i>
       </section>
   
@@ -91,7 +91,7 @@
             </div>
 
             <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                <button class="mt-3 btn btn-outline-dark px-2" on:click={toTop}>Scroll to top</button>
+                <button class="mt-3 btn btn-outline-light px-2" on:click={toTop}>Scroll to top</button>
             </div>
             </div>
         </section>
@@ -110,10 +110,10 @@
         margin-top: auto !important;
     }
     h5, p {
-        color: var(--default-text);
+        color: var(--bg-primary);
     }
     li a{
-        color:var(--default-text) !important;
+        color:var(--bg-primary) !important;
     }
     section > .btn-outline-dark{
         border-color: var(--logo-blue);

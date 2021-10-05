@@ -1,0 +1,14 @@
+<script>
+
+</script>
+
+<div class="container p-5">
+    <div class="row text-center">
+        <h1>Webinars</h1>
+        <h3>Coming Soon!</h3>
+    </div>
+</div>
+
+<style>
+
+</style>

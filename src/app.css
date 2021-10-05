@@ -68,7 +68,7 @@ select option{
 }
 
 .text-logo-orange{
-    color: var(--logo-orange)
+    color: var(--logo-blue)
 }
 .error-col {
     color: red;

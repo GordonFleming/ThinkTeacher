@@ -11,7 +11,7 @@
     import {name} from '$lib/stores'
     import axios from 'axios'
 
-    import { fly, fade } from 'svelte/transition';
+    import { fly } from 'svelte/transition';
 
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
@@ -40,6 +40,11 @@
         test = true
 	})
 
+    // $: if(test !== null && !test){
+    //     countUp = new CountUp('countUser', userCount);
+    //     countUp.start();
+    // }
+
     afterUpdate(() =>{
         $name = localStorage.getItem("name");
         console.log($name)
@@ -67,27 +72,29 @@
     </svg>
 </div>
 
-<!-- svelte-ignore a11y-missing-content -->
-<h1 class="text-center" id="countUser"></h1>
-<h3 class="text-center">Members and counting!</h3>
-
 <div class="container mt-5 mb-5">
-    {#if !$name}
-        <div class="row text-center mt-4">
-            <div class="col-sm-12 col-lg-6">
-                <h3 class="fs-1 mt-4">First 5 000 members FREE</h3>
-            </div>
-            <div class="col-sm-12 col-lg-6 mt-sm-3">
-                <button class="btn btn-lg btn-dark mx-auto" style="width: 300px;" on:click={() => goto("/register")}><h4 class="text-white">Become a member!</h4></button>
-            </div>
-        </div>
-    {/if}
-
     <div class="row text-center mt-5 bg-other rounded p-5 shadow-lg">
         <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
             and nurturing networks. Think Teacher's vision is further to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
         </h3>
     </div>
+
+    {#if !$name}
+        <div class="row text-center mt-5 justify-content-center">
+            <div class="col-sm-12 col-lg-4">
+                <h4 class="fs-1 mt-4">First 5 000 members register for <strong>FREE</strong></h4>
+            </div>
+            <div class="col-sm-12 col-lg-4 mt-sm-4">
+                <button class="btn btn-lg btn-dark mx-auto" style="width: 300px;" on:click={() => goto("/register")}><h4 class="text-white">Become a member!</h4></button>
+            </div>
+            <div class="col-sm-12 col-lg-4">
+                <!-- svelte-ignore a11y-missing-content -->
+                <h1 class="text-center" id="countUser"></h1>
+                <h3 class="text-center">Members and counting!</h3>
+            </div>
+        </div>
+    {/if}
+
     <div class="row text-center mt-5">
         <h2 class="mb-4">Benefits</h2>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
@@ -119,7 +126,7 @@
         </div>
     </div>
 
-    <div class="row mt-5 text-center justify-content-center">
+    <div class="row mt-5 text-center justify-content-center p-3 logo-box">
         <div class="col-3">
             <img class="img-fluid logo" src="SAHB.png" alt="partner">
         </div>
@@ -193,6 +200,11 @@
     #welcome{
         margin-top:0;
     }
+    #countUser{
+        font-size: 5em;
+        color: #212529;
+        margin-top: 1rem;
+    }
 
     /* TODO */
     /* Make max height smaller for smaller screeens */
@@ -210,7 +222,11 @@
         padding: 2rem 1rem 1rem 1rem;
     }
     .logo{
-        max-height: 150px;
+        max-height: 120px;
         width: auto;
+    }
+    .logo-box{
+        border: var(--logo-orange) 5px solid;
+        border-radius: 2px;
     }
 </style>

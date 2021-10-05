@@ -40,9 +40,13 @@
                 <li class="nav-item">
                     <a class="nav-link fromLeft" sveltekit:prefetch href="/blog">Blog</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link fromLeft" href="/events">Events</a>
-                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="!#" role="button" aria-expanded="false">Events</a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="/events">Events</a></li>
+                      <li><a class="dropdown-item" href="/webinars">Webinars</a></li>
+                    </ul>
+                  </li>
                 <li class="nav-item">
                     <a class="nav-link fromLeft" href="/contact-us">Contact</a>
                 </li>
@@ -106,7 +110,7 @@
         }
     }
     nav {
-        border-bottom: var(--logo-blue) 2px solid;
+        border-bottom: var(--logo-blue) 4px solid;
     }
     /* .navbar-light .navbar-nav .nav-link {
         color: #fff;
@@ -114,6 +118,17 @@
     a {
         display: inline-block;
         width: auto;
+    }
+    .dropdown-menu{
+        background-color: #FEFEFF;
+    }
+    .dropdown-item{
+        color: black;
+    }
+    .dropdown-item:active {
+        color: #fff;
+        text-decoration: none;
+        background-color: #fff;
     }
     #logout{
         cursor: pointer;
