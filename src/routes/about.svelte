@@ -156,7 +156,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Head of Marketing</h5>
                         <h6 class="card-subtitle text-muted">
-                            BCom (Marketing Mangaement) | BCom Hons (Communication Management) | Gallup Strengths Coaching
+                            BCom (Marketing Management) | BCom Hons (Communication Management) | Gallup Strengths Coaching
                         </h6>
                     </div>
                     <img class="d-block user-select-none img-fluid" src="https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Ferdie.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL0ZlcmRpZS5wbmciLCJpYXQiOjE2MjU3Njc0NjQsImV4cCI6MTk0MTEyNzQ2NH0.YQqrWDsYD_OfVHdLElaR1aVw9wWL0VoTlYxj8K8lQKQ" alt="profile img">

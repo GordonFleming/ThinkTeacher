@@ -25,7 +25,13 @@ html{
     min-height: 100%;
     margin: 0;
 }
-
+#mark-down p{
+    color: #fff;
+    text-align: justify;
+    font-size: 1.15rem;
+    line-height: 1.5;
+    margin-top: 4rem;
+}
 body {
     height: 100%;
     position: relative;

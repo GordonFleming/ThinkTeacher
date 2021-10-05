@@ -8,6 +8,7 @@
     import { CountUp } from 'countup.js'
     import { onMount, afterUpdate } from 'svelte'
     import { prod } from '$lib/env.js'
+    import viewport from '$lib/useViewportAction.js';
     import {name} from '$lib/stores'
     import axios from 'axios'
 
@@ -23,7 +24,7 @@
 
     setTimeout(function(){
         test = false
-    },3000);
+    },2250);
 
     onMount(async () =>{
         try {
@@ -36,7 +37,6 @@
             console.log(error)
         }
         countUp = new CountUp('countUser', userCount);
-        countUp.start();
         test = true
 	})
 
@@ -47,7 +47,6 @@
 
     afterUpdate(() =>{
         $name = localStorage.getItem("name");
-        console.log($name)
 	})
 </script>
 
@@ -59,7 +58,7 @@
     <div class="bg-overlay"></div>
     <div class="p-5 bg-banner text-center">
         {#if test}
-            <h1 id="welcome" in:fly="{{ x: -200, duration: 3000 }}" >Welcome to</h1>
+            <h1 id="welcome" in:fly="{{ x: -200, duration: 2250 }}" >Welcome to</h1>
         {:else if test !== null && !test}
             <Logo />
         {/if}
@@ -89,7 +88,8 @@
             </div>
             <div class="col-sm-12 col-lg-4">
                 <!-- svelte-ignore a11y-missing-content -->
-                <h1 class="text-center" id="countUser"></h1>
+                <h1 class="text-center" id="countUser" use:viewport
+                    on:enterViewport={() => countUp.start()}></h1>
                 <h3 class="text-center">Members and counting!</h3>
             </div>
         </div>
@@ -178,6 +178,7 @@
     }
     .bg-banner{
         background-color: var(--bg-banner);
+        height: 400px;
     }
     @media screen and (min-width: 1000px) {
         .bg-overlay{
@@ -193,7 +194,7 @@
             position: absolute;
         }
         #welcome{
-            font-size: 7em; 
+            font-size: 8em; 
         }
     }
 

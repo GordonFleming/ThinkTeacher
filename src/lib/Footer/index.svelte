@@ -115,7 +115,7 @@
     li a{
         color:var(--bg-primary) !important;
     }
-    section > .btn-outline-dark{
+    /* section > .btn-outline-dark{
         border-color: var(--logo-blue);
-    }
+    } */
 </style>

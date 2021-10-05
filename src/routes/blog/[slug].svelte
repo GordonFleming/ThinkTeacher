@@ -1,10 +1,11 @@
-<script context="module">
+<script  context="module">
 	export const load = async ({ page: { params }, fetch }) => {
 		const { slug } = params
-		const res = await fetch('https://thinkteacher-strapi.glass.splyce.dev/posts?slug=' + slug)
+        const res = await fetch('https://thinkteacher-strapi.glass.splyce.dev/posts?slug=' + slug)
 
 		if (res.status === 404) {
 			const error = new Error(`The post with slug of ${slug} was not found`)
+            console.log(error)
 			return { status: 404, error }
 		} else {
 			const data = await res.json()
@@ -14,14 +15,18 @@
 </script>
 
 <svelte:head>
-	<title>{post.title}</title>
+    {#if post}
+        <title>{post.title}</title>
+    {:else}
+        <title>404</title>
+    {/if}
 </svelte:head>
 
 <script>
-    import snarkdown from 'snarkdown'
     import Icon from 'svelte-awesome'
     import { arrowLeft } from 'svelte-awesome/icons'
     import { prod } from '$lib/env.js'
+    import SvelteMarkdown from 'svelte-markdown'
 
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
@@ -29,24 +34,37 @@
     }
 
     export let post
-    let date = new Date(post.published_at)
-    let publish = date.toLocaleString('en-ZA', { month: 'long', day: '2-digit', year: 'numeric'})
-    
-    let mdContent = snarkdown(post.content)
+    let date
+    let publish
+    let source
+
+    if(post){
+        date = new Date(post.published_at)
+        publish = date.toLocaleString('en-ZA', { month: 'long', day: '2-digit', year: 'numeric'})
+        source = post.content
+    }
 </script>
 
-<div class="container bg-dark mt-4 border-custom mt-5 mb-5">
-    <a href="/blog"><Icon data={ arrowLeft } scale="1.8"/></a>
-    <img class="img-fluid mx-auto d-block mt-2" src='{post.image.url}' alt="Blog banner">
+{#if post}
+        <div class="container bg-dark mt-4 border-custom mt-5 mb-5">
+        <a href="/blog"><Icon data={ arrowLeft } scale="1.8"/></a>
+        <img class="img-fluid mx-auto d-block mt-2" src='{post.image.url}' alt="Blog banner">
 
-    <h1 class="text-center">{post.title}</h1>
-    <h4 class="text-center text-white">{post.description}</h4>
+        <h1 class="text-center">{post.title}</h1>
+        <h4 class="text-center text-white">{post.description}</h4>
 
-    <h5 class="mt-5">Author: {post.author.username}</h5>
-    <time datetime="{publish}">{publish}</time>  
-    
-    <p class="mt-4">{@html mdContent}</p>
-</div>
+        <h5 class="mt-5">Author: {post.author.username}</h5>
+        <time datetime="{publish}">{publish}</time>  
+        
+        <div id="mark-down">
+            <SvelteMarkdown {source} />
+        </div>
+    </div>
+{:else}
+    <div class="p-5 text-center">
+        <h2>Not found: 404</h2>
+    </div>
+{/if}
 
 <style>
     img {
@@ -54,7 +72,7 @@
         width: auto;
     }
     h5 {
-        color: chocolate;
+        color: var(--bg-banner);
         line-height: 0;
     }
     time {
@@ -64,15 +82,11 @@
         border-radius: 20px;
         padding: 5rem;
     }
-    p{
-        color: #fff;
-        text-align: justify;
-    }
     .border-custom{
         border-top: 3px solid var(--logo-blue);
         border-left: 3px solid var(--logo-blue);
 
         border-bottom: 3px solid var(--logo-orange);
         border-right: 3px solid var(--logo-orange);
-            }
+    }
 </style>
