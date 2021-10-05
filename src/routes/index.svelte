@@ -128,36 +128,19 @@
 
     <div class="row mt-5 text-center justify-content-center p-3 logo-box">
         <div class="col-3">
-            <img class="img-fluid logo" src="SAHB.png" alt="partner">
+            <img class="img-fluid logo" src="SAHB.webp" alt="partner">
         </div>
         <div class="col-3 d-flex flex-wrap align-items-center">
-            <img class="img-fluid logo" src="ROARRR.png" alt="partner">
+            <img class="img-fluid logo" src="ROARRR.webp" alt="partner">
         </div>
         <div class="col-3">
-            <img class="img-fluid logo" src="Cirrus.jpg" alt="partner">
+            <img class="img-fluid logo" src="Cirrus.webp" alt="partner">
         </div>
         <div class="col-3">
-            <img class="img-fluid logo" src="kim.png" alt="partner">
+            <img class="img-fluid logo" src="kim.webp" alt="partner">
         </div>
     </div>
 </div>
-
-<!-- @media screen and (min-width: 1800px) {
-    .test{
-        background-image: url("Frame.svg");
-        background-repeat: no-repeat; /* Do not repeat the image */
-        background-size: contain;
-        background-attachment: fixed;
-    }
-}
-@media screen and (min-width: 1200px) and (max-width: 1800px) {
-    .test{
-        background-image: url("FrameSmall.svg");
-        background-repeat: no-repeat; /* Do not repeat the image */
-        background-size: contain;
-        background-attachment: fixed;
-    }
-} -->
 
 <style>
     h1{
@@ -225,6 +208,8 @@
     .logo{
         max-height: 120px;
         width: auto;
+        -webkit-filter: grayscale(100%);
+        filter: grayscale(100%);
     }
     .logo-box{
         border: var(--logo-orange) 5px solid;
