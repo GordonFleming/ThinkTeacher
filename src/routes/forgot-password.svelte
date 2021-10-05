@@ -24,7 +24,7 @@
         })
         .catch(error => {
             console.log('An error occurred:', error.response)
-            errorMsg = error.response.data.message
+            errorMsg = error.response.data.message.message
         })
     }
 </script>
