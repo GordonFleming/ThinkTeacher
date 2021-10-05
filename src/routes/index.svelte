@@ -43,7 +43,7 @@
 	<title>Home</title>
 </svelte:head>
 
-<div class="p-5 bg-banner text-white test text-center">
+<div class="p-5 bg-banner test text-center">
     <Logo />
 </div>
 
@@ -59,13 +59,17 @@
 
 <div class="container mt-5">
     {#if !$name}
-        <div class="row text-center">
-            <button class="btn btn-lg btn-dark mx-auto" style="width: 300px;" on:click={() => goto("/register")}><h4 class="text-white">Become a member!</h4></button>
-            <h3 class="fs-1 mt-4">First 5 000 members FREE</h3>
+        <div class="row text-center mt-4">
+            <div class="col-sm-12 col-lg-6">
+                <h3 class="fs-1 mt-4">First 5 000 members FREE</h3>
+            </div>
+            <div class="col-sm-12 col-lg-6 mt-sm-3">
+                <button class="btn btn-lg btn-dark mx-auto" style="width: 300px;" on:click={() => goto("/register")}><h4 class="text-white">Become a member!</h4></button>
+            </div>
         </div>
     {/if}
 
-    <div class="row text-center mt-5 bg-other rounded text-white p-5">
+    <div class="row text-center mt-5 bg-other rounded p-5">
         <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
             and nurturing networks. Think Teacher's vision is further to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
         </h3>

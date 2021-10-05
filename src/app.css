@@ -3,9 +3,9 @@
     --logo-orange: #4F5D89;
     --text: rgb(36, 34, 34);
     --bg-primary: #f8f9fa;
-    --default-text: rgb(255, 255, 255);
-    --bg-other: #252638;
-    --bg-banner: #F2F2EB;
+    --default-text: #333C51;
+    --bg-other: #CACFD9;
+    --bg-banner: #CACFD9;
 }
 
 .bg-other{

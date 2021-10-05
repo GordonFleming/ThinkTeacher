@@ -108,9 +108,9 @@
     nav {
         border-bottom: var(--logo-blue) 2px solid;
     }
-    .navbar-light .navbar-nav .nav-link {
+    /* .navbar-light .navbar-nav .nav-link {
         color: #fff;
-    }
+    } */
     a {
         display: inline-block;
         width: auto;
