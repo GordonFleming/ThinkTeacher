@@ -34,8 +34,8 @@
 </script>
 
 <div class="container bg-dark mt-4 border-custom mt-5 mb-5">
-    <a href="/blog"><Icon data={ arrowLeft } scale="1.8"/></a>
-    <img class="img-fluid mx-auto d-block mt-2" src='{partner.image.url}' alt="Blog banner">
+    <a href="/partners"><Icon data={ arrowLeft } scale="1.8"/></a>
+    <img class="img-fluid mx-auto d-block mt-2" src='{partner.image.url}' alt="Partner">
 
     <h1 class="text-center">{partner.name}</h1>
     <h4 class="text-center text-white">{partner.description}</h4>

@@ -11,13 +11,19 @@
     import {name} from '$lib/stores'
     import axios from 'axios'
 
+    import { fly, fade } from 'svelte/transition';
+
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
         API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
     }
 
-    let loading = true
+    let loading = true, test = null
     let countUp, userCount = 100
+
+    setTimeout(function(){
+        test = false
+    },3000);
 
     onMount(async () =>{
         try {
@@ -31,6 +37,7 @@
         }
         countUp = new CountUp('countUser', userCount);
         countUp.start();
+        test = true
 	})
 
     afterUpdate(() =>{
@@ -44,7 +51,11 @@
 </svelte:head>
 
 <div class="p-5 bg-banner test text-center">
-    <Logo />
+    {#if test}
+        <h1 style="font-size: 8em; margin-top:0;" in:fly="{{ x: -200, duration: 3000 }}" >Welcome to</h1>
+    {:else if test !== null && !test}
+        <Logo />
+    {/if}
 </div>
 
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
