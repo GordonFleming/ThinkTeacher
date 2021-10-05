@@ -14,6 +14,12 @@
 <h1 class="mb-4 text-center">The <span class="think">ThinkTeacher</span> Team</h1>
 
 <div class="container">
+    <div class="row text-center mt-5 mb-5">
+        <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
+            and nurturing networks. Think Teacher's vision is further to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
+        </h3>
+    </div>
+
     <div class="row">
         <div class="col-sm-12 col-md-6 col-lg-7">
             <div class="card bg-dark mb-3">

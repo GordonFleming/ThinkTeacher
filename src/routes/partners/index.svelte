@@ -1,8 +1,8 @@
 <script>
     import { onMount } from 'svelte'
+    import { goto } from '$app/navigation'
     import axios from 'axios'
     import { Jumper } from 'svelte-loading-spinners'
-    import snarkdown from 'snarkdown'
     import { prod } from '$lib/env.js'
 
     let loading = true
@@ -26,25 +26,25 @@
 	});
 </script>
 
-<div class="container">
-    <h1 class="text-center">Our Partners</h1>
+<div class="container mb-5">
+    <h1 class="text-center mb-4">Our Partners</h1>
 
     {#if loading}
         <div class="d-flex justify-content-center mt-5">
             <Jumper size="150" color="#5C677D" unit="px" duration="1s"></Jumper>
         </div>
     {:else}
-        <div class="row">
+        <div class="row justify-content-center">
             {#each partners as partner}
             <div class="col-sm-12 col-md-6 col-lg-4">
-                <div class="card bg-dark mb-3 shadow-lg">
+                <div class="card bg-dark m-2 shadow-lg" on:click={() => goto('/partners/' + partner.slug)}>
                     <img class="img-fluid rounded"  src="http://localhost:1337{partner.logo.url}" alt="cover">
                     <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
+                        <h5 class="card-title">{partner.name}</h5>
                         <p class="card-text">
                             {partner.description}
                         </p>
-                        <a href="#!" class="btn btn-secondary">Button</a>
+                        <!-- <button href="#!" class="btn btn-light text-black">More Info</button> -->
                     </div>
                     <div class="card-footer">
                         <span class="badge bg-light">{partner.category.name}</span>
@@ -89,7 +89,6 @@
 
         <h2>Health</h2> -->
 
-
 </div>
 
 <style>
@@ -98,5 +97,12 @@
     }
     .badge{
         margin: 1rem;
+    }
+    .card{
+        transition: 0.4s;
+        cursor: pointer;
+    }
+    .card:hover{
+        transform: scale(1.02);
     }
 </style>
