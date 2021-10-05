@@ -61,6 +61,7 @@
     {#if !$name}
         <div class="row text-center">
             <button class="btn btn-lg btn-dark mx-auto" style="width: 300px;" on:click={() => goto("/register")}><h4 class="text-white">Become a member!</h4></button>
+            <h3 class="fs-1 mt-4">First 5 000 members FREE</h3>
         </div>
     {/if}
 
