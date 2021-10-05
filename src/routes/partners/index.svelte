@@ -20,7 +20,8 @@
             loading = false
             console.log(partners)
         } catch (e) {
-            const error = e
+            let error = e
+            console.log(error)
         }
 	});
 </script>
@@ -35,23 +36,26 @@
     {:else}
         <div class="row">
             {#each partners as partner}
-                <!-- <div class="col-sm-12 col-md-6 col-lg-4">
-                    <div class="card border-dark bg-dark text-black mb-3">
-                        <h3 class="card-header bg-light">{partner.name}</h3>
-                        <img class="img-fluid center" src="http://localhost:1337{partner.image.url}" alt="cover">
-                        <div class="card-body">
-                          <p class="card-text">{@html snarkdown(partner.bio)}</p>
-                        </div>
-                        <div class="card-footer border-dark text-muted">
-                            <span class="badge bg-dark">{partner.category.name}</span>
-                        </div>
+            <div class="col-sm-12 col-md-6 col-lg-4">
+                <div class="card bg-dark mb-3 shadow-lg">
+                    <img class="img-fluid rounded"  src="http://localhost:1337{partner.logo.url}" alt="cover">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">
+                            {partner.description}
+                        </p>
+                        <a href="#!" class="btn btn-secondary">Button</a>
                     </div>
-                </div> -->
-                <div class="col-sm-12 col-md-6 col-lg-4">
-                    <div class="card bg-dark mb-3" style="max-width: 540px;">
+                    <div class="card-footer">
+                        <span class="badge bg-light">{partner.category.name}</span>
+                    </div>
+                </div>
+            </div>
+                <!-- <div class="col-sm-12 col-md-6 col-lg-4">
+                    <div class="card bg-dark mb-3 shadow-lg p-3" style="max-width: 540px;">
                         <div class="row g-0">
                             <div class="col-md-4">
-                                <img class="img-fluid" src="http://localhost:1337{partner.image.url}" alt="cover">
+                                <img class="img-fluid" style="height: auto; width: auto; max-width: 200px; max-height: 260px;" src="http://localhost:1337{partner.logo.url}" alt="cover">
                                 <span class="badge bg-light">{partner.category.name}</span>
                             </div>
                             <div class="col-md-8">
@@ -67,7 +71,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             {/each}
         </div>
     {/if}
@@ -94,15 +98,5 @@
     }
     .badge{
         margin: 1rem;
-    }
-    /* img{
-        max-height: 160px;
-        width: auto;
-    } */
-    .center {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        width: 50%;
     }
 </style>

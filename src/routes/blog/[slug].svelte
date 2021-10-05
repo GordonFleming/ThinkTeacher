@@ -40,9 +40,9 @@
     <img class="img-fluid mx-auto d-block mt-2" src='{post.image.url}' alt="Blog banner">
 
     <h1 class="text-center">{post.title}</h1>
-    <h3 class="text-center bg-dark">{post.description}</h3>
+    <h4 class="text-center text-white">{post.description}</h4>
 
-    <h5>Author: {post.author.username}</h5>
+    <h5 class="mt-5">Author: {post.author.username}</h5>
     <time datetime="{publish}">{publish}</time>  
     
     <p class="mt-4">{@html mdContent}</p>
@@ -52,9 +52,6 @@
     img {
         max-height: 400px;
         width: auto;
-    }
-    h3 {
-        color: #fff;
     }
     h5 {
         color: chocolate;
@@ -69,6 +66,7 @@
     }
     p{
         color: #fff;
+        text-align: justify;
     }
     .border-custom{
         border-top: 3px solid var(--logo-blue);

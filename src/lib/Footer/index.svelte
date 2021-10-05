@@ -112,7 +112,10 @@
     h5, p {
         color: var(--default-text);
     }
-    section > .btn-outline-light{
-        border-color: var(--logo-orange);
+    li a{
+        color:var(--default-text) !important;
+    }
+    section > .btn-outline-dark{
+        border-color: var(--logo-blue);
     }
 </style>

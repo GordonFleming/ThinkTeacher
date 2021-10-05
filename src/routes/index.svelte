@@ -57,7 +57,7 @@
 <h1 class="text-center" id="countUser"></h1>
 <h3 class="text-center">Members and counting!</h3>
 
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
     {#if !$name}
         <div class="row text-center mt-4">
             <div class="col-sm-12 col-lg-6">
@@ -69,7 +69,7 @@
         </div>
     {/if}
 
-    <div class="row text-center mt-5 bg-other rounded p-5">
+    <div class="row text-center mt-5 bg-other rounded p-5 shadow-lg">
         <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
             and nurturing networks. Think Teacher's vision is further to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
         </h3>
@@ -104,6 +104,18 @@
             <h5 class="text-logo-orange">coming soon</h5>
         </div>
     </div>
+
+    <div class="row mt-5 text-center justify-content-center">
+        <div class="col-3">
+            <img class="img-fluid logo" src="/SAHB.png" alt="partner">
+        </div>
+        <div class="col-3">
+            <img class="img-fluid logo" src="/Cirrus.jpg" alt="partner">
+        </div>
+        <div class="col-3">
+            <img class="img-fluid logo" src="/kim.png" alt="partner">
+        </div>
+    </div>
 </div>
 
 <!-- @media screen and (min-width: 1800px) {
@@ -134,9 +146,6 @@
         font-size: 2.4em;
         text-align: center;
     }
-    h3{
-        font-family: 'Mulish', sans-serif;
-    }
     .read{
         line-height: 2;
     }
@@ -157,5 +166,9 @@
     }
     .btn-lg{
         padding: 2rem 1rem 1rem 1rem;
+    }
+    .logo{
+        max-height: 200px;
+        width: auto;
     }
 </style>

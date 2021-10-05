@@ -112,7 +112,7 @@
                         </p>
                     </div>
                 <div class="card-footer text-muted">
-                    <!-- <a href="https://www.linkedin.com/in/rebecca-maluka-1997a119/" class="card-link"><Icon data={linkedinSquare} scale="1.8"/></a> -->
+                    <a href="https://www.linkedin.com/in/kim-forbes-transition-coach-36608750/" class="card-link"><Icon data={linkedinSquare} scale="1.8"/></a>
                 </div>
             </div>
         </div>
@@ -211,7 +211,7 @@
                         </p>
                     </div>
                 <div class="card-footer text-muted">
-                    <!-- <a href="https://www.linkedin.com/in/frances-kerr-phillips-768a34216/" class="card-link"><Icon data={linkedinSquare} scale="1.8"/></a> -->
+                    <a href="https://www.linkedin.com/in/malcolm-williams-7939a7b5/" class="card-link"><Icon data={linkedinSquare} scale="1.8"/></a>
                 </div>
             </div>
         </div>
