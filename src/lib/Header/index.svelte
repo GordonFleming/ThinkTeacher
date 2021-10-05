@@ -41,7 +41,7 @@
                     <a class="nav-link fromLeft" sveltekit:prefetch href="/blog">Blog</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link from-left dropdown-toggle" data-bs-toggle="dropdown" href="!#" role="button" aria-expanded="false">Events</a>
+                    <a class="nav-link from-left dropdown-toggle" data-bs-toggle="dropdown" href="/" role="button" aria-expanded="false">Events</a>
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="/events">Events</a></li>
                       <li><a class="dropdown-item" href="/webinars">Webinars</a></li>
