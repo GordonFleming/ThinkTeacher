@@ -207,7 +207,7 @@
                     c-2.3,0-4.1,0.3-5.5,1c-1.3,0.7-2.3,1.9-2.8,3.6C816.6,159.5,816.4,162,816.4,165.2z"/>
             </g>
         </g>
-    </svg>
+    </svg> 
 </div>
 
 
@@ -218,6 +218,7 @@
         text-align: center;
         max-width: 850px;
         height:auto;
+        position: relative;
     }
     @media screen and (max-width: 850px) {
         #logo-box{

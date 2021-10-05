@@ -50,19 +50,22 @@
 	<title>Home</title>
 </svelte:head>
 
-<div class="p-5 bg-banner test text-center">
-    {#if test}
-        <h1 style="font-size: 8em; margin-top:0;" in:fly="{{ x: -200, duration: 3000 }}" >Welcome to</h1>
-    {:else if test !== null && !test}
-        <Logo />
-    {/if}
-</div>
+<div class="banner-all">
+    <div class="bg-overlay"></div>
+    <div class="p-5 bg-banner text-center">
+        {#if test}
+            <h1 style="font-size: 8em; margin-top:0;" in:fly="{{ x: -200, duration: 3000 }}" >Welcome to</h1>
+        {:else if test !== null && !test}
+            <Logo />
+        {/if}
+    </div>
 
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
-    <path class="" fill="var(--bg-banner)" d="M421.9,6.5c22.6-2.5,51.5,0.4,75.5,5.3c23.6,4.9,70.9,23.5,100.5,35.7c75.8,32.2,133.7,44.5,192.6,49.7
-    c23.6,2.1,48.7,3.5,103.4-2.5c54.7-6,106.2-25.6,106.2-25.6V0H0v30.3c0,0,72,32.6,158.4,30.5c39.2-0.7,92.8-6.7,134-22.4
-    c21.2-8.1,52.2-18.2,79.7-24.2C399.3,7.9,411.6,7.5,421.9,6.5z"></path>
-</svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
+        <path class="" fill="var(--bg-banner)" d="M421.9,6.5c22.6-2.5,51.5,0.4,75.5,5.3c23.6,4.9,70.9,23.5,100.5,35.7c75.8,32.2,133.7,44.5,192.6,49.7
+        c23.6,2.1,48.7,3.5,103.4-2.5c54.7-6,106.2-25.6,106.2-25.6V0H0v30.3c0,0,72,32.6,158.4,30.5c39.2-0.7,92.8-6.7,134-22.4
+        c21.2-8.1,52.2-18.2,79.7-24.2C399.3,7.9,411.6,7.5,421.9,6.5z"></path>
+    </svg>
+</div>
 
 <!-- svelte-ignore a11y-missing-content -->
 <h1 class="text-center" id="countUser"></h1>
@@ -92,11 +95,11 @@
             <h3 class="mt-3">Well-being</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <img class="img-fluid offer offer-img" src="/travel-orange.svg" alt="travel">
+            <img class="img-fluid offer offer-img" src="/travel-orange.svg" alt="travel" on:click={() => goto("/partners/Gillian-Jane-Doig")}>
             <h3 class="mt-3">Travel</h3>
         </div>        
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <img class="img-fluid offer offer-img" src="/health-blue.svg" alt="medical aid">
+            <img class="img-fluid offer offer-img" src="/health-blue.svg" alt="medical aid" on:click={() => goto("/partners/KAREN-HOWARD")}>
             <h3 class="mt-3">Medical Aid</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
@@ -118,13 +121,16 @@
 
     <div class="row mt-5 text-center justify-content-center">
         <div class="col-3">
-            <img class="img-fluid logo" src="/SAHB.png" alt="partner">
+            <img class="img-fluid logo" src="SAHB.png" alt="partner">
+        </div>
+        <div class="col-3 d-flex flex-wrap align-items-center">
+            <img class="img-fluid logo" src="ROARRR.png" alt="partner">
         </div>
         <div class="col-3">
-            <img class="img-fluid logo" src="/Cirrus.jpg" alt="partner">
+            <img class="img-fluid logo" src="Cirrus.jpg" alt="partner">
         </div>
         <div class="col-3">
-            <img class="img-fluid logo" src="/kim.png" alt="partner">
+            <img class="img-fluid logo" src="kim.png" alt="partner">
         </div>
     </div>
 </div>
@@ -160,8 +166,24 @@
     .read{
         line-height: 2;
     }
+    .banner-all{
+        position: relative;
+    }
     .bg-banner{
         background-color: var(--bg-banner);
+        /* background-image: linear-gradient(130deg, #CACFD9 0%, rgb(187, 190, 196) 89%);; */
+    }
+    .bg-overlay{
+        background-image: url("/shape-overly.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        opacity: 0.15;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        position: absolute;
     }
     /* TODO */
     /* Make max height smaller for smaller screeens */
@@ -179,7 +201,7 @@
         padding: 2rem 1rem 1rem 1rem;
     }
     .logo{
-        max-height: 200px;
+        max-height: 150px;
         width: auto;
     }
 </style>

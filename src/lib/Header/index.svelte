@@ -55,7 +55,7 @@
                         <h6>Welcome {$name}, <span id="logout" style="color: var(--logo-blue);" on:click={logoutUser}>Logout?</span></h6>
                     {:else}
                         <p><a href="/login" class="nav-link align-top" style="color: var(--logo-blue); font-size: 1.16em;">Login</a></p>
-                        <h5 class="text-white">/</h5>
+                        <h5>/</h5>
                         <p><a href="/register" class="nav-link" style="color: var(--logo-orange); font-size: 1.16em;">Register</a></p>
                     {/if}
                 </div>
@@ -123,9 +123,6 @@
     h6{
         color: var(--logo-orange);
         margin-right: 1rem;
-    }
-    span{
-        
     }
     #logout:hover{
         font-size: 1.17em;
