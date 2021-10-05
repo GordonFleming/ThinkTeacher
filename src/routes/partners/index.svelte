@@ -38,7 +38,7 @@
             {#each partners as partner}
             <div class="col-sm-12 col-md-6 col-lg-4">
                 <div class="card bg-dark m-2 shadow-lg" on:click={() => goto('/partners/' + partner.slug)}>
-                    <img class="img-fluid rounded"  src="http://localhost:1337{partner.logo.url}" alt="cover">
+                    <img class="img-fluid rounded"  src="{partner.logo.url}" alt="cover">
                     <div class="card-body">
                         <h5 class="card-title">{partner.name}</h5>
                         <p class="card-text">

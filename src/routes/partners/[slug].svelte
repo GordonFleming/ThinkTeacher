@@ -1,7 +1,7 @@
 <script context="module">
 	export const load = async ({ page: { params }, fetch }) => {
 		const { slug } = params
-		const res = await fetch('http://localhost:1337/partners?slug=' + slug)
+		const res = await fetch('https://thinkteacher-strapi.glass.splyce.dev/partners?slug=' + slug)
 
 		if (res.status === 404) {
 			const error = new Error(`The partner with slug of ${slug} was not found`)
@@ -35,7 +35,7 @@
 
 <div class="container bg-dark mt-4 border-custom mt-5 mb-5">
     <a href="/blog"><Icon data={ arrowLeft } scale="1.8"/></a>
-    <img class="img-fluid mx-auto d-block mt-2" src='{API_URL}{partner.image.url}' alt="Blog banner">
+    <img class="img-fluid mx-auto d-block mt-2" src='{partner.image.url}' alt="Blog banner">
 
     <h1 class="text-center">{partner.name}</h1>
     <h4 class="text-center text-white">{partner.description}</h4>
