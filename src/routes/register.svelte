@@ -14,6 +14,11 @@
         sendgridList = "75b1cd1c-6bb0-406b-bc94-d7c2f04bc9f8"
     }
 
+    // Disable button
+    let buttonNext = true, buttonSubmit = true
+    $: if(email && username && s){ buttonNext = false }
+    $: if(firstName && lastName && idNum && cell && eduPhase !== ''){ buttonSubmit = false }
+
     let username, email, password = ""
     let msg, errorMsg, errorDetails
     let registerNext = false, registered = false
@@ -194,7 +199,7 @@
                                 {/if}
                             </div>
 
-                            <button class="btn btn-outline-light btn-lg px-4" on:click|preventDefault={() => registerNext = true}>Next</button>
+                            <button class="btn btn-outline-light btn-lg px-4" on:click|preventDefault={() => registerNext = true} disabled={buttonNext}>Next</button>
 
                         {:else}
                             
@@ -224,7 +229,7 @@
                                 <div class="col-12 mt-3">
                                     <label class="form-label" for="eduPhase">Education Phase</label>
                                     <select class="form-select" id="eduPhase" aria-label="Education Phase" bind:value={eduPhase} required>
-                                        <option selected>choose phase</option>
+                                        <option value="" selected>choose phase</option>
                                         <option value="early_childhood_development">Early Childhood Development</option>
                                         <option value="foundation_phase">Foundation Phase</option>
                                         <option value="intermediate_phase">Intermediate Phase</option>
@@ -265,7 +270,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <button class="btn btn-outline-light btn-lg px-4 mt-4" type="submit" on:click|preventDefault={registerUser}>Register</button>
+                            <button class="btn btn-outline-light btn-lg px-4 mt-4" type="submit" on:click|preventDefault={registerUser} disabled={buttonSubmit}>Register</button>
                         {/if}
                     </form>
 
