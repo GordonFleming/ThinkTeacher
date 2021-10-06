@@ -26,6 +26,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Partners</title>
+</svelte:head>
+
 <div class="container mb-5">
     <h1 class="text-center mb-4">Our Partners</h1>
 
@@ -44,34 +48,13 @@
                         <p class="card-text">
                             {partner.description}
                         </p>
-                        <!-- <button href="#!" class="btn btn-light text-black">More Info</button> -->
                     </div>
                     <div class="card-footer">
                         <span class="badge bg-light">{partner.category.name}</span>
                     </div>
                 </div>
             </div>
-                <!-- <div class="col-sm-12 col-md-6 col-lg-4">
-                    <div class="card bg-dark mb-3 shadow-lg p-3" style="max-width: 540px;">
-                        <div class="row g-0">
-                            <div class="col-md-4">
-                                <img class="img-fluid" style="height: auto; width: auto; max-width: 200px; max-height: 260px;" src="http://localhost:1337{partner.logo.url}" alt="cover">
-                                <span class="badge bg-light">{partner.category.name}</span>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">{partner.name}</h5>
-                                    <p class="card-text">
-                                        {partner.description}
-                                    </p>
-                                    <p class="card-text">
-                                        <small class="text-muted">Last updated 3 mins ago</small>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
+
             {/each}
         </div>
     {/if}

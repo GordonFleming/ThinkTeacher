@@ -12,6 +12,10 @@
     background-color: var(--bg-other);
 }
 
+.big-gap{
+    margin-top: 12rem !important;
+}
+
 .bg-dark{
     background-color: var(--default-text) !important;
 }
@@ -30,7 +34,7 @@ html{
     text-align: justify;
     font-size: 1.15rem;
     line-height: 1.5;
-    margin-top: 4rem;
+    margin-top: 1.8rem;
 }
 body {
     height: 100%;

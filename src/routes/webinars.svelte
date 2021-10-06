@@ -2,6 +2,10 @@
 
 </script>
 
+<svelte:head>
+	<title>Webinars</title>
+</svelte:head>
+
 <div class="container p-5">
     <div class="row text-center">
         <h1>Webinars</h1>

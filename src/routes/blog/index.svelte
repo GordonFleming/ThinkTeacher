@@ -44,7 +44,7 @@
     {#if posts.length <= 0 && !loading}
         <h3 class="text-center">No posts are on the blog yet, check back another time.</h3>
     {:else}
-        <div class="row">
+        <div class="row justify-content-center">
             {#each posts as post}
                 <div class="col-sm-12 col-md-6 col-lg-4 text-center mt-3">
                     <div class="blog-block bg-dark p-3" on:click={() => goto('/blog/' + post.slug)}>

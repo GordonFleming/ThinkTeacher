@@ -5,7 +5,7 @@
     import { arrowLeft } from 'svelte-awesome/icons'
 	import { sgKey, prod } from '$lib/env.js'
     import z from 'zxcvbn'
-    import saIdParser from 'south-african-id-parser';
+    import saIdParser from 'south-african-id-parser'
 
     let API_URL = 'http://localhost:1337'
     let sendgridList = "57df636d-5399-423f-bf72-35424b5644b5"
@@ -19,6 +19,18 @@
     let registerNext = false, registered = false
     let firstName, lastName, idNum, altMail, cell, eduPhase, qualification, sace, workplace, province
     let userObj
+    let ttCode = 'TT'
+
+    var dateObj = new Date()
+    var dateNow = dateObj.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+    });
+    ttCode += dateNow.replace(new RegExp('/','g'),'')
+    console.log(ttCode)
+    ttCode += Math.floor((Math.random() * 899) + 100)
+    console.log(ttCode)
 
     let barCol = ""
     $: s = z(password).score > 2
@@ -64,6 +76,7 @@
                                         "last_name":lastName,
                                         "state_province_region":province,
                                         "phone_number":cell,
+                                        "custom_fields": {"e1_T":ttCode},
                                         },
                                     ]},
                                 { headers: { Authorization: `Bearer ${sgKey}`}
@@ -110,6 +123,7 @@
                         workplace: workplace,
                         user: userObj,
                         province: province,
+                        ttCode: ttCode,
                     }).then( response => {
                         console.log('UserDetails', response.data)
                         registerNext = false

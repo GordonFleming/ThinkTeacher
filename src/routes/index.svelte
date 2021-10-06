@@ -72,14 +72,14 @@
 </div>
 
 <div class="container mt-5 mb-5">
-    <div class="row text-center mt-5 bg-other rounded p-5 shadow-lg">
+    <div class="row text-center bg-other rounded p-5 shadow-lg big-gap">
         <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
             and nurturing networks. Think Teacher's vision is further to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
         </h3>
     </div>
 
     {#if !$name}
-        <div class="row text-center mt-5 justify-content-center">
+        <div class="row text-center justify-content-center big-gap">
             <div class="col-sm-12 col-lg-4">
                 <h4 class="fs-1 mt-4">First 5 000 members register for <strong>FREE</strong></h4>
             </div>
@@ -95,7 +95,7 @@
         </div>
     {/if}
 
-    <div class="row text-center mt-5">
+    <div class="row text-center big-gap">
         <h2 class="mb-4">Benefits</h2>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
             <img class="img-fluid offer offer-img" src="well-being.webp" alt="well being">
