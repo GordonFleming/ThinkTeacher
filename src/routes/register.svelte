@@ -95,6 +95,7 @@
                                         "first_name":firstName,
                                         "last_name":lastName,
                                         "phone_number":cell,
+                                        "custom_fields": {"e1_T":ttCode},
                                         },
                                     ]},
                                 { headers: { Authorization: `Bearer ${sgKey}`}
