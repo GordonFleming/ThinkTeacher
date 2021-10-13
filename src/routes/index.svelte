@@ -28,6 +28,11 @@
 
     onMount(async () =>{
         try {
+            // To stop case where user reloads with the counter in view so therefore nothing is triggered...
+            window.scrollTo({
+                top: 0,
+                left: 0
+            })
             const res = await axios.get(`${API_URL}/users/count`)
             userCount += res.data
             loading = false
@@ -83,7 +88,7 @@
                 <h4 class="fs-1 mt-4">First 5 000 members register for <strong>FREE</strong></h4>
             </div>
             <div class="col-sm-12 col-lg-4 mt-sm-4">
-                <button class="btn btn-lg bg-gold mx-auto shadow-lg" style="width: 300px;" on:click={() => goto("/register")}><h4 style="color: black;">Become a member!</h4></button>
+                <button class="btn btn-lg bg-gold mx-auto shadow-lg cta" style="width: 300px;" on:click={() => goto("/register")}><h4 style="color: black;">Become a member!</h4></button>
             </div>
             <div class="col-sm-12 col-lg-4">
                 <!-- svelte-ignore a11y-missing-content -->

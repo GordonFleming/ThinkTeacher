@@ -19,6 +19,13 @@
     color: var(--logo-grey);
 }
 
+.cta{
+    transition: 0.5s;
+}
+.cta:hover{
+    transform: scale(1.05);
+}
+
 .big-gap{
     margin-top: 12rem !important;
 }
