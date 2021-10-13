@@ -72,31 +72,30 @@
 </div>
 
 <div class="container mt-5 mb-5">
-    <div class="row text-center bg-other rounded p-5 shadow-lg big-gap">
-        <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
-            and nurturing networks. Think Teacher's vision is further to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
-        </h3>
-    </div>
-
-    {#if !$name}
-        <div class="row text-center justify-content-center big-gap">
+    <div class="row text-center testGrad rounded justify-content-center big-gap">
+        <div class="col-12 p-5">
+            <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
+                and nurturing networks. Think Teacher's vision is to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
+            </h3>
+        </div>
+        {#if !$name}
             <div class="col-sm-12 col-lg-4">
                 <h4 class="fs-1 mt-4">First 5 000 members register for <strong>FREE</strong></h4>
             </div>
             <div class="col-sm-12 col-lg-4 mt-sm-4">
-                <button class="btn btn-lg btn-dark mx-auto" style="width: 300px;" on:click={() => goto("/register")}><h4 class="text-white">Become a member!</h4></button>
+                <button class="btn btn-lg bg-gold mx-auto shadow-lg" style="width: 300px;" on:click={() => goto("/register")}><h4 style="color: black;">Become a member!</h4></button>
             </div>
             <div class="col-sm-12 col-lg-4">
                 <!-- svelte-ignore a11y-missing-content -->
                 <h1 class="text-center" id="countUser" use:viewport
                     on:enterViewport={() => countUp.start()}></h1>
-                <h3 class="text-center">Members and counting!</h3>
+                <h3 class="text-center text-blue">Members and counting!</h3>
             </div>
-        </div>
-    {/if}
+        {/if}
+    </div>
 
-    <div class="row text-center big-gap">
-        <h2 class="mb-4">Benefits</h2>
+    <div class="row testGrad text-center big-gap">
+        <h2 class="mb-5">Benefits</h2>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
             <img class="img-fluid offer offer-img" src="well-being.webp" alt="well being">
             <h3 class="mt-3">Well-being</h3>
@@ -112,17 +111,17 @@
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
             <img class="img-fluid offer-img" src="insurance.webp" alt="invest">
             <h3 class="mt-3">Insurance</h3>
-            <h5 class="text-logo-orange">coming soon</h5>
+            <h5 class="text-logo-grey">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
             <img class="img-fluid offer-img" src="legal.webp" alt="legal">
             <h3 class="mt-3">Legal</h3>
-            <h5 class="text-logo-orange">coming soon</h5>
+            <h5 class="text-logo-grey">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
             <img class="img-fluid offer-img" src="courses.webp" alt="courses">
             <h3 class="mt-3">Courses</h3>
-            <h5 class="text-logo-orange">coming soon</h5>
+            <h5 class="text-logo-grey">coming soon</h5>
         </div>
     </div>
 
@@ -146,10 +145,10 @@
     h1{
         margin-top: 5rem;
         font-size: 3em;
-        color: var(--logo-orange);
+        color: var(--logo-grey);
     }
     h2{
-        color: var(--text);
+        color: var(--logo-grey);
         font-size: 2.4em;
         text-align: center;
     }
@@ -186,7 +185,7 @@
     }
     #countUser{
         font-size: 5em;
-        color: #212529;
+        color: var(--logo-grey);
         margin-top: 1rem;
     }
 
@@ -212,7 +211,14 @@
         filter: grayscale(100%);
     }
     .logo-box{
-        border: var(--logo-orange) 5px solid;
+        border: var(--logo-gold) 3px solid;
         border-radius: 2px;
+    }
+    .testGrad{
+        background: rgb(255,255,255);
+        background: linear-gradient(0deg, rgba(255,255,255,1) 65%, rgba(202,207,217,0.5919411709996498) 100%);
+
+        padding-top: 5rem;
+        border-radius: 20px;
     }
 </style>

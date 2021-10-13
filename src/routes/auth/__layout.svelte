@@ -54,7 +54,7 @@
                 <h3>You need to <a href="/login">login</a></h3>
             {/if}
     
-            <h3>Hello, <strong>{name}</strong> this is where all the membership content will be available.</h3>
+            <h3>Hi, <strong>{name}</strong> here you will be able to update your personal details.</h3>
         </div>
         <nav>
             <a href="/auth">Home</a>

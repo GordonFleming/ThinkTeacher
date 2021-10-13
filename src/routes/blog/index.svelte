@@ -64,10 +64,10 @@
     }
     .blog-block {
         border-radius: 20px;
-        border: 3px solid var(--logo-blue);
+        border: 3px solid var(--logo-gold);
     }
     .blog-block:hover {
         cursor: pointer;
-        border: 3px solid var(--logo-orange);
+        border: 3px solid var(--logo-grey);
     }
 </style>

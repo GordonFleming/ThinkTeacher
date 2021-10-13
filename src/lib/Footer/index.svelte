@@ -98,7 +98,7 @@
     </div>
   
     <!-- Copyright -->
-    <div class="text-center p-2" style="background-color: var(--logo-blue);">
+    <div class="text-center p-2" style="background-color: var(--logo-gold);">
       © 2021 Copyright:
       <a class="text-white" href="https://thinkteacher.co.za">Think Teacher</a>
       <!-- <a class="text-white" href="https://splyce.dev">Designed: Splyce</a> -->
@@ -116,6 +116,6 @@
         color:var(--bg-primary) !important;
     }
     /* section > .btn-outline-dark{
-        border-color: var(--logo-blue);
+        border-color: var(--logo-gold);
     } */
 </style>

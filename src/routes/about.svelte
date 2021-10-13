@@ -16,7 +16,7 @@
 <div class="container">
     <div class="row text-center mt-5 mb-5">
         <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
-            and nurturing networks. Think Teacher's vision is further to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
+            and nurturing networks. Think Teacher's vision is to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
         </h3>
     </div>
 
@@ -145,7 +145,7 @@
                         </p>
                     </div>
                 <div class="card-footer text-muted">
-                    <!-- <a href="https://www.linkedin.com/in/rebecca-maluka-1997a119/" class="card-link"><Icon data={linkedinSquare} scale="1.8"/></a> -->
+                    <a href="https://www.linkedin.com/in/zanele-portia-masuku/" class="card-link"><Icon data={linkedinSquare} scale="1.8"/></a>
                 </div>
             </div>
         </div>
@@ -232,7 +232,7 @@
         align-self: center;
     }
     .think {
-        color: var(--logo-blue);
+        color: var(--logo-gold);
         font-weight: 900;
     }
     .card-text {

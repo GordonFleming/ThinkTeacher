@@ -65,10 +65,10 @@
         padding: 5rem;
     }
     .border-custom{
-        border-top: 3px solid var(--logo-blue);
-        border-left: 3px solid var(--logo-blue);
+        border-top: 3px solid var(--logo-gold);
+        border-left: 3px solid var(--logo-gold);
 
-        border-bottom: 3px solid var(--logo-orange);
-        border-right: 3px solid var(--logo-orange);
+        border-bottom: 3px solid var(--logo-grey);
+        border-right: 3px solid var(--logo-grey);
     }
 </style>

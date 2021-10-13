@@ -1,6 +1,6 @@
 :root {
-    --logo-blue: #D9B73D;
-    --logo-orange: #4F5D89;
+    --logo-gold: #D9B73D;
+    --logo-grey: #4F5D89;
     --text: rgb(36, 34, 34);
     --bg-primary: #FEFEFF;
     --default-text: #333C51;
@@ -10,6 +10,13 @@
 
 .bg-other{
     background-color: var(--bg-other);
+}
+
+.bg-gold{
+    background-color: var(--logo-gold);
+}
+.text-blue{
+    color: var(--logo-grey);
 }
 
 .big-gap{
@@ -48,11 +55,11 @@ body {
 h1 {
     margin-top: 5rem;
     font-size: 3em;
-    color: var(--logo-orange);
+    color: var(--logo-grey);
 }
 
 h2 {
-    color: var(--logo-blue);
+    color: var(--logo-gold);
     font-size: 2.4em;
 }
 
@@ -61,24 +68,24 @@ h3{
 }
 
 h4, h6 {
-    color: var(--text);
+    color: var(--logo-grey);
 }
 
 footer {
     margin-top: auto;
-    border-top: var(--logo-blue) 5px solid;
+    border-top: var(--logo-gold) 5px solid;
 }
 
 a {
-    color: var(--logo-blue);
+    color: var(--logo-gold);
 }
 
 select option{
     color: black;
 }
 
-.text-logo-orange{
-    color: var(--logo-blue)
+.text-logo-grey{
+    color: var(--logo-gold)
 }
 .error-col {
     color: red;
@@ -149,7 +156,7 @@ select option{
     -moz-transform-origin: left center;
     -o-transform-origin: left center;
     transform-origin: left center;
-    background: var(--logo-blue);
+    background: var(--logo-gold);
 }
     
 .animated-icon3 span:nth-child(2) {
@@ -158,7 +165,7 @@ select option{
     -moz-transform-origin: left center;
     -o-transform-origin: left center;
     transform-origin: left center;
-    background: var(--logo-orange);
+    background: var(--logo-grey);
 }
     
 .animated-icon3 span:nth-child(3) {
@@ -167,7 +174,7 @@ select option{
     -moz-transform-origin: left center;
     -o-transform-origin: left center;
     transform-origin: left center;
-    background: var(--logo-blue);
+    background: var(--logo-gold);
 }
     
 .animated-icon3.open span:nth-child(1) {
@@ -177,7 +184,7 @@ select option{
     transform: rotate(45deg);
     top: 0px;
     left: 8px;
-    background: var(--logo-blue);
+    background: var(--logo-gold);
 }
     
 .animated-icon3.open span:nth-child(2) {
@@ -192,5 +199,5 @@ select option{
     transform: rotate(-45deg);
     top: 21px;
     left: 8px;
-    background: var(--logo-orange);
+    background: var(--logo-grey);
 }

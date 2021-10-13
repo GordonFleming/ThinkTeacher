@@ -56,11 +56,11 @@
                 <!-- Right elements -->
                 <div class="d-flex align-items-center align-top">
                     {#if $name}
-                        <h6>Welcome {$name}, <span id="logout" style="color: var(--logo-blue);" on:click={logoutUser}>Logout?</span></h6>
+                        <h6>Welcome {$name}, <span id="logout" style="color: var(--logo-gold);" on:click={logoutUser}>Logout</span></h6>
                     {:else}
-                        <p><a href="/login" class="nav-link align-top" style="color: var(--logo-blue); font-size: 1.16em;">Login</a></p>
+                        <p><a href="/login" class="nav-link align-top" style="color: var(--logo-gold); font-size: 1.16em;">Login</a></p>
                         <h5>/</h5>
-                        <p><a href="/register" class="nav-link" style="color: var(--logo-orange); font-size: 1.16em;">Register</a></p>
+                        <p><a href="/register" class="nav-link" style="color: var(--logo-grey); font-size: 1.16em;">Register</a></p>
                     {/if}
                 </div>
         </div>
@@ -110,7 +110,7 @@
         }
     }
     nav {
-        border-bottom: var(--logo-blue) 4px solid;
+        border-bottom: var(--logo-gold) 4px solid;
     }
     /* .navbar-light .navbar-nav .nav-link {
         color: #fff;
@@ -136,7 +136,7 @@
         transition: 0.2s;
     }
     h6{
-        color: var(--logo-orange);
+        color: var(--logo-grey);
         margin-right: 1rem;
     }
     #logout:hover{
@@ -145,7 +145,7 @@
     a:after {
             display:block;
             content: '';
-            border-bottom: solid 3px var(--logo-blue);
+            border-bottom: solid 3px var(--logo-gold);
             transform: scaleX(0);  
             transition: transform 250ms ease-in-out;
     }
