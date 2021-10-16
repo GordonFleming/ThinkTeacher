@@ -33,9 +33,7 @@
         year: "numeric",
     });
     ttCode += dateNow.replace(new RegExp('/','g'),'')
-    console.log(ttCode)
     ttCode += Math.floor((Math.random() * 899) + 100)
-    console.log(ttCode)
 
     let barCol = ""
     $: s = z(password).score > 2

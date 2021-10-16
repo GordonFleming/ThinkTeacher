@@ -69,6 +69,9 @@
                         <p class="text-white-50 mb-3">Please enter your email and password</p>
     
                         {#if errorMsg != undefined}
+                            {#if errorMsg == "Your account email is not confirmed"}
+                                <a href="/confirm-email">Resend confirmation email?</a>
+                            {/if}
                             <h4 class="error-col">{errorMsg}</h4>
                         {/if}
                         

@@ -19,11 +19,11 @@
         API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
     }
 
-    let loading = true, test = null
+    let loading = true, intro = null
     let countUp, userCount = 100
 
     setTimeout(function(){
-        test = false
+        intro = false
     },2250);
 
     onMount(async () =>{
@@ -42,13 +42,8 @@
             console.log(error)
         }
         countUp = new CountUp('countUser', userCount);
-        test = true
+        intro = true
 	})
-
-    // $: if(test !== null && !test){
-    //     countUp = new CountUp('countUser', userCount);
-    //     countUp.start();
-    // }
 
     afterUpdate(() =>{
         $name = localStorage.getItem("name");
@@ -62,9 +57,9 @@
 <div class="banner-all">
     <div class="bg-overlay"></div>
     <div class="p-5 bg-banner text-center">
-        {#if test}
+        {#if intro}
             <h1 id="welcome" in:fly="{{ x: -200, duration: 2250 }}" >Welcome to</h1>
-        {:else if test !== null && !test}
+        {:else if intro !== null && !intro}
             <Logo />
         {/if}
     </div>
@@ -78,7 +73,7 @@
 
 <div class="container mt-5 mb-5">
     <div class="row text-center testGrad rounded justify-content-center big-gap">
-        <div class="col-12 p-5">
+        <div class="col-12 p-4">
             <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
                 and nurturing networks. Think Teacher's vision is to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
             </h3>
@@ -221,7 +216,7 @@
     }
     .testGrad{
         background: rgb(255,255,255);
-        background: linear-gradient(0deg, rgba(255,255,255,1) 65%, rgba(202,207,217,0.5919411709996498) 100%);
+        background: linear-gradient(0deg, rgba(255,255,255,1) 75%, rgba(202,207,217,0.4) 100%);
 
         padding-top: 5rem;
         border-radius: 20px;
