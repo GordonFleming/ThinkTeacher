@@ -1,7 +1,3 @@
-<script context="module">
-	export const prerender = true
-</script>
-
 <script>
     import Logo from '$lib/Components/logo.svelte'
     import { goto } from '$app/navigation'
@@ -78,7 +74,10 @@
                 and nurturing networks. Think Teacher's vision is to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
             </h3>
         </div>
-        {#if !$name}
+    </div>
+
+    {#if !$name}
+        <div class="row mt-5">
             <div class="col-sm-12 col-lg-4">
                 <h4 class="fs-1 mt-4">First 5 000 members register for <strong>FREE</strong></h4>
             </div>
@@ -91,8 +90,8 @@
                     on:enterViewport={() => countUp.start()}></h1>
                 <h3 class="text-center text-blue">Members and counting!</h3>
             </div>
-        {/if}
-    </div>
+        </div>
+    {/if}
 
     <div class="row testGrad text-center big-gap">
         <h2 class="mb-5">Benefits</h2>
