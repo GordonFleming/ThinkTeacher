@@ -53,7 +53,10 @@
         <h1 class="text-center">{post.title}</h1>
         <h4 class="text-center text-white">{post.description}</h4>
 
-        <h5 class="mt-5">Author: {post.author.username}</h5>
+        <h5 class="mt-5">Author: {post.Author}</h5>
+        {#if post.source_url}
+            <a href="{post.source_url}" target="_blank">{post.source_url}</a><br>
+        {/if}
         <time datetime="{publish}">{publish}</time>  
         
         <div id="mark-down">
