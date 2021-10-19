@@ -40,22 +40,25 @@
     {:else}
         <div class="row justify-content-center">
             {#each partners as partner}
-            <div class="col-sm-12 col-md-6 col-lg-4">
-                <div class="card bg-dark m-2 shadow-lg" on:click={() => goto('/partners/' + partner.slug)}>
-                    <img class="img-fluid rounded"  src="{partner.logo.url}" alt="cover">
-                    <div class="card-body">
-                        <h5 class="card-title">{partner.name}</h5>
-                        <p class="card-text">
-                            {partner.description}
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <span class="badge bg-light">{partner.category.name}</span>
+                <div class="col-sm-12 col-md-6 col-lg-4">
+                    <div class="card bg-dark m-2 shadow-lg" on:click={() => goto('/partners/' + partner.slug)}>
+                        <img class="img-fluid rounded"  src="{partner.logo.url}" alt="cover">
+                        <div class="card-body">
+                            <h5 class="card-title">{partner.name}</h5>
+                            <p class="card-text">
+                                {partner.description}
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <span class="badge bg-light">{partner.category.name}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-
             {/each}
+
+            <div class="mt-sm-4 text-center">
+                <button class="btn btn-lg bg-gold mx-auto shadow-lg cta" style="width: 300px;" on:click={() => goto("/benefits")}><h4 class="text-black mt-2">Check their benefits</h4></button>
+            </div>
         </div>
     {/if}
 

@@ -55,7 +55,7 @@
 
         <h5 class="mt-5">Author: {post.Author}</h5>
         {#if post.source_url}
-            <a href="{post.source_url}" target="_blank">{post.source_url}</a><br>
+            <a sveltekit:prefetch href="{post.source_url}" target="_blank">{post.source_url}</a><br>
         {/if}
         <time datetime="{publish}">{publish}</time>  
         

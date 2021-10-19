@@ -38,6 +38,9 @@
                     <a class="nav-link fromLeft" sveltekit:prefetch href="/partners">Partners</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link fromLeft" sveltekit:prefetch href="/benefits">Benefits</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link fromLeft" sveltekit:prefetch href="/blog">Blog</a>
                 </li>
                 <li class="nav-item dropdown">

@@ -35,7 +35,7 @@
 	<h1 class="text-center text-3xl font-bold">ThinkTeacher Blog</h1>
 </div>
 
-<div class="container mx-auto mt-4">
+<div class="container mx-auto mt-4 mb-5">
     {#if loading}
         <div class="d-flex justify-content-center mt-5">
             <Jumper size="150" color="#5C677D" unit="px" duration="1s"></Jumper>
