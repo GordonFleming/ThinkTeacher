@@ -46,6 +46,7 @@ body {
     transition: 0.5s;
 }
 .cta:hover{
+    cursor: pointer;
     transform: scale(1.03);
 }
 .big-gap{

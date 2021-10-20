@@ -61,20 +61,6 @@
             </div>
         </div>
     {/if}
-
-    <!-- Possible future adjustment -->
-
-        <!-- <h2>Travel</h2>
-        {#each categories as category}
-            {#if category.name === 'travel'}
-                {category.name}
-            {/if}
-        {/each}
-
-        <h2>Legal</h2>
-
-        <h2>Health</h2> -->
-
 </div>
 
 <style>

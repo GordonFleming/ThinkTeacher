@@ -1,5 +1,5 @@
 <script>
-    import { onMount, afterUpdate } from 'svelte'
+    import { onMount } from 'svelte'
     import { goto } from '$app/navigation';
     import axios from 'axios'
     import { Jumper } from 'svelte-loading-spinners'
@@ -21,6 +21,8 @@
                 console.log("test", travel)
             }else if(item.partner.category === health_cat){
                 health.push(item)
+            }else{
+                legal.push(item)
             }
         }
 
@@ -38,6 +40,7 @@
 
 	let benefits = []
     let travel = []
+    let legal = []
     let health = []
 </script>
 
@@ -48,8 +51,8 @@
         <small>scroll to...</small>
         <ul class="list-inline">
             <li class="list-inline-item"><h4 on:click={() => document.getElementById('travel').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Travel <span class="text-logo-gold">-</span></h4></li>
-            <li class="list-inline-item"><h4>Legal <span class="text-logo-gold">-</span></h4></li>
-            <li class="list-inline-item"><h4>Health</h4></li>
+            <li class="list-inline-item"><h4 on:click={() => document.getElementById('legal').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Legal <span class="text-logo-gold">-</span></h4></li>
+            <li class="list-inline-item"><h4 on:click={() => document.getElementById('health').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Health</h4></li>
         </ul>
     </div>
     
@@ -59,51 +62,64 @@
                 <Jumper size="150" color="#5C677D" unit="px" duration="1s"></Jumper>
             </div>
         {:else}
+        <!-- Travel -->
             <div class="grey-grad row justify-content-center" id="travel">
                 <h2 class="display-3">Travel</h2>
-            <div class="col-6">
-                <div class="card mb-3 bg-dark" style="max-width: 540px;">
-                    <div class="row g-0">
-                    <div class="col-md-5">
-                        <img
-                        src="{travel[0].partner.logo.url}"
-                        alt="logo"
-                        class="img-fluid"
-                        />
-                    </div>
-                    <div class="col-md-7">
-                        <div class="card-body">
-                        <h3 class="card-title">{travel[0].partner.company_name}</h3>
-                        <p class="card-text">
-                            {travel[0].partner.description}
-                        </p>
+                <div class="col-6">
+                    <div class="card mb-3 bg-dark cta" style="max-width: 540px;" on:click={() => goto('/partners/' + travel[0].partner.slug)}>
+                        <div class="row g-0">
+                        <div class="col-md-5">
+                            <img
+                            src="{travel[0].partner.logo.url}"
+                            alt="logo"
+                            class="img-fluid"
+                            />
                         </div>
-                        <p class="card-footer card-text">
-                            <small class="text-muted">email: <a href="mailto:{travel[0].partner.email}">{travel[0].partner.email}</a></small>
-                        </p>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                            <h3 class="card-title">{travel[0].partner.company_name}</h3>
+                            <p class="card-text">
+                                {travel[0].partner.description}
+                            </p>
+                            </div>
+                            <p class="card-footer card-text">
+                                <small class="text-muted">email: <a href="mailto:{travel[0].partner.email}">{travel[0].partner.email}</a></small>
+                            </p>
+                        </div>
+                        </div>
                     </div>
-                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    {#each travel as trvl}
+                        <div class="col-sm-12 col-md-10 col-lg-6">
+                            <div class="card bg-dark m-2 shadow-lg">
+                                <img class="img-fluid rounded"  src="{trvl.banner.url}" alt="cover">
+                                <div class="card-body">
+                                    <h3 class="card-title text-logo-gold">{trvl.name}</h3>
+                                    <p class="card-text">
+                                        {trvl.description}
+                                    </p>
+                                </div>
+                                <div class="card-footer">
+                                    <span class="badge bg-light">{trvl.partner.name}</span>
+                                </div>
+                            </div>
+                        </div>
+                    {/each}
                 </div>
             </div>
 
-            <div class="row mt-2">
-            {#each benefits as benefit}
-                <div class="col-sm-12 col-md-10 col-lg-6">
-                    <div class="card bg-dark m-2 shadow-lg">
-                        <img class="img-fluid rounded"  src="{benefit.banner.url}" alt="cover">
-                        <div class="card-body">
-                            <h3 class="card-title text-logo-gold">{benefit.name}</h3>
-                            <p class="card-text">
-                                {benefit.description}
-                            </p>
-                        </div>
-                        <div class="card-footer">
-                            <span class="badge bg-light">{benefit.partner.name}</span>
-                        </div>
-                    </div>
-                </div>
-            {/each}
+        <!-- Legal -->
+            <div class="grey-grad row justify-content-center big-gap" id="legal">
+                <h2 class="display-3">Legal</h2>
+                <h4>Coming soon</h4>
             </div>
+
+        <!-- Health -->
+            <div class="grey-grad row justify-content-center big-gap" id="health">
+                <h2 class="display-3">Health</h2>
+                <h4>Coming soon</h4>
             </div>
         {/if}
     </div>
