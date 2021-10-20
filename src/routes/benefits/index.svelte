@@ -5,9 +5,11 @@
     import { Jumper } from 'svelte-loading-spinners'
     import { prod } from '$lib/env.js'
 
+    let health = 3, travel = 2
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
         API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+        health = 2, travel = 1
     }
 
     let loading = true
