@@ -5,21 +5,21 @@
     import { Jumper } from 'svelte-loading-spinners'
     import { prod } from '$lib/env.js'
 
-    let health = 3, travel = 2
+    let health_cat = 3, travel_cat = 2
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
         API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
-        health = 2, travel = 1
+        health_cat = 2, travel_cat = 1
     }
 
     let loading = true
 
     onMount(async () => {
         function seperatePackages(item){
-            if(item.partner.category === 2){
+            if(item.partner.category === travel_cat){
                 travel.push(item)
                 console.log("test", travel)
-            }else if(item.partner.category === 3){
+            }else if(item.partner.category === health_cat){
                 health.push(item)
             }
         }
