@@ -66,7 +66,7 @@
                     <div class="row g-0">
                     <div class="col-md-5">
                         <img
-                        src="http://localhost:1337{travel[0].partner.logo.url}"
+                        src="{travel[0].partner.logo.url}"
                         alt="logo"
                         class="img-fluid"
                         />
@@ -90,7 +90,7 @@
             {#each benefits as benefit}
                 <div class="col-sm-12 col-md-10 col-lg-6">
                     <div class="card bg-dark m-2 shadow-lg">
-                        <img class="img-fluid rounded"  src="http://localhost:1337{benefit.banner.url}" alt="cover">
+                        <img class="img-fluid rounded"  src="{benefit.banner.url}" alt="cover">
                         <div class="card-body">
                             <h3 class="card-title text-logo-gold">{benefit.name}</h3>
                             <p class="card-text">
