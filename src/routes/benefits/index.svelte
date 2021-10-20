@@ -64,20 +64,20 @@
                     <div class="row g-0">
                     <div class="col-md-5">
                         <img
-                        src="http://localhost:1337{travel.partner.logo.url}"
+                        src="http://localhost:1337{travel[0].partner.logo.url}"
                         alt="logo"
                         class="img-fluid"
                         />
                     </div>
                     <div class="col-md-7">
                         <div class="card-body">
-                        <h3 class="card-title">{travel.partner.company_name}</h3>
+                        <h3 class="card-title">{travel[0].partner.company_name}</h3>
                         <p class="card-text">
-                            {travel.partner.description}
+                            {travel[0].partner.description}
                         </p>
                         </div>
                         <p class="card-footer card-text">
-                            <small class="text-muted">email: <a href="mailto:{travel.partner.email}">{travel.partner.email}</a></small>
+                            <small class="text-muted">email: <a href="mailto:{travel[0].partner.email}">{travel[0].partner.email}</a></small>
                         </p>
                     </div>
                     </div>
