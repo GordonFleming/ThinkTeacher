@@ -79,7 +79,7 @@
     {#if !$name}
         <div class="row mt-5">
             <div class="col-sm-12 col-lg-4">
-                <h4 id="#hash" class="fs-1 mt-4">First 5 000 members register for <strong>FREE</strong></h4>
+                <h4 id="#hash" class="fs-1 mt-2 text-center">First 5 000 members get a <strong>FREE</strong> membership for a year</h4>
             </div>
             <div class="col-sm-12 col-lg-4 mt-sm-4">
                 <button class="btn btn-lg bg-gold mx-auto shadow-lg cta" style="width: 300px;" on:click={() => goto("/register")}><h4 style="color: black;">Become a member!</h4></button>
