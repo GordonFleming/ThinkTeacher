@@ -50,6 +50,7 @@
                     </div>
     
                     <button class="btn btn-outline-light btn-lg px-4" type="submit" on:click|preventDefault={resendMail}>Submit</button>
+                    <p class="mb-0 mt-4">Want to login now? <a href="/login" class="text-white-50 fw-bold">Login</a></p>
                 </div>
             </div>
             </div>

@@ -4,6 +4,7 @@
     import axios from 'axios'
     import { Jumper } from 'svelte-loading-spinners'
     import { prod } from '$lib/env.js'
+    import { travelScroll } from '$lib/stores'
 
     let health_cat = 3, travel_cat = 2
     let API_URL = 'http://localhost:1337'
@@ -18,7 +19,6 @@
         function seperatePackages(item){
             if(item.partner.category === travel_cat){
                 travel.push(item)
-                console.log("test", travel)
             }else if(item.partner.category === health_cat){
                 health.push(item)
             }else{
@@ -31,12 +31,17 @@
             benefits = res.data
             benefits.forEach(seperatePackages)
             loading = false
-            console.log(benefits)
         } catch (e) {
             error = e
-        }
+        }  	
 	});
 
+    $: if($travelScroll && !loading){
+        setTimeout(function(){
+            console.log("This is:", document.getElementById(`${$travelScroll}`))
+            document.getElementById(`${$travelScroll}`).scrollIntoView({ behavior: 'smooth', block: 'center' })
+        },200);            
+    } 
 
 	let benefits = []
     let travel = []
@@ -97,9 +102,9 @@
                     {#each travel as trvl}
                         <div class="col-sm-12 col-md-10 col-lg-6">
                             <div class="card bg-dark m-2 shadow-lg">
-                                <img class="img-fluid rounded"  src="{trvl.banner.url}" alt="cover">
+                                <img class="img-fluid rounded"  src="{trvl.banner.url}" alt="cover" on:click={() => goto('/auth/form')}>
                                 <div class="card-body">
-                                    <h3 class="card-title text-logo-gold">{trvl.name}</h3>
+                                    <h3 class="card-title text-logo-gold">Think <span class="text-blue">Beach</span></h3>
                                     <p class="card-text">
                                         {trvl.description}
                                     </p>

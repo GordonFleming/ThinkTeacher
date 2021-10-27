@@ -2,10 +2,10 @@
     import Logo from '$lib/Components/logo.svelte'
     import { goto } from '$app/navigation'
     import { CountUp } from 'countup.js'
-    import { onMount, afterUpdate } from 'svelte'
+    import { onMount, afterUpdate, onDestroy } from 'svelte'
     import { prod } from '$lib/env.js'
     import viewport from '$lib/useViewportAction.js';
-    import {name} from '$lib/stores'
+    import { name, travelScroll, firstTime } from '$lib/stores'
     import axios from 'axios'
 
     import { fly } from 'svelte/transition';
@@ -44,6 +44,10 @@
     afterUpdate(() =>{
         $name = localStorage.getItem("name");
 	})
+
+    onDestroy(() => {
+		$firstTime = false
+	})
 </script>
 
 <svelte:head>
@@ -53,9 +57,13 @@
 <div class="banner-all">
     <div class="bg-overlay"></div>
     <div class="p-5 bg-banner text-center">
-        {#if intro}
-            <h1 id="welcome" in:fly="{{ x: -200, duration: 2250 }}" >Welcome to</h1>
-        {:else if intro !== null && !intro}
+        {#if $firstTime}
+            {#if intro}
+                <h1 id="welcome" in:fly="{{ x: -200, duration: 2250 }}" >Welcome to</h1>
+            {:else if intro !== null && !intro}
+                <Logo />
+            {/if}
+        {:else}
             <Logo />
         {/if}
     </div>
@@ -81,8 +89,8 @@
             <div class="col-sm-12 col-lg-4">
                 <h4 id="#hash" class="fs-1 mt-2 text-center">First 5 000 members get a <strong>FREE</strong> membership for a year</h4>
             </div>
-            <div class="col-sm-12 col-lg-4 mt-sm-4">
-                <button class="btn btn-lg bg-gold mx-auto shadow-lg cta" style="width: 300px;" on:click={() => goto("/register")}><h4 style="color: black;">Become a member!</h4></button>
+            <div class="col-sm-12 col-lg-4 mt-sm-4 text-center">
+                <button class="btn btn-lg bg-gold shadow-lg cta" style="width: 300px;" on:click={() => goto("/register")}><h4 style="color: black;">Become a member!</h4></button>
             </div>
             <div class="col-sm-12 col-lg-4">
                 <!-- svelte-ignore a11y-missing-content -->
@@ -96,29 +104,29 @@
     <div class="row grey-grad text-center big-gap">
         <h2 class="mb-5">Benefits</h2>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <img class="img-fluid offer offer-img" src="well-being.webp" alt="well being">
+            <a href="/benefits"><img class="img-fluid offer offer-img" src="well-being.webp" alt="well being" on:click={() => $travelScroll='wellness'}></a>
             <h3 class="mt-3">Wellness</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <img class="img-fluid offer offer-img" src="travel.webp" alt="travel" on:click={() => goto("/partners/Gillian-Jane-Doig")}>
+            <a href="/benefits"><img class="img-fluid offer offer-img" src="travel.webp" alt="travel" on:click={() => $travelScroll='travel'}></a>
             <h3 class="mt-3">Travel</h3>
         </div>        
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <img class="img-fluid offer offer-img" src="health.webp" alt="medical aid" on:click={() => goto("/partners/KAREN-HOWARD")}>
+            <a href="/benefits"><img class="img-fluid offer offer-img" src="health.webp" alt="medical aid" on:click={() => $travelScroll='MedicalAid'}></a>
             <h3 class="mt-3">Medical Aid</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <img class="img-fluid offer-img" src="insurance.webp" alt="invest">
+            <a href="/benefits"><img class="img-fluid offer offer-img" src="insurance.webp" alt="invest" on:click={() => $travelScroll='insurance'}></a>
             <h3 class="mt-3">Insurance</h3>
             <h5 class="text-logo-gold">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <img class="img-fluid offer-img" src="legal.webp" alt="legal">
+            <a href="/benefits"><img class="img-fluid offer offer-img" src="legal.webp" alt="legal" on:click={() => $travelScroll='legal'}></a>
             <h3 class="mt-3">Legal</h3>
             <h5 class="text-logo-gold">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <img class="img-fluid offer-img" src="courses.webp" alt="courses">
+            <a href="/benefits"><img class="img-fluid offer offer-img" src="courses.webp" alt="courses" on:click={() => $travelScroll='courses'}></a>
             <h3 class="mt-3">Courses</h3>
             <h5 class="text-logo-gold">coming soon</h5>
         </div>
