@@ -50,7 +50,7 @@ body {
     transform: scale(1.03);
 }
 .big-gap{
-    margin-top: 12rem !important;
+    margin-top: 9rem !important;
 }
 .bg-dark{
     background-color: var(--default-text) !important;

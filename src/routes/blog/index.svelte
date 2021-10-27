@@ -50,7 +50,8 @@
                     <div class="blog-block bg-dark p-3" on:click={() => goto('/blog/' + post.slug)}>
                         <h4 class="font-bold">{post.title}</h4>
                         <p class="mt-2 text-white">{post.description}</p>
-                        <p class="text-white-50">By: {post.Author}</p>
+                        <p class="text-logo-gold">By: {post.Author}</p>
+                        <button class="btn btn-sm bg-gold  shadow cta text-black" on:click={() => goto('/blog/' + post.slug)}>Read More</button>
                     </div>
                 </div>
             {/each}

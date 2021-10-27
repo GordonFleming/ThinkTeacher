@@ -59,7 +59,7 @@
     <div class="row justify-content-center text-center grey-grad mt-5">
         <h2 class="mb-4">Contact Details:</h2>
         <div class="col-md-4 col-sm-12">
-            <h4>Tel: <span class="text-logo-gold"><a href="tel:089161561561">089161561561</a></span></h4><i class="fas fa-paper-plane"></i><Icon data={phone} scale="3" class="text-blue"/>
+            <h4>Tel: <span class="text-logo-gold"><a href="tel:089161561561">00000000000</a></span></h4><i class="fas fa-paper-plane"></i><Icon data={phone} scale="3" class="text-blue"/>
         </div>
         <div class="col-md-4 col-sm-12">
             <h4>Email: <span class="text-logo-gold"><a href="mailto:zani@thinkteacher.co.za">zani@thinkteacher.co.za</a></span></h4><i class="fas fa-paper-plane"></i><Icon data={send} scale="3" class="text-blue"/>

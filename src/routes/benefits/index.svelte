@@ -66,7 +66,7 @@
             <div class="grey-grad row justify-content-center" id="travel">
                 <h2 class="display-3">Travel</h2>
                 <div class="col-6">
-                    <div class="card mb-3 bg-dark cta" style="max-width: 540px;" on:click={() => goto('/partners/' + travel[0].partner.slug)}>
+                    <div class="card mb-3 bg-dark" style="max-width: 540px;">
                         <div class="row g-0">
                         <div class="col-md-5">
                             <img
@@ -81,9 +81,10 @@
                             <p class="card-text">
                                 {travel[0].partner.description}
                             </p>
+                            <small class="text-muted">email: <a href="mailto:{travel[0].partner.email}">{travel[0].partner.email}</a></small>
                             </div>
                             <p class="card-footer card-text">
-                                <small class="text-muted">email: <a href="mailto:{travel[0].partner.email}">{travel[0].partner.email}</a></small>
+                                <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + travel[0].partner.slug)}>Learn more</button>
                             </p>
                         </div>
                         </div>
