@@ -48,15 +48,17 @@
     <h1>Exclusive benefits for <span class="text-logo-gold">Think</span>Teacher members</h1>
 
     <div class="nav-wrapper mt-3">
-        <small>scroll to...</small>
         <ul class="list-inline">
             <li class="list-inline-item"><h4 on:click={() => document.getElementById('travel').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Travel <span class="text-logo-gold">-</span></h4></li>
             <li class="list-inline-item"><h4 on:click={() => document.getElementById('legal').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Legal <span class="text-logo-gold">-</span></h4></li>
-            <li class="list-inline-item"><h4 on:click={() => document.getElementById('health').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Health</h4></li>
+            <li class="list-inline-item"><h4 on:click={() => document.getElementById('MedicalAid').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Medical Aid <span class="text-logo-gold">-</span></h4></li>
+            <li class="list-inline-item"><h4 on:click={() => document.getElementById('courses').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Courses <span class="text-logo-gold">-</span></h4></li>
+            <li class="list-inline-item"><h4 on:click={() => document.getElementById('insurance').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Insurance <span class="text-logo-gold">-</span></h4></li>
+            <li class="list-inline-item"><h4 on:click={() => document.getElementById('wellness').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Wellness</h4></li>
         </ul>
     </div>
     
-    <div class="row mt-4 mb-4 justify-content-center">
+    <div class="row mt-4 mb-5 justify-content-center">
         {#if loading}
             <div class="d-flex justify-content-center mt-5">
                 <Jumper size="150" color="#5C677D" unit="px" duration="1s"></Jumper>
@@ -117,9 +119,27 @@
                 <h4>Coming soon</h4>
             </div>
 
-        <!-- Health -->
-            <div class="grey-grad row justify-content-center big-gap" id="health">
-                <h2 class="display-3">Health</h2>
+        <!-- MedicalAid -->
+            <div class="grey-grad row justify-content-center big-gap" id="MedicalAid">
+                <h2 class="display-3">Medical Aid</h2>
+                <h4>Coming soon</h4>
+            </div>
+
+        <!-- Courses -->
+            <div class="grey-grad row justify-content-center big-gap" id="courses">
+                <h2 class="display-3">Courses</h2>
+                <h4>Coming soon</h4>
+            </div>
+
+        <!-- Insurance -->
+            <div class="grey-grad row justify-content-center big-gap" id="insurance">
+                <h2 class="display-3">Insurance</h2>
+                <h4>Coming soon</h4>
+            </div>
+
+        <!-- Wellness -->
+            <div class="grey-grad row justify-content-center big-gap" id="wellness">
+                <h2 class="display-3">Wellness</h2>
                 <h4>Coming soon</h4>
             </div>
         {/if}
