@@ -4,7 +4,7 @@
     import axios from 'axios'
     import { Jumper } from 'svelte-loading-spinners'
     import { prod } from '$lib/env.js'
-    import { travelScroll } from '$lib/stores'
+    import { travelScroll, travelType } from '$lib/stores'
 
     let health_cat = 3, travel_cat = 2
     let API_URL = 'http://localhost:1337'
@@ -47,6 +47,17 @@
     let travel = []
     let legal = []
     let health = []
+
+    function travelTypeCompute(typeTrav){
+        if(typeTrav.toLowerCase() == 'ski'){
+            $travelType = "ski"
+        }else if(typeTrav.toLowerCase() == 'bush'){
+            $travelType = "bush"
+        }else{
+            $travelType = "beach"
+        }
+        goto('/auth/form')
+    }
 </script>
 
 <div class="container text-center">
@@ -98,19 +109,19 @@
                     </div>
                 </div>
 
-                <div class="row mt-2">
+                <div class="row mt-2 justify-content-center">
                     {#each travel as trvl}
                         <div class="col-sm-12 col-md-10 col-lg-6">
                             <div class="card bg-dark m-2 shadow-lg">
-                                <img class="img-fluid rounded"  src="{trvl.banner.url}" alt="cover" on:click={() => goto('/auth/form')}>
+                                <img class="img-fluid rounded cta"  src="{trvl.banner.url}" alt="cover" on:click={() => travelTypeCompute(trvl.name)}>
                                 <div class="card-body">
-                                    <h3 class="card-title text-logo-gold">Think <span class="text-blue">Beach</span></h3>
+                                    <h3 class="card-title text-logo-gold">Think <span class="text-lighter-blue">{trvl.name}</span></h3>
                                     <p class="card-text">
-                                        {trvl.description}
+                                        {@html trvl.description}
                                     </p>
                                 </div>
                                 <div class="card-footer">
-                                    <span class="badge bg-light">{trvl.partner.name}</span>
+                                    <span class="badge bg-light">{trvl.partner.company_name}</span>
                                 </div>
                             </div>
                         </div>
@@ -158,5 +169,8 @@
     ul li h4:hover{
         cursor: pointer;
         font-size: 135%;
+    }
+    .text-lighter-blue{
+        color: rgb(243, 243, 243);
     }
 </style>

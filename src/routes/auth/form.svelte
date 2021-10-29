@@ -4,6 +4,7 @@
     import axios from 'axios'
     import { Jumper } from 'svelte-loading-spinners'
     import { prod } from '$lib/env.js'
+    import {travelType} from '$lib/stores'
 
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
@@ -33,7 +34,7 @@
         ttNum=user.ttCode
     })
 
-    let startDate, endDate, typeHoliday, reason, where, nationality=true, numChild, numAdult, budget, partnerEmail="u20447613@tuks.co.za" //gdoig@mweb.co.za
+    let startDate, endDate, typeHoliday = $travelType, reason, where, nationality=true, numChild, numAdult, budget, partnerEmail="u20447613@tuks.co.za" //gdoig@mweb.co.za
 
     async function submitForm(){
         await axios
