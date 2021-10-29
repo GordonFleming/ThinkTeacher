@@ -20,12 +20,12 @@
     $: if(firstName && lastName && idNum && cell && eduPhase !== ''){ buttonSubmit = false }
 
     let username, email, password = ""
-    let msg, errorMsg, errorDetails
+    let msg, errorMsg = null
     let registerNext = false, registered = false
     let firstName, lastName, idNum, altMail, cell, eduPhase, qualification, sace, workplace, province
-    let userObj
-    let ttCode = 'TT'
 
+    // TT Code Gen
+    let ttCode = 'TT'
     var dateObj = new Date()
     var dateNow = dateObj.toLocaleDateString("en-GB", {
         day: "2-digit",
@@ -35,6 +35,7 @@
     ttCode += dateNow.replace(new RegExp('/','g'),'')
     ttCode += Math.floor((Math.random() * 899) + 100)
 
+    // Password
     let barCol = ""
     $: s = z(password).score > 2
     $: progress = (z(password).score/4)*100
@@ -49,95 +50,76 @@
     async function registerUser(){
         if(s){
             if(isValidID){
-                errorMsg = null
-                if(!errorDetails){
-                    await axios
-                    .post(`${API_URL}/auth/local/register`, {
-                        username: username,
-                        email: email,
-                        password: password,
-                    })
-                    .then(response => {
-                        console.log('User profile', response.data.user)
-                        msg = response.data.user.username + ", you have been successfully registered with ThinkTeacher! Please confirm your email to login."
-                        userObj = response.data.user
-                    })
-                    .catch(error => {
-                        console.log('An error occurred:', error.response)
-                        errorMsg = error.response.data.message[0].messages[0].message
-                    })
-
-                    // Account for missing altMail and province
-                    if(altMail && province){
-                        await axios
-                        .put('https://sendgrid.com/v3/marketing/contacts', {
-                                    "list_ids": [sendgridList],
-                                    "contacts": [{
-                                        "email":email,
-                                        "alternate_emails":[altMail],
-                                        "first_name":firstName,
-                                        "last_name":lastName,
-                                        "state_province_region":province,
-                                        "phone_number":cell,
-                                        "custom_fields": {"e1_T":ttCode},
-                                        },
-                                    ]},
-                                { headers: { Authorization: `Bearer ${sgKey}`}
-                        }).then(response => {
-                            console.log('SG reponse: ', response.statusText, " ", response.data)
-                        })
-                        .catch((error) => {
-                            console.error(error)
-                        })
-                    }else{
-                        await axios
-                        .put('https://sendgrid.com/v3/marketing/contacts', {
-                                    "list_ids": [sendgridList],
-                                    "contacts": [{
-                                        "email":email,
-                                        "first_name":firstName,
-                                        "last_name":lastName,
-                                        "phone_number":cell,
-                                        "custom_fields": {"e1_T":ttCode},
-                                        },
-                                    ]},
-                                { headers: { Authorization: `Bearer ${sgKey}`}
-                        }).then(response => {
-                            console.log('SG reponse: ', response.statusText, " ", response.data)
-                        })
-                        .catch((error) => {
-                            console.error(error)
-                        })
-                    }
-                } else{
-                    errorMsg = "Validation Error"
-                }
-
-                if(!errorMsg){
-                    await axios
-                    .post(`${API_URL}/user-infos`, {
-                        firstName: firstName,
-                        lastName: lastName,
-                        idNum: idNum,
-                        altMail: altMail,
-                        cell: cell,
-                        eduPhase: eduPhase,
-                        qualification: qualification,
-                        sace: sace,
-                        workplace: workplace,
-                        user: userObj,
-                        province: province,
-                        ttCode: ttCode,
-                    }).then( response => {
-                        console.log('UserDetails', response.data)
-                        registerNext = false
-                        registered = true
-                    })
-                    .catch(error => {
-                        errorDetails = error.response
-                        console.log('An error occurred:', error.response)
-                    })
+                await axios
+                .post(`${API_URL}/auth/local/register`, {
+                    username: username,
+                    email: email,
+                    password: password,
+                    firstName: firstName,
+                    lastName: lastName,
+                    idNum: idNum,
+                    altMail: altMail,
+                    cell: cell,
+                    eduPhase: eduPhase,
+                    qualification: qualification,
+                    sace: sace,
+                    workplace: workplace,
+                    province: province,
+                    ttCode: ttCode, 
+                })
+                .then(response => {
+                    console.log('User profile', response.data.user)
+                    msg = response.data.user.username + ", you have been successfully registered with ThinkTeacher! Please confirm your email to login."
+                    registerNext = false
+                    registered = true
                     document.getElementById("register").reset()
+                })
+                .catch(error => {
+                    console.log('An error occurred:', error.response)
+                    errorMsg = error.response.data.message[0].messages[0].message
+                })
+
+                // Account for missing altMail and province
+                if(altMail && province){
+                    await axios
+                    .put('https://sendgrid.com/v3/marketing/contacts', {
+                                "list_ids": [sendgridList],
+                                "contacts": [{
+                                    "email":email,
+                                    "alternate_emails":[altMail],
+                                    "first_name":firstName,
+                                    "last_name":lastName,
+                                    "state_province_region":province,
+                                    "phone_number":cell,
+                                    "custom_fields": {"e1_T":ttCode},
+                                    },
+                                ]},
+                            { headers: { Authorization: `Bearer ${sgKey}`}
+                    }).then(response => {
+                        console.log('SG reponse: ', response.statusText, " ", response.data)
+                    })
+                    .catch((error) => {
+                        console.error(error)
+                    })
+                }else{
+                    await axios
+                    .put('https://sendgrid.com/v3/marketing/contacts', {
+                                "list_ids": [sendgridList],
+                                "contacts": [{
+                                    "email":email,
+                                    "first_name":firstName,
+                                    "last_name":lastName,
+                                    "phone_number":cell,
+                                    "custom_fields": {"e1_T":ttCode},
+                                    },
+                                ]},
+                            { headers: { Authorization: `Bearer ${sgKey}`}
+                    }).then(response => {
+                        console.log('SG reponse: ', response.statusText, " ", response.data)
+                    })
+                    .catch((error) => {
+                        console.error(error)
+                    })
                 }
             }else{
                 errorMsg = "Invalid ID"
