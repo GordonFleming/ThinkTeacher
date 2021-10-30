@@ -27,7 +27,6 @@
         });
         user = res.data
 
-        console.log(res.data)
         loading = false
         fullname= user.firstName +" "+ user.lastName
         email=user.email
@@ -63,13 +62,11 @@
             })
             .catch(error => {
                 console.log('An error occurred:', error.response.data)
-                //errorMsg = error.response.data.message[0].messages[0].message
+                errorMsg = error.response.data.message[0].messages[0].message
             })
     }
 
     let msg, errorMsg
-
-
 </script>
 
 <svelte:head>
