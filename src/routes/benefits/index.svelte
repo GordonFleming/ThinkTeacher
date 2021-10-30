@@ -5,6 +5,7 @@
     import { Jumper } from 'svelte-loading-spinners'
     import { prod } from '$lib/env.js'
     import { travelScroll, travelType } from '$lib/stores'
+    import SvelteMarkdown from 'svelte-markdown'
 
     let health_cat = 3, travel_cat = 2
     let API_URL = 'http://localhost:1337'
@@ -23,6 +24,7 @@
                 health.push(item)
             }else{
                 wellness.push(item)
+                source = wellness[0].details
             }
         }
 
@@ -58,6 +60,8 @@
         }
         goto('/auth/form-travel')
     }
+
+    let source, readMore = false
 </script>
 
 <div class="container text-center">
@@ -137,7 +141,7 @@
                         <div class="row g-0">
                         <div class="col-md-5">
                             <img
-                            src="{API_URL}{wellness[0].partner.logo.url}"
+                            src="{wellness[0].partner.logo.url}"
                             alt="logo"
                             class="img-fluid"
                             />
@@ -161,13 +165,19 @@
                     {#each wellness as well}
                         <div class="col-sm-12 col-md-10 col-lg-6">
                             <div class="card bg-dark m-2 shadow-lg">
-                                <img class="img-fluid rounded cta"  src="{API_URL}{well.banner.url}" alt="cover" on:click={() => goto('/auth/form-wellbeing')}>
+                                <img class="img-fluid rounded cta"  src="{well.banner.url}" alt="cover" on:click={() => goto('/auth/form-wellbeing')}>
                                 <!-- <small class="text-white">Image by: David Travis, Unsplash.</small> -->
                                 <div class="card-body">
                                     <h3 class="card-title text-logo-gold">Think <span class="text-lighter-blue">{well.name}</span></h3>
                                     <p class="card-text">
                                         {@html well.description}
                                     </p>
+                                    {#if readMore}
+                                        <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => readMore=false}>Read less</button><br><br>
+                                        <p style="text-align: justify;"> <SvelteMarkdown {source} /></p>
+                                    {:else}
+                                        <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => readMore=true}>Read more</button>
+                                    {/if}
                                 </div>
                                 <div class="card-footer">
                                     <span class="badge bg-light">{well.partner.company_name}</span>
@@ -186,7 +196,7 @@
                         <div class="row g-0">
                         <div class="col-md-5">
                             <img
-                            src="{API_URL}{health[0].partner.logo.url}"
+                            src="{health[0].partner.logo.url}"
                             alt="logo"
                             class="img-fluid"
                             />
@@ -210,7 +220,7 @@
                     {#each health as heal}
                         <div class="col-sm-12 col-md-10 col-lg-6">
                             <div class="card bg-dark m-2 shadow-lg">
-                                <img class="img-fluid rounded cta"  src="{API_URL}{heal.banner.url}" alt="cover" on:click={() => goto('/auth/form-medical-aid')}>
+                                <img class="img-fluid rounded cta"  src="{heal.banner.url}" alt="cover" on:click={() => goto('/auth/form-medical-aid')}>
                                 <div class="card-body">
                                     <h3 class="card-title text-logo-gold">Think <span class="text-lighter-blue">{heal.name}</span></h3>
                                     <p class="card-text">
