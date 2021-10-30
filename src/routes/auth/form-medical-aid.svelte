@@ -41,7 +41,7 @@
                 ttNumber: ttNum,
                 email: email,
                 custom: [{
-                    __component: "custom-form.travel-date",
+                    __component: "custom-form.medical-aid",
                     residence: residence,
                     chronic: chronic,
                     medicalAid: medicalAid,

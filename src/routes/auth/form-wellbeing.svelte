@@ -41,7 +41,7 @@
                 ttNumber: ttNum,
                 email: email,
                 custom: [{
-                    __component: "custom-form.travel-date",
+                    __component: "custom-form.wellbeing",
                     lifeCoaching: lifeCoaching,
                     bereavement: bereavement,
                     nutrition: nutrition,
