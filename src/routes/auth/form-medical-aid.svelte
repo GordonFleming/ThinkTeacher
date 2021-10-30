@@ -32,7 +32,7 @@
         ttNum=user.ttCode
     })
 
-    let residence, chronic, medicalAid, gapcover, dependants, scheme, partnerEmail="u20447613@tuks.co.za" //thinkteacher@sahealth.co.za
+    let residence, chronic, medicalAid, gapcover, dependants, scheme, partnerEmail="thinkteacher@sahealth.co.za"
 
     async function submitForm(){
         await axios

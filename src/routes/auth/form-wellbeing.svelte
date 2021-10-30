@@ -32,7 +32,7 @@
         ttNum=user.ttCode
     })
 
-    let lifeCoaching, bereavement, nutrition, wellbeing, other, partnerEmail="u20447613@tuks.co.za" //kim@kimforbes.co.za
+    let lifeCoaching, bereavement, nutrition, wellbeing, other, partnerEmail="kim@kimforbes.co.za"
 
     async function submitForm(){
         await axios

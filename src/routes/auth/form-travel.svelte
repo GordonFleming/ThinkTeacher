@@ -33,7 +33,7 @@
         ttNum=user.ttCode
     })
 
-    let startDate, endDate, typeHoliday = $travelType, reason, where, nationality=true, numChild, numAdult, budget, partnerEmail="u20447613@tuks.co.za" //gdoig@mweb.co.za
+    let startDate, endDate, typeHoliday = $travelType, reason, where, nationality=true, numChild, numAdult, budget, partnerEmail="gdoig@mweb.co.za"
 
     async function submitForm(){
         await axios
