@@ -2,6 +2,8 @@
     import { onMount, afterUpdate } from 'svelte'
     import {name} from '$lib/stores'
     import { goto } from '$app/navigation';
+    import Icon from 'svelte-awesome'
+    import { userCircle } from 'svelte-awesome/icons'
 
     onMount(() =>{  
         document.querySelector('.third-button').addEventListener('click', function () {
@@ -64,8 +66,8 @@
                 <!-- Right elements -->
                 <div class="d-flex align-items-center align-top">
                     {#if $name}
-                        <h6>Welcome {$name}, <span id="logout" style="color: var(--logo-gold);" on:click={logoutUser}>Logout</span></h6>
-
+                        <a class="mb-2" title="User profile" href="/auth/profile" on:click={mustClick}><Icon data={userCircle} scale="2"/></a>
+                        <h6>&nbsp;&nbsp;Welcome {$name}, <span id="logout" style="color: var(--logo-gold);" on:click={logoutUser}>Logout</span></h6>
                     {:else}
                         <p><a href="/login" class="nav-link align-top" style="color: var(--logo-gold); font-size: 1.16em;" on:click={mustClick}>Login</a></p>
                         <h5>/</h5>
@@ -96,7 +98,7 @@
 
     @media screen and (max-width: 1200px) {
         li {
-            font-size: 1.15em;
+            font-size: 0.9em;
             font-weight: 400;
         }
         a {
@@ -141,15 +143,15 @@
     }
     #logout{
         cursor: pointer;
-        font-size: 1.15em;
-        transition: 0.2s;
+        font-size: 1.12em;
+        transition: 0.3s;
     }
     h6{
         color: var(--logo-grey);
         margin-right: 1rem;
     }
     #logout:hover{
-        font-size: 1.17em;
+        font-size: 1.15em;
     }
     a:after {
             display:block;

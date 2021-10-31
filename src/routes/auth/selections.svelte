@@ -80,7 +80,7 @@
                 <li class="list-inline-item"><strong>Date:</strong> {med.created_at.substring(0,10)}</li>
                 <li class="list-inline-item"><strong>Residence:</strong> {med.custom[0].residence}</li>
                 <li class="list-inline-item"><strong>Chronic:</strong> {med.custom[0].chronic}</li>
-                <li class="list-inline-item"><strong>Medical Aid:</strong> {med.custom[0].mecicalAid}</li>
+                <li class="list-inline-item"><strong>Medical Aid:</strong> {med.custom[0].medicalAid}</li>
                 <li class="list-inline-item"><strong>Gapcover:</strong> {med.custom[0].gapcover}</li>
                 <li class="list-inline-item"><strong>Dependants:</strong> {med.custom[0].dependants}</li>
                 <li class="list-inline-item"><strong>Scheme:</strong> {med.custom[0].scheme}</li>

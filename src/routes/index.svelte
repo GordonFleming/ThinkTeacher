@@ -7,7 +7,6 @@
     import viewport from '$lib/useViewportAction.js';
     import { name, travelScroll, firstTime } from '$lib/stores'
     import axios from 'axios'
-
     import { fly } from 'svelte/transition';
 
     let API_URL = 'http://localhost:1337'
@@ -25,10 +24,8 @@
     onMount(async () =>{
         try {
             // To stop case where user reloads with the counter in view so therefore nothing is triggered...
-            window.scrollTo({
-                top: 0,
-                left: 0
-            })
+            document.body.scrollTop = 0
+
             const res = await axios.get(`${API_URL}/users/count`)
             userCount += res.data
             loading = false
