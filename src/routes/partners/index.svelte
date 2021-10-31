@@ -48,7 +48,7 @@
                             <p class="card-text">
                                 {partner.description}
                             </p>
-                            <button class="btn-sm btn bg-gold mx-auto shadow cta" on:click={() => goto('/partners/' + partner.slug)}>Read more</button>
+                            <button class="btn-sm btn bg-gold mx-auto shadow cta" on:click={() => goto('/partners/' + partner.slug)}>Read More</button>
                         </div>
                         <div class="card-footer">
                             <span class="badge bg-light">{partner.category.name}</span>

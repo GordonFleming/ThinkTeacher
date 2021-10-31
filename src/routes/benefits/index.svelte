@@ -71,11 +71,11 @@
     <div class="nav-wrapper mt-3">
         <ul class="list-inline">
             <li class="list-inline-item"><h4 on:click={() => document.getElementById('travel').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Travel <span class="text-logo-gold">-</span></h4></li>
-            <li class="list-inline-item"><h4 on:click={() => document.getElementById('legal').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Legal <span class="text-logo-gold">-</span></h4></li>
+            <li class="list-inline-item"><h4 on:click={() => document.getElementById('wellness').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Wellbeing <span class="text-logo-gold">-</span></h4></li>
             <li class="list-inline-item"><h4 on:click={() => document.getElementById('MedicalAid').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Medical Aid <span class="text-logo-gold">-</span></h4></li>
+            <li class="list-inline-item"><h4 on:click={() => document.getElementById('legal').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Legal <span class="text-logo-gold">-</span></h4></li>
             <li class="list-inline-item"><h4 on:click={() => document.getElementById('courses').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Courses <span class="text-logo-gold">-</span></h4></li>
-            <li class="list-inline-item"><h4 on:click={() => document.getElementById('insurance').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Insurance <span class="text-logo-gold">-</span></h4></li>
-            <li class="list-inline-item"><h4 on:click={() => document.getElementById('wellness').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Wellbeing</h4></li>
+            <li class="list-inline-item"><h4 on:click={() => document.getElementById('insurance').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Insurance</h4></li>
         </ul>
     </div>
     
@@ -107,7 +107,7 @@
                             <!-- <small class="text-muted">email: <a href="mailto:{travel[0].partner.email}">{travel[0].partner.email}</a></small> -->
                             </div>
                             <p class="card-footer card-text">
-                                <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + travel[0].partner.slug)}>Learn more</button>
+                                <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + travel[0].partner.slug)}>Read More</button>
                             </p>
                         </div>
                         </div>
@@ -156,7 +156,7 @@
                             <!-- <small class="text-muted">email: <a href="mailto:{wellness[0].partner.email}">{wellness[0].partner.email}</a></small> -->
                             </div>
                             <p class="card-footer card-text">
-                                <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + wellness[0].partner.slug)}>Learn more</button>
+                                <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + wellness[0].partner.slug)}>Read More</button>
                             </p>
                         </div>
                         </div>
@@ -211,7 +211,7 @@
                             <!-- <small class="text-muted">email: <a href="mailto:{health[0].partner.email}">{health[0].partner.email}</a></small> -->
                             </div>
                             <p class="card-footer card-text">
-                                <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + health[0].partner.slug)}>Learn more</button>
+                                <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + health[0].partner.slug)}>Read More</button>
                             </p>
                         </div>
                         </div>
