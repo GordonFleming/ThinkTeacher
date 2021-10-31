@@ -1,14 +1,6 @@
 <script>
     import Icon from 'svelte-awesome'
     import { facebook, twitter, instagram, linkedin, youtubePlay, youtubeSquare } from 'svelte-awesome/icons'
-
-    function toTop(){
-        window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: 'smooth'
-        })
-    }
 </script>
 
 <footer style="background-color: var(--default-text);" class="text-center text-black mt-5">
@@ -91,7 +83,7 @@
             </div>
 
             <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                <button class="mt-3 btn btn-outline-light px-2" on:click={toTop}>Scroll to top</button>
+                <button class="mt-3 btn btn-outline-light px-2" on:click={() => document.body.scrollTop = 0}>Scroll to top</button>
             </div>
             </div>
         </section>
