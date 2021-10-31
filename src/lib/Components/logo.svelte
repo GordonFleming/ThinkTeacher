@@ -119,6 +119,8 @@
     @media screen and (max-width: 1000px) {
         #logo-box{
             max-width: 600px;
+            padding-left: 1rem;
+            padding-right: 1rem;
         }
     }
     /* circle{
