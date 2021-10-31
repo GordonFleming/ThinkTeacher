@@ -17,6 +17,7 @@
     let loading = true
 
     onMount(async () => {
+        document.body.scrollTop = 0;
         function seperatePackages(item){
             if(item.partner.category === travel_cat){
                 travel.push(item)
@@ -103,7 +104,7 @@
                             <p class="card-text">
                                 {travel[0].partner.description}
                             </p>
-                            <small class="text-muted">email: <a href="mailto:{travel[0].partner.email}">{travel[0].partner.email}</a></small>
+                            <!-- <small class="text-muted">email: <a href="mailto:{travel[0].partner.email}">{travel[0].partner.email}</a></small> -->
                             </div>
                             <p class="card-footer card-text">
                                 <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + travel[0].partner.slug)}>Learn more</button>
