@@ -120,7 +120,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-6 mt-2">
-                                    <label class="form-label form-check-label" for="wellbeing">Well-being</label>
+                                    <label class="form-label form-check-label" for="wellbeing">Wellbeing</label>
                                     <div class="form-switch mt-1">
                                         <input class="form-check-input form-control" type="checkbox" role="switch" id="wellbeing" bind:checked={wellbeing}>
                                     </div>
