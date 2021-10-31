@@ -133,9 +133,9 @@
                 </div>
             </div>
 
-        <!-- Well-being -->
+        <!-- Wellbeing -->
             <div class="grey-grad row big-gap justify-content-center" id="wellness">
-                <h2 class="display-3">Well-being</h2>
+                <h2 class="display-3">Wellbeing</h2>
                 <div class="col-6">
                     <div class="card mb-3 bg-dark mx-auto" style="max-width: 540px;">
                         <div class="row g-0">

@@ -145,9 +145,9 @@
                             <button class="btn btn-outline-light btn-lg px-4 mt-4" type="submit" on:click|preventDefault={submitForm} disabled={buttonSubmit}>Submit</button>
                         </form>
                     </div>
-                    <div>
+                    <!-- <div>
                         <p class="mb-0">Partner's email <a href="mailto:thinkteacher@sahealth.co.za" class="text-white-50 fw-bold">thinkteacher@sahealth.co.za</a></p>
-                    </div>
+                    </div> -->
                     </div>
                 </div>
                 </div>

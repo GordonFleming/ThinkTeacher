@@ -56,7 +56,7 @@
         </div>
         <nav>
             <a href="/auth">Home</a>
-            <a href="/auth/vacancies">Vacancies</a>
+            <a href="/auth/selections">Selections</a>
             <a href="/auth/profile">Profile</a>
         </nav>
         <slot />

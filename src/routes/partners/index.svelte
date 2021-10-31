@@ -68,4 +68,8 @@
     span{
         font-size: 0.85em;
     }
+    img{
+        width: 100%;
+        height: auto;
+    }
 </style>

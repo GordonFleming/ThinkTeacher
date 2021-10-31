@@ -169,9 +169,9 @@
                             <button class="btn btn-outline-light btn-lg px-4 mt-4" type="submit" on:click|preventDefault={submitForm} disabled={buttonSubmit}>Submit</button>
                         </form>
                     </div>
-                    <div>
+                    <!-- <div>
                         <p class="mb-0">Partner's email <a href="mailto:gdoig@mweb.co.za" class="text-white-50 fw-bold">gdoig@mweb.co.za</a></p>
-                    </div>
+                    </div> -->
                     </div>
                 </div>
                 </div>

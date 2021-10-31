@@ -3,7 +3,7 @@
     import axios from 'axios'
     import { goto } from '$app/navigation'
     import Icon from 'svelte-awesome'
-    import {user, name} from '$lib/stores'
+    import { user, name, id } from '$lib/stores'
     import { facebook, twitter, instagram, linkedin } from 'svelte-awesome/icons'
     import { browserSet } from '$lib/re_utils'
     import { prod } from '$lib/env.js'
@@ -38,6 +38,8 @@
             $user = response.data.user;
             browserSet("name", response.data.user.username)
             $name = response.data.username;
+            browserSet("id", response.data.user.id)
+            $id = response.data.id
             console.log("The stored user: " + JSON.stringify($user))
             goto('/')
         })

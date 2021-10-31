@@ -31,7 +31,7 @@
                     <img class="d-block user-select-none img-fluid" src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/Bio/Bridget_New.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL0JyaWRnZXRfTmV3LmpwZyIsImlhdCI6MTYzMjg0NjYwNiwiZXhwIjoxOTQ4MjA2NjA2fQ.HwyEWrK_IWIfX3zfIG4gKQMgP858eAP90cxaAAkob9k" alt="profile img">
                     <div class="card-body">
                         <p class="card-text">
-                            Bridget Fleming is a passionate advocate for teacher well-being. <br><br>
+                            Bridget Fleming is a passionate advocate for teacher wellbeing. <br><br>
                             Having taught secondary school Geography for the past 30 years, primarily in the private sector, Bridget is the IEB NSC Geography Internal Moderator and the founder of the Southern 
                             African Geography Teachers’ Association (SAGTA). <br><br>
                             She has authored many textbooks and digital classroom resources. She left the classroom recently (where she was HOD Geography, St John’s College) to start <span class="think">ThinkTeacher</span>, 
@@ -77,7 +77,7 @@
                 <h3 class="card-header">Paul Edey</h3>
                     <div class="card-body">
                         <h5 class="card-title">Liaison to Head of Schools & Webinars</h5>
-                        <h6 class="card-subtitle text-muted">BA | HDE (Wits) | Hons (SA) | FDE (RAU) | PMD (GIBS)</h6>
+                        <h6 class="card-subtitle text-muted">MEd | BA | HDE (Wits) | Hons (SA) | FDE (RAU) | PMD (GIBS)</h6>
                     </div>
                     <img class="d-block user-select-none img-fluid" src="https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Paul.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL1BhdWwuanBnIiwiaWF0IjoxNjI1NzY1NzkyLCJleHAiOjE5NDExMjU3OTJ9.oFg1MQ2D_59BaN7tze_IOUPTb26-1upr-bnvnIcVV30" alt="profile img">
                     <div class="card-body">
@@ -98,7 +98,7 @@
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Kim Forbes</h3>
                     <div class="card-body">
-                        <h5 class="card-title">Head of Well-being</h5>
+                        <h5 class="card-title">Head of Wellbeing</h5>
                         <h6 class="card-subtitle text-muted">
                             BA Hons | 
                             H Dip.Ed. | 
