@@ -116,7 +116,7 @@
         height:auto;
         position: relative;
     }
-    @media screen and (max-width: 850px) {
+    @media screen and (max-width: 1000px) {
         #logo-box{
             max-width: 600px;
         }

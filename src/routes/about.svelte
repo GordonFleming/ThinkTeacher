@@ -77,7 +77,7 @@
                 <h3 class="card-header">Paul Edey</h3>
                     <div class="card-body">
                         <h5 class="card-title">Liaison to Head of Schools & Webinars</h5>
-                        <h6 class="card-subtitle text-muted">MEd | BA | HDE (Wits) | Hons (SA) | FDE (RAU) | PMD (GIBS)</h6>
+                        <h6 class="card-subtitle text-muted">BA | HDE (Wits) | Hons (SA) | FDE (RAU) | PMD (GIBS)</h6>
                     </div>
                     <img class="d-block user-select-none img-fluid" src="https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Paul.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL1BhdWwuanBnIiwiaWF0IjoxNjI1NzY1NzkyLCJleHAiOjE5NDExMjU3OTJ9.oFg1MQ2D_59BaN7tze_IOUPTb26-1upr-bnvnIcVV30" alt="profile img">
                     <div class="card-body">

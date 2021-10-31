@@ -31,6 +31,7 @@
 
     async function resetPassword(){
         if(s){
+            errorMsg = null
             await axios
             .post(`${API_URL}/auth/reset-password`, {
                 code: myParam,
@@ -65,7 +66,7 @@
                     <h2 class="fw-bold mb-2 text-uppercase">Forgot Password</h2>
                     <p class="text-white-50 mb-3">Please enter your new password below.</p>
 
-                    {#if errorMsg != undefined}
+                    {#if errorMsg}
                         <h4 class="error-col">{errorMsg}</h4>
                     {/if}
 

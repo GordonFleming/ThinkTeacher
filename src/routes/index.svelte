@@ -56,7 +56,7 @@
 
 <div class="banner-all">
     <div class="bg-overlay"></div>
-    <div class="p-5 bg-banner text-center">
+    <div class="pt-4 pr-2 pl-2 bg-banner text-center">
         {#if $firstTime}
             {#if intro}
                 <h1 id="welcome" in:fly="{{ x: -200, duration: 2250 }}" >Welcome to</h1>
@@ -184,6 +184,12 @@
         }
         #welcome{
             font-size: 8em; 
+        }
+    }
+
+    @media screen and (max-width: 1000px) {
+        .bg-banner{
+            height: 200px;
         }
     }
 

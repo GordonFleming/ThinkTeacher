@@ -12,6 +12,7 @@
     let res = false
 
     async function forgotPassword(){
+        errorMsg = null
         await axios
         .post(`${API_URL}/auth/forgot-password`, {
             email: email,
@@ -42,7 +43,7 @@
                     <h2 class="fw-bold mb-2 text-uppercase">Forgot Password</h2>
                     <p class="text-white-50 mb-3">Please enter your email, where you will receive your reset password link.</p>
 
-                    {#if errorMsg != undefined}
+                    {#if errorMsg}
                         <h4 class="error-col">{errorMsg}</h4>
                     {/if}
 
