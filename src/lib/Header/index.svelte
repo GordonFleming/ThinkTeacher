@@ -18,6 +18,12 @@
         $name = null
         goto("/")
     }
+
+    function mustClick(){
+        if(window.innerWidth <= 992){
+            document.getElementById("burger").click()
+        }
+    }
 </script>
 
 <nav class="navbar navbar-expand-lg navbar-light">
@@ -28,29 +34,29 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbar">
             <ul class="navbar-nav">
                 <div class="nav-img mx-auto">
-                    <a class="navbar-brand" href="/" on:click={() => document.getElementById("burger").click()}><img src="/thinkteacherlogo-final.png" alt="logo" width="200" ></a>
+                    <a class="navbar-brand" href="/" on:click={mustClick}><img src="/thinkteacherlogo-final.png" alt="logo" width="200" ></a>
                 </div>
                 <li class="nav-item">
-                    <a class="nav-link fromLeft" sveltekit:prefetch href="/about" on:click={() => document.getElementById("burger").click()}>About</a>
+                    <a class="nav-link fromLeft" sveltekit:prefetch href="/about" on:click={mustClick}>About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fromLeft" sveltekit:prefetch href="/partners" on:click={() => document.getElementById("burger").click()}>Partners</a>
+                    <a class="nav-link fromLeft" sveltekit:prefetch href="/partners" on:click={mustClick}>Partners</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fromLeft" sveltekit:prefetch href="/benefits" on:click={() => document.getElementById("burger").click()}>Benefits</a>
+                    <a class="nav-link fromLeft" sveltekit:prefetch href="/benefits" on:click={mustClick}>Benefits</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fromLeft" sveltekit:prefetch href="/blog" on:click={() => document.getElementById("burger").click()}>Blog</a>
+                    <a class="nav-link fromLeft" sveltekit:prefetch href="/blog" on:click={mustClick}>Blog</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link from-left dropdown-toggle" data-bs-toggle="dropdown" href="/" role="button" aria-expanded="false">Webinars</a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="/events" on:click={() => document.getElementById("burger").click()}>Events</a></li>
-                      <li><a class="dropdown-item" href="/webinars" on:click={() => document.getElementById("burger").click()}>Webinars</a></li>
+                      <li><a class="dropdown-item" href="/events" on:click={mustClick}>Events</a></li>
+                      <li><a class="dropdown-item" href="/webinars" on:click={mustClick}>Webinars</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fromLeft" href="/contact-us" on:click={() => document.getElementById("burger").click()}>Contact</a>
+                    <a class="nav-link fromLeft" href="/contact-us" on:click={mustClick}>Contact</a>
                 </li>
             </ul>
         </div>
@@ -59,10 +65,11 @@
                 <div class="d-flex align-items-center align-top">
                     {#if $name}
                         <h6>Welcome {$name}, <span id="logout" style="color: var(--logo-gold);" on:click={logoutUser}>Logout</span></h6>
+
                     {:else}
-                        <p><a href="/login" class="nav-link align-top" style="color: var(--logo-gold); font-size: 1.16em;" on:click={() => document.getElementById("burger").click()}>Login</a></p>
+                        <p><a href="/login" class="nav-link align-top" style="color: var(--logo-gold); font-size: 1.16em;" on:click={mustClick}>Login</a></p>
                         <h5>/</h5>
-                        <p><a href="/register" class="nav-link" style="color: var(--logo-grey); font-size: 1.16em;" on:click={() => document.getElementById("burger").click()}>Register</a></p>
+                        <p><a href="/register" class="nav-link" style="color: var(--logo-grey); font-size: 1.16em;" on:click={mustClick}>Register</a></p>
                     {/if}
                 </div>
         </div>

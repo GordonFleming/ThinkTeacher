@@ -256,7 +256,7 @@
                 </div>
     
                 <div>
-                    <p class="mb-0">Already have an account? <a href="/login" class="text-white-50 fw-bold">Login</a></p>
+                    <p class="mb-0 mt-3">Already have an account? <a href="/login" class="text-white-50 fw-bold">Login</a></p>
                 </div>
     
                 </div>

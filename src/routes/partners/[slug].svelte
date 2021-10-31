@@ -62,7 +62,17 @@
     }
     .container {
         border-radius: 20px;
-        padding: 5rem;
+    }
+    @media screen and (max-width: 1000px) {
+        .container{
+            padding: 1rem;
+        }
+    }
+
+    @media screen and (min-width: 999px) {
+        .container{
+            padding: 5rem;
+        }
     }
     .border-custom{
         border-top: 3px solid var(--logo-gold);
