@@ -105,7 +105,7 @@
         <h2 class="mb-5">Benefits</h2>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
             <a href="/benefits"><img class="img-fluid offer offer-img" src="well-being.webp" alt="well being" on:click={() => $travelScroll='wellness'}></a>
-            <h3 class="mt-3">Wellness</h3>
+            <h3 class="mt-3">Well-being</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
             <a href="/benefits"><img class="img-fluid offer offer-img" src="travel.webp" alt="travel" on:click={() => $travelScroll='travel'}></a>

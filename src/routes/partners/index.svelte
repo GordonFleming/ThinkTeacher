@@ -41,13 +41,14 @@
         <div class="row justify-content-center">
             {#each partners as partner}
                 <div class="col-sm-12 col-md-6 col-lg-4">
-                    <div class="card bg-dark m-2 shadow-lg" on:click={() => goto('/partners/' + partner.slug)}>
-                        <img class="img-fluid rounded"  src="{partner.logo.url}" alt="cover">
+                    <div class="card bg-dark m-2 shadow-lg">
+                        <img class="img-fluid rounded cta"  src="{partner.logo.url}" alt="cover" on:click={() => goto('/partners/' + partner.slug)}>
                         <div class="card-body">
                             <h5 class="card-title">{partner.name}</h5>
                             <p class="card-text">
                                 {partner.description}
                             </p>
+                            <button class="btn-sm btn bg-gold mx-auto shadow cta" on:click={() => goto('/partners/' + partner.slug)}>Read more</button>
                         </div>
                         <div class="card-footer">
                             <span class="badge bg-light">{partner.category.name}</span>
@@ -65,16 +66,6 @@
 
 <style>
     span{
-        font-size: 1.1em;
-    }
-    .badge{
-        margin: 1rem;
-    }
-    .card{
-        transition: 0.4s;
-        cursor: pointer;
-    }
-    .card:hover{
-        transform: scale(1.02);
+        font-size: 0.85em;
     }
 </style>

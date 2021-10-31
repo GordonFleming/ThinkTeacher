@@ -149,7 +149,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-6 mt-2">
-                                    <label class="form-label" for="numChild">Number of Children</label>
+                                    <label class="form-label" for="numChild">How many under 18</label>
                                     <input type="number" name="numChild" id="numChild" class="form-control form-control-lg" placeholder="0" bind:value={numChild} min="0" max="100" />
                                 </div>
                                 <div class="col-sm-12 col-md-6 mt-2">

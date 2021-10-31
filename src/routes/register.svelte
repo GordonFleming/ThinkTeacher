@@ -16,8 +16,8 @@
 
     // Disable button
     let buttonNext = true, buttonSubmit = true
-    $: if(email && username && s){ buttonNext = false }
-    $: if(firstName && lastName && idNum && cell && eduPhase !== ''){ buttonSubmit = false }
+    $: (email && username && s) ? buttonNext = false : buttonNext = true
+    $: (firstName && lastName && isValidID && cell && eduPhase !== '') ? buttonSubmit = false : buttonSubmit = true
 
     let username, email, password = ""
     let msg, errorMsg = null
@@ -116,6 +116,8 @@
                             { headers: { Authorization: `Bearer ${sgKey}`}
                     }).then(response => {
                         console.log('SG reponse: ', response.statusText, " ", response.data)
+                        document.getElementById("register").reset()
+                        password = ""
                     })
                     .catch((error) => {
                         console.error(error)
