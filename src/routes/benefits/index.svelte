@@ -153,7 +153,7 @@
                             <p class="card-text">
                                 {wellness[0].partner.description}
                             </p>
-                            <small class="text-muted">email: <a href="mailto:{wellness[0].partner.email}">{wellness[0].partner.email}</a></small>
+                            <!-- <small class="text-muted">email: <a href="mailto:{wellness[0].partner.email}">{wellness[0].partner.email}</a></small> -->
                             </div>
                             <p class="card-footer card-text">
                                 <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + wellness[0].partner.slug)}>Learn more</button>
@@ -208,7 +208,7 @@
                             <p class="card-text">
                                 {health[0].partner.description}
                             </p>
-                            <small class="text-muted">email: <a href="mailto:{health[0].partner.email}">{health[0].partner.email}</a></small>
+                            <!-- <small class="text-muted">email: <a href="mailto:{health[0].partner.email}">{health[0].partner.email}</a></small> -->
                             </div>
                             <p class="card-footer card-text">
                                 <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + health[0].partner.slug)}>Learn more</button>
