@@ -39,7 +39,7 @@
             browserSet("name", response.data.user.username)
             $name = response.data.username;
             console.log("The stored user: " + JSON.stringify($user))
-            goto('/auth')
+            goto('/')
         })
         .catch(error => {
             console.log('An error occurred:', error.response)

@@ -48,83 +48,80 @@
     $: isValidID = saIdParser.validate(idNum)
     
     async function registerUser(){
-        if(s){
-            if(isValidID){
-                await axios
-                .post(`${API_URL}/auth/local/register`, {
-                    username: username,
-                    email: email,
-                    password: password,
-                    firstName: firstName,
-                    lastName: lastName,
-                    idNum: idNum,
-                    altMail: altMail,
-                    cell: cell,
-                    eduPhase: eduPhase,
-                    qualification: qualification,
-                    sace: sace,
-                    workplace: workplace,
-                    province: province,
-                    ttCode: ttCode, 
-                })
-                .then(response => {
-                    console.log('User profile', response.data.user)
-                    msg = response.data.user.username + ", you have been successfully registered with ThinkTeacher! Please confirm your email to login."
-                    registerNext = false
-                    registered = true
-                    document.getElementById("register").reset()
-                })
-                .catch(error => {
-                    console.log('An error occurred:', error.response)
-                    errorMsg = error.response.data.message[0].messages[0].message
-                })
+        if(s){ 
+            errorMsg=null
+            await axios
+            .post(`${API_URL}/auth/local/register`, {
+                username: username,
+                email: email,
+                password: password,
+                firstName: firstName,
+                lastName: lastName,
+                idNum: idNum,
+                altMail: altMail,
+                cell: cell,
+                eduPhase: eduPhase,
+                qualification: qualification,
+                sace: sace,
+                workplace: workplace,
+                province: province,
+                ttCode: ttCode, 
+            })
+            .then(response => {
+                console.log('User profile', response.data.user)
+                msg = response.data.user.username + ", you have been successfully registered with ThinkTeacher! Please confirm your email to login."
+                registerNext = false
+                registered = true
+                document.getElementById("register").reset()
+            })
+            .catch(error => {
+                console.log('An error occurred:', error.response)
+                errorMsg = error.response.data.message[0].messages[0].message
+            })
 
-                // Account for missing altMail and province
-                if(altMail && province){
-                    await axios
-                    .put('https://sendgrid.com/v3/marketing/contacts', {
-                                "list_ids": [sendgridList],
-                                "contacts": [{
-                                    "email":email,
-                                    "alternate_emails":[altMail],
-                                    "first_name":firstName,
-                                    "last_name":lastName,
-                                    "state_province_region":province,
-                                    "phone_number":cell,
-                                    "custom_fields": {"e1_T":ttCode},
-                                    },
-                                ]},
-                            { headers: { Authorization: `Bearer ${sgKey}`}
-                    }).then(response => {
-                        console.log('SG reponse: ', response.statusText, " ", response.data)
-                    })
-                    .catch((error) => {
-                        console.error(error)
-                    })
-                }else{
-                    await axios
-                    .put('https://sendgrid.com/v3/marketing/contacts', {
-                                "list_ids": [sendgridList],
-                                "contacts": [{
-                                    "email":email,
-                                    "first_name":firstName,
-                                    "last_name":lastName,
-                                    "phone_number":cell,
-                                    "custom_fields": {"e1_T":ttCode},
-                                    },
-                                ]},
-                            { headers: { Authorization: `Bearer ${sgKey}`}
-                    }).then(response => {
-                        console.log('SG reponse: ', response.statusText, " ", response.data)
-                        document.getElementById("register").reset()
-                        password = ""
-                    })
-                    .catch((error) => {
-                        console.error(error)
-                    })
-                }
-            }else{
-                errorMsg = "Invalid ID"
+            // Account for missing altMail and province
+            if(altMail && province && !errorMsg){
+                await axios
+                .put('https://sendgrid.com/v3/marketing/contacts', {
+                            "list_ids": [sendgridList],
+                            "contacts": [{
+                                "email":email,
+                                "alternate_emails":[altMail],
+                                "first_name":firstName,
+                                "last_name":lastName,
+                                "state_province_region":province,
+                                "phone_number":cell,
+                                "custom_fields": {"e1_T":ttCode},
+                                },
+                            ]},
+                        { headers: { Authorization: `Bearer ${sgKey}`}
+                }).then(response => {
+                    console.log('SG reponse: ', response.statusText, " ", response.data)
+                })
+                .catch((error) => {
+                    console.error(error)
+                })
+            }else if(!errorMsg){
+                await axios
+                .put('https://sendgrid.com/v3/marketing/contacts', {
+                            "list_ids": [sendgridList],
+                            "contacts": [{
+                                "email":email,
+                                "first_name":firstName,
+                                "last_name":lastName,
+                                "phone_number":cell,
+                                "custom_fields": {"e1_T":ttCode},
+                                },
+                            ]},
+                        { headers: { Authorization: `Bearer ${sgKey}`}
+                }).then(response => {
+                    console.log('SG reponse: ', response.statusText, " ", response.data)
+                    document.getElementById("register").reset()
+                    password = ""
+                })
+                .catch((error) => {
+                    console.error(error)
+                })
             }
         }else{
             errorMsg = "Password not strong enough"
@@ -154,7 +151,7 @@
                     {/if}
 
                     {#if registered}
-                        <button class="btn btn-secondary mx-auto mt-3 mb-3 fw-bold fs-3" style="width: 300px;" on:click={() => goto("/login")}>Login</button>
+                        <button class="btn btn-secondary mx-auto mt-3 mb-3 fw-bold fs-5" style="width: 300px;" on:click={() => goto("/login")}>I confirmed my email and want to login</button>
                     {/if}
                     
                     <form id="register">
@@ -176,7 +173,7 @@
                                         <div class="progress-bar {barCol}" role="progressbar" style="width: {progress}%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     <p style={s||'color:red'}>
-                                        {s ? 'Strong' : 'Weak'} password
+                                        {s ? 'Strong' : 'Not strong enough'} password
                                     </p>
                                 {/if}
                             </div>

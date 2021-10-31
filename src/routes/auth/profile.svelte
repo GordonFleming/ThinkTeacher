@@ -17,6 +17,7 @@
 
     let username, email, id
     let altMail, cell, eduPhase, qualification, sace, workplace, province
+    const res = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     onMount(async() =>{
         const res = await axios.get(`${API_URL}/users/me`, {
@@ -31,11 +32,22 @@
         loading = false
         username=user.username
         email=user.email
+        eduPhase=user.eduPhase
+        sace=user.sace
+        cell=user.cell
+        altMail=user.altMail
+        qualification=user.qualification
+        workplace=user.workplace
+        province=user.province
         id=user.id
     })
 
     async function updateUser(){
-        await axios.put(`${API_URL}/users/${id}`,{
+        if(eduPhase=='none' || !res.test(String(email).toLowerCase())){
+            errorMsg="Email not valid of education phase not selected"
+        }else{
+            errorMsg=null
+            await axios.put(`${API_URL}/users/${id}`,{
                 username: username,
                 email: email,
                 qualification: qualification,
@@ -47,17 +59,18 @@
                 altMail: altMail,
             },
             { headers: { Authorization: 'Bearer ' + localStorage.getItem("jwt"),} }
-        ).then(response => {
-            console.log('reponse: ', response)
-            msg = "Success!"
-            setTimeout(backFalse, 2000)
-            $name = username
-            browserSet("name", $name)
-        })
-        .catch((error) => {
-            console.error("eee", error.response.data.message[0].messages[0].message.replace("."," "))
-            errorMsg = error.response.data.message[0].messages[0].message.replace("."," ")
-        })
+            ).then(response => {
+                console.log('reponse: ', response)
+                msg = "Success!"
+                setTimeout(backFalse, 2000)
+                $name = username
+                browserSet("name", $name)
+            })
+            .catch((error) => {
+                console.error("eee", error.response.data.message[0].messages[0].message.replace("."," "))
+                errorMsg = error.response.data.message[0].messages[0].message.replace("."," ")
+            })
+        }
     }
 
     let errorMsg, msg
@@ -65,9 +78,6 @@
         msg = null;
     }
 	let user
-    let updateValid = true
-    $: console.log(eduPhase)
-    $: (eduPhase !== 'none') ? updateValid = false : updateValid = true
 </script>
 
 <svelte:head>
@@ -153,7 +163,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-outline-light btn-lg px-4 mt-2" type="submit" on:click|preventDefault={updateUser} disabled={updateValid}>Update</button>
+                <button class="btn btn-outline-light btn-lg px-4 mt-2" type="submit" on:click|preventDefault={updateUser}>Update</button>
                 </form>
             </div>
         </div>
