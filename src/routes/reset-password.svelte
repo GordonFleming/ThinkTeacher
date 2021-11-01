@@ -81,6 +81,9 @@
                         <div class="progress mt-2">
                             <div class="progress-bar {barCol}" role="progressbar" style="width: {progress}%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>   
+                        <p style={s||'color:red'}>
+                            {s ? 'Strong password' : 'Password not strong enough. Try using a mix of capital letters, numbers and special characters with a length > 8.'}
+                        </p>
                         <div class="form-outline form-white mb-4 mt-3 text-left">
                             <label class="form-label" for="PasswordConfirm">Password Confirmation</label>
                             <input type="password" id="PasswordConfirm" class="form-control form-control-lg" placeholder="Password (again)" bind:value={passwordConfirmation} required />

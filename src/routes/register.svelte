@@ -173,7 +173,7 @@
                                         <div class="progress-bar {barCol}" role="progressbar" style="width: {progress}%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     <p style={s||'color:red'}>
-                                        {s ? 'Strong' : 'Not strong enough'} password
+                                        {s ? 'Strong password' : 'Password not strong enough. Try using a mix of capital letters, numbers and special characters with a length > 8.'}
                                     </p>
                                 {/if}
                             </div>

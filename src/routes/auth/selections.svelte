@@ -109,16 +109,5 @@
 {/if}
 
 <style>
-    .form-check-input{
-        margin: 0 auto !important;
-    }
-    .form-check-input:checked {
-        background-color: var(--logo-gold);
-        border-color: var(--logo-gold);
-    }
-    .form-check-input:focus {
-        border-color: rgba(255, 255, 255, 0.4);
-        outline: 0;
-        box-shadow: 0 0 0 0.25rem rgba(217, 183, 61, 0.055);
-    }
+
 </style>
