@@ -21,7 +21,7 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-12 col-md-6 col-lg-7">
+        <div class="col-sm-12 col-md-12 col-lg-7">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Bridget Fleming</h3>
                     <div class="card-body">
@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-6 col-lg-5">
+        <div class="col-sm-12 col-md-12 col-lg-5">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Rebecca Maluka</h3>
                     <div class="card-body">
@@ -61,8 +61,8 @@
                     <img class="d-block user-select-none img-fluid" src="https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Rebecca.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL1JlYmVjY2EuanBnIiwiaWF0IjoxNjI1NzY1NDA5LCJleHAiOjE5NDExMjU0MDl9.R3if5ZEbhRmE9mV-2eFpP-QATKO6uCZ88jK4P3SoiQQ" alt="profile img">
                     <div class="card-body">
                         <p class="card-text">
-                            Rebecca Maluka is a School Operations Manager at Spark schools and has been in the education field for 14 years. She also has experience in student enrollment within the sales and marketing environment. <br><br>
-                            She is passionate about education and leadership. She had the opportunity to travel to the US as an ambassador. Rebecca was part of the future leaders’ programme at one the schools at which she worked. She has been involved in numerous non-profit organisations in the community of Alexandra. 
+                            Rebecca Maluka is a School Operations Manager at Spark Schools and has been in the education field for 14 years. She also has experience in student enrollment within the sales and marketing environment. <br><br>
+                            She is passionate about education and leadership. Rebecca was part of the future leaders’ programme at one the schools at which she worked. She has been involved in numerous non-profit organisations in the community of Alexandra. 
                             She is driven by her desire for all South African children to have access to quality education and strives to assist young people both to achieve success and to overcome generational barriers.
                         </p>
                     </div>
@@ -72,7 +72,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-6 col-lg-5">
+        <div class="col-sm-12 col-md-12 col-lg-5">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Paul Edey</h3>
                     <div class="card-body">
@@ -94,7 +94,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-6 col-lg-7">
+        <div class="col-sm-12 col-md-12 col-lg-7">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Kim Forbes</h3>
                     <div class="card-body">
@@ -123,7 +123,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-6 col-lg-7">
+        <div class="col-sm-12 col-md-12 col-lg-7">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Zanele Masuku</h3>
                     <div class="card-body">
@@ -197,7 +197,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-6 col-lg-7">
+        <div class="col-sm-12 col-md-12 col-lg-7">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Malcolm Williams</h3>
                     <div class="card-body">
