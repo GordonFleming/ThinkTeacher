@@ -14,7 +14,7 @@
         API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
     }
 
-    let loading = true, intro = null
+    let intro = null
     let countUp, userCount = 100
 
     setTimeout(function(){
@@ -28,7 +28,6 @@
 
             const res = await axios.get(`${API_URL}/users/count`)
             userCount += res.data
-            loading = false
             console.log(userCount)
         } catch (e) {
             let error = e

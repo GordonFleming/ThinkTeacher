@@ -43,8 +43,9 @@
                 <div class="col-sm-12 col-md-6 col-lg-4">
                     <div class="card bg-dark m-2 shadow-lg">
                         <img class="img-fluid rounded cta"  src="{partner.logo.url}" alt="cover" on:click={() => goto('/partners/' + partner.slug)}>
+                        
                         <div class="card-body">
-                            <h5 class="card-title">{partner.name}</h5>
+                            <h5 class="card-title">{partner.company_name}</h5>
                             <p class="card-text">
                                 {partner.description}
                             </p>
