@@ -41,7 +41,7 @@
 
     let extraImage = false
     onMount(() => {
-        (partner.custom[0].extraImage !== undefined) ? extraImage = true : extraImage = false
+        (partner.custom.length>0) ? extraImage = true : extraImage = false
 	});
 </script>
 
