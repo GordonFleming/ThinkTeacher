@@ -41,7 +41,7 @@
             </div>
         {:else}
             {#each webinars as webinar}
-                <div class="col-lg-6 col-md-12 col-sm-12 mt-2">
+                <div class="col-lg-6 col-md-12 mt-2">
                     <div class="frame-wrapper">
                         <iframe src="{webinar.link}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         <p class="text-white">{webinar.description}</p>

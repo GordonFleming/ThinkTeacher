@@ -14,10 +14,16 @@
 <h1 class="mb-4 text-center">The <span class="think">ThinkTeacher</span> Team</h1>
 
 <div class="container">
-    <div class="row text-center mt-5 mb-5">
+    <div class="row text-center mt-5 mb-5 justify-content-center">
         <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
             and nurturing networks. Think Teacher's vision is to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
         </h3>
+        <h2 class="mt-3">Message from our Founder</h2>
+        <div class="col-lg-6 col-md-12">
+            <div class="frame-wrapper">
+                <iframe src="https://www.youtube.com/embed/JcCvutWW_QM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
     </div>
 
     <div class="row">
@@ -237,5 +243,21 @@
     }
     .card-text {
         text-align: justify;
+    }
+
+    iframe{
+        max-width: 800px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 320px;
+    }
+    .frame-wrapper{
+        background-color: var(--logo-grey);
+        width: 100%;
+        height: auto;
+        padding: 3%;
+        border-radius: 5px;
+        border: 3px solid var(--logo-gold);
     }
 </style>
