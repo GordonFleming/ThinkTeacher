@@ -203,7 +203,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Head of Operations</h5>
                         <h6 class="card-subtitle text-muted">
-                            MEd
+                            BA (Wits) | HDE (Wits) | BA Hons (SA) | MEd(Wits)  
                         </h6>
                     </div>
                     <img class="d-block user-select-none img-fluid" src="https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Malcolm.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL01hbGNvbG0ucG5nIiwiaWF0IjoxNjI1NzY3OTcxLCJleHAiOjE5NDExMjc5NzF9.M1B3cACdVsZkHKoY8nI7FzgzhUx_0k4_i0vBVrv5CSE" alt="profile img">
