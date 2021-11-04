@@ -5,7 +5,6 @@
 
 		if (res.status === 404) {
 			const error = new Error(`The post with slug of ${slug} was not found`)
-            console.log(error)
 			return { status: 404, error }
 		} else {
 			const data = await res.json()

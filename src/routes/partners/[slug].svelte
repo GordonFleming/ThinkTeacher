@@ -35,7 +35,6 @@
     }
 
     export let partner
-    console.log(partner)
     let source
     if(partner) source = partner.bio
 

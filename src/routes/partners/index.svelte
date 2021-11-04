@@ -18,10 +18,8 @@
             const res = await axios.get(`${API_URL}/partners`)
             partners = res.data
             loading = false
-            console.log(partners)
         } catch (e) {
             let error = e
-            console.log(error)
         }
 	});
 </script>

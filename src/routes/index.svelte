@@ -28,10 +28,8 @@
 
             const res = await axios.get(`${API_URL}/users/count`)
             userCount += res.data
-            console.log(userCount)
         } catch (e) {
             let error = e
-            console.log(error)
         }
         countUp = new CountUp('countUser', userCount);
         intro = true

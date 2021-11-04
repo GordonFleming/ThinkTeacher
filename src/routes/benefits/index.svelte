@@ -41,7 +41,6 @@
 
     $: if($travelScroll && !loading){
         setTimeout(function(){
-            console.log("This is:", document.getElementById(`${$travelScroll}`))
             document.getElementById(`${$travelScroll}`).scrollIntoView({ behavior: 'smooth', block: 'center' })
         },200);            
     } 
@@ -64,6 +63,10 @@
 
     let source, readMore = false
 </script>
+
+<svelte:head>
+	<title>Benefits</title>
+</svelte:head>
 
 <div class="container text-center">
     <h1>Exclusive benefits for <span class="text-logo-gold">Think</span>Teacher members</h1>

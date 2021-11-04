@@ -17,7 +17,6 @@
             const res = await axios.get(`${API_URL}/posts`)
             posts = res.data
             loading = false
-            console.log(posts)
         } catch (e) {
             error = e
         }
