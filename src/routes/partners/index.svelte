@@ -58,9 +58,12 @@
                 </div>
             {/each}
 
-            <div class="mt-sm-4 text-center">
+            <div class="mt-4 text-center">
                 <button class="btn btn-lg bg-gold mx-auto shadow-lg cta" style="width: 300px;" on:click={() => goto("/benefits")}><h4 class="text-black mt-2">Check their benefits</h4></button>
+                <p class="mt-3">Interested in being a ThinkTeacher partner? Contact <a href="mailto:bridget@thinkteacher.co.za">bridget@thinkteacher.co.za</a>.</p>
             </div>
+
+
         </div>
     {/if}
 </div>

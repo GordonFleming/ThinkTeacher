@@ -88,7 +88,7 @@
         <!-- Travel -->
             <div class="grey-grad row justify-content-center" id="travel">
                 <h2 class="display-3">Travel</h2>
-                <div class="col-6">
+                <div class="col-6 mt-3">
                     <div class="card mb-3 bg-dark mx-auto" style="max-width: 540px;">
                         <div class="row g-0">
                         <div class="col-md-5">
@@ -137,7 +137,7 @@
         <!-- Wellbeing -->
             <div class="grey-grad row big-gap justify-content-center" id="wellness">
                 <h2 class="display-3">Wellbeing</h2>
-                <div class="col-6">
+                <div class="col-6 mt-3">
                     <div class="card mb-3 bg-dark mx-auto" style="max-width: 540px;">
                         <div class="row g-0">
                         <div class="col-md-5">
@@ -192,7 +192,7 @@
         <!-- MedicalAid -->
             <div class="grey-grad row justify-content-center big-gap" id="MedicalAid">
                 <h2 class="display-3">Medical Aid</h2>
-                <div class="col-6">
+                <div class="col-6 mt-3">
                     <div class="card mb-3 bg-dark mx-auto" style="max-width: 540px;">
                         <div class="row g-0">
                         <div class="col-md-5">
