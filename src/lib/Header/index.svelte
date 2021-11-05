@@ -12,7 +12,6 @@
 
     afterUpdate(() =>{
         $name = localStorage.getItem("name");
-        console.log($name)
 	})
 
     function logoutUser(){

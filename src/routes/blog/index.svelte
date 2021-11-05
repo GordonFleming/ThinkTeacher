@@ -1,29 +1,29 @@
-<script>
-	import { goto } from '$app/navigation'
-    import { onMount } from 'svelte'
-    import axios from 'axios'
-    import { Jumper } from 'svelte-loading-spinners'
+<script  context="module">
     import { prod } from '$lib/env.js'
-
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
         API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
     }
 
-    let loading = true
+	export const load = async ({ fetch }) => {
+        const res = await fetch(`${API_URL}/posts`)
 
-    onMount(async () => {
-        try {
-            const res = await axios.get(`${API_URL}/posts`)
-            posts = res.data
-            loading = false
-        } catch (e) {
-            error = e
-        }
-	});
+        if (res.ok) {
+			const data = await res.json()
+            return { props: { posts: data } }
+		}
 
+        return {
+			status: res.status,
+			error: new Error(`Could not load ${url}`)
+		};
+	};
+</script>
 
-	let posts = [];
+<script>
+	import { goto } from '$app/navigation'
+
+	export let posts
 </script>
 
 <svelte:head>
@@ -35,12 +35,7 @@
 </div>
 
 <div class="container mx-auto mt-4 mb-5">
-    {#if loading}
-        <div class="d-flex justify-content-center mt-5">
-            <Jumper size="150" color="#5C677D" unit="px" duration="1s"></Jumper>
-        </div>
-    {/if}
-    {#if posts.length <= 0 && !loading}
+    {#if posts.length <= 0}
         <h3 class="text-center">No posts are on the blog yet, check back another time.</h3>
     {:else}
         <div class="row justify-content-center">

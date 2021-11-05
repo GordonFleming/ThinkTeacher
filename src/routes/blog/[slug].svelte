@@ -1,15 +1,23 @@
 <script  context="module">
+    import { prod } from '$lib/env.js'
+    let API_URL = 'http://localhost:1337'
+    if(prod === "true"){
+        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+    }
+
 	export const load = async ({ page: { params }, fetch }) => {
 		const { slug } = params
-        const res = await fetch('https://thinkteacher-strapi.glass.splyce.dev/posts?slug=' + slug)
+        const res = await fetch(`${API_URL}/posts?slug=` + slug)
 
-		if (res.status === 404) {
-			const error = new Error(`The post with slug of ${slug} was not found`)
-			return { status: 404, error }
-		} else {
+        if (res.ok) {
 			const data = await res.json()
-			return { props: { post: data[0] } }
+            return { props: { post: data[0] } }
 		}
+
+        return {
+			status: res.status,
+			error: new Error(`Could not load ${url}`)
+		};
 	};
 </script>
 
@@ -24,13 +32,7 @@
 <script>
     import Icon from 'svelte-awesome'
     import { arrowLeft } from 'svelte-awesome/icons'
-    import { prod } from '$lib/env.js'
     import SvelteMarkdown from 'svelte-markdown'
-
-    let API_URL = 'http://localhost:1337'
-    if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
-    }
 
     export let post
     let date
@@ -45,7 +47,7 @@
 </script>
 
 {#if post}
-        <div class="container bg-dark mt-4 border-custom mb-5">
+    <div class="container bg-dark mt-4 border-custom mb-5">
         <a href="/blog"><Icon data={ arrowLeft } scale="1.8"/></a>
         <img class="img-fluid mx-auto d-block mt-2" src='{post.image.url}' alt="Blog banner">
 
@@ -67,6 +69,7 @@
         <h2>Not found: 404</h2>
     </div>
 {/if}
+
 
 <style>
     img {
