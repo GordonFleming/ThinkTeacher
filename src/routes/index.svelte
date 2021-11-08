@@ -1,36 +1,46 @@
-<script>
-    import Logo from '$lib/Components/logo.svelte'
-    import { goto } from '$app/navigation'
-    import { CountUp } from 'countup.js'
-    import { onMount, afterUpdate, onDestroy } from 'svelte'
+<script  context="module">
     import { prod } from '$lib/env.js'
-    import viewport from '$lib/useViewportAction.js';
-    import { name, travelScroll, firstTime } from '$lib/stores'
-    import axios from 'axios'
-    import { fly } from 'svelte/transition';
-
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
         API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
     }
 
+	export const load = async ({ fetch }) => {
+        const res = await fetch(`${API_URL}/users/count`)
+
+        if (res.ok) {
+			const data = await res.json()
+            return { props: { userCount: data } }
+		}
+
+        return {
+			status: res.status,
+			error: new Error(`Could not load ${url}`)
+		};
+	};
+</script>
+
+<script>
+    import Logo from '$lib/Components/logo.svelte'
+    import { goto } from '$app/navigation'
+    import { CountUp } from 'countup.js'
+    import { onMount, afterUpdate, onDestroy } from 'svelte'
+    import viewport from '$lib/useViewportAction.js';
+    import { name, travelScroll, firstTime } from '$lib/stores'
+    import { fly } from 'svelte/transition';
+
     let intro = null
-    let countUp, userCount = 100
+    let countUp
+    export let userCount
 
     setTimeout(function(){
         intro = false
     },2250);
 
     onMount(async () =>{
-        try {
-            // To stop case where user reloads with the counter in view so therefore nothing is triggered...
-            document.body.scrollTop = 0
-
-            const res = await axios.get(`${API_URL}/users/count`)
-            userCount += res.data
-        } catch (e) {
-            let error = e
-        }
+        // To stop case where user reloads with the counter in view so therefore nothing is triggered...
+        document.body.scrollTop = 0
+        userCount += 100
         countUp = new CountUp('countUser', userCount);
         intro = true
 	})
