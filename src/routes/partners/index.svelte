@@ -1,21 +1,48 @@
 <script  context="module">
     import { prod } from '$lib/env.js'
+    
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
         API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
     }
 
 	export const load = async ({ fetch }) => {
-        const res = await fetch(`${API_URL}/partners`)
+        const endpoint = `${API_URL}/graphql`;
+        const headers = {
+            "content-type": "application/json",
+        };
+        const graphqlQuery = {
+            "operationName": "fetchPartners",
+            "query": `query fetchPartners {     
+                partners {
+                    id,
+                    name,
+                    description,
+                    logo{url},
+                    company_name,
+                    category{name},
+                    slug
+                } 
+            }`,
+            "variables": {}
+        };
+
+        const options = {
+            "method": "POST",
+            "headers": headers,
+            "body": JSON.stringify(graphqlQuery)
+        };
+
+        const res = await fetch(endpoint, options);
 
         if (res.ok) {
 			const data = await res.json()
-            return { props: { partners: data } }
+            return { props: { partners: data.data.partners } }
 		}
 
         return {
 			status: res.status,
-			error: new Error(`Could not load ${url}`)
+			error: new Error(`Could not load page`)
 		};
 	};
 </script>
