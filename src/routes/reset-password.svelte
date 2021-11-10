@@ -1,5 +1,6 @@
 <script>
     import { onMount } from 'svelte'
+    import { goto } from '$app/navigation'
     import axios from 'axios'
     import { prod } from '$lib/env.js'
     import z from 'zxcvbn'
@@ -90,6 +91,7 @@
 
                     {#if res}
                         <h4 class="success-col">Password Reset</h4>
+                        <button class="btn btn-secondary mx-auto mt-3 mb-3 fw-bold fs-5" style="width: 300px;" on:click={() => goto("/login")}>Login</button>
                     {/if}
                     <form>
                         <div class="form-outline form-white mb-2 text-left">
