@@ -55,6 +55,7 @@
                     budget: budget,
                 }],
                 partnerEmail: partnerEmail,
+                users_permissions_user: user,
             })
             .then(response => {
                 msg = fullname + ", you have successfully made contact with ThinkTeacher's partner. The partner will be in touch with you soon."
