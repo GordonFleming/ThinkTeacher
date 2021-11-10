@@ -2,7 +2,7 @@
     import axios from 'axios'
     import { goto } from '$app/navigation'
     import Icon from 'svelte-awesome'
-    import { arrowLeft } from 'svelte-awesome/icons'
+    import { arrowLeft, eye, eyeSlash } from 'svelte-awesome/icons'
 	import { sgKey, prod } from '$lib/env.js'
     import z from 'zxcvbn'
     import saIdParser from 'south-african-id-parser'
@@ -127,6 +127,18 @@
             errorMsg = "Password not strong enough"
         }
     }
+
+    let seePlz = true
+    function seePassword() {
+        var x = document.getElementById("Password");
+        if (x.type === "password") {
+            x.type = "text";
+            seePlz = false
+        } else {
+            seePlz = true
+            x.type = "password";
+        }
+    }
 </script>
 
 <svelte:head>
@@ -167,7 +179,8 @@
                             </div>
                             <div class="form-outline form-white mb-4 text-left">
                                 <label class="form-label" for="Password">Password</label>
-                                <input type="password" id="Password" class="form-control form-control-lg" placeholder="password" bind:value={password} required />
+                                <input type="password" id="Password" class="form-control form-control-lg" placeholder="password" style="margin-right: -2.2rem; display:inline-block;" bind:value={password} required/>
+                                <i on:click={seePassword}><Icon data={ (seePlz) ? eye : eyeSlash } scale="1.5" style="cursor: pointer; display:inline-block; z-index: 99;"/></i>
                                 {#if password.length > 0}
                                     <div class="progress mt-2">
                                         <div class="progress-bar {barCol}" role="progressbar" style="width: {progress}%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
