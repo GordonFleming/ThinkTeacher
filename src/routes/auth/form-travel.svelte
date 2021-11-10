@@ -33,7 +33,8 @@
         ttNum=user.ttCode
     })
 
-    let startDate, endDate, typeHoliday = $travelType, reason, where, nationality=true, numChild, numAdult, budget, partnerEmail="gdoig@mweb.co.za"
+    let startDate, endDate, typeHoliday = $travelType, reason, where, nationality=true, numChild, numAdult, budget
+    const partnerEmail="gdoig@mweb.co.za"
 
     async function submitForm(){
         await axios
@@ -56,7 +57,6 @@
                 partnerEmail: partnerEmail,
             })
             .then(response => {
-                console.log('Form values: ', response.data)
                 msg = fullname + ", you have successfully made contact with ThinkTeacher's partner. The partner will be in touch with you soon."
                 document.getElementById("contactPartner").reset()
             })
@@ -169,9 +169,6 @@
                             <button class="btn btn-outline-light btn-lg px-4 mt-4" type="submit" on:click|preventDefault={submitForm} disabled={buttonSubmit}>Submit</button>
                         </form>
                     </div>
-                    <!-- <div>
-                        <p class="mb-0">Partner's email <a href="mailto:gdoig@mweb.co.za" class="text-white-50 fw-bold">gdoig@mweb.co.za</a></p>
-                    </div> -->
                     </div>
                 </div>
                 </div>
