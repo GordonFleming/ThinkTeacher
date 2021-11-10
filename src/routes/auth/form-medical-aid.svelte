@@ -32,7 +32,8 @@
         ttNum=user.ttCode
     })
 
-    let residence, chronic, medicalAid, gapcover, dependants, scheme, partnerEmail="thinkteacher@sahealth.co.za"
+    let residence, chronic, medicalAid, gapcover, dependants, scheme
+    const partnerEmail="thinkteacher@sahealth.co.za"
 
     async function submitForm(){
         await axios
@@ -50,9 +51,9 @@
                     scheme: scheme,
                 }],
                 partnerEmail: partnerEmail,
+                users_permissions_user: user,
             })
             .then(response => {
-                console.log('Form values: ', response.data)
                 msg = fullname + ", you have successfully made contact with ThinkTeacher's partner. The partner will be in touch with you soon."
                 document.getElementById("contactPartner").reset()
             })
@@ -136,8 +137,8 @@
                                     <option value="students">Students</option>
                                     <option value="entry_level_options">Entry Level Options</option>
                                     <option value="basic_hospital_plans">Basic Hospital Plans</option>
-                                    <option value="better_hostpital_plans">Better Hostpital Plans</option>
-                                    <option value="hostpital_plan_plus_savings">Hostpital Plan Plus Savings</option>
+                                    <option value="better_hospital_plans">Better Hospital Plans</option>
+                                    <option value="hospital_plan_plus_savings">Hospital Plan Plus Savings</option>
                                     <option value="comprehensive">Comprehensive</option>
                                     <option value="smart_plans">Smart Plans</option>
                                 </select>
@@ -145,9 +146,7 @@
                             <button class="btn btn-outline-light btn-lg px-4 mt-4" type="submit" on:click|preventDefault={submitForm} disabled={buttonSubmit}>Submit</button>
                         </form>
                     </div>
-                    <!-- <div>
-                        <p class="mb-0">Partner's email <a href="mailto:thinkteacher@sahealth.co.za" class="text-white-50 fw-bold">thinkteacher@sahealth.co.za</a></p>
-                    </div> -->
+
                     </div>
                 </div>
                 </div>
