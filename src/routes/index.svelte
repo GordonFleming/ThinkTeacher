@@ -144,16 +144,16 @@
 
     <div class="row mt-5 text-center justify-content-center p-3 logo-box">
         <div class="col-3">
-            <img class="img-fluid logo" src="SAHB.webp" alt="partner">
+            <img class="img-fluid logo" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_SAHB_LOGO_HIGH_RES_ec14dd3c1d.webp" alt="partner">
         </div>
         <div class="col-3 d-flex flex-wrap align-items-center">
-            <img class="img-fluid logo" src="ROARRR.webp" alt="partner">
+            <img class="img-fluid logo" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_ROARRR_d380578528.webp" alt="partner">
         </div>
         <div class="col-3">
-            <img class="img-fluid logo" src="Cirrus.webp" alt="partner">
+            <img class="img-fluid logo" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_Cirrus_Image_2_70004a2daf.webp" alt="partner">
         </div>
         <div class="col-3">
-            <img class="img-fluid logo" src="kim.webp" alt="partner">
+            <img class="img-fluid logo" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_kim_forbes_6ee77e52f4.png" alt="partner">
         </div>
     </div>
 </div>
