@@ -79,7 +79,13 @@
     </svg>
 </div>
 
-<div class="container mt-5 mb-5">
+<div class="container text-center mt-4">
+    <video controls autoplay muted>
+        <source src="https://strapi-upload-s3.glass.splyce.dev/media/TT_INTRO_2_f25c014007.webm" type="video/webm">
+    </video>
+</div>
+
+<div class="container mt-4 mb-5">
     <div class="row text-center grey-grad rounded justify-content-center big-gap">
         <div class="col-12 p-4">
             <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
@@ -233,4 +239,8 @@
         border: var(--logo-gold) 3px solid;
         border-radius: 2px;
     }
+    video {
+  width: 100%;
+  height: auto;
+}
 </style>
