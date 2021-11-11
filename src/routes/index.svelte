@@ -240,7 +240,8 @@
         border-radius: 2px;
     }
     video {
-  width: 100%;
-  height: auto;
-}
+        max-width: 750px;
+        width: 100%;
+        height: auto;
+    }
 </style>
