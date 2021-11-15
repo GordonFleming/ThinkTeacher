@@ -47,7 +47,7 @@
         <h3>Checking if you are a valid member...</h3>
     </div>
 {:else} 
-    <div class="container text-center p-3">
+    <div class="container text-center">
         <div class="pt-2">
             {#if errMsg !== undefined}
                 <h1>{errMsg}</h1>
