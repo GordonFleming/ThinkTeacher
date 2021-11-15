@@ -121,6 +121,7 @@
                                     <p class="card-text">
                                         {@html trvl.description}
                                     </p>
+                                    <button class="btn bg-gold shadow cta text-black fs-5 p-1" on:click={() => travelTypeCompute(trvl.name)}>Enquire</button>
                                 </div>
                                 <div class="card-footer">
                                     <span class="badge bg-light">{trvl.partner.company_name}</span>
