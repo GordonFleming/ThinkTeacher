@@ -51,13 +51,7 @@
     let health = []
 
     function travelTypeCompute(typeTrav){
-        if(typeTrav.toLowerCase() == 'ski'){
-            $travelType = "ski"
-        }else if(typeTrav.toLowerCase() == 'bush'){
-            $travelType = "bush"
-        }else{
-            $travelType = "beach"
-        }
+        $travelType = typeTrav.toLowerCase().replace(" ","_");
         goto('/auth/form-travel')
     }
 
