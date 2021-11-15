@@ -122,7 +122,7 @@
                                         <option value="beach">Beach</option>
                                         <option value="bush">Bush</option>
                                         <option value="ski">Ski</option>
-                                        <option value="mountain">Mountain</option>
+                                        <option value="mountains">Mountains</option>
                                         <option value="city">City</option>
                                         <option value="adventure">Adventure</option>
                                         <option value="conference">Conference</option>
