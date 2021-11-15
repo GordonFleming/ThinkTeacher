@@ -18,16 +18,8 @@
 
     onMount(() =>{
         $name = localStorage.getItem("name");
-        console.log($name)
+        if($name) {alert("Logout first"); goto("/");}
 	})
-
-    // function logoutUser(){
-    //     localStorage.clear()
-    //     $name = null
-    //     goto("/")
-    // }
-
-    $: if($name) {alert("Logout first"); goto("/");}
 
     async function loginUser(){
         await axios
