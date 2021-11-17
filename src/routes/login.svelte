@@ -3,8 +3,8 @@
     import axios from 'axios'
     import { goto } from '$app/navigation'
     import Icon from 'svelte-awesome'
-    import { user, name, id } from '$lib/stores'
-    import { facebook, twitter, instagram, linkedin } from 'svelte-awesome/icons'
+    import { user, name, id, errMsg } from '$lib/stores'
+    import { facebook, twitter, instagram } from 'svelte-awesome/icons'
     import { browserSet } from '$lib/re_utils'
     import { prod } from '$lib/env.js'
 
@@ -16,9 +16,13 @@
     let usernameEmail, password
     let errorMsg
 
+    function logoutUser(){
+        localStorage.clear()
+        $name = null
+    }
+
     onMount(() =>{
-        $name = localStorage.getItem("name");
-        if($name) {alert("Logout first"); goto("/");}
+        logoutUser()
 	})
 
     async function loginUser(){
@@ -34,8 +38,7 @@
             $name = response.data.username;
             browserSet("id", response.data.user.id)
             $id = response.data.id
-            console.log("The stored user: " + JSON.stringify($user))
-            goto('/')
+            goto('/benefits')
         })
         .catch(error => {
             console.log('An error occurred:', error.response)
@@ -64,6 +67,11 @@
                             <a href="/confirm-email">Resend confirmation email?</a>
                         {/if}
                         <h4 class="error-col">{errorMsg}</h4>
+                    {/if}
+
+                    {#if $errMsg}
+                        <h4 class="error-col">{$errMsg}</h4>
+                        <p class="error-col">You will need to login again, as your token expired.</p>
                     {/if}
                     
                     <form name="login">

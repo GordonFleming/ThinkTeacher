@@ -60,7 +60,6 @@
             },
             { headers: { Authorization: 'Bearer ' + localStorage.getItem("jwt"),} }
             ).then(response => {
-                console.log('reponse: ', response)
                 msg = "Success!"
                 setTimeout(backFalse, 2000)
                 $name = username
