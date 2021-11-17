@@ -133,7 +133,7 @@
                             <div class="col-12 mt-2">
                                 <label class="form-label" for="scheme">What plan would you be interested in?</label>
                                 <select class="form-select" id="scheme" bind:value={scheme} required>
-                                    <option value="" selected>choose a plan</option>
+                                    <option value="" selected>choose</option>
                                     <option value="students">Students</option>
                                     <option value="entry_level_options">Entry Level Options</option>
                                     <option value="basic_hospital_plans">Basic Hospital Plans</option>

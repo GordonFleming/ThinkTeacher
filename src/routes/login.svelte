@@ -71,7 +71,6 @@
 
                     {#if $errMsg}
                         <h4 class="error-col">{$errMsg}</h4>
-                        <p class="error-col">You will need to login again, as your token expired.</p>
                     {/if}
                     
                     <form name="login">

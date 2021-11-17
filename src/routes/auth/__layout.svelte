@@ -5,9 +5,8 @@
     import axios from 'axios'
     import { goto } from '$app/navigation'
     import { onMount } from 'svelte'
-    import { Jumper } from 'svelte-loading-spinners'
     import { prod } from '$lib/env.js'
-    import { name, errMsg } from '$lib/stores'
+    import { errMsg } from '$lib/stores'
 
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
@@ -24,15 +23,13 @@
                 console.log(error.response.data);
                 if (error.response.data.error == 'Unauthorized') {
                     goto("/login")
-                    console.log("JWT token invalid");
-                    $errMsg = error.response.data.error + ": " + error.response.data.message
+                    console.log("JWT token invalid: ", error.response.data.message);
+                    $errMsg = "Your session expired, please login again."
                 }
             });
         }else{
             goto("/login");
         }
-
-        //name = res.data.username
     })
 </script>
 
