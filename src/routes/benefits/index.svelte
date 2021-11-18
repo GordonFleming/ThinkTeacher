@@ -85,31 +85,6 @@
         <!-- Travel -->
             <div class="grey-grad row justify-content-center" id="travel">
                 <h2 class="display-3">Travel</h2>
-                <div class="col-6 mt-3">
-                    <div class="card mb-3 bg-dark mx-auto" style="max-width: 540px;">
-                        <div class="row g-0">
-                        <div class="col-md-5">
-                            <img
-                            src="{travel[0].partner.logo.url}"
-                            alt="logo"
-                            class="img-fluid"
-                            />
-                        </div>
-                        <div class="col-md-7">
-                            <div class="card-body">
-                            <h3 class="card-title">{travel[0].partner.company_name}</h3>
-                            <p class="card-text">
-                                {travel[0].partner.description}
-                            </p>
-                            <!-- <small class="text-muted">email: <a href="mailto:{travel[0].partner.email}">{travel[0].partner.email}</a></small> -->
-                            </div>
-                            <p class="card-footer card-text">
-                                <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + travel[0].partner.slug)}>Read More</button>
-                            </p>
-                        </div>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="row mt-2 justify-content-center">
                     {#each travel as trvl}
@@ -132,34 +107,37 @@
                 </div>
             </div>
 
+            <h3 class="mt-3">Partner Information:</h3>
+            <div class="col-6">
+                <div class="card mb-3 bg-dark mx-auto" style="max-width: 540px;">
+                    <div class="row g-0">
+                    <div class="col-md-5">
+                        <img
+                        src="{travel[0].partner.logo.url}"
+                        alt="logo"
+                        class="img-fluid"
+                        />
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                        <h3 class="card-title">{travel[0].partner.company_name}</h3>
+                        <p class="card-text">
+                            {travel[0].partner.description}
+                        </p>
+                        <!-- <small class="text-muted">email: <a href="mailto:{travel[0].partner.email}">{travel[0].partner.email}</a></small> -->
+                        </div>
+                        <p class="card-footer card-text">
+                            <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + travel[0].partner.slug)}>Read More</button>
+                        </p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
         <!-- Wellbeing -->
             <div class="grey-grad row big-gap justify-content-center" id="wellness">
                 <h2 class="display-3">Wellbeing</h2>
-                <div class="col-6 mt-3">
-                    <div class="card mb-3 bg-dark mx-auto" style="max-width: 540px;">
-                        <div class="row g-0">
-                        <div class="col-md-5">
-                            <img
-                            src="{wellness[0].partner.logo.url}"
-                            alt="logo"
-                            class="img-fluid"
-                            />
-                        </div>
-                        <div class="col-md-7">
-                            <div class="card-body">
-                            <h3 class="card-title">{wellness[0].partner.company_name}</h3>
-                            <p class="card-text">
-                                {wellness[0].partner.description}
-                            </p>
-                            <!-- <small class="text-muted">email: <a href="mailto:{wellness[0].partner.email}">{wellness[0].partner.email}</a></small> -->
-                            </div>
-                            <p class="card-footer card-text">
-                                <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + wellness[0].partner.slug)}>Read More</button>
-                            </p>
-                        </div>
-                        </div>
-                    </div>
-                </div>
+                
                 <div class="row mt-2 justify-content-center">
                     {#each wellness as well}
                         <div class="col-sm-12 col-md-10 col-lg-6">
@@ -185,12 +163,60 @@
                         </div>
                     {/each}
                 </div>
+
+                <h3 class="mt-3">Partner Information:</h3>
+                <div class="col-6">
+                    <div class="card mb-3 bg-dark mx-auto" style="max-width: 540px;">
+                        <div class="row g-0">
+                        <div class="col-md-5">
+                            <img
+                            src="{wellness[0].partner.logo.url}"
+                            alt="logo"
+                            class="img-fluid"
+                            />
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                            <h3 class="card-title">{wellness[0].partner.company_name}</h3>
+                            <p class="card-text">
+                                {wellness[0].partner.description}
+                            </p>
+                            <!-- <small class="text-muted">email: <a href="mailto:{wellness[0].partner.email}">{wellness[0].partner.email}</a></small> -->
+                            </div>
+                            <p class="card-footer card-text">
+                                <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + wellness[0].partner.slug)}>Read More</button>
+                            </p>
+                        </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         <!-- MedicalAid -->
             <div class="grey-grad row justify-content-center big-gap" id="MedicalAid">
                 <h2 class="display-3">Medical Aid</h2>
-                <div class="col-6 mt-3">
+               
+                <div class="row mt-2 justify-content-center">
+                    {#each health as heal}
+                        <div class="col-sm-12 col-md-10 col-lg-6">
+                            <div class="card bg-dark m-2 shadow-lg">
+                                <img class="img-fluid rounded cta"  src="{heal.banner.url}" alt="cover" on:click={() => goto('/auth/form-medical-aid')}>
+                                <div class="card-body">
+                                    <h3 class="card-title text-logo-gold">Think <span class="text-lighter-blue">{heal.name}</span></h3>
+                                    <p class="card-text">
+                                        {@html heal.description}
+                                    </p>
+                                </div>
+                                <div class="card-footer">
+                                    <span class="badge bg-light">{heal.partner.company_name}</span>
+                                </div>
+                            </div>
+                        </div>
+                    {/each}
+                </div>
+
+                <h3 class="mt-3">Partner Information:</h3>
+                <div class="col-6">
                     <div class="card mb-3 bg-dark mx-auto" style="max-width: 540px;">
                         <div class="row g-0">
                         <div class="col-md-5">
@@ -214,24 +240,6 @@
                         </div>
                         </div>
                     </div>
-                </div>
-                <div class="row mt-2 justify-content-center">
-                    {#each health as heal}
-                        <div class="col-sm-12 col-md-10 col-lg-6">
-                            <div class="card bg-dark m-2 shadow-lg">
-                                <img class="img-fluid rounded cta"  src="{heal.banner.url}" alt="cover" on:click={() => goto('/auth/form-medical-aid')}>
-                                <div class="card-body">
-                                    <h3 class="card-title text-logo-gold">Think <span class="text-lighter-blue">{heal.name}</span></h3>
-                                    <p class="card-text">
-                                        {@html heal.description}
-                                    </p>
-                                </div>
-                                <div class="card-footer">
-                                    <span class="badge bg-light">{heal.partner.company_name}</span>
-                                </div>
-                            </div>
-                        </div>
-                    {/each}
                 </div>
             </div>
 
