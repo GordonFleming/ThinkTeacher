@@ -126,7 +126,7 @@
                                         <option value="city">City</option>
                                         <option value="adventure">Adventure</option>
                                         <option value="conference">Conference</option>
-                                        <option value="sports_tour">Sports Tour</option>
+                                        <option value="sports_tours">Sports Tours</option>
                                         <option value="other">Other</option>
                                     </select>
                                 </div>

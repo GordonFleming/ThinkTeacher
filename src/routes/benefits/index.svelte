@@ -1,42 +1,91 @@
-<script>
-    import { onMount } from 'svelte'
-    import { goto } from '$app/navigation';
-    import axios from 'axios'
-    import { Jumper } from 'svelte-loading-spinners'
+<script  context="module">
     import { prod } from '$lib/env.js'
-    import { travelScroll, travelType } from '$lib/stores'
-    import SvelteMarkdown from 'svelte-markdown'
-
-    let health_cat = 3, travel_cat = 2
+    
     let API_URL = 'http://localhost:1337'
+    let health_cat = 3, travel_cat = 2
     if(prod === "true"){
         API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
         health_cat = 2, travel_cat = 1
     }
 
-    let loading = true
+	export const load = async ({ fetch }) => {
+        const endpoint = `${API_URL}/graphql`;
+        const headers = {
+            "content-type": "application/json",
+        };
+        const graphqlQuery = {
+            "operationName": "fetchBenefits",
+            "query": `query fetchBenefits {     
+                packages {
+                    name,
+                    description,
+                    partner {
+                        company_name,
+                        category{
+                            id,
+                        },
+                        logo{
+                            url
+                        },
+                        slug
+                    },
+                    details,
+                    banner{
+                        url,
+                    }
+                } 
+            }`,
+            "variables": {}
+        };
+
+        const options = {
+            "method": "POST",
+            "headers": headers,
+            "body": JSON.stringify(graphqlQuery)
+        };
+
+        const res = await fetch(endpoint, options);
+
+        let packages = [], travel = [], health = [], wellness = [], source = ''
+
+        if (res.ok) {
+			const data = await res.json()
+            packages = data.data.packages
+            function seperatePackages(item){
+                console.log("test")
+                if(item.partner.category.id == travel_cat){
+                    travel.push(item)
+                }else if(item.partner.category.id == health_cat){
+                    health.push(item)
+                }else{
+                    wellness.push(item)
+                    source = wellness.details
+                }
+            } 
+
+            packages.forEach(seperatePackages)
+
+            return { props: { packages, travel, health, wellness, source} }
+		}
+
+        return {
+			status: res.status,
+			error: new Error(`Could not load page`)
+		};
+	};
+</script>
+
+<script>
+    import { onMount } from 'svelte'
+    import { goto } from '$app/navigation';
+    import { travelScroll, travelType } from '$lib/stores'
+    import SvelteMarkdown from 'svelte-markdown'
+
+    export let packages = []
+    console.log("test", packages)
 
     onMount(async () => {
         document.body.scrollTop = 0;
-        function seperatePackages(item){
-            if(item.partner.category === travel_cat){
-                travel.push(item)
-            }else if(item.partner.category === health_cat){
-                health.push(item)
-            }else{
-                wellness.push(item)
-                source = wellness[0].details
-            }
-        }
-
-        try {
-            const res = await axios.get(`${API_URL}/packages`)
-            benefits = res.data
-            benefits.forEach(seperatePackages)
-            loading = false
-        } catch (e) {
-            error = e
-        }  	
 	});
 
     $: if($travelScroll && !loading){
@@ -45,17 +94,17 @@
         },200);            
     } 
 
-	let benefits = []
-    let travel = []
-    let wellness = []
-    let health = []
+    export let travel = []
+    export let wellness = []
+    export let health = []
+    console.log(travel)
 
     function travelTypeCompute(typeTrav){
         $travelType = typeTrav.toLowerCase().replace(" ","_");
         goto('/auth/form-travel')
     }
 
-    let source, readMore = false
+    export let source, readMore = false
 </script>
 
 <svelte:head>
@@ -74,37 +123,94 @@
             <li class="list-inline-item"><h4 on:click={() => document.getElementById('courses').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Courses <span class="text-logo-gold">-</span></h4></li>
             <li class="list-inline-item"><h4 on:click={() => document.getElementById('insurance').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Insurance</h4></li>
         </ul>
+        <ul class="list-inline">
+            <li class="list-inline-item"><h4 on:click={() => document.getElementById('Books').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Books <span class="text-logo-gold">-</span></h4></li>
+            <li class="list-inline-item"><h4 on:click={() => document.getElementById('IT').scrollIntoView({ behavior: 'smooth', block: 'center' })}>IT <span class="text-logo-gold">-</span></h4></li>
+            <li class="list-inline-item"><h4 on:click={() => document.getElementById('Spa').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Spa</h4></li>
+        </ul>
     </div>
     
     <div class="row mt-4 mb-5 justify-content-center">
-        {#if loading}
-            <div class="d-flex justify-content-center mt-5">
-                <Jumper size="150" color="#5C677D" unit="px" duration="1s"></Jumper>
-            </div>
-        {:else}
         <!-- Travel -->
-            <div class="grey-grad row justify-content-center" id="travel">
-                <h2 class="display-3">Travel</h2>
+        <div class="grey-grad row justify-content-center" id="travel">
+            <h2 class="display-3">Travel</h2>
 
-                <div class="row mt-2 justify-content-center">
-                    {#each travel as trvl}
-                        <div class="col-sm-12 col-md-10 col-lg-6">
-                            <div class="card bg-dark m-2 shadow-lg">
-                                <img class="img-fluid rounded cta"  src="{trvl.banner.url}" alt="cover" on:click={() => travelTypeCompute(trvl.name)}>
-                                <div class="card-body">
-                                    <h3 class="card-title text-logo-gold">Think <span class="text-lighter-blue">{trvl.name}</span></h3>
-                                    <p class="card-text">
-                                        {@html trvl.description}
-                                    </p>
-                                    <button class="btn bg-gold shadow cta text-black fs-5 p-1" on:click={() => travelTypeCompute(trvl.name)}>Enquire</button>
-                                </div>
-                                <div class="card-footer">
-                                    <span class="badge bg-light">{trvl.partner.company_name}</span>
-                                </div>
+            <div class="row mt-2 justify-content-center">
+                {#each travel as trvl}
+                    <div class="col-sm-12 col-md-10 col-lg-6">
+                        <div class="card bg-dark m-2 shadow-lg">
+                            <img class="img-fluid rounded cta"  src="{trvl.banner.url}" alt="cover" on:click={() => travelTypeCompute(trvl.name)}>
+                            <div class="card-body">
+                                <h3 class="card-title text-logo-gold">Think <span class="text-lighter-blue">{trvl.name}</span></h3>
+                                <p class="card-text">
+                                    {@html trvl.description}
+                                </p>
+                                <button class="btn bg-gold shadow cta text-black fs-5 p-1" on:click={() => travelTypeCompute(trvl.name)}>Enquire</button>
+                            </div>
+                            <div class="card-footer">
+                                <span class="badge bg-light">{trvl.partner.company_name}</span>
                             </div>
                         </div>
-                    {/each}
+                    </div>
+                {/each}
+            </div>
+        </div>
+
+        <h3 class="mt-3">Partner Information:</h3>
+        <div class="col-6">
+            <div class="card mb-3 bg-dark mx-auto" style="max-width: 540px;">
+                <div class="row g-0">
+                <div class="col-md-5">
+                    <img
+                    src="{travel[0].partner.logo.url}"
+                    alt="logo"
+                    class="img-fluid"
+                    />
                 </div>
+                <div class="col-md-7">
+                    <div class="card-body">
+                    <h3 class="card-title">{travel[0].partner.company_name}</h3>
+                    <p class="card-text">
+                        {travel[0].partner.description}
+                    </p>
+                    <!-- <small class="text-muted">email: <a href="mailto:{travel[0].partner.email}">{travel[0].partner.email}</a></small> -->
+                    </div>
+                    <p class="card-footer card-text">
+                        <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + travel[0].partner.slug)}>Read More</button>
+                    </p>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wellbeing -->
+        <div class="grey-grad row big-gap justify-content-center" id="wellness">
+            <h2 class="display-3">Wellbeing</h2>
+            
+            <div class="row mt-2 justify-content-center">
+                {#each wellness as well}
+                    <div class="col-sm-12 col-md-10 col-lg-6">
+                        <div class="card bg-dark m-2 shadow-lg">
+                            <img class="img-fluid rounded cta"  src="{well.banner.url}" alt="cover" on:click={() => goto('/auth/form-wellbeing')}>
+                            <!-- <small class="text-white">Image by: David Travis, Unsplash.</small> -->
+                            <div class="card-body">
+                                <h3 class="card-title text-logo-gold">Think <span class="text-lighter-blue">{well.name}</span></h3>
+                                <p class="card-text">
+                                    {@html well.description}
+                                </p>
+                                {#if readMore}
+                                    <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => readMore=false}>Read less</button><br><br>
+                                    <p style="text-align: justify;"> <SvelteMarkdown {source} /></p>
+                                {:else}
+                                    <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => readMore=true}>Read more</button>
+                                {/if}
+                            </div>
+                            <div class="card-footer">
+                                <span class="badge bg-light">{well.partner.company_name}</span>
+                            </div>
+                        </div>
+                    </div>
+                {/each}
             </div>
 
             <h3 class="mt-3">Partner Information:</h3>
@@ -113,154 +219,112 @@
                     <div class="row g-0">
                     <div class="col-md-5">
                         <img
-                        src="{travel[0].partner.logo.url}"
+                        src="{wellness[0].partner.logo.url}"
                         alt="logo"
                         class="img-fluid"
                         />
                     </div>
                     <div class="col-md-7">
                         <div class="card-body">
-                        <h3 class="card-title">{travel[0].partner.company_name}</h3>
+                        <h3 class="card-title">{wellness[0].partner.company_name}</h3>
                         <p class="card-text">
-                            {travel[0].partner.description}
+                            {wellness[0].partner.description}
                         </p>
-                        <!-- <small class="text-muted">email: <a href="mailto:{travel[0].partner.email}">{travel[0].partner.email}</a></small> -->
+                        <!-- <small class="text-muted">email: <a href="mailto:{wellness[0].partner.email}">{wellness[0].partner.email}</a></small> -->
                         </div>
                         <p class="card-footer card-text">
-                            <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + travel[0].partner.slug)}>Read More</button>
+                            <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + wellness[0].partner.slug)}>Read More</button>
                         </p>
                     </div>
                     </div>
                 </div>
             </div>
-
-        <!-- Wellbeing -->
-            <div class="grey-grad row big-gap justify-content-center" id="wellness">
-                <h2 class="display-3">Wellbeing</h2>
-                
-                <div class="row mt-2 justify-content-center">
-                    {#each wellness as well}
-                        <div class="col-sm-12 col-md-10 col-lg-6">
-                            <div class="card bg-dark m-2 shadow-lg">
-                                <img class="img-fluid rounded cta"  src="{well.banner.url}" alt="cover" on:click={() => goto('/auth/form-wellbeing')}>
-                                <!-- <small class="text-white">Image by: David Travis, Unsplash.</small> -->
-                                <div class="card-body">
-                                    <h3 class="card-title text-logo-gold">Think <span class="text-lighter-blue">{well.name}</span></h3>
-                                    <p class="card-text">
-                                        {@html well.description}
-                                    </p>
-                                    {#if readMore}
-                                        <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => readMore=false}>Read less</button><br><br>
-                                        <p style="text-align: justify;"> <SvelteMarkdown {source} /></p>
-                                    {:else}
-                                        <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => readMore=true}>Read more</button>
-                                    {/if}
-                                </div>
-                                <div class="card-footer">
-                                    <span class="badge bg-light">{well.partner.company_name}</span>
-                                </div>
-                            </div>
-                        </div>
-                    {/each}
-                </div>
-
-                <h3 class="mt-3">Partner Information:</h3>
-                <div class="col-6">
-                    <div class="card mb-3 bg-dark mx-auto" style="max-width: 540px;">
-                        <div class="row g-0">
-                        <div class="col-md-5">
-                            <img
-                            src="{wellness[0].partner.logo.url}"
-                            alt="logo"
-                            class="img-fluid"
-                            />
-                        </div>
-                        <div class="col-md-7">
-                            <div class="card-body">
-                            <h3 class="card-title">{wellness[0].partner.company_name}</h3>
-                            <p class="card-text">
-                                {wellness[0].partner.description}
-                            </p>
-                            <!-- <small class="text-muted">email: <a href="mailto:{wellness[0].partner.email}">{wellness[0].partner.email}</a></small> -->
-                            </div>
-                            <p class="card-footer card-text">
-                                <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + wellness[0].partner.slug)}>Read More</button>
-                            </p>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        </div>
 
         <!-- MedicalAid -->
-            <div class="grey-grad row justify-content-center big-gap" id="MedicalAid">
-                <h2 class="display-3">Medical Aid</h2>
-               
-                <div class="row mt-2 justify-content-center">
-                    {#each health as heal}
-                        <div class="col-sm-12 col-md-10 col-lg-6">
-                            <div class="card bg-dark m-2 shadow-lg">
-                                <img class="img-fluid rounded cta"  src="{heal.banner.url}" alt="cover" on:click={() => goto('/auth/form-medical-aid')}>
-                                <div class="card-body">
-                                    <h3 class="card-title text-logo-gold">Think <span class="text-lighter-blue">{heal.name}</span></h3>
-                                    <p class="card-text">
-                                        {@html heal.description}
-                                    </p>
-                                </div>
-                                <div class="card-footer">
-                                    <span class="badge bg-light">{heal.partner.company_name}</span>
-                                </div>
-                            </div>
-                        </div>
-                    {/each}
-                </div>
-
-                <h3 class="mt-3">Partner Information:</h3>
-                <div class="col-6">
-                    <div class="card mb-3 bg-dark mx-auto" style="max-width: 540px;">
-                        <div class="row g-0">
-                        <div class="col-md-5">
-                            <img
-                            src="{health[0].partner.logo.url}"
-                            alt="logo"
-                            class="img-fluid"
-                            />
-                        </div>
-                        <div class="col-md-7">
+        <div class="grey-grad row justify-content-center big-gap" id="MedicalAid">
+            <h2 class="display-3">Medical Aid</h2>
+            
+            <div class="row mt-2 justify-content-center">
+                {#each health as heal}
+                    <div class="col-sm-12 col-md-10 col-lg-6">
+                        <div class="card bg-dark m-2 shadow-lg">
+                            <img class="img-fluid rounded cta"  src="{heal.banner.url}" alt="cover" on:click={() => goto('/auth/form-medical-aid')}>
                             <div class="card-body">
-                            <h3 class="card-title">{health[0].partner.company_name}</h3>
-                            <p class="card-text">
-                                {health[0].partner.description}
-                            </p>
-                            <!-- <small class="text-muted">email: <a href="mailto:{health[0].partner.email}">{health[0].partner.email}</a></small> -->
+                                <h3 class="card-title text-logo-gold">Think <span class="text-lighter-blue">{heal.name}</span></h3>
+                                <p class="card-text">
+                                    {@html heal.description}
+                                </p>
                             </div>
-                            <p class="card-footer card-text">
-                                <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + health[0].partner.slug)}>Read More</button>
-                            </p>
+                            <div class="card-footer">
+                                <span class="badge bg-light">{heal.partner.company_name}</span>
+                            </div>
                         </div>
+                    </div>
+                {/each}
+            </div>
+
+            <h3 class="mt-3">Partner Information:</h3>
+            <div class="col-6">
+                <div class="card mb-3 bg-dark mx-auto" style="max-width: 540px;">
+                    <div class="row g-0">
+                    <div class="col-md-5">
+                        <img
+                        src="{health[0].partner.logo.url}"
+                        alt="logo"
+                        class="img-fluid"
+                        />
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                        <h3 class="card-title">{health[0].partner.company_name}</h3>
+                        <p class="card-text">
+                            {health[0].partner.description}
+                        </p>
+                        <!-- <small class="text-muted">email: <a href="mailto:{health[0].partner.email}">{health[0].partner.email}</a></small> -->
                         </div>
+                        <p class="card-footer card-text">
+                            <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + health[0].partner.slug)}>Read More</button>
+                        </p>
+                    </div>
                     </div>
                 </div>
             </div>
+        </div>
 
         <!-- Legal -->
-            <div class="grey-grad row justify-content-center big-gap" id="legal">
-                <h2 class="display-3">Legal</h2>
-                <h4>Coming soon</h4>
-            </div>
+        <div class="grey-grad row justify-content-center big-gap" id="legal">
+            <h2 class="display-3">Legal</h2>
+            <h4>Nearly there...</h4>
+        </div>
 
         <!-- Courses -->
-            <div class="grey-grad row justify-content-center big-gap" id="courses">
-                <h2 class="display-3">Courses</h2>
-                <h4>Coming soon</h4>
-            </div>
+        <div class="grey-grad row justify-content-center big-gap" id="courses">
+            <h2 class="display-3">Courses</h2>
+            <h4>Nearly there...</h4>
+        </div>
 
         <!-- Insurance -->
-            <div class="grey-grad row justify-content-center big-gap" id="insurance">
-                <h2 class="display-3">Insurance</h2>
-                <h4>Coming soon</h4>
-            </div>
-        {/if}
+        <div class="grey-grad row justify-content-center big-gap" id="insurance">
+            <h2 class="display-3">Insurance</h2>
+            <h4>Nearly there...</h4>
+        </div>
+
+        <!-- Books -->
+        <div class="grey-grad row justify-content-center big-gap" id="Books">
+            <h2 class="display-3">Books</h2>
+            <h4>Coming soon</h4>
+        </div>
+        <!-- IT -->
+        <div class="grey-grad row justify-content-center big-gap" id="IT">
+            <h2 class="display-3">IT</h2>
+            <h4>Coming soon</h4>
+        </div>
+        <!-- Spa -->
+        <div class="grey-grad row justify-content-center big-gap" id="Spa">
+            <h2 class="display-3">Spa</h2>
+            <h4>Coming soon</h4>
+        </div>
     </div>
 </div>
 

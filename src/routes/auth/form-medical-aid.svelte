@@ -141,6 +141,7 @@
                                     <option value="hospital_plan_plus_savings">Hospital Plan Plus Savings</option>
                                     <option value="comprehensive">Comprehensive</option>
                                     <option value="smart_plans">Smart Plans</option>
+                                    <option value="gapcover">Gapcover</option>
                                 </select>
                             </div>
                             <button class="btn btn-outline-light btn-lg px-4 mt-4" type="submit" on:click|preventDefault={submitForm} disabled={buttonSubmit}>Submit</button>

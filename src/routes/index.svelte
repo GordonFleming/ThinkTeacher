@@ -1,5 +1,7 @@
 <script  context="module">
     import { prod } from '$lib/env.js'
+    import Carousel from '@beyonk/svelte-carousel'
+
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
         API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
@@ -114,48 +116,72 @@
     <div class="row grey-grad text-center big-gap">
         <h2 class="mb-5">Benefits</h2>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="well-being.webp" alt="well being" on:click={() => $travelScroll='wellness'}></a>
+            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/well_being_7d5c5b6063.webp" alt="well being" on:click={() => $travelScroll='wellness'}></a>
             <h3 class="mt-3">Wellbeing</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="travel.webp" alt="travel" on:click={() => $travelScroll='travel'}></a>
+            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/travel_65e3eb2228.webp" alt="travel" on:click={() => $travelScroll='travel'}></a>
             <h3 class="mt-3">Travel</h3>
         </div>        
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="health.webp" alt="medical aid" on:click={() => $travelScroll='MedicalAid'}></a>
+            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/health_1d4102b3e6.webp" alt="medical aid" on:click={() => $travelScroll='MedicalAid'}></a>
             <h3 class="mt-3">Medical Aid</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="insurance.webp" alt="invest" on:click={() => $travelScroll='insurance'}></a>
+            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/insurance_f6fd972123.webp" alt="invest" on:click={() => $travelScroll='insurance'}></a>
             <h3 class="mt-3">Insurance</h3>
-            <h5 class="text-logo-gold">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="legal.webp" alt="legal" on:click={() => $travelScroll='legal'}></a>
+            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/legal_ef185539e1.webp" alt="legal" on:click={() => $travelScroll='legal'}></a>
             <h3 class="mt-3">Legal</h3>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
+            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/courses_394e2373ce.webp" alt="courses" on:click={() => $travelScroll='courses'}></a>
+            <h3 class="mt-3">Courses</h3>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
+            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/bookstore_c9f01d18b8.webp" alt="Books" on:click={() => $travelScroll='Books'}></a>
+            <h3 class="mt-3">Books</h3>
             <h5 class="text-logo-gold">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="courses.webp" alt="courses" on:click={() => $travelScroll='courses'}></a>
-            <h3 class="mt-3">Courses</h3>
+            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/tech_1c4a22ee51.webp" alt="IT" on:click={() => $travelScroll='IT'}></a>
+            <h3 class="mt-3">IT</h3>
+            <h5 class="text-logo-gold">coming soon</h5>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
+            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/spa_b785512c3b.webp" alt="Spa" on:click={() => $travelScroll='Spa'}></a>
+            <h3 class="mt-3">Spa</h3>
             <h5 class="text-logo-gold">coming soon</h5>
         </div>
     </div>
 
     <div class="row mt-5 text-center justify-content-center p-3 logo-box">
-        <div class="col-3">
-            <img class="img-fluid logo" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_SAHB_LOGO_HIGH_RES_ec14dd3c1d.webp" alt="partner">
-        </div>
-        <div class="col-3 d-flex flex-wrap align-items-center">
-            <img class="img-fluid logo" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_ROARRR_d380578528.webp" alt="partner">
-        </div>
-        <div class="col-3">
-            <img class="img-fluid logo" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_Cirrus_Image_2_70004a2daf.webp" alt="partner">
-        </div>
-        <div class="col-3">
-            <img class="img-fluid logo" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_kim_forbes_6ee77e52f4.png" alt="partner">
-        </div>
+        <Carousel autoplay={2750} perPage={{1300:4, 1000: 3, 500: 2 }}>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_SAHB_LOGO_HIGH_RES_ec14dd3c1d.webp" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid mt-3" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_ROARRR_d380578528.webp" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_Cirrus_Image_2_70004a2daf.webp" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_kim_forbes_6ee77e52f4.png" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_SGM_Logo_b251d32022.webp" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_alexander_forbes_04df6e13e0.webp" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_MTC_New_Logo_large_7ae60c9ecf.webp" alt="partner"/>
+            </div>
+        </Carousel>
     </div>
+
 </div>
 
 <style>
