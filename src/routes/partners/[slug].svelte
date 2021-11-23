@@ -1,7 +1,14 @@
 <script context="module">
+    import { prod } from '$lib/env.js'
+
+    let API_URL = 'http://localhost:1337'
+    if(prod === "true"){
+        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+    }
+
 	export const load = async ({ page: { params }, fetch }) => {
 		const { slug } = params
-		const res = await fetch('https://thinkteacher-strapi.glass.splyce.dev/partners?slug=' + slug)
+		const res = await fetch(`${API_URL}/partners?slug=${slug}`)
 
 		if (res.status === 404) {
 			const error = new Error(`The partner with slug of ${slug} was not found`)
@@ -24,15 +31,8 @@
 <script>
     import Icon from 'svelte-awesome'
     import { arrowLeft } from 'svelte-awesome/icons'
-    import { prod } from '$lib/env.js'
     import SvelteMarkdown from 'svelte-markdown'
     import { onMount } from 'svelte'
-
-
-    let API_URL = 'http://localhost:1337'
-    if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
-    }
 
     export let partner
     let source

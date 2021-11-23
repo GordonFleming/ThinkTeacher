@@ -70,6 +70,10 @@ body {
     line-height: 1.5;
     margin-top: 1.8rem;
 }
+#mark-down ul li{
+    color: #fff;
+    font-size: 1.1em;
+}
 h1 {
     margin-top: 5rem;
     font-size: 3em;
