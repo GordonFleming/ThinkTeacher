@@ -52,7 +52,6 @@
 			const data = await res.json()
             packages = data.data.packages
             function seperatePackages(item){
-                console.log("test")
                 if(item.partner.category.id == travel_cat){
                     travel.push(item)
                 }else if(item.partner.category.id == health_cat){
@@ -82,13 +81,12 @@
     import SvelteMarkdown from 'svelte-markdown'
 
     export let packages = []
-    console.log("test", packages)
 
     onMount(async () => {
         document.body.scrollTop = 0;
 	});
 
-    $: if($travelScroll && !loading){
+    $: if($travelScroll){
         setTimeout(function(){
             document.getElementById(`${$travelScroll}`).scrollIntoView({ behavior: 'smooth', block: 'center' })
         },200);            
@@ -97,7 +95,6 @@
     export let travel = []
     export let wellness = []
     export let health = []
-    console.log(travel)
 
     function travelTypeCompute(typeTrav){
         $travelType = typeTrav.toLowerCase().replace(" ","_");
