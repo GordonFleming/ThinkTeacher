@@ -34,8 +34,8 @@
         .then(response => {
             browserSet("jwt", response.data.jwt)
             $user = response.data.user;
-            browserSet("name", response.data.user.username)
-            $name = response.data.username;
+            browserSet("name", response.data.user.firstName)
+            $name = response.data.firstName;
             browserSet("id", response.data.user.id)
             $id = response.data.id
             goto('/benefits')
@@ -63,10 +63,10 @@
                     <p class="text-white-50 mb-3">Please enter your email and password</p>
 
                     {#if errorMsg != undefined}
-                        {#if errorMsg == "Your account email is not confirmed"}
-                            <a href="/confirm-email">Resend confirmation email?</a>
-                        {/if}
                         <h4 class="error-col">{errorMsg}</h4>
+                        {#if errorMsg == "Your account email is not confirmed"}
+                            <a class="fs-4" href="/confirm-email">Resend confirmation email?</a>
+                        {/if}
                     {/if}
 
                     {#if $errMsg}
@@ -74,7 +74,7 @@
                     {/if}
                     
                     <form name="login">
-                        <div class="form-outline form-white mb-2">
+                        <div class="form-outline form-white mb-2 mt-3">
                             <label class="form-label" for="Email">Email</label>
                             <input type="email" id="Email" class="form-control form-control-lg" placeholder="Enter email or username" bind:value={usernameEmail} required />
                         </div>

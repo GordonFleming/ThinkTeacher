@@ -69,7 +69,7 @@
             })
             .then(response => {
                 console.log('User profile', response.data.user)
-                msg = response.data.user.username + ", you have been successfully registered with ThinkTeacher! Please confirm your email to login."
+                msg = response.data.user.firstName + ", you have been successfully registered with ThinkTeacher! Please confirm your email to login."
                 registerNext = false
                 registered = true
                 document.getElementById("register").reset()

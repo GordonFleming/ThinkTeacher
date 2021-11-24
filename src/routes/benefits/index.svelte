@@ -80,17 +80,16 @@
     import { travelScroll, travelType } from '$lib/stores'
     import SvelteMarkdown from 'svelte-markdown'
 
-    export let packages = []
-
-    onMount(async () => {
+    let navbar, sticky
+    $: onMount(() => {
         document.body.scrollTop = 0;
-	});
+        if($travelScroll){
+            document.getElementById(`${$travelScroll}`).scrollIntoView({ block: 'center' })
+        } 
 
-    $: if($travelScroll){
-        setTimeout(function(){
-            document.getElementById(`${$travelScroll}`).scrollIntoView({ behavior: 'smooth', block: 'center' })
-        },200);            
-    } 
+        navbar = document.getElementById("nav-benefits");
+        sticky = navbar.offsetTop;
+	});
 
     export let travel = []
     export let wellness = []
@@ -102,31 +101,40 @@
     }
 
     export let source, readMore = false
+
+    function stickYesNo() {
+        if (window.pageYOffset >= sticky) {
+            navbar.classList.add("sticky")
+        } else {
+            navbar.classList.remove("sticky");
+        }
+    }
 </script>
 
 <svelte:head>
 	<title>Benefits</title>
 </svelte:head>
 
-<div class="container text-center">
-    <h1>Exclusive benefits for <span class="text-logo-gold">Think</span>Teacher members</h1>
+<svelte:window on:scroll={stickYesNo}/>
 
-    <div class="nav-wrapper mt-3">
-        <ul class="list-inline">
-            <li class="list-inline-item"><h4 on:click={() => document.getElementById('travel').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Travel <span class="text-logo-gold">-</span></h4></li>
-            <li class="list-inline-item"><h4 on:click={() => document.getElementById('wellness').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Wellbeing <span class="text-logo-gold">-</span></h4></li>
-            <li class="list-inline-item"><h4 on:click={() => document.getElementById('MedicalAid').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Medical Aid <span class="text-logo-gold">-</span></h4></li>
-            <li class="list-inline-item"><h4 on:click={() => document.getElementById('legal').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Legal <span class="text-logo-gold">-</span></h4></li>
-            <li class="list-inline-item"><h4 on:click={() => document.getElementById('courses').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Courses <span class="text-logo-gold">-</span></h4></li>
-            <li class="list-inline-item"><h4 on:click={() => document.getElementById('insurance').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Insurance</h4></li>
-        </ul>
-        <ul class="list-inline">
-            <li class="list-inline-item"><h4 on:click={() => document.getElementById('Books').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Books <span class="text-logo-gold">-</span></h4></li>
-            <li class="list-inline-item"><h4 on:click={() => document.getElementById('IT').scrollIntoView({ behavior: 'smooth', block: 'center' })}>IT <span class="text-logo-gold">-</span></h4></li>
-            <li class="list-inline-item"><h4 on:click={() => document.getElementById('Spa').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Spa</h4></li>
-        </ul>
-    </div>
-    
+<h1 class="text-center">Exclusive benefits for <span class="text-logo-gold">Think</span>Teacher members</h1>
+
+<div class="text-center" id="nav-benefits">
+    <ul class="list-inline">
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('travel').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Travel <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('wellness').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Wellbeing <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('MedicalAid').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Medical Aid <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('legal').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Legal <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('courses').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Courses <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('insurance').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Insurance <span class="text-logo-gold">-</h4></li>
+        <!-- <li class="list-inline-item"><h4 on:click={() => document.getElementById('Books').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Books <span class="text-logo-gold">-</span></h4></li> -->
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('Photography').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Photography <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('IT').scrollIntoView({ behavior: 'smooth', block: 'center' })}>IT <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('Spa').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Spa</h4></li>
+    </ul>
+</div>
+
+<div class="container text-center">
     <div class="row mt-4 mb-5 justify-content-center">
         <!-- Travel -->
         <div class="grey-grad row justify-content-center" id="travel">
@@ -308,8 +316,13 @@
         </div>
 
         <!-- Books -->
-        <div class="grey-grad row justify-content-center big-gap" id="Books">
+        <!-- <div class="grey-grad row justify-content-center big-gap" id="Books">
             <h2 class="display-3">Books</h2>
+            <h4>Coming soon</h4>
+        </div> -->
+        <!-- Photography -->
+        <div class="grey-grad row justify-content-center big-gap" id="Photography">
+            <h2 class="display-3">Photography</h2>
             <h4>Coming soon</h4>
         </div>
         <!-- IT -->

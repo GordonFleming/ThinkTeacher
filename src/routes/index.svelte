@@ -140,8 +140,8 @@
             <h3 class="mt-3">Courses</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/bookstore_c9f01d18b8.webp" alt="Books" on:click={() => $travelScroll='Books'}></a>
-            <h3 class="mt-3">Books</h3>
+            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/photography_68b64fd52e.webp" alt="Photography" on:click={() => $travelScroll='Photography'}></a>
+            <h3 class="mt-3">Photography</h3>
             <h5 class="text-logo-gold">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
