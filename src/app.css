@@ -10,7 +10,6 @@
 
 html{
     height: 100%;
-    overflow-x: hidden;
 }
 body {
     height: 100%;
@@ -19,14 +18,9 @@ body {
 	color: var(--text);
 	box-sizing: border-box;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    /* overflow-x: hidden; */
 }
 
-.sticky{
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1;
+.sticky-top{
     background-color: #fff;
     padding-top: 20px;
 }

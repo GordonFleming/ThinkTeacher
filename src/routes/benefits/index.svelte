@@ -104,9 +104,9 @@
 
     function stickYesNo() {
         if (window.pageYOffset >= sticky) {
-            navbar.classList.add("sticky")
+            navbar.classList.add("sticky-top")
         } else {
-            navbar.classList.remove("sticky");
+            navbar.classList.remove("sticky-top");
         }
     }
 </script>

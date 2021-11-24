@@ -42,6 +42,7 @@
     onMount(async () =>{
         // To stop case where user reloads with the counter in view so therefore nothing is triggered...
         document.body.scrollTop = 0
+        document.documentElement.scrollTop = 0
         userCount += 100
         countUp = new CountUp('countUser', userCount);
         intro = true
