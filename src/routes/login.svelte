@@ -3,7 +3,7 @@
     import axios from 'axios'
     import { goto } from '$app/navigation'
     import Icon from 'svelte-awesome'
-    import { user, name, id, errMsg } from '$lib/stores'
+    import { user, name, id, errMsg, ttNum } from '$lib/stores'
     import { facebook, twitter, instagram } from 'svelte-awesome/icons'
     import { browserSet } from '$lib/re_utils'
     import { prod } from '$lib/env.js'
@@ -38,6 +38,8 @@
             $name = response.data.firstName;
             browserSet("id", response.data.user.id)
             $id = response.data.id
+            browserSet("ttNum", response.data.user.ttCode)
+            $ttNum = response.data.user.ttCode
             goto('/benefits')
         })
         .catch(error => {

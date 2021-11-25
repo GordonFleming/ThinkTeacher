@@ -341,7 +341,4 @@
         cursor: pointer;
         font-size: 135%;
     }
-    .text-lighter-blue{
-        color: rgb(243, 243, 243);
-    }
 </style>

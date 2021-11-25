@@ -12,10 +12,10 @@
 
     let loading = true
 
-    let forms, id = localStorage.getItem("id");
-    console.log(id)
-
+    let forms
     onMount(async() =>{
+        let ttNum = localStorage.getItem("ttNum");
+
         function seperateForms(item){
             if(item.custom[0].__component == 'custom-form.travel-date'){
                 travel.push(item)
@@ -26,7 +26,7 @@
             }
         }
 
-        const res = await axios.get(`${API_URL}/users/${id}`, {
+        const res = await axios.get(`${API_URL}/partner-forms?ttNumber=${ttNum}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem("jwt"),
             },
@@ -34,7 +34,7 @@
             console.log('Error', error.message);
             goto("/login")
         });
-        forms = res.data.partner_forms
+        forms = res.data
         forms.forEach(seperateForms)
         console.log(forms)
         loading = false
@@ -44,6 +44,7 @@
     $: console.log(travel)
 </script>
 
+<div class="container mb-5">
 <h1 class="mb-4">Selection history:</h1>
 
 {#if loading}
@@ -107,6 +108,7 @@
         <p>You have no wellbeing submissons.</p>
     {/if}
 {/if}
+</div>
 
 <style>
 
