@@ -89,7 +89,5 @@
 </div>
 
 <style>
-    span{
-        font-size: 0.85em;
-    }
+
 </style>
