@@ -118,7 +118,7 @@
 
 <svelte:window on:scroll={stickYesNo}/>
 
-<h1 class="text-center">Exclusive benefits for <span class="text-logo-gold">Think</span>Teacher members</h1>
+<h1 class="text-center">Exclusive benefits for <span class="think">Think</span>Teacher members</h1>
 
 <div class="text-center" id="nav-benefits">
     <ul class="list-inline">
