@@ -174,9 +174,9 @@
             <div class="slide-content">
                 <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_SGM_Logo_b251d32022.webp" alt="partner"/>
             </div>
-            <div class="slide-content">
+            <!-- <div class="slide-content">
                 <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_alexander_forbes_04df6e13e0.webp" alt="partner"/>
-            </div>
+            </div> -->
             <div class="slide-content">
                 <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_MTC_New_Logo_large_7ae60c9ecf.webp" alt="partner"/>
             </div>

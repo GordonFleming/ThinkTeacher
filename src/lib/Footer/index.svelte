@@ -37,7 +37,7 @@
         <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
             <h5 class="text-uppercase">Socials</h5>
 
-            <ul class="list-unstyled mb-0">
+            <ul class="list-unstyled mb-3">
                 <li>
                     <a href="https://www.facebook.com/thinkteacher" target="_blank" class="text-white">Facebook</a>
                 </li>
@@ -86,7 +86,7 @@
         </div>
 
         <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-            <button class="mt-3 btn btn-outline-light px-2" on:click={scrollTop}>Scroll to top</button>
+            <button class="mt-3 mb-3 btn btn-outline-light px-2" on:click={scrollTop}>Scroll to top</button>
         </div>
     </div>
 

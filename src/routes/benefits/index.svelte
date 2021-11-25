@@ -137,8 +137,8 @@
 <div class="container text-center">
     <div class="row mt-4 mb-5 justify-content-center">
         <!-- Travel -->
-        <div class="grey-grad row justify-content-center" id="travel">
-            <h2 class="display-3">Travel</h2>
+        <div class="grey-grad row justify-content-center">
+            <h2 id="travel" class="display-3">Travel</h2>
 
             <div class="row mt-2 justify-content-center">
                 {#each travel as trvl}
