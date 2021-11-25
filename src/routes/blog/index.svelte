@@ -31,7 +31,7 @@
 </svelte:head>
 
 <div class="my-4">
-	<h1 class="text-center text-3xl font-bold">ThinkTeacher Blog</h1>
+	<h1 class="text-center text-3xl font-bold"><span class="think">Think</span>Teacher Blog</h1>
 </div>
 
 <div class="container mx-auto mt-4 mb-5">

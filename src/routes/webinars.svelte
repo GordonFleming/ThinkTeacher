@@ -33,7 +33,7 @@
 
 <div class="container mt-5 mb-5">
     <div class="row text-center justify-content-center">
-        <h1 class="mb-4">Webinars</h1>
+        <h1 class="mb-4"><span class="think">Think</span>Teacher Webinars</h1>
 
         {#if loading}
             <div class="d-flex justify-content-center mt-5">

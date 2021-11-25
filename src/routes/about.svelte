@@ -11,7 +11,7 @@
 	<title>About</title>
 </svelte:head>
 
-<h1 class="mb-4 text-center">The <span class="think">ThinkTeacher</span> Team</h1>
+<h1 class="mb-4 text-center">The <span class="think">Think</span>Teacher Team</h1>
 
 <div class="container">
     <div class="row text-center mt-5 mb-5 justify-content-center">
@@ -236,10 +236,6 @@
         max-width: 300px;
         height: auto;
         align-self: center;
-    }
-    .think {
-        color: var(--logo-gold);
-        font-weight: 900;
     }
     .card-text {
         text-align: justify;

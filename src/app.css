@@ -19,7 +19,10 @@ body {
 	box-sizing: border-box;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
-
+.think {
+    color: var(--logo-gold);
+    font-weight: 900;
+}
 .sticky-top{
     background-color: #fff;
     padding-top: 20px;
