@@ -26,8 +26,8 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-7">
+    <div class="row mb-5">
+        <div class="col-sm-12 col-md-12 col-lg-7 g-2">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Bridget Fleming</h3>
                     <div class="card-body">
@@ -52,7 +52,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-12 col-lg-5">
+        <div class="col-sm-12 col-md-12 col-lg-5 g-2">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Rebecca Maluka</h3>
                     <div class="card-body">
@@ -78,7 +78,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-12 col-lg-5">
+        <div class="col-sm-12 col-md-12 col-lg-5 g-2">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Paul Edey</h3>
                     <div class="card-body">
@@ -100,7 +100,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-12 col-lg-7">
+        <div class="col-sm-12 col-md-12 col-lg-7 g-2">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Kim Forbes</h3>
                     <div class="card-body">
@@ -129,7 +129,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-12 col-lg-7">
+        <div class="col-sm-12 col-md-12 col-lg-7 g-2">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Zanele Masuku</h3>
                     <div class="card-body">
@@ -156,7 +156,7 @@
             </div>
         </div>
         
-        <div class="col-sm-12 col-md-5 col-lg-5">
+        <div class="col-sm-12 col-md-5 col-lg-5 g-2">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Ferdie Heunis</h3>
                     <div class="card-body">
@@ -179,7 +179,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-5 col-lg-5">
+        <div class="col-sm-12 col-md-5 col-lg-5 g-2">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Frances Kerr-Phillips</h3>
                     <div class="card-body">
@@ -203,7 +203,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-12 col-lg-7">
+        <div class="col-sm-12 col-md-12 col-lg-7 g-2">
             <div class="card bg-dark mb-3">
                 <h3 class="card-header">Malcolm Williams</h3>
                     <div class="card-body">
@@ -243,6 +243,9 @@
     }
     .card-text {
         text-align: justify;
+    }
+    .card{
+        height: 100%;
     }
 
     iframe{
