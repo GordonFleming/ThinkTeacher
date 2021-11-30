@@ -47,7 +47,7 @@
 
         const res = await fetch(endpoint, options);
 
-        let packages = [], travel = [], health = [], wellness = [], source = ''
+        let packages = [], travel = [], health = [], wellness = [], source
 
         if (res.ok) {
 			const data = await res.json()
@@ -59,7 +59,7 @@
                     health.push(item)
                 }else{
                     wellness.push(item)
-                    source = wellness.details
+                    source = wellness[0].details
                 }
             } 
 
@@ -102,6 +102,8 @@
     }
 
     export let source, readMore = false
+
+    console.log("This is source: ", source)
 
     function stickYesNo() {
         if (window.pageYOffset >= sticky) {
