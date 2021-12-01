@@ -103,8 +103,6 @@
 
     export let source, readMore = false
 
-    console.log("This is source: ", source)
-
     function stickYesNo() {
         if (window.pageYOffset >= sticky) {
             navbar.classList.add("sticky-top")
@@ -112,6 +110,8 @@
             navbar.classList.remove("sticky-top");
         }
     }
+
+    let visable = false
 </script>
 
 <svelte:head>
@@ -125,15 +125,15 @@
 <div class="text-center" id="nav-benefits">
     <ul class="list-inline">
         <li class="list-inline-item"><h4 on:click={() => document.getElementById('travel').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Travel <span class="text-logo-gold">-</span></h4></li>
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('wellness').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Wellbeing <span class="text-logo-gold">-</span></h4></li>
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('MedicalAid').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Medical Aid <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('wellbeing').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Wellbeing <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('medical_aid').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Medical Aid <span class="text-logo-gold">-</span></h4></li>
         <li class="list-inline-item"><h4 on:click={() => document.getElementById('legal').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Legal <span class="text-logo-gold">-</span></h4></li>
         <li class="list-inline-item"><h4 on:click={() => document.getElementById('courses').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Courses <span class="text-logo-gold">-</span></h4></li>
         <li class="list-inline-item"><h4 on:click={() => document.getElementById('insurance').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Insurance <span class="text-logo-gold">-</h4></li>
         <!-- <li class="list-inline-item"><h4 on:click={() => document.getElementById('Books').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Books <span class="text-logo-gold">-</span></h4></li> -->
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('Photography').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Photography <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('photography').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Photography <span class="text-logo-gold">-</span></h4></li>
         <li class="list-inline-item"><h4 on:click={() => document.getElementById('IT').scrollIntoView({ behavior: 'smooth', block: 'center' })}>IT <span class="text-logo-gold">-</span></h4></li>
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('Spa').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Spa</h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('spa').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Spa</h4></li>
     </ul>
 </div>
 
@@ -190,7 +190,7 @@
         </div>
 
         <!-- Wellbeing -->
-        <div class="grey-grad row big-gap justify-content-center" id="wellness">
+        <div class="grey-grad row big-gap justify-content-center" id="wellbeing">
             <h2 class="display-3">Wellbeing</h2>
             
             <div class="row mt-2 justify-content-center">
@@ -198,6 +198,7 @@
                     <div class="col-sm-12 col-md-10 col-lg-6">
                         <div class="card bg-dark m-2 shadow-lg">
                             <img class="img-fluid rounded cta"  src="{well.banner.url}" alt="cover" on:click={() => goto('/auth/form-wellbeing')}>
+
                             <!-- <small class="text-white">Image by: David Travis, Unsplash.</small> -->
                             <div class="card-body">
                                 <h3 class="card-title text-logo-gold">Think <span class="text-lighter-blue">{well.name}</span></h3>
@@ -246,7 +247,7 @@
         </div>
 
         <!-- MedicalAid -->
-        <div class="grey-grad row justify-content-center big-gap" id="MedicalAid">
+        <div class="grey-grad row justify-content-center big-gap" id="medical_aid">
             <h2 class="display-3">Medical Aid</h2>
             
             <div class="row mt-2 justify-content-center">
@@ -318,7 +319,7 @@
             <h4>Coming soon</h4>
         </div> -->
         <!-- Photography -->
-        <div class="grey-grad row justify-content-center big-gap" id="Photography">
+        <div class="grey-grad row justify-content-center big-gap" id="photography">
             <h2 class="display-3">Photography</h2>
             <h4>Coming soon</h4>
         </div>
@@ -328,7 +329,7 @@
             <h4>Coming soon</h4>
         </div>
         <!-- Spa -->
-        <div class="grey-grad row justify-content-center big-gap" id="Spa">
+        <div class="grey-grad row justify-content-center big-gap" id="spa">
             <h2 class="display-3">Spa</h2>
             <h4>Coming soon</h4>
         </div>

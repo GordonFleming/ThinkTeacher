@@ -55,6 +55,8 @@
     onDestroy(() => {
 		$firstTime = false
 	})
+
+    let ben1, ben2, ben3, ben4, ben5, ben6, ben7, ben8, ben9
 </script>
 
 <svelte:head>
@@ -115,43 +117,80 @@
     {/if}
 
     <div class="row grey-grad text-center big-gap">
-        <h2 class="mb-5">Benefits</h2>
+        <h2>Benefits</h2>
+        <h5 class="mb-5">Click on a benefit!</h5>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/well_being_7d5c5b6063.webp" alt="well being" on:click={() => $travelScroll='wellness'}></a>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben1 = true}>
+                {#if ben1}
+                    <img transition:fly="{{ y: 200, duration: 1000 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/well_being_7d5c5b6063.webp" alt="well being" on:click={() => $travelScroll='wellbeing'}>
+                {/if}
+            </a>
             <h3 class="mt-3">Wellbeing</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/travel_65e3eb2228.webp" alt="travel" on:click={() => $travelScroll='travel'}></a>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben2 = true}>
+                {#if ben2}
+                    <img transition:fly="{{ y: 200, duration: 1400 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/travel_65e3eb2228.webp" alt="travel" on:click={() => $travelScroll='travel'}>
+                {/if}    
+            </a>
             <h3 class="mt-3">Travel</h3>
         </div>        
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/health_1d4102b3e6.webp" alt="medical aid" on:click={() => $travelScroll='MedicalAid'}></a>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben3 = true}>
+                {#if ben3}
+                    <img transition:fly="{{ y: 200, duration: 1800 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/health_1d4102b3e6.webp" alt="medical aid" on:click={() => $travelScroll='medical_aid'}>
+                {/if}
+            </a>
             <h3 class="mt-3">Medical Aid</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/insurance_f6fd972123.webp" alt="invest" on:click={() => $travelScroll='insurance'}></a>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben4 = true}>
+                {#if ben4}    
+                    <img transition:fly="{{ y: 200, duration: 1000 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/insurance_f6fd972123.webp" alt="invest" on:click={() => $travelScroll='insurance'}>
+                {/if}
+            </a>
             <h3 class="mt-3">Insurance</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/legal_ef185539e1.webp" alt="legal" on:click={() => $travelScroll='legal'}></a>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben5 = true}>
+                {#if ben5}
+                    <img transition:fly="{{ y: 200, duration: 1400 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/legal_ef185539e1.webp" alt="legal" on:click={() => $travelScroll='legal'}>
+                {/if}
+            </a>
             <h3 class="mt-3">Legal</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/courses_394e2373ce.webp" alt="courses" on:click={() => $travelScroll='courses'}></a>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben6 = true}>
+                {#if ben6}
+                    <img transition:fly="{{ y: 200, duration: 1800 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/courses_394e2373ce.webp" alt="courses" on:click={() => $travelScroll='courses'}>  
+                {/if}
+            </a>
             <h3 class="mt-3">Courses</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/photography_68b64fd52e.webp" alt="Photography" on:click={() => $travelScroll='Photography'}></a>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben7 = true}>
+                {#if ben7}
+                    <img transition:fly="{{ y: 200, duration: 1000 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/photography_68b64fd52e.webp" alt="photography" on:click={() => $travelScroll='photography'}>
+                {/if}
+            </a>
             <h3 class="mt-3">Photography</h3>
             <h5 class="text-logo-gold">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/tech_1c4a22ee51.webp" alt="IT" on:click={() => $travelScroll='IT'}></a>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben8 = true}>
+                {#if ben8}    
+                    <img transition:fly="{{ y: 200, duration: 1400 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/tech_1c4a22ee51.webp" alt="IT" on:click={() => $travelScroll='IT'}>
+                {/if}
+            </a>
             <h3 class="mt-3">IT</h3>
             <h5 class="text-logo-gold">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/spa_b785512c3b.webp" alt="Spa" on:click={() => $travelScroll='Spa'}></a>
+                <a href="/benefits" use:viewport on:enterViewport={() => ben9 = true}>
+                    {#if ben9}
+                        <img transition:fly="{{ y: 200, duration: 1800 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/spa_b785512c3b.webp" alt="spa" on:click={() => $travelScroll='spa'}>
+                    {/if}
+                </a>
             <h3 class="mt-3">Spa</h3>
             <h5 class="text-logo-gold">coming soon</h5>
         </div>

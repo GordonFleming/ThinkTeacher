@@ -49,6 +49,7 @@
 
 <script>
     import { goto } from '$app/navigation'
+    import { travelScroll } from '$lib/stores'
 
     export let partners
 </script>
@@ -74,7 +75,7 @@
                         <button class="btn-sm btn bg-gold mx-auto shadow cta" on:click={() => goto('/partners/' + partner.slug)}>Read More</button>
                     </div>
                     <div class="card-footer">
-                        <span class="badge bg-light">{partner.category.name}</span>
+                        <a href="/benefits"><span class="badge bg-light" on:click={() => $travelScroll=partner.category.name.toLowerCase()}>{partner.category.name}</span></a>
                     </div>
                 </div>
             </div>
