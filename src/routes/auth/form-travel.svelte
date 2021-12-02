@@ -12,7 +12,7 @@
     }
 
     let loading = true, buttonSubmit = true
-    $: if(typeHoliday !== ''){ buttonSubmit = false }
+    $: if(typeHoliday !== '' && reason !== '' && where !== '' && budget !== ''){ buttonSubmit = false }
 
     let fullname, email, ttNum, user
 
@@ -34,7 +34,7 @@
     })
 
     let startDate, endDate, typeHoliday = $travelType, reason, where, nationality=true, numChild, numAdult, budget
-    const partnerEmail="gdoig@mweb.co.za"
+    console.log("test: ", budget)
 
     async function submitForm(){
         await axios
@@ -54,7 +54,6 @@
                     nationality: nationality,
                     budget: budget,
                 }],
-                partnerEmail: partnerEmail,
                 users_permissions_user: user,
             })
             .then(response => {

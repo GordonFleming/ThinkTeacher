@@ -14,7 +14,7 @@
         const graphqlQuery = {
             "operationName": "fetchPartners",
             "query": `query fetchPartners {     
-                partners {
+                partners (sort: "id") {
                     id,
                     name,
                     description,
@@ -75,7 +75,7 @@
                         <button class="btn-sm btn bg-gold mx-auto shadow cta" on:click={() => goto('/partners/' + partner.slug)}>Read More</button>
                     </div>
                     <div class="card-footer">
-                        <a href="/benefits"><span class="badge bg-light" on:click={() => $travelScroll=partner.category.name.toLowerCase()}>{partner.category.name}</span></a>
+                        <a href="/benefits"><span class="badge bg-light" on:click={() => $travelScroll=partner.category.name.toLowerCase()}>{partner.category.name.replace("_"," ")}</span></a>
                     </div>
                 </div>
             </div>

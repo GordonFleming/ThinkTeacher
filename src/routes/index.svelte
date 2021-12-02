@@ -43,7 +43,6 @@
         // To stop case where user reloads with the counter in view so therefore nothing is triggered...
         document.body.scrollTop = 0
         document.documentElement.scrollTop = 0
-        userCount += 100
         countUp = new CountUp('countUser', userCount);
         intro = true
 	})
@@ -102,7 +101,7 @@
     {#if !$name}
         <div class="row mt-5">
             <div class="col-sm-12 col-lg-4">
-                <h4 id="#hash" class="fs-1 mt-2 text-center">First 5 000 members get a <strong>FREE</strong> membership for a year</h4>
+                <h4 id="#hash" class="fs-1 mt-2 text-center">First 1 000 members get a <strong>FREE</strong> membership for a year</h4>
             </div>
             <div class="col-sm-12 col-lg-4 mt-sm-4 text-center">
                 <button class="btn btn-lg bg-gold shadow-lg cta" style="width: 300px;" on:click={() => goto("/register")}><h4 style="color: black;">Become a member!</h4></button>
@@ -157,7 +156,7 @@
                 {/if}
                 </div>
             </a>
-            <h3 class="mt-3">Insurance</h3>
+            <h3 class="mt-3">Finance</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
             <a href="/benefits" use:viewport on:enterViewport={() => ben5 = true}>
@@ -226,16 +225,16 @@
                 <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_Cirrus_Image_2_70004a2daf.webp" alt="partner"/>
             </div>
             <div class="slide-content">
+                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_AF_Logo_7049c50238.webp" alt="partner"/>
+            </div>
+            <div class="slide-content">
                 <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_kim_forbes_6ee77e52f4.png" alt="partner"/>
             </div>
             <div class="slide-content">
                 <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_SGM_Logo_b251d32022.webp" alt="partner"/>
             </div>
-            <!-- <div class="slide-content">
-                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_alexander_forbes_04df6e13e0.webp" alt="partner"/>
-            </div> -->
             <div class="slide-content">
-                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_MTC_New_Logo_large_7ae60c9ecf.webp" alt="partner"/>
+                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/small_MTC_New_Logo_large_7ae60c9ecf.webp" alt="partner"/>
             </div>
         </Carousel>
     </div>

@@ -6,6 +6,7 @@ export const id = writable()
 export let firstTime = writable(true)
 export let travelScroll = writable("")
 export let travelType = writable("")
+export let courseType = writable("")
 export let errMsg = writable("")
 export const ttNum = writable("")
 

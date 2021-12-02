@@ -2,10 +2,10 @@
     import { prod } from '$lib/env.js'
     
     let API_URL = 'http://localhost:1337'
-    let health_cat = 3, travel_cat = 2
+    let health_cat = 3, travel_cat = 2, course_cat = 5, wellbeing_cat = 4
     if(prod === "true"){
         API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
-        health_cat = 2, travel_cat = 1
+        health_cat = 2, travel_cat = 1, course = 6, wellbeing = 3
     }
 
 	export const load = async ({ fetch }) => {
@@ -32,7 +32,7 @@
                     },
                     details,
                     banner{
-                        url,
+                        url
                     }
                 } 
             }`,
@@ -47,7 +47,7 @@
 
         const res = await fetch(endpoint, options);
 
-        let packages = [], travel = [], health = [], wellness = [], source
+        let packages = [], travel = [], health = [], wellness = [], courses=[], source
 
         if (res.ok) {
 			const data = await res.json()
@@ -57,15 +57,17 @@
                     travel.push(item)
                 }else if(item.partner.category.id == health_cat){
                     health.push(item)
-                }else{
+                }else if(item.partner.category.id == wellbeing_cat){
                     wellness.push(item)
                     source = wellness[0].details
+                }else if(item.partner.category.id == course_cat){
+                    courses.push(item)
                 }
             } 
 
             packages.forEach(seperatePackages)
 
-            return { props: { packages, travel, health, wellness, source} }
+            return { props: { travel, health, wellness, courses, source} }
 		}
 
         return {
@@ -78,7 +80,7 @@
 <script>
     import { onMount } from 'svelte'
     import { goto } from '$app/navigation';
-    import { travelScroll, travelType } from '$lib/stores'
+    import { travelScroll, travelType, courseType } from '$lib/stores'
     import SvelteMarkdown from 'svelte-markdown'
 
     let navbar, sticky
@@ -92,13 +94,16 @@
         sticky = navbar.offsetTop;
 	});
 
-    export let travel = []
-    export let wellness = []
-    export let health = []
+    export let travel = [], wellness = [], health = [], courses = []
 
     function travelTypeCompute(typeTrav){
         $travelType = typeTrav.toLowerCase().replace(" ","_");
         goto('/auth/form-travel')
+    }
+
+    function courseTypeCompute(crsType){
+        $courseType = crsType;
+        goto('/auth/form-courses')
     }
 
     export let source, readMore = false
@@ -110,8 +115,6 @@
             navbar.classList.remove("sticky-top");
         }
     }
-
-    let visable = false
 </script>
 
 <svelte:head>
@@ -304,12 +307,55 @@
         <!-- Courses -->
         <div class="grey-grad row justify-content-center big-gap" id="courses">
             <h2 class="display-3">Courses</h2>
-            <h4>Nearly there...</h4>
+
+            <div class="row mt-2 justify-content-center">
+                {#each courses as cors}
+                    <div class="col-sm-12 col-md-10 col-lg-6">
+                        <div class="card bg-dark m-2 shadow-lg">
+                            <img class="img-fluid rounded cta"  src="{cors.banner.url}" alt="cover" on:click={()=> courseTypeCompute(cors.name)}>
+                            <div class="card-body">
+                                <h3 class="card-title text-logo-gold">Think <span class="text-lighter-blue">{cors.name}</span></h3>
+                                <p class="card-text">
+                                    {@html cors.description}
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <span class="badge bg-light">{cors.partner.company_name}</span>
+                            </div>
+                        </div>
+                    </div>
+                {/each}
+            </div>
+
+            <h4 class="mt-3">Our Partner:</h4>
+            <div class="col-8">
+                <div class="mb-3 mx-auto" style="max-width: 540px;">
+                    <div class="row g-0">
+                    <div class="col-md-5">
+                        <img
+                        src="{courses[0].partner.logo.url}"
+                        alt="logo"
+                        class="img-fluid"
+                        />
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            <h3 class="text-black">{courses[0].partner.company_name}</h3>
+                            <p class="text-black">
+                                {courses[0].partner.description}
+                            </p>
+                            <div class="border-bottom border-dark border-1 mb-2"></div>
+                            <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + courses[0].partner.slug)}>Read More</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Insurance -->
         <div class="grey-grad row justify-content-center big-gap" id="insurance">
-            <h2 class="display-3">Insurance</h2>
+            <h2 class="display-3">Finance</h2>
             <h4>Nearly there...</h4>
         </div>
 
@@ -343,5 +389,9 @@
     ul li h4:hover{
         cursor: pointer;
         font-size: 135%;
+    }
+    .card{
+        height: 92%;
+        padding: 3%;
     }
 </style>

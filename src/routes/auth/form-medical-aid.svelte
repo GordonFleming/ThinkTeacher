@@ -33,7 +33,6 @@
     })
 
     let residence, chronic, medicalAid, gapcover, dependants, scheme
-    const partnerEmail="thinkteacher@sahealth.co.za"
 
     async function submitForm(){
         await axios
@@ -50,7 +49,6 @@
                     dependants: dependants,
                     scheme: scheme,
                 }],
-                partnerEmail: partnerEmail,
                 users_permissions_user: user,
             })
             .then(response => {
