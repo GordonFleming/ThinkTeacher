@@ -1,5 +1,11 @@
 let intersectionObserver;
 
+let observerConfig = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 1
+};
+
 function ensureIntersectionObserver() {
 	if (intersectionObserver) return;
 
@@ -9,7 +15,8 @@ function ensureIntersectionObserver() {
 				const eventName = entry.isIntersecting ? 'enterViewport' : 'exitViewport';
 				entry.target.dispatchEvent(new CustomEvent(eventName));
 			});
-		}
+		},
+        observerConfig
 	);
 }
 
