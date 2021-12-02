@@ -66,8 +66,6 @@
     }
 
     let msg, errorMsg
-
-    $: console.log(message)
 </script>
 
 <svelte:head>

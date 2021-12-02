@@ -34,7 +34,6 @@
     })
 
     let startDate, endDate, typeHoliday = $travelType, reason, where, nationality=true, numChild, numAdult, budget
-    console.log("test: ", budget)
 
     async function submitForm(){
         await axios

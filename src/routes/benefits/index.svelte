@@ -5,7 +5,7 @@
     let health_cat = 3, travel_cat = 2, course_cat = 5, wellbeing_cat = 4
     if(prod === "true"){
         API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
-        health_cat = 2, travel_cat = 1, course = 6, wellbeing = 3
+        health_cat = 2, travel_cat = 1, course_cat = 6, wellbeing = 3
     }
 
 	export const load = async ({ fetch }) => {
