@@ -3,7 +3,7 @@
     import axios from 'axios'
     import { goto } from '$app/navigation'
     import Icon from 'svelte-awesome'
-    import { user, name, id, errMsg, ttNum } from '$lib/stores'
+    import { user, name, surname, id, errMsg, ttNum } from '$lib/stores'
     import { facebook, twitter, instagram } from 'svelte-awesome/icons'
     import { browserSet } from '$lib/re_utils'
     import { prod } from '$lib/env.js'
@@ -36,6 +36,8 @@
             $user = response.data.user;
             browserSet("name", response.data.user.firstName)
             $name = response.data.firstName;
+            browserSet("surname", response.data.user.lastName)
+            $surname = response.data.lastName;
             browserSet("id", response.data.user.id)
             $id = response.data.id
             browserSet("ttNum", response.data.user.ttCode)

@@ -1,17 +1,20 @@
 <script>
     import { onMount, afterUpdate } from 'svelte'
-    import {name} from '$lib/stores'
+    import { name, surname } from '$lib/stores'
     import { goto } from '$app/navigation';
-    import Icon from 'svelte-awesome'
-    import { userCircle } from 'svelte-awesome/icons'
-
+    
+    let avatar = '';
     onMount(() =>{  
         document.querySelector('.third-button').addEventListener('click', function () {
         document.querySelector('.animated-icon3').classList.toggle('open')})
+        $name = localStorage.getItem("name");
+        $surname = localStorage.getItem("surname");
+        avatar = `https://avatars.dicebear.com/api/initials/${$name+'-'+$surname}.svg?background=%234F5D89&size=40`;
 	})
 
     afterUpdate(() =>{
         $name = localStorage.getItem("name");
+        $surname = localStorage.getItem("surname");
 	})
 
     function logoutUser(){
@@ -65,7 +68,7 @@
                 <!-- Right elements -->
                 <div class="d-flex align-items-center align-top">
                     {#if $name}
-                        <a class="mb-2" title="User profile" href="/auth/profile" on:click={mustClick}><Icon data={userCircle} scale="2"/></a>
+                        <a class="mb-2" title="User profile" href="/auth/profile" on:click={mustClick}><img class="avatar" src={avatar} alt="avatar" /></a>
                         <h6>&nbsp;&nbsp;Welcome {$name}, <span id="logout" style="color: var(--logo-gold);" on:click={logoutUser}>Logout</span></h6>
                     {:else}
                         <p><a href="/login" class="nav-link align-top" style="color: var(--logo-gold); font-size: 1.16em;" on:click={mustClick}>Login</a></p>
@@ -161,4 +164,12 @@
     }
     a.fromLeft:after{ transform-origin: 100% 50%; }
     a.fromLeft:hover:after{ transform: scaleX(1); transform-origin:   0% 50%; }
+    .avatar{
+        border-radius:40%;
+        transition: 0.3s;
+        border: var(--logo-gold) solid 2px;
+    }
+    .avatar:hover{
+        border-radius: 25%;
+    }
 </style>
