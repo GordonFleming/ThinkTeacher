@@ -2,10 +2,10 @@
     import { prod } from '$lib/env.js'
     
     let API_URL = 'http://localhost:1337'
-    let health_cat = 3, travel_cat = 2, course_cat = 5, wellbeing_cat = 4
+    let health_cat = 3, travel_cat = 2, course_cat = 5, wellbeing_cat = 4, finance_cat = 6
     if(prod === "true"){
         API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
-        health_cat = 2, travel_cat = 1, course_cat = 6, wellbeing_cat = 3
+        health_cat = 2, travel_cat = 1, course_cat = 6, wellbeing_cat = 3, finance_cat = 5
     }
 
 	export const load = async ({ fetch }) => {
@@ -47,7 +47,7 @@
 
         const res = await fetch(endpoint, options);
 
-        let packages = [], travel = [], health = [], wellness = [], courses=[], source
+        let packages = [], travel = [], health = [], wellness = [], courses = [], finance = [], source
 
         if (res.ok) {
 			const data = await res.json()
@@ -62,12 +62,14 @@
                     source = wellness[0].details
                 }else if(item.partner.category.id == course_cat){
                     courses.push(item)
+                }else if(item.partner.category.id == finance_cat){
+                    finance.push(item)
                 }
             } 
 
             packages.forEach(seperatePackages)
 
-            return { props: { travel, health, wellness, courses, source} }
+            return { props: { travel, health, wellness, courses, finance, source} }
 		}
 
         return {
@@ -80,7 +82,9 @@
 <script>
     import { onMount } from 'svelte'
     import { goto } from '$app/navigation';
-    import { travelScroll, travelType, courseType } from '$lib/stores'
+    import { travelScroll } from '$lib/stores'
+    import Benefit from '$lib/Components/Benefit.svelte';
+    import PartnerBenefit from '$lib/Components/PartnerBenefit.svelte';
     import SvelteMarkdown from 'svelte-markdown'
 
     let navbar, sticky
@@ -94,17 +98,7 @@
         sticky = navbar.offsetTop;
 	});
 
-    export let travel = [], wellness = [], health = [], courses = []
-
-    function travelTypeCompute(typeTrav){
-        $travelType = typeTrav.toLowerCase().replace(" ","_");
-        goto('/auth/form-travel')
-    }
-
-    function courseTypeCompute(crsType){
-        $courseType = crsType;
-        goto('/auth/form-courses')
-    }
+    export let travel, wellness, health, courses, finance
 
     export let source, readMore = false
 
@@ -132,7 +126,7 @@
         <li class="list-inline-item"><h4 on:click={() => document.getElementById('medical_aid').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Medical Aid <span class="text-logo-gold">-</span></h4></li>
         <li class="list-inline-item"><h4 on:click={() => document.getElementById('legal').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Legal <span class="text-logo-gold">-</span></h4></li>
         <li class="list-inline-item"><h4 on:click={() => document.getElementById('courses').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Courses <span class="text-logo-gold">-</span></h4></li>
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('insurance').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Insurance <span class="text-logo-gold">-</h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('finance').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Finance <span class="text-logo-gold">-</h4></li>
         <!-- <li class="list-inline-item"><h4 on:click={() => document.getElementById('Books').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Books <span class="text-logo-gold">-</span></h4></li> -->
         <li class="list-inline-item"><h4 on:click={() => document.getElementById('photography').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Photography <span class="text-logo-gold">-</span></h4></li>
         <li class="list-inline-item"><h4 on:click={() => document.getElementById('IT').scrollIntoView({ behavior: 'smooth', block: 'center' })}>IT <span class="text-logo-gold">-</span></h4></li>
@@ -146,50 +140,9 @@
         <div class="grey-grad row justify-content-center">
             <h2 id="travel" class="display-3">Travel</h2>
 
-            <div class="row mt-2 justify-content-center">
-                {#each travel as trvl}
-                    <div class="col-sm-12 col-md-10 col-lg-6">
-                        <div class="card bg-dark m-2 shadow-lg">
-                            <img class="img-fluid rounded cta"  src="{trvl.banner.url}" alt="cover" on:click={() => travelTypeCompute(trvl.name)}>
-                            <div class="card-body">
-                                <h3 class="card-title text-logo-gold">Think <span class="text-lighter-blue">{trvl.name}</span></h3>
-                                <p class="card-text">
-                                    {@html trvl.description}
-                                </p>
-                                <button class="btn bg-gold shadow cta text-black fs-5 p-1" on:click={() => travelTypeCompute(trvl.name)}>Enquire</button>
-                            </div>
-                            <div class="card-footer">
-                                <span class="badge bg-light">{trvl.partner.company_name}</span>
-                            </div>
-                        </div>
-                    </div>
-                {/each}
-            </div>
-        </div>
+            <Benefit benefitData={travel} />
 
-        <h4 class="mt-3">Our Partner:</h4>
-        <div class="col-8">
-            <div class="mb-3 mx-auto" style="max-width: 540px;">
-                <div class="row g-0">
-                <div class="col-md-5">
-                    <img
-                    src="{travel[0].partner.logo.url}"
-                    alt="logo"
-                    class="img-fluid"
-                    />
-                </div>
-                <div class="col-md-7">
-                    <div class="card-body">
-                        <h3 class="text-black">{travel[0].partner.company_name}</h3>
-                        <p class="text-black">
-                            {travel[0].partner.description}
-                        </p>
-                        <div class="border-bottom border-dark border-1 mb-2"></div>
-                        <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + travel[0].partner.slug)}>Read More</button>
-                    </div>
-                </div>
-                </div>
-            </div>
+            <PartnerBenefit partnerData={travel} />
         </div>
 
         <!-- Wellbeing -->
@@ -223,79 +176,18 @@
                 {/each}
             </div>
 
-            <h4 class="mt-3">Our Partner:</h4>
-            <div class="col-8">
-                <div class="mb-3 mx-auto" style="max-width: 540px;">
-                    <div class="row g-0">
-                    <div class="col-md-5">
-                        <img
-                        src="{wellness[0].partner.logo.url}"
-                        alt="logo"
-                        class="img-fluid"
-                        />
-                    </div>
-                    <div class="col-md-7">
-                        <div class="card-body">
-                            <h3 class="text-black">{wellness[0].partner.company_name}</h3>
-                            <p class="text-black">
-                                {wellness[0].partner.description}
-                            </p>
-                            <div class="border-bottom border-dark border-1 mb-2"></div>
-                            <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + wellness[0].partner.slug)}>Read More</button>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-            </div>
+            <PartnerBenefit partnerData={wellness} />
         </div>
+
+
 
         <!-- MedicalAid -->
         <div class="grey-grad row justify-content-center big-gap" id="medical_aid">
             <h2 class="display-3">Medical Aid</h2>
             
-            <div class="row mt-2 justify-content-center">
-                {#each health as heal}
-                    <div class="col-sm-12 col-md-10 col-lg-6">
-                        <div class="card bg-dark m-2 shadow-lg">
-                            <img class="img-fluid rounded cta"  src="{heal.banner.url}" alt="cover" on:click={() => goto('/auth/form-medical-aid')}>
-                            <div class="card-body">
-                                <h3 class="card-title text-logo-gold">Think <span class="text-lighter-blue">{heal.name}</span></h3>
-                                <p class="card-text">
-                                    {@html heal.description}
-                                </p>
-                            </div>
-                            <div class="card-footer">
-                                <span class="badge bg-light">{heal.partner.company_name}</span>
-                            </div>
-                        </div>
-                    </div>
-                {/each}
-            </div>
+            <Benefit benefitData={health} />
 
-            <h4 class="mt-3">Our Partner:</h4>
-            <div class="col-8">
-                <div class="mb-3 mx-auto" style="max-width: 540px;">
-                    <div class="row g-0">
-                    <div class="col-md-5">
-                        <img
-                        src="{health[0].partner.logo.url}"
-                        alt="logo"
-                        class="img-fluid"
-                        />
-                    </div>
-                    <div class="col-md-7">
-                        <div class="card-body">
-                            <h3 class="text-black">{health[0].partner.company_name}</h3>
-                            <p class="text-black">
-                                {health[0].partner.description}
-                            </p>
-                            <div class="border-bottom border-dark border-1 mb-2"></div>
-                            <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + health[0].partner.slug)}>Read More</button>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-            </div>
+            <PartnerBenefit partnerData={health} />
         </div>
 
         <!-- Legal -->
@@ -308,55 +200,19 @@
         <div class="grey-grad row justify-content-center big-gap" id="courses">
             <h2 class="display-3">Courses</h2>
 
-            <div class="row mt-2 justify-content-center">
-                {#each courses as cors}
-                    <div class="col-sm-12 col-md-10 col-lg-6">
-                        <div class="card bg-dark m-2 shadow-lg">
-                            <img class="img-fluid rounded cta"  src="{cors.banner.url}" alt="cover" on:click={()=> courseTypeCompute(cors.name)}>
-                            <div class="card-body">
-                                <h3 class="card-title text-logo-gold">Think <span class="text-lighter-blue">{cors.name}</span></h3>
-                                <p class="card-text">
-                                    {@html cors.description}
-                                </p>
-                            </div>
-                            <div class="card-footer">
-                                <span class="badge bg-light">{cors.partner.company_name}</span>
-                            </div>
-                        </div>
-                    </div>
-                {/each}
-            </div>
+            <Benefit benefitData={courses} />
 
-            <h4 class="mt-3">Our Partner:</h4>
-            <div class="col-8">
-                <div class="mb-3 mx-auto" style="max-width: 540px;">
-                    <div class="row g-0">
-                    <div class="col-md-5">
-                        <img
-                        src="{courses[0].partner.logo.url}"
-                        alt="logo"
-                        class="img-fluid"
-                        />
-                    </div>
-                    <div class="col-md-7">
-                        <div class="card-body">
-                            <h3 class="text-black">{courses[0].partner.company_name}</h3>
-                            <p class="text-black">
-                                {courses[0].partner.description}
-                            </p>
-                            <div class="border-bottom border-dark border-1 mb-2"></div>
-                            <button class="btn btn-sm bg-gold shadow cta text-black" on:click={() => goto('/partners/' + courses[0].partner.slug)}>Read More</button>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-            </div>
+            <PartnerBenefit partnerData={courses} />
         </div>
 
-        <!-- Insurance -->
-        <div class="grey-grad row justify-content-center big-gap" id="insurance">
+        <!-- Finance -->
+        <div class="grey-grad row justify-content-center big-gap" id="finance">
             <h2 class="display-3">Finance</h2>
-            <h4>Nearly there...</h4>
+
+            <Benefit benefitData={finance} />
+
+            <PartnerBenefit partnerData={finance} />
+            <!-- <iframe src="https://retirements.digital.alexanderforbes.co.za/introduction/2/" title="My Retirement Picture" frameborder="0"></iframe> -->
         </div>
 
         <!-- Books -->
@@ -389,9 +245,5 @@
     ul li h4:hover{
         cursor: pointer;
         font-size: 135%;
-    }
-    .card{
-        height: 92%;
-        padding: 3%;
     }
 </style>

@@ -32,7 +32,7 @@
         email=user.email
         ttNum=user.ttCode
         eduPhase=user.eduPhase.replace("_"," ")
-        workplace=user.workplace
+        if(user.workplace){workplace = user.workplace}
         if(user.province){province = user.province.replace("_"," ")}
     })
 
@@ -106,12 +106,12 @@
                                     <input type="text" name="idNumber" id="idNum" class="form-control form-control-lg" bind:value={ttNum} readonly required />
                                 </div>
                                 <div class="col-12 mt-2">
-                                    <label class="form-label" for="institute">School / Institution</label>
-                                    <input type="text" name="institute" id="institute" class="form-control form-control-lg" bind:value={workplace} readonly required />
-                                </div>
-                                <div class="col-12 mt-2">
                                     <label class="form-label" for="eduPhase">Education Phase</label>
                                     <input type="text" name="eduPhase" id="eduPhase" class="form-control form-control-lg" bind:value={eduPhase} readonly required />
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <label class="form-label" for="institute">School / Institution</label>
+                                    <input type="text" name="institute" id="institute" class="form-control form-control-lg" bind:value={workplace} required />
                                 </div>
                                 <div class="col-12 mt-2">
                                     <label class="form-label" for="field">I am interested in the following workshop / webinar / course / qualification:</label>

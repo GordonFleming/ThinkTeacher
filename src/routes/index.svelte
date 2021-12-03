@@ -152,7 +152,7 @@
             <a href="/benefits" use:viewport on:enterViewport={() => ben4 = true}>
                <div class="placeholder">
                 {#if ben4}    
-                    <img transition:fly="{{ y: 200, duration: 1000 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/insurance_f6fd972123.webp" alt="invest" on:click={() => $travelScroll='insurance'}>
+                    <img transition:fly="{{ y: 200, duration: 1000 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/insurance_f6fd972123.webp" alt="invest" on:click={() => $travelScroll='finance'}>
                 {/if}
                 </div>
             </a>
