@@ -20,6 +20,9 @@
             case 'sa health brokers (pty) ltd':
                 goto('/auth/form-medical-aid');
                     break;
+            case 'alexander forbes':
+                goto('/auth/form-finance');
+                    break;
             default:
                 goto('/');
         }
