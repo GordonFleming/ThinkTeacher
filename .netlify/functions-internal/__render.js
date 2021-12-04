@@ -18,9 +18,9 @@ var __export = (target, all) => {
 };
 var __reExport = (target, module2, desc) => {
   if (module2 && typeof module2 === "object" || typeof module2 === "function") {
-    for (let key of __getOwnPropNames(module2))
-      if (!__hasOwnProp.call(target, key) && key !== "default")
-        __defProp(target, key, { get: () => module2[key], enumerable: !(desc = __getOwnPropDesc(module2, key)) || desc.enumerable });
+    for (let key2 of __getOwnPropNames(module2))
+      if (!__hasOwnProp.call(target, key2) && key2 !== "default")
+        __defProp(target, key2, { get: () => module2[key2], enumerable: !(desc = __getOwnPropDesc(module2, key2)) || desc.enumerable });
   }
   return target;
 };
@@ -66,13 +66,13 @@ function dataUriToBuffer(uri) {
   return buffer;
 }
 async function* toIterator(parts, clone2 = true) {
-  for (let part of parts) {
+  for (const part of parts) {
     if ("stream" in part) {
       yield* part.stream();
     } else if (ArrayBuffer.isView(part)) {
       if (clone2) {
         let position = part.byteOffset;
-        let end = part.byteOffset + part.byteLength;
+        const end = part.byteOffset + part.byteLength;
         while (position !== end) {
           const size = Math.min(end - position, POOL_SIZE);
           const chunk = part.buffer.slice(position, position + size);
@@ -179,9 +179,9 @@ async function consumeBody(data) {
   }
 }
 function fromRawHeaders(headers = []) {
-  return new Headers(headers.reduce((result, value, index2, array) => {
-    if (index2 % 2 === 0) {
-      result.push(array.slice(index2, index2 + 2));
+  return new Headers(headers.reduce((result, value, index, array) => {
+    if (index % 2 === 0) {
+      result.push(array.slice(index, index + 2));
     }
     return result;
   }, []).filter(([name2, value]) => {
@@ -3329,10 +3329,10 @@ var init_install_fetch = __esm({
           const readable = pair === null || pair === void 0 ? void 0 : pair.readable;
           assertRequiredField(readable, "readable", "ReadableWritablePair");
           assertReadableStream(readable, `${context} has member 'readable' that`);
-          const writable2 = pair === null || pair === void 0 ? void 0 : pair.writable;
-          assertRequiredField(writable2, "writable", "ReadableWritablePair");
-          assertWritableStream(writable2, `${context} has member 'writable' that`);
-          return { readable, writable: writable2 };
+          const writable3 = pair === null || pair === void 0 ? void 0 : pair.writable;
+          assertRequiredField(writable3, "writable", "ReadableWritablePair");
+          assertWritableStream(writable3, `${context} has member 'writable' that`);
+          return { readable, writable: writable3 };
         }
         class ReadableStream2 {
           constructor(rawUnderlyingSource = {}, rawStrategy = {}) {
@@ -3910,10 +3910,10 @@ var init_install_fetch = __esm({
           if (stream._backpressure) {
             const backpressureChangePromise = stream._backpressureChangePromise;
             return transformPromiseWith(backpressureChangePromise, () => {
-              const writable2 = stream._writable;
-              const state = writable2._state;
+              const writable3 = stream._writable;
+              const state = writable3._state;
               if (state === "erroring") {
-                throw writable2._storedError;
+                throw writable3._storedError;
               }
               return TransformStreamDefaultControllerPerformTransform(controller, chunk);
             });
@@ -3968,7 +3968,17 @@ var init_install_fetch = __esm({
     POOL_SIZE$1 = 65536;
     if (!globalThis.ReadableStream) {
       try {
-        Object.assign(globalThis, require("stream/web"));
+        const process2 = require("node:process");
+        const { emitWarning } = process2;
+        try {
+          process2.emitWarning = () => {
+          };
+          Object.assign(globalThis, require("node:stream/web"));
+          process2.emitWarning = emitWarning;
+        } catch (error2) {
+          process2.emitWarning = emitWarning;
+          throw error2;
+        }
       } catch (error2) {
         Object.assign(globalThis, ponyfill_es2018.exports);
       }
@@ -4001,8 +4011,19 @@ var init_install_fetch = __esm({
       #type = "";
       #size = 0;
       constructor(blobParts = [], options2 = {}) {
-        let size = 0;
-        const parts = blobParts.map((element) => {
+        if (typeof blobParts !== "object" || blobParts === null) {
+          throw new TypeError("Failed to construct 'Blob': The provided value cannot be converted to a sequence.");
+        }
+        if (typeof blobParts[Symbol.iterator] !== "function") {
+          throw new TypeError("Failed to construct 'Blob': The object must have a callable @@iterator property.");
+        }
+        if (typeof options2 !== "object" && typeof options2 !== "function") {
+          throw new TypeError("Failed to construct 'Blob': parameter 2 cannot convert to dictionary.");
+        }
+        if (options2 === null)
+          options2 = {};
+        const encoder = new TextEncoder();
+        for (const element of blobParts) {
           let part;
           if (ArrayBuffer.isView(element)) {
             part = new Uint8Array(element.buffer.slice(element.byteOffset, element.byteOffset + element.byteLength));
@@ -4011,15 +4032,13 @@ var init_install_fetch = __esm({
           } else if (element instanceof Blob) {
             part = element;
           } else {
-            part = new TextEncoder().encode(element);
+            part = encoder.encode(element);
           }
-          size += ArrayBuffer.isView(part) ? part.byteLength : part.size;
-          return part;
-        });
+          this.#size += ArrayBuffer.isView(part) ? part.byteLength : part.size;
+          this.#parts.push(part);
+        }
         const type = options2.type === void 0 ? "" : String(options2.type);
-        this.#type = /[^\u0020-\u007E]/.test(type) ? "" : type;
-        this.#size = size;
-        this.#parts = parts;
+        this.#type = /^[\x20-\x7E]*$/.test(type) ? type : "";
       }
       get size() {
         return this.#size;
@@ -4030,7 +4049,7 @@ var init_install_fetch = __esm({
       async text() {
         const decoder = new TextDecoder();
         let str = "";
-        for await (let part of toIterator(this.#parts, false)) {
+        for await (const part of toIterator(this.#parts, false)) {
           str += decoder.decode(part, { stream: true });
         }
         str += decoder.decode();
@@ -4047,11 +4066,14 @@ var init_install_fetch = __esm({
       }
       stream() {
         const it = toIterator(this.#parts, true);
-        return new ReadableStream({
+        return new globalThis.ReadableStream({
           type: "bytes",
           async pull(ctrl) {
             const chunk = await it.next();
             chunk.done ? ctrl.close() : ctrl.enqueue(chunk.value);
+          },
+          async cancel() {
+            await it.return();
           }
         });
       }
@@ -4080,6 +4102,7 @@ var init_install_fetch = __esm({
               chunk = part.slice(relativeStart, Math.min(size2, relativeEnd));
               added += chunk.size;
             }
+            relativeEnd -= size2;
             blobParts.push(chunk);
             relativeStart = 0;
           }
@@ -4409,18 +4432,18 @@ var init_install_fetch = __esm({
         return this.entries();
       }
       raw() {
-        return [...this.keys()].reduce((result, key) => {
-          result[key] = this.getAll(key);
+        return [...this.keys()].reduce((result, key2) => {
+          result[key2] = this.getAll(key2);
           return result;
         }, {});
       }
       [Symbol.for("nodejs.util.inspect.custom")]() {
-        return [...this.keys()].reduce((result, key) => {
-          const values = this.getAll(key);
-          if (key === "host") {
-            result[key] = values[0];
+        return [...this.keys()].reduce((result, key2) => {
+          const values = this.getAll(key2);
+          if (key2 === "host") {
+            result[key2] = values[0];
           } else {
-            result[key] = values.length > 1 ? values : values[0];
+            result[key2] = values.length > 1 ? values : values[0];
           }
           return result;
         }, {});
@@ -4676,6 +4699,477 @@ var init_shims = __esm({
   }
 });
 
+// .svelte-kit/output/server/chunks/stores-6349963b.js
+function writable(value, start = noop) {
+  let stop;
+  const subscribers = new Set();
+  function set(new_value) {
+    if (safe_not_equal(value, new_value)) {
+      value = new_value;
+      if (stop) {
+        const run_queue = !subscriber_queue.length;
+        for (const subscriber of subscribers) {
+          subscriber[1]();
+          subscriber_queue.push(subscriber, value);
+        }
+        if (run_queue) {
+          for (let i = 0; i < subscriber_queue.length; i += 2) {
+            subscriber_queue[i][0](subscriber_queue[i + 1]);
+          }
+          subscriber_queue.length = 0;
+        }
+      }
+    }
+  }
+  function update(fn) {
+    set(fn(value));
+  }
+  function subscribe2(run2, invalidate = noop) {
+    const subscriber = [run2, invalidate];
+    subscribers.add(subscriber);
+    if (subscribers.size === 1) {
+      stop = start(set) || noop;
+    }
+    run2(value);
+    return () => {
+      subscribers.delete(subscriber);
+      if (subscribers.size === 0) {
+        stop();
+        stop = null;
+      }
+    };
+  }
+  return { set, update, subscribe: subscribe2 };
+}
+var subscriber_queue, user, name, surname, id, firstTime, travelScroll, travelType, courseType, errMsg, ttNum;
+var init_stores_6349963b = __esm({
+  ".svelte-kit/output/server/chunks/stores-6349963b.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    subscriber_queue = [];
+    user = writable();
+    name = writable();
+    surname = writable();
+    id = writable();
+    firstTime = writable(true);
+    travelScroll = writable("");
+    travelType = writable("");
+    courseType = writable("");
+    errMsg = writable("");
+    ttNum = writable("");
+  }
+});
+
+// .svelte-kit/output/server/chunks/Icon-7dad3475.js
+function normaliseData(data) {
+  if ("iconName" in data && "icon" in data) {
+    let normalisedData = {};
+    let faIcon = data.icon;
+    let name2 = data.iconName;
+    let width = faIcon[0];
+    let height = faIcon[1];
+    let paths = faIcon[4];
+    let iconData = { width, height, paths: [{ d: paths }] };
+    normalisedData[name2] = iconData;
+    return normalisedData;
+  }
+  return data;
+}
+var Path, Polygon, Raw, css, Svg, outerScale, Icon;
+var init_Icon_7dad3475 = __esm({
+  ".svelte-kit/output/server/chunks/Icon-7dad3475.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    Path = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { id: id2 } = $$props;
+      let { data = {} } = $$props;
+      if ($$props.id === void 0 && $$bindings.id && id2 !== void 0)
+        $$bindings.id(id2);
+      if ($$props.data === void 0 && $$bindings.data && data !== void 0)
+        $$bindings.data(data);
+      return `<path${spread([{ id: "path-" + escape(id2) }, escape_object(data)])}></path>`;
+    });
+    Polygon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { id: id2 } = $$props;
+      let { data = {} } = $$props;
+      if ($$props.id === void 0 && $$bindings.id && id2 !== void 0)
+        $$bindings.id(id2);
+      if ($$props.data === void 0 && $$bindings.data && data !== void 0)
+        $$bindings.data(data);
+      return `<polygon${spread([{ id: "polygon-" + escape(id2) }, escape_object(data)])}></polygon>`;
+    });
+    Raw = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let cursor = 870711;
+      function getId() {
+        cursor += 1;
+        return `fa-${cursor.toString(16)}`;
+      }
+      let raw;
+      let { data } = $$props;
+      function getRaw(data2) {
+        if (!data2 || !data2.raw) {
+          return null;
+        }
+        let rawData = data2.raw;
+        const ids = {};
+        rawData = rawData.replace(/\s(?:xml:)?id=["']?([^"')\s]+)/g, (match, id2) => {
+          const uniqueId = getId();
+          ids[id2] = uniqueId;
+          return ` id="${uniqueId}"`;
+        });
+        rawData = rawData.replace(/#(?:([^'")\s]+)|xpointer\(id\((['"]?)([^')]+)\2\)\))/g, (match, rawId, _, pointerId) => {
+          const id2 = rawId || pointerId;
+          if (!id2 || !ids[id2]) {
+            return match;
+          }
+          return `#${ids[id2]}`;
+        });
+        return rawData;
+      }
+      if ($$props.data === void 0 && $$bindings.data && data !== void 0)
+        $$bindings.data(data);
+      raw = getRaw(data);
+      return `<g><!-- HTML_TAG_START -->${raw}<!-- HTML_TAG_END --></g>`;
+    });
+    css = {
+      code: ".fa-icon.svelte-1dof0an{display:inline-block;fill:currentColor}.fa-flip-horizontal.svelte-1dof0an{transform:scale(-1, 1)}.fa-flip-vertical.svelte-1dof0an{transform:scale(1, -1)}.fa-spin.svelte-1dof0an{animation:svelte-1dof0an-fa-spin 1s 0s infinite linear}.fa-inverse.svelte-1dof0an{color:#fff}.fa-pulse.svelte-1dof0an{animation:svelte-1dof0an-fa-spin 1s infinite steps(8)}@keyframes svelte-1dof0an-fa-spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}",
+      map: null
+    };
+    Svg = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { class: className } = $$props;
+      let { width } = $$props;
+      let { height } = $$props;
+      let { box } = $$props;
+      let { spin = false } = $$props;
+      let { inverse = false } = $$props;
+      let { pulse = false } = $$props;
+      let { flip = null } = $$props;
+      let { x = void 0 } = $$props;
+      let { y = void 0 } = $$props;
+      let { style = void 0 } = $$props;
+      let { label = void 0 } = $$props;
+      if ($$props.class === void 0 && $$bindings.class && className !== void 0)
+        $$bindings.class(className);
+      if ($$props.width === void 0 && $$bindings.width && width !== void 0)
+        $$bindings.width(width);
+      if ($$props.height === void 0 && $$bindings.height && height !== void 0)
+        $$bindings.height(height);
+      if ($$props.box === void 0 && $$bindings.box && box !== void 0)
+        $$bindings.box(box);
+      if ($$props.spin === void 0 && $$bindings.spin && spin !== void 0)
+        $$bindings.spin(spin);
+      if ($$props.inverse === void 0 && $$bindings.inverse && inverse !== void 0)
+        $$bindings.inverse(inverse);
+      if ($$props.pulse === void 0 && $$bindings.pulse && pulse !== void 0)
+        $$bindings.pulse(pulse);
+      if ($$props.flip === void 0 && $$bindings.flip && flip !== void 0)
+        $$bindings.flip(flip);
+      if ($$props.x === void 0 && $$bindings.x && x !== void 0)
+        $$bindings.x(x);
+      if ($$props.y === void 0 && $$bindings.y && y !== void 0)
+        $$bindings.y(y);
+      if ($$props.style === void 0 && $$bindings.style && style !== void 0)
+        $$bindings.style(style);
+      if ($$props.label === void 0 && $$bindings.label && label !== void 0)
+        $$bindings.label(label);
+      $$result.css.add(css);
+      return `<svg version="${"1.1"}" class="${[
+        "fa-icon " + escape(className) + " svelte-1dof0an",
+        (spin ? "fa-spin" : "") + " " + (pulse ? "fa-pulse" : "") + " " + (inverse ? "fa-inverse" : "") + " " + (flip === "horizontal" ? "fa-flip-horizontal" : "") + " " + (flip === "vertical" ? "fa-flip-vertical" : "")
+      ].join(" ").trim()}"${add_attribute("x", x, 0)}${add_attribute("y", y, 0)}${add_attribute("width", width, 0)}${add_attribute("height", height, 0)}${add_attribute("aria-label", label, 0)}${add_attribute("role", label ? "img" : "presentation", 0)}${add_attribute("viewBox", box, 0)}${add_attribute("style", style, 0)}>${slots.default ? slots.default({}) : ``}</svg>`;
+    });
+    outerScale = 1;
+    Icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { class: className = "" } = $$props;
+      let { data } = $$props;
+      let { scale = 1 } = $$props;
+      let { spin = false } = $$props;
+      let { inverse = false } = $$props;
+      let { pulse = false } = $$props;
+      let { flip = null } = $$props;
+      let { label = null } = $$props;
+      let self2 = null;
+      let { style = null } = $$props;
+      let width;
+      let height;
+      let combinedStyle;
+      let box;
+      function init2() {
+        if (typeof data === "undefined") {
+          return;
+        }
+        const normalisedData = normaliseData(data);
+        const [name2] = Object.keys(normalisedData);
+        const icon = normalisedData[name2];
+        if (!icon.paths) {
+          icon.paths = [];
+        }
+        if (icon.d) {
+          icon.paths.push({ d: icon.d });
+        }
+        if (!icon.polygons) {
+          icon.polygons = [];
+        }
+        if (icon.points) {
+          icon.polygons.push({ points: icon.points });
+        }
+        self2 = icon;
+      }
+      function normalisedScale() {
+        let numScale = 1;
+        if (typeof scale !== "undefined") {
+          numScale = Number(scale);
+        }
+        if (isNaN(numScale) || numScale <= 0) {
+          console.warn('Invalid prop: prop "scale" should be a number over 0.');
+          return outerScale;
+        }
+        return numScale * outerScale;
+      }
+      function calculateBox() {
+        if (self2) {
+          return `0 0 ${self2.width} ${self2.height}`;
+        }
+        return `0 0 ${width} ${height}`;
+      }
+      function calculateRatio() {
+        if (!self2) {
+          return 1;
+        }
+        return Math.max(self2.width, self2.height) / 16;
+      }
+      function calculateWidth() {
+        if (self2) {
+          return self2.width / calculateRatio() * normalisedScale();
+        }
+        return 0;
+      }
+      function calculateHeight() {
+        if (self2) {
+          return self2.height / calculateRatio() * normalisedScale();
+        }
+        return 0;
+      }
+      function calculateStyle() {
+        let combined = "";
+        if (style !== null) {
+          combined += style;
+        }
+        let size = normalisedScale();
+        if (size === 1) {
+          if (combined.length === 0) {
+            return void 0;
+          }
+          return combined;
+        }
+        if (combined !== "" && !combined.endsWith(";")) {
+          combined += "; ";
+        }
+        return `${combined}font-size: ${size}em`;
+      }
+      if ($$props.class === void 0 && $$bindings.class && className !== void 0)
+        $$bindings.class(className);
+      if ($$props.data === void 0 && $$bindings.data && data !== void 0)
+        $$bindings.data(data);
+      if ($$props.scale === void 0 && $$bindings.scale && scale !== void 0)
+        $$bindings.scale(scale);
+      if ($$props.spin === void 0 && $$bindings.spin && spin !== void 0)
+        $$bindings.spin(spin);
+      if ($$props.inverse === void 0 && $$bindings.inverse && inverse !== void 0)
+        $$bindings.inverse(inverse);
+      if ($$props.pulse === void 0 && $$bindings.pulse && pulse !== void 0)
+        $$bindings.pulse(pulse);
+      if ($$props.flip === void 0 && $$bindings.flip && flip !== void 0)
+        $$bindings.flip(flip);
+      if ($$props.label === void 0 && $$bindings.label && label !== void 0)
+        $$bindings.label(label);
+      if ($$props.style === void 0 && $$bindings.style && style !== void 0)
+        $$bindings.style(style);
+      let $$settled;
+      let $$rendered;
+      do {
+        $$settled = true;
+        {
+          {
+            init2();
+            width = calculateWidth();
+            height = calculateHeight();
+            combinedStyle = calculateStyle();
+            box = calculateBox();
+          }
+        }
+        $$rendered = `${validate_component(Svg, "Svg").$$render($$result, {
+          label,
+          width,
+          height,
+          box,
+          style: combinedStyle,
+          spin,
+          flip,
+          inverse,
+          pulse,
+          class: className
+        }, {}, {
+          default: () => `${slots.default ? slots.default({}) : `
+    ${self2 ? `${self2.paths ? `${each(self2.paths, (path, i) => `${validate_component(Path, "Path").$$render($$result, { id: i, data: path }, {}, {})}`)}` : ``}
+      ${self2.polygons ? `${each(self2.polygons, (polygon, i) => `${validate_component(Polygon, "Polygon").$$render($$result, { id: i, data: polygon }, {}, {})}`)}` : ``}
+      ${self2.raw ? `${validate_component(Raw, "Raw").$$render($$result, { data: self2 }, {
+            data: ($$value) => {
+              self2 = $$value;
+              $$settled = false;
+            }
+          }, {})}` : ``}` : ``}
+  `}`
+        })}`;
+      } while (!$$settled);
+      return $$rendered;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/instagram-60dc2453.js
+var twitter, facebook, instagram;
+var init_instagram_60dc2453 = __esm({
+  ".svelte-kit/output/server/chunks/instagram-60dc2453.js"() {
+    init_shims();
+    twitter = { twitter: { width: 1664, height: 1792, paths: [{ d: "M1620 408q-67 98-162 167 1 14 1 42 0 130-38 259.5t-115.5 248.5-184.5 210.5-258 146-323 54.5q-271 0-496-145 35 4 78 4 225 0 401-138-105-2-188-64.5t-114-159.5q33 5 61 5 43 0 85-11-112-23-185.5-111.5t-73.5-205.5v-4q68 38 146 41-66-44-105-115t-39-154q0-88 44-163 121 149 294.5 238.5t371.5 99.5q-8-38-8-74 0-134 94.5-228.5t228.5-94.5q140 0 236 102 109-21 205-78-37 115-142 178 93-10 186-50z" }] } };
+    facebook = { facebook: { width: 1024, height: 1792, paths: [{ d: "M959 12v264h-157q-86 0-116 36t-30 108v189h293l-39 296h-254v759h-306v-759h-255v-296h255v-218q0-186 104-288.5t277-102.5q147 0 228 12z" }] } };
+    instagram = { instagram: { width: 1536, height: 1792, paths: [{ d: "M1024 896q0-106-75-181t-181-75-181 75-75 181 75 181 181 75 181-75 75-181zM1162 896q0 164-115 279t-279 115-279-115-115-279 115-279 279-115 279 115 115 279zM1270 486q0 38-27 65t-65 27-65-27-27-65 27-65 65-27 65 27 27 65zM768 266q-7 0-76.5-0.5t-105.5 0-96.5 3-103 10-71.5 18.5q-50 20-88 58t-58 88q-11 29-18.5 71.5t-10 103-3 96.5 0 105.5 0.5 76.5-0.5 76.5 0 105.5 3 96.5 10 103 18.5 71.5q20 50 58 88t88 58q29 11 71.5 18.5t103 10 96.5 3 105.5 0 76.5-0.5 76.5 0.5 105.5 0 96.5-3 103-10 71.5-18.5q50-20 88-58t58-88q11-29 18.5-71.5t10-103 3-96.5 0-105.5-0.5-76.5 0.5-76.5 0-105.5-3-96.5-10-103-18.5-71.5q-20-50-58-88t-88-58q-29-11-71.5-18.5t-103-10-96.5-3-105.5 0-76.5 0.5zM1536 896q0 229-5 317-10 208-124 322t-322 124q-88 5-317 5t-317-5q-208-10-322-124t-124-322q-5-88-5-317t5-317q10-208 124-322t322-124q88-5 317-5t317 5q208 10 322 124t124 322q5 88 5 317z" }] } };
+  }
+});
+
+// .svelte-kit/output/server/chunks/__layout-87badfe1.js
+var layout_87badfe1_exports = {};
+__export(layout_87badfe1_exports, {
+  default: () => _layout
+});
+var css$1, Header, linkedin, youtubeSquare, css2, Footer, _layout;
+var init_layout_87badfe1 = __esm({
+  ".svelte-kit/output/server/chunks/__layout-87badfe1.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    init_stores_6349963b();
+    init_Icon_7dad3475();
+    init_instagram_60dc2453();
+    css$1 = {
+      code: "@media screen and (min-width: 1200px){li.svelte-8n4gse.svelte-8n4gse{font-size:1.16em;font-weight:500}a.svelte-8n4gse.svelte-8n4gse{line-height:2.8rem}.nav-img.svelte-8n4gse.svelte-8n4gse{padding-right:6rem}.navbar-nav.svelte-8n4gse .nav-link.svelte-8n4gse{margin-right:15px;margin-left:15px}}@media screen and (max-width: 1200px){li.svelte-8n4gse.svelte-8n4gse{font-size:0.9em;font-weight:400}a.svelte-8n4gse.svelte-8n4gse{line-height:2.5rem}}@media screen and (max-width: 992px){img.svelte-8n4gse.svelte-8n4gse{max-width:80px;height:auto}a.svelte-8n4gse.svelte-8n4gse{font-size:1.14em;line-height:3rem;text-align:center}li.svelte-8n4gse.svelte-8n4gse{text-align:center}}nav.svelte-8n4gse.svelte-8n4gse{border-bottom:var(--logo-gold) 4px solid}a.svelte-8n4gse.svelte-8n4gse{display:inline-block;width:auto}.dropdown-menu.svelte-8n4gse.svelte-8n4gse{background-color:#FEFEFF}.dropdown-item.svelte-8n4gse.svelte-8n4gse{color:black}.dropdown-item.svelte-8n4gse.svelte-8n4gse:active{color:#fff;text-decoration:none;background-color:#fff}#logout.svelte-8n4gse.svelte-8n4gse{cursor:pointer;font-size:1.12em;transition:0.3s}h6.svelte-8n4gse.svelte-8n4gse{color:var(--logo-grey);margin-right:1rem}#logout.svelte-8n4gse.svelte-8n4gse:hover{font-size:1.15em}a.svelte-8n4gse.svelte-8n4gse:after{display:block;content:'';border-bottom:solid 3px var(--logo-gold);transform:scaleX(0);transition:transform 250ms ease-in-out}a.fromLeft.svelte-8n4gse.svelte-8n4gse:after{transform-origin:100% 50%}a.fromLeft.svelte-8n4gse.svelte-8n4gse:hover:after{transform:scaleX(1);transform-origin:0% 50%}.avatar.svelte-8n4gse.svelte-8n4gse{border-radius:40%;transition:0.3s;border:var(--logo-gold) solid 2px}.avatar.svelte-8n4gse.svelte-8n4gse:hover{border-radius:25%}",
+      map: null
+    };
+    Header = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let $name, $$unsubscribe_name;
+      let $$unsubscribe_surname;
+      $$unsubscribe_name = subscribe(name, (value) => $name = value);
+      $$unsubscribe_surname = subscribe(surname, (value) => value);
+      let avatar = "";
+      $$result.css.add(css$1);
+      $$unsubscribe_name();
+      $$unsubscribe_surname();
+      return `<nav class="${"navbar navbar-expand-lg navbar-light svelte-8n4gse"}"><div class="${"container-fluid"}"><button id="${"burger"}" class="${"navbar-toggler third-button mx-auto"}" type="${"button"}" data-bs-toggle="${"collapse"}" data-bs-target="${"#navbar"}" aria-controls="${"navbar"}" aria-expanded="${"false"}" aria-label="${"Toggle navigation"}"><div class="${"animated-icon3"}"><span></span><span></span><span></span></div></button>
+        <div class="${"collapse navbar-collapse justify-content-end"}" id="${"navbar"}"><ul class="${"navbar-nav svelte-8n4gse"}"><div class="${"nav-img mx-auto svelte-8n4gse"}"><a class="${"navbar-brand svelte-8n4gse"}" href="${"/"}"><img src="${"/thinkteacherlogo-final.png"}" alt="${"logo"}" width="${"200"}" class="${"svelte-8n4gse"}"></a></div>
+                <li class="${"nav-item svelte-8n4gse"}"><a class="${"nav-link fromLeft svelte-8n4gse"}" sveltekit:prefetch href="${"/about"}">About</a></li>
+                <li class="${"nav-item svelte-8n4gse"}"><a class="${"nav-link fromLeft svelte-8n4gse"}" sveltekit:prefetch href="${"/partners"}">Partners</a></li>
+                <li class="${"nav-item svelte-8n4gse"}"><a class="${"nav-link fromLeft svelte-8n4gse"}" sveltekit:prefetch href="${"/benefits"}">Benefits</a></li>
+                <li class="${"nav-item svelte-8n4gse"}"><a class="${"nav-link fromLeft svelte-8n4gse"}" sveltekit:prefetch href="${"/blog"}">Blog</a></li>
+                <li class="${"nav-item dropdown svelte-8n4gse"}"><a class="${"nav-link from-left dropdown-toggle svelte-8n4gse"}" data-bs-toggle="${"dropdown"}" href="${"/"}" role="${"button"}" aria-expanded="${"false"}">Webinars</a>
+                    <ul class="${"dropdown-menu svelte-8n4gse"}"><li class="${"svelte-8n4gse"}"><a class="${"dropdown-item svelte-8n4gse"}" sveltekit:prefetch href="${"/events"}">Events</a></li>
+                      <li class="${"svelte-8n4gse"}"><a class="${"dropdown-item svelte-8n4gse"}" sveltekit:prefetch href="${"/webinars"}">Webinars</a></li></ul></li>
+                <li class="${"nav-item svelte-8n4gse"}"><a class="${"nav-link fromLeft svelte-8n4gse"}" sveltekit:prefetch href="${"/contact-us"}">Contact</a></li></ul></div>
+        <div class="${"collapse navbar-collapse justify-content-end"}" id="${"navbar"}">
+                <div class="${"d-flex align-items-center align-top"}">${$name ? `<a class="${"mb-2 svelte-8n4gse"}" title="${"User profile"}" href="${"/auth/profile"}"><img class="${"avatar svelte-8n4gse"}"${add_attribute("src", avatar, 0)} alt="${"avatar"}"></a>
+                        <h6 class="${"svelte-8n4gse"}">\xA0\xA0Welcome ${escape($name)}, <span id="${"logout"}" style="${"color: var(--logo-gold);"}" class="${"svelte-8n4gse"}">Logout</span></h6>` : `<p><a href="${"/login"}" class="${"nav-link align-top svelte-8n4gse"}" style="${"color: var(--logo-gold); font-size: 1.16em;"}">Login</a></p>
+                        <h5>/</h5>
+                        <p><a href="${"/register"}" class="${"nav-link svelte-8n4gse"}" style="${"color: var(--logo-grey); font-size: 1.16em;"}">Register</a></p>`}</div></div></div>
+</nav>`;
+    });
+    linkedin = { linkedin: { width: 1536, height: 1792, paths: [{ d: "M349 625v991h-330v-991h330zM370 319q1 73-50.5 122t-135.5 49h-2q-82 0-132-49t-50-122q0-74 51.5-122.5t134.5-48.5 133 48.5 51 122.5zM1536 1048v568h-329v-530q0-105-40.5-164.5t-126.5-59.5q-63 0-105.5 34.5t-63.5 85.5q-11 30-11 81v553h-329q2-399 2-647t-1-296l-1-48h329v144h-2q20-32 41-56t56.5-52 87-43.5 114.5-15.5q171 0 275 113.5t104 332.5z" }] } };
+    youtubeSquare = { "youtube-square": { width: 1536, height: 1792, paths: [{ d: "M919 1303v-157q0-50-29-50-17 0-33 16v224q16 16 33 16 29 0 29-49zM1103 1181h66v-34q0-51-33-51t-33 51v34zM532 915v70h-80v423h-74v-423h-78v-70h232zM733 1041v367h-67v-40q-39 45-76 45-33 0-42-28-6-17-6-54v-290h66v270q0 24 1 26 1 15 15 15 20 0 42-31v-280h67zM985 1152v146q0 52-7 73-12 42-53 42-35 0-68-41v36h-67v-493h67v161q32-40 68-40 41 0 53 42 7 21 7 74zM1236 1281v9q0 29-2 43-3 22-15 40-27 40-80 40-52 0-81-38-21-27-21-86v-129q0-59 20-86 29-38 80-38t78 38q21 29 21 86v76h-133v65q0 51 34 51 24 0 30-26 0-1 0.5-7t0.5-16.5v-21.5h68zM785 457v156q0 51-32 51t-32-51v-156q0-52 32-52t32 52zM1318 1170q0-177-19-260-10-44-43-73.5t-76-34.5q-136-15-412-15-275 0-411 15-44 5-76.5 34.5t-42.5 73.5q-20 87-20 260 0 176 20 260 10 43 42.5 73t75.5 35q137 15 412 15t412-15q43-5 75.5-35t42.5-73q20-84 20-260zM563 519l90-296h-75l-51 195-53-195h-78q7 23 23 69l24 69q35 103 46 158v201h74v-201zM852 600v-130q0-58-21-87-29-38-78-38-51 0-78 38-21 29-21 87v130q0 58 21 87 27 38 78 38 49 0 78-38 21-27 21-87zM1033 720h67v-370h-67v283q-22 31-42 31-15 0-16-16-1-2-1-26v-272h-67v293q0 37 6 55 11 27 43 27 36 0 77-45v40zM1536 416v960q0 119-84.5 203.5t-203.5 84.5h-960q-119 0-203.5-84.5t-84.5-203.5v-960q0-119 84.5-203.5t203.5-84.5h960q119 0 203.5 84.5t84.5 203.5z" }] } };
+    css2 = {
+      code: "footer.svelte-19n6n29.svelte-19n6n29{margin-top:auto !important}h5.svelte-19n6n29.svelte-19n6n29,p.svelte-19n6n29.svelte-19n6n29{color:var(--bg-primary)}li.svelte-19n6n29 a.svelte-19n6n29{color:var(--bg-primary) !important}",
+      map: null
+    };
+    Footer = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      $$result.css.add(css2);
+      return `<footer style="${"background-color: var(--default-text);"}" class="${"text-center text-black mt-5 svelte-19n6n29"}"><section class="${"mb-2 mt-3"}">
+        <a class="${"btn btn-outline-light btn-floating m-1"}" href="${"https://www.facebook.com/thinkteacher"}" target="${"_blank"}" role="${"button"}">${validate_component(Icon, "Icon").$$render($$result, { data: facebook, scale: "1.8" }, {}, {})}</a>  
+        
+        <a class="${"btn btn-outline-light btn-floating m-1"}" href="${"https://twitter.com/thinkteacher_sa"}" target="${"_blank"}" role="${"button"}">${validate_component(Icon, "Icon").$$render($$result, { data: twitter, scale: "1.8" }, {}, {})}</a>
+        
+        <a class="${"btn btn-outline-light btn-floating m-1"}" href="${"https://www.instagram.com/thinkteacher_rsa"}" target="${"_blank"}" role="${"button"}">${validate_component(Icon, "Icon").$$render($$result, { data: instagram, scale: "1.8" }, {}, {})}</a>
+        
+        <a class="${"btn btn-outline-light btn-floating m-1"}" href="${"https://www.linkedin.com/company/think-teacher"}" target="${"_blank"}" role="${"button"}">${validate_component(Icon, "Icon").$$render($$result, { data: linkedin, scale: "1.8" }, {}, {})}</a>
+        
+        <a class="${"btn btn-outline-light btn-floating m-1"}" href="${"https://www.youtube.com/channel/UCN-byMa-sTVbwKWNkbMM9bQ"}" target="${"_blank"}" role="${"button"}">${validate_component(Icon, "Icon").$$render($$result, { data: youtubeSquare, scale: "1.8" }, {}, {})}</a>
+        <i class="${"fab fa-youtube"}"></i></section>
+
+    
+    <section class="${"mb-4"}"><p class="${"svelte-19n6n29"}">________________
+        </p></section>
+    
+
+    
+    <div class="${"row g-0"}">
+        <div class="${"col-lg-3 col-md-6 mb-4 mb-md-0"}"><h5 class="${"text-uppercase svelte-19n6n29"}">Socials</h5>
+
+            <ul class="${"list-unstyled mb-3"}"><li class="${"svelte-19n6n29"}"><a href="${"https://www.facebook.com/thinkteacher"}" target="${"_blank"}" class="${"text-white svelte-19n6n29"}">Facebook</a></li>
+                <li class="${"svelte-19n6n29"}"><a href="${"https://twitter.com/thinkteacher_sa"}" target="${"_blank"}" class="${"text-white svelte-19n6n29"}">Twitter</a></li>
+                <li class="${"svelte-19n6n29"}"><a href="${"https://www.instagram.com/thinkteacher_rsa"}" target="${"_blank"}" class="${"text-white svelte-19n6n29"}">Instagram</a></li>
+                <li class="${"svelte-19n6n29"}"><a href="${"https://www.linkedin.com/company/think-teacher"}" target="${"_blank"}" class="${"text-white svelte-19n6n29"}">Linkedin</a></li>
+                <li class="${"svelte-19n6n29"}"><a href="${"https://www.youtube.com/channel/UCN-byMa-sTVbwKWNkbMM9bQ"}" target="${"_blank"}" class="${"text-white svelte-19n6n29"}">YouTube</a></li></ul></div>
+
+        <div class="${"col-lg-3 col-md-6 mb-4 mb-md-0"}"><h5 class="${"text-uppercase svelte-19n6n29"}">Useful Links</h5>
+
+            <ul class="${"list-unstyled mb-0"}"><li class="${"svelte-19n6n29"}"><a href="${"/login"}" class="${"text-white svelte-19n6n29"}">Login</a></li>
+                <li class="${"svelte-19n6n29"}"><a href="${"/forgot-password"}" class="${"text-white svelte-19n6n29"}">Forgot Password</a></li>
+                <li class="${"svelte-19n6n29"}"><a href="${"/register"}" class="${"text-white svelte-19n6n29"}">Register</a></li>
+                <li class="${"svelte-19n6n29"}"><a href="${"/contact-us"}" class="${"text-white svelte-19n6n29"}">Contact</a></li></ul></div>
+
+        <div class="${"col-lg-3 col-md-6 mb-4 mb-md-0"}"><h5 class="${"text-uppercase svelte-19n6n29"}">Contact</h5>
+
+            <ul class="${"list-unstyled mb-0"}"><li class="${"svelte-19n6n29"}"><a href="${"mailto:zani@thinkteacher.co.za"}" class="${"text-white svelte-19n6n29"}">zani@thinkteacher.co.za</a></li></ul></div>
+
+        <div class="${"col-lg-3 col-md-6 mb-4 mb-md-0"}"><button class="${"mt-3 mb-3 btn btn-outline-light px-2"}">Scroll to top</button></div></div>
+
+    
+    <div class="${"text-center p-2"}" style="${"background-color: var(--logo-gold);"}">\xA9 2021 Copyright:
+    <a class="${"text-white"}" href="${"https://thinkteacher.co.za"}">Think Teacher</a>
+    </div>
+</footer>`;
+    });
+    _layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `${validate_component(Header, "Header").$$render($$result, {}, {}, {})}
+
+<div class="${"container-fluid"}">${slots.default ? slots.default({}) : ``}</div>
+
+${validate_component(Footer, "Footer").$$render($$result, {}, {}, {})}`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/__error-929eb6d4.js
+var error_929eb6d4_exports = {};
+__export(error_929eb6d4_exports, {
+  default: () => _error,
+  load: () => load
+});
+function load({ error: error2, status }) {
+  return {
+    props: { title: `${status}: ${error2.message}` }
+  };
+}
+var _error;
+var init_error_929eb6d4 = __esm({
+  ".svelte-kit/output/server/chunks/__error-929eb6d4.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    _error = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { title } = $$props;
+      if ($$props.title === void 0 && $$bindings.title && title !== void 0)
+        $$bindings.title(title);
+      return `<div class="${"container p-4 text-center"}"><h1>${escape(title)}</h1></div>`;
+    });
+  }
+});
+
 // node_modules/countup.js/dist/countUp.umd.js
 var require_countUp_umd = __commonJS({
   "node_modules/countup.js/dist/countUp.umd.js"(exports, module2) {
@@ -4912,6 +5406,426 @@ var require_countUp_umd = __commonJS({
   }
 });
 
+// .svelte-kit/output/server/chunks/index-34b10bf3.js
+var index_34b10bf3_exports = {};
+__export(index_34b10bf3_exports, {
+  default: () => Routes,
+  load: () => load2
+});
+var import_countup, commonjsGlobal2, siema_min, css$2, Carousel, css$12, Logo, css3, API_URL, load2, Routes;
+var init_index_34b10bf3 = __esm({
+  ".svelte-kit/output/server/chunks/index-34b10bf3.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    import_countup = __toModule(require_countUp_umd());
+    init_stores_6349963b();
+    commonjsGlobal2 = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
+    siema_min = { exports: {} };
+    (function(module2, exports) {
+      !function(e, t) {
+        module2.exports = t();
+      }(typeof self != "undefined" ? self : commonjsGlobal2, function() {
+        return function(e) {
+          function t(r) {
+            if (i[r])
+              return i[r].exports;
+            var n = i[r] = { i: r, l: false, exports: {} };
+            return e[r].call(n.exports, n, n.exports, t), n.l = true, n.exports;
+          }
+          var i = {};
+          return t.m = e, t.c = i, t.d = function(e2, i2, r) {
+            t.o(e2, i2) || Object.defineProperty(e2, i2, { configurable: false, enumerable: true, get: r });
+          }, t.n = function(e2) {
+            var i2 = e2 && e2.__esModule ? function() {
+              return e2.default;
+            } : function() {
+              return e2;
+            };
+            return t.d(i2, "a", i2), i2;
+          }, t.o = function(e2, t2) {
+            return Object.prototype.hasOwnProperty.call(e2, t2);
+          }, t.p = "", t(t.s = 0);
+        }([function(e, t, i) {
+          function r(e2, t2) {
+            if (!(e2 instanceof t2))
+              throw new TypeError("Cannot call a class as a function");
+          }
+          Object.defineProperty(t, "__esModule", { value: true });
+          var n = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e2) {
+            return typeof e2;
+          } : function(e2) {
+            return e2 && typeof Symbol == "function" && e2.constructor === Symbol && e2 !== Symbol.prototype ? "symbol" : typeof e2;
+          }, s2 = function() {
+            function e2(e3, t2) {
+              for (var i2 = 0; i2 < t2.length; i2++) {
+                var r2 = t2[i2];
+                r2.enumerable = r2.enumerable || false, r2.configurable = true, "value" in r2 && (r2.writable = true), Object.defineProperty(e3, r2.key, r2);
+              }
+            }
+            return function(t2, i2, r2) {
+              return i2 && e2(t2.prototype, i2), r2 && e2(t2, r2), t2;
+            };
+          }(), l = function() {
+            function e2(t2) {
+              var i2 = this;
+              if (r(this, e2), this.config = e2.mergeSettings(t2), this.selector = typeof this.config.selector == "string" ? document.querySelector(this.config.selector) : this.config.selector, this.selector === null)
+                throw new Error("Something wrong with your selector \u{1F62D}");
+              this.resolveSlidesNumber(), this.selectorWidth = this.selector.offsetWidth, this.innerElements = [].slice.call(this.selector.children), this.currentSlide = this.config.loop ? this.config.startIndex % this.innerElements.length : Math.max(0, Math.min(this.config.startIndex, this.innerElements.length - this.perPage)), this.transformProperty = e2.webkitOrNot(), ["resizeHandler", "touchstartHandler", "touchendHandler", "touchmoveHandler", "mousedownHandler", "mouseupHandler", "mouseleaveHandler", "mousemoveHandler", "clickHandler"].forEach(function(e3) {
+                i2[e3] = i2[e3].bind(i2);
+              }), this.init();
+            }
+            return s2(e2, [{ key: "attachEvents", value: function() {
+              window.addEventListener("resize", this.resizeHandler), this.config.draggable && (this.pointerDown = false, this.drag = { startX: 0, endX: 0, startY: 0, letItGo: null, preventClick: false }, this.selector.addEventListener("touchstart", this.touchstartHandler), this.selector.addEventListener("touchend", this.touchendHandler), this.selector.addEventListener("touchmove", this.touchmoveHandler), this.selector.addEventListener("mousedown", this.mousedownHandler), this.selector.addEventListener("mouseup", this.mouseupHandler), this.selector.addEventListener("mouseleave", this.mouseleaveHandler), this.selector.addEventListener("mousemove", this.mousemoveHandler), this.selector.addEventListener("click", this.clickHandler));
+            } }, { key: "detachEvents", value: function() {
+              window.removeEventListener("resize", this.resizeHandler), this.selector.removeEventListener("touchstart", this.touchstartHandler), this.selector.removeEventListener("touchend", this.touchendHandler), this.selector.removeEventListener("touchmove", this.touchmoveHandler), this.selector.removeEventListener("mousedown", this.mousedownHandler), this.selector.removeEventListener("mouseup", this.mouseupHandler), this.selector.removeEventListener("mouseleave", this.mouseleaveHandler), this.selector.removeEventListener("mousemove", this.mousemoveHandler), this.selector.removeEventListener("click", this.clickHandler);
+            } }, { key: "init", value: function() {
+              this.attachEvents(), this.selector.style.overflow = "hidden", this.selector.style.direction = this.config.rtl ? "rtl" : "ltr", this.buildSliderFrame(), this.config.onInit.call(this);
+            } }, { key: "buildSliderFrame", value: function() {
+              var e3 = this.selectorWidth / this.perPage, t2 = this.config.loop ? this.innerElements.length + 2 * this.perPage : this.innerElements.length;
+              this.sliderFrame = document.createElement("div"), this.sliderFrame.style.width = e3 * t2 + "px", this.enableTransition(), this.config.draggable && (this.selector.style.cursor = "-webkit-grab");
+              var i2 = document.createDocumentFragment();
+              if (this.config.loop)
+                for (var r2 = this.innerElements.length - this.perPage; r2 < this.innerElements.length; r2++) {
+                  var n2 = this.buildSliderFrameItem(this.innerElements[r2].cloneNode(true));
+                  i2.appendChild(n2);
+                }
+              for (var s22 = 0; s22 < this.innerElements.length; s22++) {
+                var l2 = this.buildSliderFrameItem(this.innerElements[s22]);
+                i2.appendChild(l2);
+              }
+              if (this.config.loop)
+                for (var o = 0; o < this.perPage; o++) {
+                  var a = this.buildSliderFrameItem(this.innerElements[o].cloneNode(true));
+                  i2.appendChild(a);
+                }
+              this.sliderFrame.appendChild(i2), this.selector.innerHTML = "", this.selector.appendChild(this.sliderFrame), this.slideToCurrent();
+            } }, { key: "buildSliderFrameItem", value: function(e3) {
+              var t2 = document.createElement("div");
+              return t2.style.cssFloat = this.config.rtl ? "right" : "left", t2.style.float = this.config.rtl ? "right" : "left", t2.style.width = (this.config.loop ? 100 / (this.innerElements.length + 2 * this.perPage) : 100 / this.innerElements.length) + "%", t2.appendChild(e3), t2;
+            } }, { key: "resolveSlidesNumber", value: function() {
+              if (typeof this.config.perPage == "number")
+                this.perPage = this.config.perPage;
+              else if (n(this.config.perPage) === "object") {
+                this.perPage = 1;
+                for (var e3 in this.config.perPage)
+                  window.innerWidth >= e3 && (this.perPage = this.config.perPage[e3]);
+              }
+            } }, { key: "prev", value: function() {
+              var e3 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : 1, t2 = arguments[1];
+              if (!(this.innerElements.length <= this.perPage)) {
+                var i2 = this.currentSlide;
+                if (this.config.loop) {
+                  if (this.currentSlide - e3 < 0) {
+                    this.disableTransition();
+                    var r2 = this.currentSlide + this.innerElements.length, n2 = this.perPage, s22 = r2 + n2, l2 = (this.config.rtl ? 1 : -1) * s22 * (this.selectorWidth / this.perPage), o = this.config.draggable ? this.drag.endX - this.drag.startX : 0;
+                    this.sliderFrame.style[this.transformProperty] = "translate3d(" + (l2 + o) + "px, 0, 0)", this.currentSlide = r2 - e3;
+                  } else
+                    this.currentSlide = this.currentSlide - e3;
+                } else
+                  this.currentSlide = Math.max(this.currentSlide - e3, 0);
+                i2 !== this.currentSlide && (this.slideToCurrent(this.config.loop), this.config.onChange.call(this), t2 && t2.call(this));
+              }
+            } }, { key: "next", value: function() {
+              var e3 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : 1, t2 = arguments[1];
+              if (!(this.innerElements.length <= this.perPage)) {
+                var i2 = this.currentSlide;
+                if (this.config.loop) {
+                  if (this.currentSlide + e3 > this.innerElements.length - this.perPage) {
+                    this.disableTransition();
+                    var r2 = this.currentSlide - this.innerElements.length, n2 = this.perPage, s22 = r2 + n2, l2 = (this.config.rtl ? 1 : -1) * s22 * (this.selectorWidth / this.perPage), o = this.config.draggable ? this.drag.endX - this.drag.startX : 0;
+                    this.sliderFrame.style[this.transformProperty] = "translate3d(" + (l2 + o) + "px, 0, 0)", this.currentSlide = r2 + e3;
+                  } else
+                    this.currentSlide = this.currentSlide + e3;
+                } else
+                  this.currentSlide = Math.min(this.currentSlide + e3, this.innerElements.length - this.perPage);
+                i2 !== this.currentSlide && (this.slideToCurrent(this.config.loop), this.config.onChange.call(this), t2 && t2.call(this));
+              }
+            } }, { key: "disableTransition", value: function() {
+              this.sliderFrame.style.webkitTransition = "all 0ms " + this.config.easing, this.sliderFrame.style.transition = "all 0ms " + this.config.easing;
+            } }, { key: "enableTransition", value: function() {
+              this.sliderFrame.style.webkitTransition = "all " + this.config.duration + "ms " + this.config.easing, this.sliderFrame.style.transition = "all " + this.config.duration + "ms " + this.config.easing;
+            } }, { key: "goTo", value: function(e3, t2) {
+              if (!(this.innerElements.length <= this.perPage)) {
+                var i2 = this.currentSlide;
+                this.currentSlide = this.config.loop ? e3 % this.innerElements.length : Math.min(Math.max(e3, 0), this.innerElements.length - this.perPage), i2 !== this.currentSlide && (this.slideToCurrent(), this.config.onChange.call(this), t2 && t2.call(this));
+              }
+            } }, { key: "slideToCurrent", value: function(e3) {
+              var t2 = this, i2 = this.config.loop ? this.currentSlide + this.perPage : this.currentSlide, r2 = (this.config.rtl ? 1 : -1) * i2 * (this.selectorWidth / this.perPage);
+              e3 ? requestAnimationFrame(function() {
+                requestAnimationFrame(function() {
+                  t2.enableTransition(), t2.sliderFrame.style[t2.transformProperty] = "translate3d(" + r2 + "px, 0, 0)";
+                });
+              }) : this.sliderFrame.style[this.transformProperty] = "translate3d(" + r2 + "px, 0, 0)";
+            } }, { key: "updateAfterDrag", value: function() {
+              var e3 = (this.config.rtl ? -1 : 1) * (this.drag.endX - this.drag.startX), t2 = Math.abs(e3), i2 = this.config.multipleDrag ? Math.ceil(t2 / (this.selectorWidth / this.perPage)) : 1, r2 = e3 > 0 && this.currentSlide - i2 < 0, n2 = e3 < 0 && this.currentSlide + i2 > this.innerElements.length - this.perPage;
+              e3 > 0 && t2 > this.config.threshold && this.innerElements.length > this.perPage ? this.prev(i2) : e3 < 0 && t2 > this.config.threshold && this.innerElements.length > this.perPage && this.next(i2), this.slideToCurrent(r2 || n2);
+            } }, { key: "resizeHandler", value: function() {
+              this.resolveSlidesNumber(), this.currentSlide + this.perPage > this.innerElements.length && (this.currentSlide = this.innerElements.length <= this.perPage ? 0 : this.innerElements.length - this.perPage), this.selectorWidth = this.selector.offsetWidth, this.buildSliderFrame();
+            } }, { key: "clearDrag", value: function() {
+              this.drag = { startX: 0, endX: 0, startY: 0, letItGo: null, preventClick: this.drag.preventClick };
+            } }, { key: "touchstartHandler", value: function(e3) {
+              ["TEXTAREA", "OPTION", "INPUT", "SELECT"].indexOf(e3.target.nodeName) !== -1 || (e3.stopPropagation(), this.pointerDown = true, this.drag.startX = e3.touches[0].pageX, this.drag.startY = e3.touches[0].pageY);
+            } }, { key: "touchendHandler", value: function(e3) {
+              e3.stopPropagation(), this.pointerDown = false, this.enableTransition(), this.drag.endX && this.updateAfterDrag(), this.clearDrag();
+            } }, { key: "touchmoveHandler", value: function(e3) {
+              if (e3.stopPropagation(), this.drag.letItGo === null && (this.drag.letItGo = Math.abs(this.drag.startY - e3.touches[0].pageY) < Math.abs(this.drag.startX - e3.touches[0].pageX)), this.pointerDown && this.drag.letItGo) {
+                e3.preventDefault(), this.drag.endX = e3.touches[0].pageX, this.sliderFrame.style.webkitTransition = "all 0ms " + this.config.easing, this.sliderFrame.style.transition = "all 0ms " + this.config.easing;
+                var t2 = this.config.loop ? this.currentSlide + this.perPage : this.currentSlide, i2 = t2 * (this.selectorWidth / this.perPage), r2 = this.drag.endX - this.drag.startX, n2 = this.config.rtl ? i2 + r2 : i2 - r2;
+                this.sliderFrame.style[this.transformProperty] = "translate3d(" + (this.config.rtl ? 1 : -1) * n2 + "px, 0, 0)";
+              }
+            } }, { key: "mousedownHandler", value: function(e3) {
+              ["TEXTAREA", "OPTION", "INPUT", "SELECT"].indexOf(e3.target.nodeName) !== -1 || (e3.preventDefault(), e3.stopPropagation(), this.pointerDown = true, this.drag.startX = e3.pageX);
+            } }, { key: "mouseupHandler", value: function(e3) {
+              e3.stopPropagation(), this.pointerDown = false, this.selector.style.cursor = "-webkit-grab", this.enableTransition(), this.drag.endX && this.updateAfterDrag(), this.clearDrag();
+            } }, { key: "mousemoveHandler", value: function(e3) {
+              if (e3.preventDefault(), this.pointerDown) {
+                e3.target.nodeName === "A" && (this.drag.preventClick = true), this.drag.endX = e3.pageX, this.selector.style.cursor = "-webkit-grabbing", this.sliderFrame.style.webkitTransition = "all 0ms " + this.config.easing, this.sliderFrame.style.transition = "all 0ms " + this.config.easing;
+                var t2 = this.config.loop ? this.currentSlide + this.perPage : this.currentSlide, i2 = t2 * (this.selectorWidth / this.perPage), r2 = this.drag.endX - this.drag.startX, n2 = this.config.rtl ? i2 + r2 : i2 - r2;
+                this.sliderFrame.style[this.transformProperty] = "translate3d(" + (this.config.rtl ? 1 : -1) * n2 + "px, 0, 0)";
+              }
+            } }, { key: "mouseleaveHandler", value: function(e3) {
+              this.pointerDown && (this.pointerDown = false, this.selector.style.cursor = "-webkit-grab", this.drag.endX = e3.pageX, this.drag.preventClick = false, this.enableTransition(), this.updateAfterDrag(), this.clearDrag());
+            } }, { key: "clickHandler", value: function(e3) {
+              this.drag.preventClick && e3.preventDefault(), this.drag.preventClick = false;
+            } }, { key: "remove", value: function(e3, t2) {
+              if (e3 < 0 || e3 >= this.innerElements.length)
+                throw new Error("Item to remove doesn't exist \u{1F62D}");
+              var i2 = e3 < this.currentSlide, r2 = this.currentSlide + this.perPage - 1 === e3;
+              (i2 || r2) && this.currentSlide--, this.innerElements.splice(e3, 1), this.buildSliderFrame(), t2 && t2.call(this);
+            } }, { key: "insert", value: function(e3, t2, i2) {
+              if (t2 < 0 || t2 > this.innerElements.length + 1)
+                throw new Error("Unable to inset it at this index \u{1F62D}");
+              if (this.innerElements.indexOf(e3) !== -1)
+                throw new Error("The same item in a carousel? Really? Nope \u{1F62D}");
+              var r2 = t2 <= this.currentSlide > 0 && this.innerElements.length;
+              this.currentSlide = r2 ? this.currentSlide + 1 : this.currentSlide, this.innerElements.splice(t2, 0, e3), this.buildSliderFrame(), i2 && i2.call(this);
+            } }, { key: "prepend", value: function(e3, t2) {
+              this.insert(e3, 0), t2 && t2.call(this);
+            } }, { key: "append", value: function(e3, t2) {
+              this.insert(e3, this.innerElements.length + 1), t2 && t2.call(this);
+            } }, { key: "destroy", value: function() {
+              var e3 = arguments.length > 0 && arguments[0] !== void 0 && arguments[0], t2 = arguments[1];
+              if (this.detachEvents(), this.selector.style.cursor = "auto", e3) {
+                for (var i2 = document.createDocumentFragment(), r2 = 0; r2 < this.innerElements.length; r2++)
+                  i2.appendChild(this.innerElements[r2]);
+                this.selector.innerHTML = "", this.selector.appendChild(i2), this.selector.removeAttribute("style");
+              }
+              t2 && t2.call(this);
+            } }], [{ key: "mergeSettings", value: function(e3) {
+              var t2 = { selector: ".siema", duration: 200, easing: "ease-out", perPage: 1, startIndex: 0, draggable: true, multipleDrag: true, threshold: 20, loop: false, rtl: false, onInit: function() {
+              }, onChange: function() {
+              } }, i2 = e3;
+              for (var r2 in i2)
+                t2[r2] = i2[r2];
+              return t2;
+            } }, { key: "webkitOrNot", value: function() {
+              return typeof document.documentElement.style.transform == "string" ? "transform" : "WebkitTransform";
+            } }]), e2;
+          }();
+          t.default = l, e.exports = t.default;
+        }]);
+      });
+    })(siema_min);
+    css$2 = {
+      code: ".carousel.svelte-1ppqxio.svelte-1ppqxio{position:relative;width:100%;justify-content:center;align-items:center}button.svelte-1ppqxio.svelte-1ppqxio{position:absolute;width:40px;height:40px;top:50%;z-index:50;margin-top:-20px;border:none;background-color:transparent}button.svelte-1ppqxio.svelte-1ppqxio:focus{outline:none}.left.svelte-1ppqxio.svelte-1ppqxio{left:2vw}.right.svelte-1ppqxio.svelte-1ppqxio{right:2vw}ul.svelte-1ppqxio.svelte-1ppqxio{list-style-type:none;position:absolute;display:flex;justify-content:center;width:100%;margin-top:-30px;padding:0}ul.svelte-1ppqxio li.svelte-1ppqxio{margin:6px;border-radius:100%;background-color:rgba(255,255,255,0.5);height:8px;width:8px}ul.svelte-1ppqxio li.svelte-1ppqxio:hover{background-color:rgba(255,255,255,0.85)}ul.svelte-1ppqxio li.active.svelte-1ppqxio{background-color:rgba(255,255,255,1)}",
+      map: null
+    };
+    Carousel = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let pips;
+      let currentPerPage;
+      let totalDots;
+      let { perPage = 3 } = $$props;
+      let { loop = true } = $$props;
+      let { autoplay = 0 } = $$props;
+      let { duration = 200 } = $$props;
+      let { easing = "ease-out" } = $$props;
+      let { startIndex = 0 } = $$props;
+      let { draggable = true } = $$props;
+      let { multipleDrag = true } = $$props;
+      let { dots = true } = $$props;
+      let { controls = true } = $$props;
+      let { threshold = 20 } = $$props;
+      let { rtl = false } = $$props;
+      let currentIndex = startIndex;
+      let siema;
+      let controller;
+      let timer;
+      createEventDispatcher();
+      function isDotActive(currentIndex2, dotIndex) {
+        if (currentIndex2 < 0)
+          currentIndex2 = pips.length + currentIndex2;
+        return currentIndex2 >= dotIndex * currentPerPage && currentIndex2 < dotIndex * currentPerPage + currentPerPage;
+      }
+      function left() {
+        controller.prev();
+      }
+      function right() {
+        controller.next();
+      }
+      function go(index) {
+        controller.goTo(index);
+      }
+      function pause() {
+        clearInterval(timer);
+      }
+      function resume() {
+        if (autoplay) {
+          timer = setInterval(right, autoplay);
+        }
+      }
+      if ($$props.perPage === void 0 && $$bindings.perPage && perPage !== void 0)
+        $$bindings.perPage(perPage);
+      if ($$props.loop === void 0 && $$bindings.loop && loop !== void 0)
+        $$bindings.loop(loop);
+      if ($$props.autoplay === void 0 && $$bindings.autoplay && autoplay !== void 0)
+        $$bindings.autoplay(autoplay);
+      if ($$props.duration === void 0 && $$bindings.duration && duration !== void 0)
+        $$bindings.duration(duration);
+      if ($$props.easing === void 0 && $$bindings.easing && easing !== void 0)
+        $$bindings.easing(easing);
+      if ($$props.startIndex === void 0 && $$bindings.startIndex && startIndex !== void 0)
+        $$bindings.startIndex(startIndex);
+      if ($$props.draggable === void 0 && $$bindings.draggable && draggable !== void 0)
+        $$bindings.draggable(draggable);
+      if ($$props.multipleDrag === void 0 && $$bindings.multipleDrag && multipleDrag !== void 0)
+        $$bindings.multipleDrag(multipleDrag);
+      if ($$props.dots === void 0 && $$bindings.dots && dots !== void 0)
+        $$bindings.dots(dots);
+      if ($$props.controls === void 0 && $$bindings.controls && controls !== void 0)
+        $$bindings.controls(controls);
+      if ($$props.threshold === void 0 && $$bindings.threshold && threshold !== void 0)
+        $$bindings.threshold(threshold);
+      if ($$props.rtl === void 0 && $$bindings.rtl && rtl !== void 0)
+        $$bindings.rtl(rtl);
+      if ($$props.isDotActive === void 0 && $$bindings.isDotActive && isDotActive !== void 0)
+        $$bindings.isDotActive(isDotActive);
+      if ($$props.left === void 0 && $$bindings.left && left !== void 0)
+        $$bindings.left(left);
+      if ($$props.right === void 0 && $$bindings.right && right !== void 0)
+        $$bindings.right(right);
+      if ($$props.go === void 0 && $$bindings.go && go !== void 0)
+        $$bindings.go(go);
+      if ($$props.pause === void 0 && $$bindings.pause && pause !== void 0)
+        $$bindings.pause(pause);
+      if ($$props.resume === void 0 && $$bindings.resume && resume !== void 0)
+        $$bindings.resume(resume);
+      $$result.css.add(css$2);
+      pips = [];
+      currentPerPage = perPage;
+      totalDots = [];
+      return `<div class="${"carousel svelte-1ppqxio"}"><div class="${"slides"}"${add_attribute("this", siema, 0)}>${slots.default ? slots.default({}) : ``}</div>
+	${controls ? `<button class="${"left svelte-1ppqxio"}" aria-label="${"left"}">${slots["left-control"] ? slots["left-control"]({}) : ``}</button>
+	<button class="${"right svelte-1ppqxio"}" aria-label="${"right"}">${slots["right-control"] ? slots["right-control"]({}) : ``}</button>` : ``}
+    ${dots ? `<ul class="${"svelte-1ppqxio"}">${each({ length: totalDots }, (_, i) => `<li class="${escape(null_to_empty(isDotActive(currentIndex, i) ? "active" : "")) + " svelte-1ppqxio"}"></li>`)}</ul>` : ``}
+</div>`;
+    });
+    css$12 = {
+      code: "#logo-box.svelte-1r3kpdu{margin:auto;padding-top:0%;text-align:center;max-width:850px;height:auto;position:relative}@media screen and (max-width: 1000px){#logo-box.svelte-1r3kpdu{max-width:600px;padding-left:1rem;padding-right:1rem}}",
+      map: null
+    };
+    Logo = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      $$result.css.add(css$12);
+      return `<div id="${"logo-box"}" class="${"svelte-1r3kpdu"}"><svg id="${"thinkTeacherLogo"}" viewBox="${"0 0 2224 527"}" fill="${"none"}" xmlns="${"http://www.w3.org/2000/svg"}"><g id="${"final-logo-edited-for-site"}"><g id="${"main-text"}"><path id="${"Vector"}" d="${"M1330.07 311.949C1318.34 311.949 1308.7 310.097 1301.4 306.657C1294.1 303.217 1288.62 297.396 1285.49 289.194C1282.36 280.992 1280.8 270.144 1281.32 256.385L1282.63 190.503H1258.64V162.721L1284.19 155.842L1289.93 112.185H1323.55V155.842H1359.53V190.503H1323.55V256.121C1323.55 260.354 1323.82 263.794 1324.6 266.704C1325.38 269.35 1326.42 271.731 1327.99 273.319C1329.29 274.906 1331.12 276.229 1332.94 277.023C1334.76 277.817 1336.85 278.346 1338.68 278.346L1358.23 280.198V312.213H1330.07V311.949Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_2"}" d="${"M1442.95 313.271C1426.01 313.271 1412.45 310.89 1402.29 306.392C1392.12 301.894 1384.82 293.692 1380.39 282.05C1375.96 270.408 1373.61 254.268 1373.61 233.895C1373.61 212.728 1375.69 196.324 1379.87 184.682C1384.04 173.04 1391.08 164.838 1400.98 160.34C1410.89 155.577 1424.44 153.46 1441.39 153.46C1456.77 153.46 1468.76 155.048 1478.15 158.223C1487.27 161.398 1494.05 166.69 1497.96 174.627C1502.13 182.3 1504.22 193.413 1504.22 207.436C1504.22 218.02 1502.13 226.222 1497.96 232.308C1493.79 238.393 1488.05 242.891 1480.75 245.272C1473.19 247.918 1464.59 249.241 1454.42 249.241H1415.84C1416.1 257.179 1417.41 263.529 1419.49 268.291C1421.58 273.054 1425.23 276.494 1430.7 278.346C1436.18 280.462 1444 281.521 1454.42 281.521H1499V306.921C1491.44 308.509 1483.36 310.096 1474.5 311.419C1465.63 312.478 1455.21 313.271 1442.95 313.271ZM1415.32 223.576H1450.25C1455.99 223.576 1460.16 222.518 1462.77 220.137C1465.37 217.755 1466.68 213.522 1466.68 207.701C1466.68 202.145 1465.9 197.647 1464.07 194.207C1462.25 190.767 1459.64 188.386 1455.99 187.063C1452.34 185.74 1447.39 184.946 1441.39 184.946C1434.87 184.946 1429.66 186.005 1426.01 188.386C1422.1 190.503 1419.49 194.472 1417.67 200.292C1415.84 206.113 1415.32 213.257 1415.32 223.576Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_3"}" d="${"M1557.92 313.536C1546.19 313.536 1536.8 310.096 1529.51 302.952C1522.21 296.073 1518.56 286.283 1518.56 273.848V259.825C1518.56 247.918 1522.73 238.393 1530.81 230.72C1538.89 223.047 1551.93 219.343 1569.13 219.343H1608.24V208.495C1608.24 203.732 1607.45 199.499 1605.63 196.324C1603.8 193.149 1600.68 190.767 1595.98 189.444C1591.29 188.121 1584.25 187.328 1574.61 187.328H1528.46V162.456C1536.02 160.075 1544.63 158.223 1554.27 156.371C1564.18 154.519 1575.91 153.725 1589.99 153.725C1602.76 153.725 1613.71 155.313 1622.83 158.488C1631.96 161.663 1638.74 166.954 1643.43 174.363C1648.12 182.036 1650.47 192.355 1650.47 205.849V311.948H1616.84L1610.06 295.279C1608.76 296.867 1606.41 298.454 1603.28 300.571C1600.15 302.688 1595.98 304.54 1591.29 306.657C1586.6 308.773 1581.38 310.361 1575.65 311.684C1569.91 313.007 1564.18 313.536 1557.92 313.536ZM1579.3 283.638C1581.12 283.638 1583.47 283.373 1585.82 282.844C1588.16 282.315 1590.77 281.785 1593.38 280.992C1595.98 280.198 1598.33 279.669 1600.41 278.875C1602.5 278.081 1604.32 277.552 1605.89 277.023C1607.19 276.494 1608.24 275.965 1608.5 275.965V239.716L1582.69 241.568C1575.13 242.097 1569.65 244.214 1566.26 247.389C1562.61 250.564 1561.05 255.062 1561.05 260.883V267.233C1561.05 271.202 1561.83 274.377 1563.4 276.758C1564.96 279.404 1567.31 280.992 1569.91 282.05C1572.78 283.108 1575.91 283.638 1579.3 283.638Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_4"}" d="${"M1737.28 313.536C1727.9 313.536 1719.29 312.213 1711.47 309.832C1703.65 307.186 1696.61 303.217 1690.88 297.131C1685.14 291.311 1680.71 283.108 1677.58 273.054C1674.45 263 1672.89 250.035 1672.89 234.424C1672.89 218.549 1674.19 205.32 1677.06 195.001C1679.93 184.417 1684.1 176.215 1689.83 170.129C1695.57 164.044 1702.35 159.811 1710.69 157.165C1718.77 154.519 1728.16 153.46 1738.58 153.46C1747.97 153.46 1756.83 153.99 1765.44 155.048C1774.04 156.106 1782.9 157.958 1792.29 160.604V185.211H1751.88C1743.02 185.211 1735.98 186.534 1730.76 189.18C1725.29 191.826 1721.64 196.588 1719.29 203.732C1716.95 210.876 1715.64 220.93 1715.64 234.16C1715.64 247.124 1716.95 256.914 1719.29 263.793C1721.64 270.673 1725.55 275.171 1731.02 277.552C1736.5 279.933 1743.8 280.992 1752.66 280.992H1794.63V305.334C1789.94 306.921 1784.21 308.244 1777.95 309.567C1771.69 310.89 1764.91 311.684 1758.14 312.478C1750.84 313.271 1744.06 313.536 1737.28 313.536Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_5"}" d="${"M1812.62 311.95V90.4902H1855.11V171.983C1860.59 167.221 1867.89 162.987 1876.75 159.283C1885.62 155.314 1894.74 153.462 1904.13 153.462C1915.86 153.462 1924.98 155.843 1932.02 160.341C1938.8 165.104 1943.75 171.454 1946.88 179.921C1950.01 188.388 1951.57 197.913 1951.57 209.025V312.215H1909.08V214.317C1909.08 209.29 1908.04 205.057 1906.21 201.882C1904.39 198.707 1901.78 196.061 1898.39 194.473C1895.26 192.886 1891.35 192.092 1886.92 192.092C1883.01 192.092 1879.1 192.621 1875.45 193.679C1871.8 194.738 1868.15 196.061 1864.76 197.913C1861.37 199.765 1858.24 201.617 1855.11 203.734V312.215H1812.62V311.95Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_6"}" d="${"M2042.56 313.271C2025.61 313.271 2012.05 310.89 2001.89 306.392C1991.72 301.894 1984.42 293.692 1979.99 282.05C1975.56 270.408 1973.21 254.268 1973.21 233.895C1973.21 212.728 1975.3 196.324 1979.47 184.682C1983.64 173.04 1990.68 164.838 2000.58 160.34C2010.49 155.577 2024.05 153.46 2040.99 153.46C2056.37 153.46 2068.36 155.048 2077.75 158.223C2086.87 161.398 2093.65 166.69 2097.56 174.627C2101.73 182.3 2103.82 193.413 2103.82 207.436C2103.82 218.02 2101.73 226.222 2097.56 232.308C2093.39 238.393 2087.66 242.891 2080.36 245.272C2073.06 247.654 2064.19 249.241 2054.03 249.241H2015.44C2015.7 257.179 2017.01 263.529 2019.09 268.291C2021.18 273.054 2024.83 276.494 2030.3 278.346C2035.78 280.462 2043.6 281.521 2054.03 281.521H2098.87V306.921C2091.31 308.509 2083.22 310.096 2074.36 311.419C2065.5 312.478 2054.81 313.271 2042.56 313.271ZM2014.92 223.576H2049.85C2055.59 223.576 2059.76 222.518 2062.37 220.137C2064.98 217.755 2066.28 213.522 2066.28 207.701C2066.28 202.145 2065.5 197.647 2063.67 194.207C2061.85 190.767 2059.24 188.386 2055.59 187.063C2051.94 185.74 2046.99 184.946 2040.99 184.946C2034.47 184.946 2029.26 186.005 2025.61 188.386C2021.7 190.503 2019.09 194.472 2017.27 200.292C2015.7 205.32 2014.92 213.257 2014.92 223.576Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_7"}" d="${"M2125.46 311.948V155.842H2158.04L2167.69 179.655C2173.16 172.511 2179.42 166.425 2186.46 161.398C2193.5 156.371 2201.58 153.725 2211.23 153.725C2213.31 153.725 2215.4 153.725 2217.74 153.99C2219.83 154.254 2221.91 154.519 2224 155.048V199.234C2221.13 198.97 2218 198.44 2214.88 198.176C2211.75 197.911 2208.62 197.647 2205.75 197.647C2200.28 197.647 2195.32 198.176 2190.63 199.499C2186.2 200.822 2182.03 202.674 2178.38 205.055C2174.73 207.436 2171.08 210.611 2167.69 214.58V311.684H2125.46V311.948Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_8"}" d="${"M661.387 311.949C649.655 311.949 640.01 310.097 632.71 306.657C625.411 303.218 619.936 297.397 616.808 289.195C613.679 280.992 612.115 270.144 612.636 256.386L613.94 190.503H589.956V162.722L615.504 155.842L621.239 112.186H654.869V155.842H690.845V190.503H654.869V256.121C654.869 260.355 655.13 263.794 655.912 266.705C656.694 269.35 657.737 271.732 659.301 273.319C660.605 274.907 662.429 276.23 664.254 277.024C666.079 277.817 668.165 278.346 669.99 278.346L689.542 280.199V312.214H661.387V311.949Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_9"}" d="${"M710.398 311.951V90.4907H752.891V171.984C758.366 167.221 765.665 162.988 774.529 159.284C783.393 155.315 792.517 153.463 801.902 153.463C813.633 153.463 822.758 155.844 829.797 160.342C836.575 165.104 841.528 171.455 844.656 179.921C847.785 188.388 849.349 197.913 849.349 209.026V312.215H806.855V214.318C806.855 209.291 805.812 205.057 803.988 201.882C802.163 198.707 799.556 196.061 796.167 194.474C793.038 192.886 789.128 192.092 784.696 192.092C780.786 192.092 776.875 192.622 773.225 193.68C769.576 194.738 765.926 196.061 762.537 197.913C759.148 199.765 756.019 201.618 752.891 203.734V312.215H710.398V311.951Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_10"}" d="${"M880.372 132.823C876.461 132.823 874.376 130.971 874.376 127.002V98.4268C874.376 94.458 876.461 92.3413 880.372 92.3413H912.959C914.784 92.3413 916.087 92.8705 916.869 94.1934C917.912 95.2518 918.173 96.8393 918.173 98.4268V127.002C918.173 130.971 916.348 132.823 912.698 132.823H880.372ZM875.418 311.949V155.842H917.651V311.949H875.418Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_11"}" d="${"M945.285 311.949V155.842H980.218L987.778 171.717C993.514 166.955 1000.81 162.457 1009.42 158.753C1018.02 155.048 1027.14 153.196 1036.27 153.196C1048.78 153.196 1058.69 155.842 1065.47 160.869C1072.24 165.896 1077.2 172.511 1079.8 180.978C1082.67 189.445 1083.98 198.705 1083.98 209.024V311.949H1041.48V214.581C1041.48 209.553 1040.7 205.32 1038.87 202.145C1037.05 198.97 1034.44 196.324 1031.31 194.472C1028.19 192.62 1024.28 191.826 1019.58 191.826C1015.67 191.826 1011.76 192.355 1008.11 193.149C1004.46 194.207 1000.81 195.53 997.424 197.118C994.035 198.97 990.907 200.822 987.778 203.203V311.684H945.285V311.949Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_12"}" d="${"M1110.57 311.949V90.2246H1153.06V210.083H1171.05L1204.94 156.107H1247.95L1202.59 229.662L1252.39 312.214H1209.37L1170.53 248.713H1153.06V311.684H1110.57V311.949Z"}" fill="${"#D9B73D"}"></path></g><g id="${"gold-circles"}"><path id="${"Vector_13"}" d="${"M217.942 152.138C239.683 152.138 257.307 134.25 257.307 112.185C257.307 90.1199 239.683 72.2324 217.942 72.2324C196.201 72.2324 178.577 90.1199 178.577 112.185C178.577 134.25 196.201 152.138 217.942 152.138Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_14"}" d="${"M281.031 22.7545C287.222 22.7545 292.241 17.6608 292.241 11.3773C292.241 5.09377 287.222 0 281.031 0C274.84 0 269.821 5.09377 269.821 11.3773C269.821 17.6608 274.84 22.7545 281.031 22.7545Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_15"}" d="${"M321.699 122.769C327.89 122.769 332.909 117.675 332.909 111.391C332.909 105.108 327.89 100.014 321.699 100.014C315.508 100.014 310.489 105.108 310.489 111.391C310.489 117.675 315.508 122.769 321.699 122.769Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_16"}" d="${"M157.982 273.319C164.173 273.319 169.192 268.225 169.192 261.942C169.192 255.658 164.173 250.564 157.982 250.564C151.791 250.564 146.772 255.658 146.772 261.942C146.772 268.225 151.791 273.319 157.982 273.319Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_17"}" d="${"M86.2905 393.706C92.4816 393.706 97.5005 388.612 97.5005 382.329C97.5005 376.045 92.4816 370.952 86.2905 370.952C80.0994 370.952 75.0806 376.045 75.0806 382.329C75.0806 388.612 80.0994 393.706 86.2905 393.706Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_18"}" d="${"M370.971 362.75C377.162 362.75 382.181 357.656 382.181 351.372C382.181 345.089 377.162 339.995 370.971 339.995C364.78 339.995 359.761 345.089 359.761 351.372C359.761 357.656 364.78 362.75 370.971 362.75Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_19"}" d="${"M430.67 286.284C441.469 286.284 450.223 277.399 450.223 266.44C450.223 255.48 441.469 246.596 430.67 246.596C419.872 246.596 411.118 255.48 411.118 266.44C411.118 277.399 419.872 286.284 430.67 286.284Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_20"}" d="${"M206.732 526.264C217.531 526.264 226.284 517.38 226.284 506.42C226.284 495.461 217.531 486.576 206.732 486.576C195.934 486.576 187.18 495.461 187.18 506.42C187.18 517.38 195.934 526.264 206.732 526.264Z"}" fill="${"#D9B73D"}"></path></g><g id="${"blue-circles"}"><path id="${"Vector_21"}" d="${"M74.8199 165.103C92.9612 165.103 107.668 150.177 107.668 131.765C107.668 113.353 92.9612 98.4268 74.8199 98.4268C56.6786 98.4268 41.9722 113.353 41.9722 131.765C41.9722 150.177 56.6786 165.103 74.8199 165.103Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_22"}" d="${"M140.515 98.6912C158.657 98.6912 173.363 83.7653 173.363 65.3532C173.363 46.9411 158.657 32.0151 140.515 32.0151C122.374 32.0151 107.668 46.9411 107.668 65.3532C107.668 83.7653 122.374 98.6912 140.515 98.6912Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_23"}" d="${"M343.858 424.663C362 424.663 376.706 409.737 376.706 391.325C376.706 372.913 362 357.987 343.858 357.987C325.717 357.987 311.011 372.913 311.011 391.325C311.011 409.737 325.717 424.663 343.858 424.663Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_24"}" d="${"M441.098 157.165C459.239 157.165 473.946 142.239 473.946 123.827C473.946 105.415 459.239 90.4888 441.098 90.4888C422.957 90.4888 408.25 105.415 408.25 123.827C408.25 142.239 422.957 157.165 441.098 157.165Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_25"}" d="${"M154.593 506.421C172.734 506.421 187.441 491.495 187.441 473.083C187.441 454.671 172.734 439.745 154.593 439.745C136.452 439.745 121.745 454.671 121.745 473.083C121.745 491.495 136.452 506.421 154.593 506.421Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_26"}" d="${"M45.8825 384.71C64.0238 384.71 78.7303 369.784 78.7303 351.372C78.7303 332.96 64.0238 318.034 45.8825 318.034C27.7412 318.034 13.0348 332.96 13.0348 351.372C13.0348 369.784 27.7412 384.71 45.8825 384.71Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_27"}" d="${"M107.668 289.988C118.466 289.988 127.22 281.103 127.22 270.144C127.22 259.184 118.466 250.3 107.668 250.3C96.8692 250.3 88.1154 259.184 88.1154 270.144C88.1154 281.103 96.8692 289.988 107.668 289.988Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_28"}" d="${"M122.006 436.834C132.804 436.834 141.558 427.95 141.558 416.99C141.558 406.03 132.804 397.146 122.006 397.146C111.207 397.146 102.454 406.03 102.454 416.99C102.454 427.95 111.207 436.834 122.006 436.834Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_29"}" d="${"M146.511 151.609C157.31 151.609 166.064 142.724 166.064 131.764C166.064 120.805 157.31 111.92 146.511 111.92C135.713 111.92 126.959 120.805 126.959 131.764C126.959 142.724 135.713 151.609 146.511 151.609Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_30"}" d="${"M206.732 45.5089C217.531 45.5089 226.284 36.6244 226.284 25.6649C226.284 14.7053 217.531 5.8208 206.732 5.8208C195.934 5.8208 187.18 14.7053 187.18 25.6649C187.18 36.6244 195.934 45.5089 206.732 45.5089Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_31"}" d="${"M292.501 151.609C303.3 151.609 312.054 142.724 312.054 131.764C312.054 120.805 303.3 111.92 292.501 111.92C281.703 111.92 272.949 120.805 272.949 131.764C272.949 142.724 281.703 151.609 292.501 151.609Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_32"}" d="${"M248.183 37.0421C254.374 37.0421 259.393 31.9484 259.393 25.6649C259.393 19.3814 254.374 14.2876 248.183 14.2876C241.992 14.2876 236.973 19.3814 236.973 25.6649C236.973 31.9484 241.992 37.0421 248.183 37.0421Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_33"}" d="${"M246.097 72.2325C252.288 72.2325 257.307 67.1388 257.307 60.8553C257.307 54.5718 252.288 49.478 246.097 49.478C239.906 49.478 234.887 54.5718 234.887 60.8553C234.887 67.1388 239.906 72.2325 246.097 72.2325Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_34"}" d="${"M326.392 154.784C332.583 154.784 337.602 149.69 337.602 143.407C337.602 137.123 332.583 132.029 326.392 132.029C320.201 132.029 315.182 137.123 315.182 143.407C315.182 149.69 320.201 154.784 326.392 154.784Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_35"}" d="${"M59.1781 197.382C65.3692 197.382 70.388 192.289 70.388 186.005C70.388 179.722 65.3692 174.628 59.1781 174.628C52.987 174.628 47.9681 179.722 47.9681 186.005C47.9681 192.289 52.987 197.382 59.1781 197.382Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_36"}" d="${"M203.082 428.367C209.273 428.367 214.292 423.274 214.292 416.99C214.292 410.707 209.273 405.613 203.082 405.613C196.891 405.613 191.872 410.707 191.872 416.99C191.872 423.274 196.891 428.367 203.082 428.367Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_37"}" d="${"M86.2905 318.034C92.4816 318.034 97.5005 312.941 97.5005 306.657C97.5005 300.374 92.4816 295.28 86.2905 295.28C80.0994 295.28 75.0806 300.374 75.0806 306.657C75.0806 312.941 80.0994 318.034 86.2905 318.034Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_38"}" d="${"M122.006 341.053C128.197 341.053 133.216 335.96 133.216 329.676C133.216 323.393 128.197 318.299 122.006 318.299C115.815 318.299 110.796 323.393 110.796 329.676C110.796 335.96 115.815 341.053 122.006 341.053Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_39"}" d="${"M140.515 307.186C146.706 307.186 151.725 302.092 151.725 295.809C151.725 289.525 146.706 284.432 140.515 284.432C134.324 284.432 129.305 289.525 129.305 295.809C129.305 302.092 134.324 307.186 140.515 307.186Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_40"}" d="${"M204.386 323.061C210.577 323.061 215.596 317.967 215.596 311.684C215.596 305.4 210.577 300.307 204.386 300.307C198.195 300.307 193.176 305.4 193.176 311.684C193.176 317.967 198.195 323.061 204.386 323.061Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_41"}" d="${"M254.961 484.46C261.152 484.46 266.171 479.366 266.171 473.082C266.171 466.799 261.152 461.705 254.961 461.705C248.77 461.705 243.751 466.799 243.751 473.082C243.751 479.366 248.77 484.46 254.961 484.46Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_42"}" d="${"M243.751 517.798C249.942 517.798 254.961 512.704 254.961 506.421C254.961 500.137 249.942 495.043 243.751 495.043C237.56 495.043 232.541 500.137 232.541 506.421C232.541 512.704 237.56 517.798 243.751 517.798Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_43"}" d="${"M359.761 459.588C365.952 459.588 370.971 454.495 370.971 448.211C370.971 441.928 365.952 436.834 359.761 436.834C353.57 436.834 348.551 441.928 348.551 448.211C348.551 454.495 353.57 459.588 359.761 459.588Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_44"}" d="${"M321.699 351.372C327.89 351.372 332.909 346.278 332.909 339.995C332.909 333.711 327.89 328.618 321.699 328.618C315.508 328.618 310.489 333.711 310.489 339.995C310.489 346.278 315.508 351.372 321.699 351.372Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_45"}" d="${"M214.292 459.588C220.483 459.588 225.502 454.495 225.502 448.211C225.502 441.928 220.483 436.834 214.292 436.834C208.101 436.834 203.082 441.928 203.082 448.211C203.082 454.495 208.101 459.588 214.292 459.588Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_46"}" d="${"M407.468 323.061C413.659 323.061 418.678 317.967 418.678 311.684C418.678 305.4 413.659 300.307 407.468 300.307C401.277 300.307 396.258 305.4 396.258 311.684C396.258 317.967 401.277 323.061 407.468 323.061Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_47"}" d="${"M411.379 364.072C417.57 364.072 422.589 358.979 422.589 352.695C422.589 346.412 417.57 341.318 411.379 341.318C405.188 341.318 400.169 346.412 400.169 352.695C400.169 358.979 405.188 364.072 411.379 364.072Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_48"}" d="${"M286.766 96.5744C292.957 96.5744 297.976 91.4806 297.976 85.1971C297.976 78.9136 292.957 73.8198 286.766 73.8198C280.575 73.8198 275.556 78.9136 275.556 85.1971C275.556 91.4806 280.575 96.5744 286.766 96.5744Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_49"}" d="${"M445.269 451.386C451.46 451.386 456.479 446.293 456.479 440.009C456.479 433.726 451.46 428.632 445.269 428.632C439.078 428.632 434.059 433.726 434.059 440.009C434.059 446.293 439.078 451.386 445.269 451.386Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_50"}" d="${"M374.881 102.66C381.072 102.66 386.091 97.566 386.091 91.2825C386.091 84.999 381.072 79.9053 374.881 79.9053C368.69 79.9053 363.671 84.999 363.671 91.2825C363.671 97.566 368.69 102.66 374.881 102.66Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_51"}" d="${"M419.721 80.9635C425.912 80.9635 430.931 75.8697 430.931 69.5862C430.931 63.3028 425.912 58.209 419.721 58.209C413.53 58.209 408.511 63.3028 408.511 69.5862C408.511 75.8697 413.53 80.9635 419.721 80.9635Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_52"}" d="${"M501.319 189.71C507.51 189.71 512.529 184.616 512.529 178.332C512.529 172.049 507.51 166.955 501.319 166.955C495.128 166.955 490.109 172.049 490.109 178.332C490.109 184.616 495.128 189.71 501.319 189.71Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_53"}" d="${"M462.475 189.71C468.666 189.71 473.685 184.616 473.685 178.332C473.685 172.049 468.666 166.955 462.475 166.955C456.284 166.955 451.265 172.049 451.265 178.332C451.265 184.616 456.284 189.71 462.475 189.71Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_54"}" d="${"M458.304 244.743C464.495 244.743 469.514 239.649 469.514 233.366C469.514 227.083 464.495 221.989 458.304 221.989C452.113 221.989 447.094 227.083 447.094 233.366C447.094 239.649 452.113 244.743 458.304 244.743Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_55"}" d="${"M376.706 151.609C387.505 151.609 396.258 142.724 396.258 131.764C396.258 120.805 387.505 111.92 376.706 111.92C365.908 111.92 357.154 120.805 357.154 131.764C357.154 142.724 365.908 151.609 376.706 151.609Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_56"}" d="${"M194.74 289.988C205.539 289.988 214.292 281.103 214.292 270.144C214.292 259.184 205.539 250.3 194.74 250.3C183.942 250.3 175.188 259.184 175.188 270.144C175.188 281.103 183.942 289.988 194.74 289.988Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_57"}" d="${"M501.319 237.6C512.117 237.6 520.871 228.715 520.871 217.756C520.871 206.796 512.117 197.912 501.319 197.912C490.521 197.912 481.767 206.796 481.767 217.756C481.767 228.715 490.521 237.6 501.319 237.6Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_58"}" d="${"M408.25 483.93C419.049 483.93 427.803 475.046 427.803 464.086C427.803 453.127 419.049 444.242 408.25 444.242C397.452 444.242 388.698 453.127 388.698 464.086C388.698 475.046 397.452 483.93 408.25 483.93Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_59"}" d="${"M78.4696 448.211C89.268 448.211 98.0218 439.327 98.0218 428.367C98.0218 417.407 89.268 408.523 78.4696 408.523C67.6712 408.523 58.9174 417.407 58.9174 428.367C58.9174 439.327 67.6712 448.211 78.4696 448.211Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_60"}" d="${"M408.25 422.017C419.049 422.017 427.803 413.133 427.803 402.173C427.803 391.214 419.049 382.329 408.25 382.329C397.452 382.329 388.698 391.214 388.698 402.173C388.698 413.133 397.452 422.017 408.25 422.017Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_61"}" d="${"M482.027 306.657C492.826 306.657 501.58 297.772 501.58 286.813C501.58 275.853 492.826 266.969 482.027 266.969C471.229 266.969 462.475 275.853 462.475 286.813C462.475 297.772 471.229 306.657 482.027 306.657Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_62"}" d="${"M470.035 391.325C491.776 391.325 509.401 373.437 509.401 351.372C509.401 329.307 491.776 311.419 470.035 311.419C448.295 311.419 430.67 329.307 430.67 351.372C430.67 373.437 448.295 391.325 470.035 391.325Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_63"}" d="${"M331.606 90.7536C353.346 90.7536 370.971 72.8661 370.971 50.8009C370.971 28.7356 353.346 10.8481 331.606 10.8481C309.865 10.8481 292.24 28.7356 292.24 50.8009C292.24 72.8661 309.865 90.7536 331.606 90.7536Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_64"}" d="${"M315.182 524.148C336.923 524.148 354.547 506.26 354.547 484.195C354.547 462.13 336.923 444.242 315.182 444.242C293.441 444.242 275.817 462.13 275.817 484.195C275.817 506.26 293.441 524.148 315.182 524.148Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_65"}" d="${"M173.102 402.173C194.843 402.173 212.467 384.286 212.467 362.22C212.467 340.155 194.843 322.268 173.102 322.268C151.362 322.268 133.737 340.155 133.737 362.22C133.737 384.286 151.362 402.173 173.102 402.173Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_66"}" d="${"M39.3651 286.813C61.1059 286.813 78.7303 268.926 78.7303 246.86C78.7303 224.795 61.1059 206.908 39.3651 206.908C17.6244 206.908 0 224.795 0 246.86C0 268.926 17.6244 286.813 39.3651 286.813Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_67"}" d="${"M350.376 330.205C372.117 330.205 389.741 312.318 389.741 290.252C389.741 268.187 372.117 250.3 350.376 250.3C328.635 250.3 311.011 268.187 311.011 290.252C311.011 312.318 328.635 330.205 350.376 330.205Z"}" fill="${"#4F5D89"}"></path></g><g id="${"bottom-text"}"><path id="${"Vector_68"}" d="${"M1219.21 451.754C1225.4 451.754 1230.42 446.661 1230.42 440.377C1230.42 434.094 1225.4 429 1219.21 429C1213.02 429 1208 434.094 1208 440.377C1208 446.661 1213.02 451.754 1219.21 451.754Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_69"}" d="${"M1850.21 451.754C1856.4 451.754 1861.42 446.661 1861.42 440.377C1861.42 434.094 1856.4 429 1850.21 429C1844.02 429 1839 434.094 1839 440.377C1839 446.661 1844.02 451.754 1850.21 451.754Z"}" fill="${"#D9B73D"}"></path><g id="${"Group 5"}"><path id="${"Vector_70"}" d="${"M652.523 484.989C648.352 484.989 644.702 484.459 641.052 483.401C637.663 482.343 634.274 481.02 631.406 479.697C628.539 478.109 625.932 476.786 623.585 475.199L621.239 483.93H610.811V358.78H623.585V404.289C627.757 401.908 632.188 399.791 637.402 397.939C642.616 396.087 647.309 395.029 651.741 395.029C658.519 395.029 664.254 396.616 668.947 399.527C673.378 402.437 676.768 407.2 679.114 414.079C681.46 420.694 682.503 429.69 682.503 440.802C682.503 449.798 681.46 457.736 679.375 464.351C677.289 470.965 674.161 475.993 669.468 479.697C665.558 483.401 659.822 484.989 652.523 484.989ZM648.352 474.14C653.044 474.14 656.955 472.817 660.344 470.436C663.472 468.055 665.818 464.351 667.643 459.324C669.207 454.296 670.25 447.946 670.25 440.538C670.25 431.013 669.207 423.604 667.382 418.842C665.558 414.079 662.951 410.639 659.822 408.787C656.694 406.935 652.783 406.141 648.612 406.141C643.659 406.141 639.488 406.935 635.578 408.258C631.667 409.581 627.757 411.433 623.846 413.55V467.261C627.235 468.849 630.885 470.436 634.795 472.024C638.706 473.347 643.398 474.14 648.352 474.14Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_71"}" d="${"M737.249 484.989C728.125 484.989 721.086 483.666 715.872 480.756C710.658 478.11 707.008 473.347 704.662 466.732C702.316 460.118 701.273 451.122 701.273 439.745C701.273 428.103 702.316 419.107 704.662 412.492C707.008 405.877 710.658 401.379 716.133 398.733C721.347 396.088 728.646 394.765 737.51 394.765C745.07 394.765 751.327 395.558 756.28 397.411C760.972 399.263 764.622 402.173 766.968 406.407C769.315 410.64 770.357 416.461 770.357 423.869C770.357 428.896 769.315 433.13 767.49 436.305C765.404 439.48 762.537 441.597 758.887 442.92C755.237 444.243 750.805 445.036 745.591 445.036H714.047C714.047 452.18 714.829 457.736 716.393 462.234C717.697 466.468 720.304 469.643 723.954 471.495C727.603 473.347 733.078 474.406 740.377 474.406H768.272V482.343C763.319 482.872 758.365 483.666 753.673 483.931C748.98 484.724 743.506 484.989 737.249 484.989ZM713.786 437.099H744.549C749.502 437.099 752.891 436.305 755.237 434.453C757.583 432.601 758.626 429.426 758.626 424.663C758.626 419.636 757.844 415.667 756.541 413.021C754.976 410.111 752.891 408.259 749.762 407.2C746.634 406.142 742.463 405.348 737.51 405.348C731.514 405.348 726.821 406.142 723.171 407.994C719.782 409.846 717.175 413.021 715.872 417.519C714.568 422.017 713.786 428.632 713.786 437.099Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_72"}" d="${"M791.735 484.195V396.616H801.641L804.509 406.406C808.68 403.496 813.372 400.85 818.847 398.733C824.322 396.616 830.057 395.293 836.053 395.293C842.31 395.293 847.524 396.616 851.434 399.527C855.344 402.173 858.212 405.877 860.037 410.375C861.862 414.873 862.905 419.636 862.905 424.927V484.195H850.131V425.986C850.131 422.281 849.348 418.842 848.045 415.931C846.741 413.021 844.656 410.64 841.788 409.052C839.181 407.465 835.792 406.671 831.882 406.671C828.232 406.671 825.104 406.935 821.975 407.729C818.847 408.523 815.979 409.317 813.372 410.64C810.505 411.962 807.637 413.285 804.769 415.138V483.93H791.735V484.195Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_73"}" d="${"M919.997 484.989C910.873 484.989 903.834 483.666 898.62 480.756C893.406 478.11 889.756 473.347 887.41 466.732C885.064 460.118 884.021 451.122 884.021 439.745C884.021 428.103 885.064 419.107 887.41 412.492C889.756 405.877 893.406 401.379 898.881 398.733C904.095 396.088 911.394 394.765 920.258 394.765C927.818 394.765 934.075 395.558 939.028 397.411C943.721 399.263 947.37 402.173 949.717 406.407C952.063 410.64 953.106 416.461 953.106 423.869C953.106 428.896 952.063 433.13 950.238 436.305C948.152 439.48 945.285 441.597 941.635 442.92C937.985 444.243 933.553 445.036 928.34 445.036H896.795C896.795 452.18 897.577 457.736 899.141 462.234C900.445 466.468 903.052 469.643 906.702 471.495C910.351 473.347 915.826 474.406 923.126 474.406H951.02V482.343C946.067 482.872 941.114 483.666 936.421 483.931C931.468 484.724 925.993 484.989 919.997 484.989ZM896.535 437.099H927.297C932.25 437.099 935.639 436.305 937.985 434.453C940.332 432.601 941.374 429.426 941.374 424.663C941.374 419.636 940.592 415.667 939.289 413.021C937.725 410.111 935.639 408.259 932.511 407.2C929.382 406.142 925.211 405.348 920.258 405.348C914.262 405.348 909.569 406.142 905.92 407.994C902.531 409.846 899.924 413.021 898.62 417.519C897.056 422.017 896.535 428.632 896.535 437.099Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_74"}" d="${"M978.654 484.195V407.2H965.358V398.733L978.654 396.352V384.71C978.654 378.625 979.436 373.597 980.74 369.629C982.304 365.66 984.65 362.749 988.3 360.633C991.689 358.781 996.642 357.722 1002.38 357.722C1006.55 357.722 1009.94 357.987 1012.81 358.516C1015.67 359.045 1018.28 359.574 1020.63 360.368V369.629C1018.28 369.364 1015.93 369.099 1013.33 369.099C1010.72 368.835 1008.37 368.835 1006.03 368.835C1002.12 368.835 998.988 369.364 996.903 370.687C994.817 372.01 993.253 373.862 992.471 376.508C991.689 379.154 991.167 382.329 991.167 386.298V396.352H1042.26V406.935H991.167V484.195H978.654ZM1038.35 380.741C1036.53 380.741 1035.75 379.947 1035.75 378.095V365.395C1035.75 363.543 1036.53 362.749 1038.35 362.749H1047.48C1048.26 362.749 1048.78 363.014 1049.3 363.543C1049.56 364.072 1049.82 364.601 1049.82 365.395V378.095C1049.82 379.947 1049.04 380.741 1047.48 380.741H1038.35ZM1036.27 484.195V396.616H1049.04V484.195H1036.27Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_75"}" d="${"M1102.22 484.195C1096.49 484.195 1092.06 483.137 1088.41 481.285C1084.76 479.433 1082.15 476.522 1080.33 472.289C1078.5 468.055 1077.72 462.499 1077.98 455.62L1078.5 406.936H1064.68V398.469L1078.5 396.088L1080.59 371.746H1090.49V396.088H1115.52V406.671H1090.49V455.355C1090.49 459.06 1091.01 462.235 1091.8 464.616C1092.58 466.997 1093.62 468.585 1094.92 469.908C1096.23 471.231 1097.79 472.024 1099.1 472.553C1100.66 473.083 1101.96 473.347 1103.53 473.347L1113.96 474.406V483.931H1102.22V484.195Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_76"}" d="${"M1162.71 484.989C1160.62 484.989 1158.01 484.989 1154.88 484.724C1151.76 484.724 1148.37 484.459 1144.98 484.195C1141.59 483.93 1138.46 483.666 1135.85 483.401C1132.99 483.137 1130.9 482.872 1129.34 482.607V474.67H1164.79C1168.44 474.67 1171.31 474.405 1173.92 473.876C1176.52 473.347 1178.61 472.024 1179.91 470.172C1181.48 468.32 1182 465.409 1182 461.705V457.736C1182 454.032 1180.69 450.857 1178.35 448.74C1175.74 446.623 1171.83 445.565 1166.36 445.565H1154.1C1149.15 445.565 1144.46 445.036 1140.55 443.713C1136.64 442.39 1133.51 440.273 1131.42 437.098C1129.34 433.923 1128.29 429.425 1128.29 423.869V419.371C1128.29 413.815 1129.34 409.317 1131.42 405.877C1133.51 402.437 1136.9 399.791 1141.33 397.939C1145.76 396.087 1151.5 395.293 1158.79 395.293C1161.92 395.293 1165.31 395.293 1169.22 395.558C1173.13 395.823 1177.04 396.087 1180.69 396.352C1184.34 396.616 1187.47 397.146 1189.82 397.675V405.612H1156.45C1150.97 405.612 1146.8 406.671 1143.67 408.523C1140.81 410.375 1139.24 414.079 1139.24 419.371V423.075C1139.24 426.515 1140.02 428.896 1141.33 430.748C1142.63 432.336 1144.72 433.659 1147.32 434.188C1149.93 434.717 1152.8 434.982 1156.19 434.982H1168.44C1176.26 434.982 1182.52 436.834 1186.69 440.538C1191.12 444.242 1193.21 449.534 1193.21 456.678V462.763C1193.21 468.584 1191.9 473.347 1189.3 476.522C1186.69 479.697 1183.04 482.078 1178.35 483.137C1174.18 484.46 1168.96 484.989 1162.71 484.989Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_77"}" d="${"M1287.32 484.989C1285.23 484.989 1282.63 484.989 1279.5 484.724C1276.37 484.724 1272.98 484.459 1269.59 484.195C1266.2 483.93 1263.07 483.666 1260.47 483.401C1257.6 483.137 1255.51 482.872 1253.95 482.607V474.67H1289.4C1293.05 474.67 1295.92 474.405 1298.53 473.876C1301.14 473.347 1303.22 472.024 1304.52 470.172C1306.09 468.32 1306.61 465.409 1306.61 461.705V457.736C1306.61 454.032 1305.31 450.857 1302.96 448.74C1300.35 446.623 1296.44 445.565 1290.97 445.565H1278.72C1273.76 445.565 1269.07 445.036 1265.16 443.713C1261.25 442.39 1258.12 440.273 1256.03 437.098C1253.95 433.923 1252.91 429.425 1252.91 423.869V419.371C1252.91 413.815 1253.95 409.317 1256.03 405.877C1258.12 402.437 1261.51 399.791 1265.94 397.939C1270.37 396.087 1276.11 395.293 1283.41 395.293C1286.54 395.293 1289.93 395.293 1293.84 395.558C1297.75 395.823 1301.66 396.087 1305.31 396.352C1308.96 396.616 1312.08 397.146 1314.43 397.675V405.612H1281.06C1275.59 405.612 1271.42 406.671 1268.29 408.523C1265.42 410.375 1263.86 414.079 1263.86 419.371V423.075C1263.86 426.515 1264.64 428.896 1265.94 430.748C1267.24 432.336 1269.33 433.659 1271.94 434.188C1274.54 434.717 1277.41 434.982 1280.8 434.982H1293.05C1300.87 434.982 1307.13 436.834 1311.3 440.538C1315.73 444.242 1317.82 449.534 1317.82 456.678V462.763C1317.82 468.584 1316.52 473.347 1313.91 476.522C1311.3 479.697 1307.65 482.078 1302.96 483.137C1298.79 484.46 1293.31 484.989 1287.32 484.989Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_78"}" d="${"M1363.96 484.989C1355.62 484.989 1349.36 482.872 1344.93 478.374C1340.5 473.876 1338.15 467.262 1338.15 458.001V396.352H1350.93V454.826C1350.93 462.234 1352.49 466.997 1355.88 469.643C1359.27 472.289 1363.7 473.612 1369.7 473.612C1374.65 473.612 1379.34 472.818 1383.52 471.495C1387.69 469.907 1392.12 468.055 1396.55 465.409V396.617H1409.32V484.195H1399.42L1396.55 474.405C1392.12 477.316 1387.17 479.697 1381.69 481.814C1375.96 483.931 1370.22 484.989 1363.96 484.989Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_79"}" d="${"M1433.31 522.825V396.352H1443.74L1446.08 405.348C1447.91 404.025 1450.51 402.437 1453.64 400.85C1456.77 399.262 1460.16 397.939 1463.55 396.881C1467.2 395.823 1470.85 395.293 1474.24 395.293C1479.71 395.293 1484.67 396.616 1488.58 398.998C1492.49 401.379 1495.61 404.819 1498.22 409.052C1500.83 413.285 1502.39 418.048 1503.44 423.34C1504.48 428.632 1505 434.452 1505 440.273C1505 450.063 1503.96 458.53 1501.61 465.145C1499.53 471.759 1496.14 477.051 1491.44 480.226C1487.01 483.666 1481.02 485.253 1473.98 485.253C1469.02 485.253 1464.33 484.46 1459.38 482.872C1454.42 481.284 1449.99 479.168 1445.82 476.786V522.825H1433.31V522.825ZM1470.85 474.141C1475.02 474.141 1478.67 473.082 1481.8 470.966C1484.93 468.849 1487.53 465.409 1489.62 460.382C1491.44 455.355 1492.49 448.476 1492.49 440.009C1492.49 431.807 1491.44 425.192 1489.36 420.165C1487.27 415.138 1484.67 411.698 1481.54 409.317C1478.41 407.2 1474.76 405.877 1470.85 405.877C1465.9 405.877 1461.46 406.671 1457.29 408.258C1453.12 409.846 1449.47 411.433 1446.34 413.285V466.997C1449.99 469.113 1454.16 470.701 1458.34 472.024C1462.51 473.611 1466.68 474.141 1470.85 474.141Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_80"}" d="${"M1526.9 522.825V396.352H1537.33L1539.67 405.348C1541.5 404.025 1544.1 402.437 1547.23 400.85C1550.36 399.262 1553.75 397.939 1557.14 396.881C1560.79 395.823 1564.44 395.293 1567.83 395.293C1573.3 395.293 1578.26 396.616 1582.17 398.998C1586.08 401.379 1589.2 404.819 1591.81 409.052C1594.42 413.285 1595.98 418.048 1597.03 423.34C1598.07 428.632 1598.59 434.452 1598.59 440.273C1598.59 450.063 1597.55 458.53 1595.2 465.145C1593.12 471.759 1589.73 477.051 1585.03 480.226C1580.6 483.666 1574.61 485.253 1567.57 485.253C1562.61 485.253 1557.92 484.46 1552.97 482.872C1548.01 481.284 1543.58 479.168 1539.41 476.786V522.825H1526.9V522.825ZM1564.44 474.141C1568.61 474.141 1572.26 473.082 1575.39 470.966C1578.52 468.849 1581.12 465.409 1583.21 460.382C1585.03 455.355 1586.08 448.476 1586.08 440.009C1586.08 431.807 1585.03 425.192 1582.95 420.165C1580.86 415.138 1578.26 411.698 1575.13 409.317C1572 407.2 1568.35 405.877 1564.44 405.877C1559.49 405.877 1555.05 406.671 1550.88 408.258C1546.71 409.846 1543.06 411.433 1539.93 413.285V466.997C1543.58 469.113 1547.75 470.701 1551.92 472.024C1555.84 473.611 1560.01 474.141 1564.44 474.141Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_81"}" d="${"M1654.64 484.989C1648.38 484.989 1642.91 484.46 1638.22 483.137C1633.52 481.814 1629.61 479.432 1626.48 476.257C1623.36 473.082 1621.01 468.32 1619.45 462.499C1617.88 456.678 1617.1 449.269 1617.1 440.009C1617.1 430.748 1617.88 423.34 1619.45 417.519C1621.01 411.698 1623.36 407.2 1626.48 404.025C1629.61 400.85 1633.52 398.469 1638.22 397.41C1642.91 396.087 1648.38 395.558 1654.64 395.558C1660.9 395.558 1666.37 396.087 1671.06 397.41C1675.76 398.733 1679.67 401.114 1682.79 404.29C1685.92 407.465 1688.27 411.963 1689.83 417.783C1691.4 423.604 1692.18 431.013 1692.18 440.273C1692.18 449.534 1691.4 456.942 1689.83 462.763C1688.27 468.584 1685.92 473.082 1682.79 476.257C1679.67 479.432 1675.76 481.814 1671.06 483.137C1666.37 484.46 1660.9 484.989 1654.64 484.989ZM1654.64 474.405C1658.55 474.405 1662.2 474.141 1665.33 473.347C1668.46 472.553 1671.06 470.966 1672.89 468.849C1674.97 466.468 1676.54 463.028 1677.58 458.53C1678.62 454.032 1679.14 447.946 1679.14 440.273C1679.14 432.6 1678.62 426.515 1677.58 422.017C1676.54 417.519 1674.97 414.079 1672.89 411.963C1670.8 409.581 1668.2 408.258 1665.33 407.465C1662.2 406.671 1658.81 406.406 1654.64 406.406C1650.47 406.406 1647.08 406.671 1643.95 407.465C1640.82 408.258 1638.48 409.846 1636.39 411.963C1634.31 414.344 1632.74 417.783 1631.7 422.017C1630.66 426.515 1630.13 432.6 1630.13 440.273C1630.13 447.946 1630.66 453.767 1631.7 458.53C1632.74 463.028 1634.31 466.468 1636.39 468.849C1638.48 471.23 1641.08 472.553 1643.95 473.347C1646.82 474.141 1650.47 474.405 1654.64 474.405Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_82"}" d="${"M1713.56 484.195V396.616H1723.2L1726.33 411.963C1730.24 407.2 1734.67 403.496 1739.37 400.321C1744.06 397.146 1749.79 395.823 1756.05 395.823C1757.61 395.823 1758.92 395.823 1760.22 396.087C1761.53 396.087 1762.83 396.352 1764.13 396.616V409.846C1762.83 409.581 1761.26 409.317 1759.7 409.317C1758.14 409.052 1756.57 409.052 1754.75 409.052C1750.84 409.052 1747.19 409.581 1744.06 410.64C1740.93 411.698 1738.06 413.021 1735.19 415.138C1732.33 416.99 1729.46 419.636 1726.59 422.282V484.195H1713.56Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_83"}" d="${"M1810.27 484.195C1804.54 484.195 1800.11 483.137 1796.46 481.285C1792.81 479.433 1790.2 476.522 1788.38 472.289C1786.55 468.055 1785.77 462.499 1786.03 455.62L1786.55 406.936H1772.73V398.469L1786.55 396.088L1788.64 371.746H1798.54V396.088H1823.57V406.671H1798.54V455.355C1798.54 459.06 1799.06 462.235 1799.85 464.616C1800.63 466.997 1801.67 468.585 1802.98 469.908C1804.28 471.231 1805.84 472.024 1807.15 472.553C1808.71 473.083 1810.01 473.347 1811.58 473.347L1822.01 474.406V483.931H1810.27V484.195Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_84"}" d="${"M1916.12 484.989C1911.16 484.989 1906.73 484.46 1902.56 483.137C1898.39 481.814 1894.74 479.432 1891.61 476.257C1888.48 473.082 1886.14 468.32 1884.31 462.763C1882.49 456.942 1881.71 449.534 1881.71 440.538C1881.71 431.542 1882.49 423.869 1884.05 418.048C1885.62 412.227 1887.96 407.729 1891.09 404.29C1894.22 401.114 1897.87 398.733 1902.04 397.41C1906.47 396.087 1911.16 395.558 1916.38 395.558C1920.81 395.558 1925.5 395.823 1930.46 396.087C1935.41 396.352 1940.36 397.146 1945.05 397.939V405.612H1919.77C1914.29 405.612 1909.6 406.671 1905.95 408.523C1902.3 410.375 1899.43 413.815 1897.35 418.842C1895.52 423.869 1894.48 431.277 1894.48 440.803C1894.48 450.063 1895.52 457.207 1897.61 462.234C1899.69 467.261 1902.56 470.436 1906.21 472.289C1909.86 474.141 1914.55 474.934 1920.03 474.934H1946.36V482.607C1943.75 483.137 1940.88 483.401 1937.76 483.93C1934.37 484.46 1930.98 484.724 1927.33 484.989C1923.68 484.989 1920.03 484.989 1916.12 484.989Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_85"}" d="${"M1980.77 484.989C1974.51 484.989 1969.3 483.137 1965.13 479.168C1960.96 475.464 1958.87 469.908 1958.87 463.028V456.678C1958.87 449.799 1961.22 444.243 1965.65 440.009C1970.08 435.776 1976.86 433.659 1985.98 433.659H2015.18V422.811C2015.18 419.107 2014.66 416.196 2013.36 413.55C2012.05 410.905 2009.97 409.052 2006.84 407.465C2003.71 406.142 1999.02 405.348 1993.02 405.348H1966.17V397.675C1969.82 397.146 1974.25 396.352 1979.47 395.823C1984.42 395.294 1990.42 395.029 1997.19 395.029C2004.23 395.029 2009.97 395.823 2014.66 397.675C2019.35 399.527 2022.74 402.438 2024.83 406.407C2026.91 410.375 2028.22 415.667 2028.22 422.017V484.195H2018.31L2015.96 474.141C2015.44 474.67 2014.14 475.464 2012.05 476.522C2009.97 477.581 2007.1 478.904 2003.71 480.226C2000.32 481.549 1996.67 482.872 1992.76 483.666C1988.33 484.46 1984.68 484.989 1980.77 484.989ZM1986.25 475.464C1988.07 475.464 1990.42 475.464 1992.76 474.935C1995.37 474.406 1997.72 473.876 2000.32 473.083C2002.93 472.289 2005.28 471.76 2007.62 470.966C2009.71 470.172 2011.53 469.643 2013.1 469.114C2014.4 468.585 2015.18 468.32 2015.44 468.32V440.803L1989.11 441.861C1982.86 442.126 1978.68 443.713 1975.82 446.359C1973.21 449.27 1971.91 452.974 1971.91 457.472V461.441C1971.91 464.88 1972.69 467.791 1973.99 469.908C1975.56 472.024 1977.38 473.612 1979.47 474.406C1981.55 475.199 1983.9 475.199 1986.25 475.464Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_86"}" d="${"M2052.2 484.195V396.616H2061.85L2064.98 411.963C2068.89 407.2 2073.32 403.496 2078.01 400.321C2082.7 397.146 2088.44 395.823 2094.69 395.823C2096.26 395.823 2097.56 395.823 2098.87 396.087C2100.17 396.087 2101.47 396.352 2102.78 396.616V409.846C2101.47 409.581 2099.91 409.317 2098.34 409.317C2096.78 409.052 2095.22 409.052 2093.39 409.052C2089.48 409.052 2085.83 409.581 2082.7 410.64C2079.57 411.698 2076.71 413.021 2073.84 415.138C2070.97 416.99 2068.1 419.636 2065.24 422.282V484.195H2052.2Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_87"}" d="${"M2151.79 484.989C2142.66 484.989 2135.62 483.666 2130.41 480.756C2125.2 478.11 2121.55 473.347 2119.2 466.732C2116.85 460.118 2115.81 451.122 2115.81 439.745C2115.81 428.103 2116.85 419.107 2119.2 412.492C2121.55 405.877 2125.2 401.379 2130.67 398.733C2136.15 396.088 2143.18 394.765 2152.05 394.765C2159.61 394.765 2165.86 395.558 2170.82 397.411C2175.51 399.263 2179.16 402.173 2181.51 406.407C2183.85 410.64 2184.9 416.461 2184.9 423.869C2184.9 428.896 2183.85 433.13 2182.03 436.305C2179.94 439.48 2177.07 441.597 2173.43 442.92C2169.78 444.243 2165.34 445.036 2160.13 445.036H2128.59C2128.59 452.18 2129.37 457.736 2130.93 462.234C2132.24 466.468 2134.84 469.643 2138.49 471.495C2142.14 473.347 2147.62 474.406 2154.92 474.406H2182.81V482.343C2177.86 482.872 2172.9 483.666 2168.21 483.931C2163.26 484.724 2157.78 484.989 2151.79 484.989ZM2128.32 437.099H2159.09C2164.04 437.099 2167.43 436.305 2169.78 434.453C2172.12 432.601 2173.16 429.426 2173.16 424.663C2173.16 419.636 2172.38 415.667 2171.08 413.021C2169.51 410.111 2167.43 408.259 2164.3 407.2C2161.17 406.142 2157 405.348 2152.05 405.348C2146.05 405.348 2141.36 406.142 2137.71 407.994C2134.32 409.846 2131.71 413.021 2130.41 417.519C2128.85 422.017 2128.32 428.632 2128.32 437.099Z"}" fill="${"#4F5D89"}"></path></g></g></g></svg>
+</div>`;
+    });
+    css3 = {
+      code: 'h1.svelte-12w4s1x{margin-top:5rem;font-size:3em;color:var(--logo-grey)}h2.svelte-12w4s1x{color:var(--logo-grey);font-size:2.4em;text-align:center}.read.svelte-12w4s1x{line-height:2}.banner-all.svelte-12w4s1x{position:relative}.bg-banner.svelte-12w4s1x{background-color:var(--bg-banner);height:400px;padding-top:5rem}.placeholder.svelte-12w4s1x{height:310px}@media screen and (min-width: 1000px){.bg-overlay.svelte-12w4s1x{background-image:url("/shape-overly.png");background-position:center center;background-repeat:no-repeat;background-size:cover;opacity:0.15;height:100%;width:100%;top:0;left:0;position:absolute}#welcome.svelte-12w4s1x{font-size:8em}}@media screen and (max-width: 1000px){.bg-banner.svelte-12w4s1x{height:200px;padding-top:2rem}}#welcome.svelte-12w4s1x{margin-top:0}#countUser.svelte-12w4s1x{font-size:5em;color:var(--logo-grey);margin-top:1rem}.offer-img.svelte-12w4s1x{max-height:300px}.offer.svelte-12w4s1x{transition:all 0.5s}.offer.svelte-12w4s1x:hover{transform:scale(1.05);cursor:pointer}.btn-lg.svelte-12w4s1x{padding:2rem 1rem 1rem 1rem}.logo.svelte-12w4s1x{max-height:120px;width:auto;-webkit-filter:grayscale(100%);filter:grayscale(100%)}.logo-box.svelte-12w4s1x{border:var(--logo-gold) 3px solid;border-radius:2px}video.svelte-12w4s1x{max-width:750px;width:100%;height:auto}',
+      map: null
+    };
+    API_URL = "http://localhost:1337";
+    load2 = async ({ fetch: fetch2 }) => {
+      const res = await fetch2(`${API_URL}/users/count`);
+      if (res.ok) {
+        const data = await res.json();
+        return { props: { userCount: data } };
+      }
+      return {
+        status: res.status,
+        error: new Error(`Could not load ${url}`)
+      };
+    };
+    Routes = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let $firstTime, $$unsubscribe_firstTime;
+      let $name, $$unsubscribe_name;
+      let $$unsubscribe_travelScroll;
+      $$unsubscribe_firstTime = subscribe(firstTime, (value) => $firstTime = value);
+      $$unsubscribe_name = subscribe(name, (value) => $name = value);
+      $$unsubscribe_travelScroll = subscribe(travelScroll, (value) => value);
+      let intro = null;
+      let { userCount } = $$props;
+      setTimeout(function() {
+        intro = false;
+      }, 2250);
+      onDestroy(() => {
+        set_store_value(firstTime, $firstTime = false, $firstTime);
+      });
+      if ($$props.userCount === void 0 && $$bindings.userCount && userCount !== void 0)
+        $$bindings.userCount(userCount);
+      $$result.css.add(css3);
+      $$unsubscribe_firstTime();
+      $$unsubscribe_name();
+      $$unsubscribe_travelScroll();
+      return `${$$result.head += `${$$result.title = `<title>Home</title>`, ""}`, ""}
+
+<div class="${"banner-all svelte-12w4s1x"}"><div class="${"bg-overlay svelte-12w4s1x"}"></div>
+    <div class="${"bg-banner text-center svelte-12w4s1x"}">${$firstTime ? `${intro ? `<h1 id="${"welcome"}" class="${"svelte-12w4s1x"}">Welcome to</h1>` : `${intro !== null && !intro ? `${validate_component(Logo, "Logo").$$render($$result, {}, {}, {})}` : ``}`}` : `${validate_component(Logo, "Logo").$$render($$result, {}, {}, {})}`}</div>
+
+    <svg xmlns="${"http://www.w3.org/2000/svg"}" viewBox="${"0 0 1000 100"}" preserveAspectRatio="${"none"}"><path class="${""}" fill="${"var(--bg-banner)"}" d="${"M421.9,6.5c22.6-2.5,51.5,0.4,75.5,5.3c23.6,4.9,70.9,23.5,100.5,35.7c75.8,32.2,133.7,44.5,192.6,49.7\r\n        c23.6,2.1,48.7,3.5,103.4-2.5c54.7-6,106.2-25.6,106.2-25.6V0H0v30.3c0,0,72,32.6,158.4,30.5c39.2-0.7,92.8-6.7,134-22.4\r\n        c21.2-8.1,52.2-18.2,79.7-24.2C399.3,7.9,411.6,7.5,421.9,6.5z"}"></path></svg></div>
+
+<div class="${"container text-center mt-4"}"><video controls autoplay muted class="${"svelte-12w4s1x"}"><source src="${"https://strapi-upload-s3.glass.splyce.dev/media/TT_INTRO_2_f25c014007.webm"}" type="${"video/webm"}"></video></div>
+
+<div class="${"container mt-4 mb-5"}"><div class="${"row text-center grey-grad rounded justify-content-center big-gap"}"><div class="${"col-12 p-4"}"><h3 class="${"read svelte-12w4s1x"}">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
+                and nurturing networks. Think Teacher&#39;s vision is to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
+            </h3></div></div>
+
+    ${!$name ? `<div class="${"row mt-5"}"><div class="${"col-sm-12 col-lg-4"}"><h4 id="${"#hash"}" class="${"fs-1 mt-2 text-center"}">First 1 000 members get a <strong>FREE</strong> membership for a year</h4></div>
+            <div class="${"col-sm-12 col-lg-4 mt-sm-4 text-center"}"><button class="${"btn btn-lg bg-gold shadow-lg cta svelte-12w4s1x"}" style="${"width: 300px;"}"><h4 style="${"color: black;"}">Become a member!</h4></button></div>
+            <div class="${"col-sm-12 col-lg-4"}">
+                <h1 class="${"text-center svelte-12w4s1x"}" id="${"countUser"}"></h1>
+                <h3 class="${"text-center text-blue"}">Members and counting!</h3></div></div>` : ``}
+
+    <div class="${"row grey-grad text-center big-gap"}"><h2 class="${"svelte-12w4s1x"}">Benefits</h2>
+        <h5 class="${"mb-5"}">Click on a benefit!</h5>
+        <div class="${"col-sm-12 col-md-6 col-lg-4 mb-5"}"><a href="${"/benefits"}"><div class="${"placeholder svelte-12w4s1x"}">${``}</div></a>
+            <h3 class="${"mt-3"}">Wellbeing</h3></div>
+        <div class="${"col-sm-12 col-md-6 col-lg-4 mb-5"}"><a href="${"/benefits"}"><div class="${"placeholder svelte-12w4s1x"}">${``}</div></a>
+            <h3 class="${"mt-3"}">Travel</h3></div>        
+        <div class="${"col-sm-12 col-md-6 col-lg-4 mb-5"}"><a href="${"/benefits"}"><div class="${"placeholder svelte-12w4s1x"}">${``}</div></a>
+            <h3 class="${"mt-3"}">Medical Aid</h3></div>
+        <div class="${"col-sm-12 col-md-6 col-lg-4 mb-5"}"><a href="${"/benefits"}"><div class="${"placeholder svelte-12w4s1x"}">${``}</div></a>
+            <h3 class="${"mt-3"}">Finance</h3></div>
+        <div class="${"col-sm-12 col-md-6 col-lg-4 mb-5"}"><a href="${"/benefits"}"><div class="${"placeholder svelte-12w4s1x"}">${``}</div></a>
+            <h3 class="${"mt-3"}">Legal</h3></div>
+        <div class="${"col-sm-12 col-md-6 col-lg-4 mb-5"}"><a href="${"/benefits"}"><div class="${"placeholder svelte-12w4s1x"}">${``}</div></a>
+            <h3 class="${"mt-3"}">Courses</h3></div>
+        <div class="${"col-sm-12 col-md-6 col-lg-4 mb-5"}"><a href="${"/benefits"}"><div class="${"placeholder svelte-12w4s1x"}">${``}</div></a>
+            <h3 class="${"mt-3"}">Photography</h3>
+            <h5 class="${"text-logo-gold"}">coming soon</h5></div>
+        <div class="${"col-sm-12 col-md-6 col-lg-4 mb-5"}"><a href="${"/benefits"}"><div class="${"placeholder svelte-12w4s1x"}">${``}</div></a>
+            <h3 class="${"mt-3"}">IT</h3>
+            <h5 class="${"text-logo-gold"}">coming soon</h5></div>
+        <div class="${"col-sm-12 col-md-6 col-lg-4 mb-5"}"><a href="${"/benefits"}"><div class="${"placeholder svelte-12w4s1x"}">${``}</div></a>
+            <h3 class="${"mt-3"}">Spa</h3>
+            <h5 class="${"text-logo-gold"}">coming soon</h5></div></div>
+
+    <div class="${"row mt-5 text-center justify-content-center p-3 logo-box svelte-12w4s1x"}">${validate_component(Carousel, "Carousel").$$render($$result, {
+        autoplay: 2750,
+        perPage: { 1300: 4, 1e3: 3, 500: 2 }
+      }, {}, {
+        default: () => `<div class="${"slide-content"}"><img class="${"logo img-fluid svelte-12w4s1x"}" src="${"https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_SAHB_LOGO_HIGH_RES_ec14dd3c1d.webp"}" alt="${"partner"}"></div>
+            <div class="${"slide-content"}"><img class="${"logo img-fluid mt-3 svelte-12w4s1x"}" src="${"https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_ROARRR_d380578528.webp"}" alt="${"partner"}"></div>
+            <div class="${"slide-content"}"><img class="${"logo img-fluid svelte-12w4s1x"}" src="${"https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_Cirrus_Image_2_70004a2daf.webp"}" alt="${"partner"}"></div>
+            <div class="${"slide-content"}"><img class="${"logo img-fluid svelte-12w4s1x"}" src="${"https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_AF_Logo_7049c50238.webp"}" alt="${"partner"}"></div>
+            <div class="${"slide-content"}"><img class="${"logo img-fluid svelte-12w4s1x"}" src="${"https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_kim_c21bab4e72.png"}" alt="${"partner"}"></div>
+            <div class="${"slide-content"}"><img class="${"logo img-fluid svelte-12w4s1x"}" src="${"https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_SGM_Logo_b251d32022.webp"}" alt="${"partner"}"></div>
+            <div class="${"slide-content"}"><img class="${"logo img-fluid svelte-12w4s1x"}" src="${"https://strapi-upload-s3.glass.splyce.dev/media/small_MTC_New_Logo_large_7ae60c9ecf.webp"}" alt="${"partner"}"></div>`
+      })}</div>
+
+</div>`;
+    });
+  }
+});
+
 // node_modules/axios/lib/helpers/bind.js
 var require_bind = __commonJS({
   "node_modules/axios/lib/helpers/bind.js"(exports, module2) {
@@ -5015,24 +5929,24 @@ var require_utils = __commonJS({
           fn.call(null, obj[i], i, obj);
         }
       } else {
-        for (var key in obj) {
-          if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            fn.call(null, obj[key], key, obj);
+        for (var key2 in obj) {
+          if (Object.prototype.hasOwnProperty.call(obj, key2)) {
+            fn.call(null, obj[key2], key2, obj);
           }
         }
       }
     }
     function merge2() {
       var result = {};
-      function assignValue(val, key) {
-        if (isPlainObject(result[key]) && isPlainObject(val)) {
-          result[key] = merge2(result[key], val);
+      function assignValue(val, key2) {
+        if (isPlainObject(result[key2]) && isPlainObject(val)) {
+          result[key2] = merge2(result[key2], val);
         } else if (isPlainObject(val)) {
-          result[key] = merge2({}, val);
+          result[key2] = merge2({}, val);
         } else if (isArray(val)) {
-          result[key] = val.slice();
+          result[key2] = val.slice();
         } else {
-          result[key] = val;
+          result[key2] = val;
         }
       }
       for (var i = 0, l = arguments.length; i < l; i++) {
@@ -5041,11 +5955,11 @@ var require_utils = __commonJS({
       return result;
     }
     function extend(a, b, thisArg) {
-      forEach(b, function assignValue(val, key) {
+      forEach(b, function assignValue(val, key2) {
         if (thisArg && typeof val === "function") {
-          a[key] = bind(val, thisArg);
+          a[key2] = bind(val, thisArg);
         } else {
-          a[key] = val;
+          a[key2] = val;
         }
       });
       return a;
@@ -5103,12 +6017,12 @@ var require_buildURL = __commonJS({
         serializedParams = params.toString();
       } else {
         var parts = [];
-        utils.forEach(params, function serialize(val, key) {
+        utils.forEach(params, function serialize(val, key2) {
           if (val === null || typeof val === "undefined") {
             return;
           }
           if (utils.isArray(val)) {
-            key = key + "[]";
+            key2 = key2 + "[]";
           } else {
             val = [val];
           }
@@ -5118,7 +6032,7 @@ var require_buildURL = __commonJS({
             } else if (utils.isObject(v)) {
               v = JSON.stringify(v);
             }
-            parts.push(encode(key) + "=" + encode(v));
+            parts.push(encode(key2) + "=" + encode(v));
           });
         });
         serializedParams = parts.join("&");
@@ -5360,7 +6274,7 @@ var require_parseHeaders = __commonJS({
     ];
     module2.exports = function parseHeaders(headers) {
       var parsed = {};
-      var key;
+      var key2;
       var val;
       var i;
       if (!headers) {
@@ -5368,16 +6282,16 @@ var require_parseHeaders = __commonJS({
       }
       utils.forEach(headers.split("\n"), function parser(line) {
         i = line.indexOf(":");
-        key = utils.trim(line.substr(0, i)).toLowerCase();
+        key2 = utils.trim(line.substr(0, i)).toLowerCase();
         val = utils.trim(line.substr(i + 1));
-        if (key) {
-          if (parsed[key] && ignoreDuplicateOf.indexOf(key) >= 0) {
+        if (key2) {
+          if (parsed[key2] && ignoreDuplicateOf.indexOf(key2) >= 0) {
             return;
           }
-          if (key === "set-cookie") {
-            parsed[key] = (parsed[key] ? parsed[key] : []).concat([val]);
+          if (key2 === "set-cookie") {
+            parsed[key2] = (parsed[key2] ? parsed[key2] : []).concat([val]);
           } else {
-            parsed[key] = parsed[key] ? parsed[key] + ", " + val : val;
+            parsed[key2] = parsed[key2] ? parsed[key2] + ", " + val : val;
           }
         }
       });
@@ -5513,11 +6427,11 @@ var require_xhr = __commonJS({
           }
         }
         if ("setRequestHeader" in request) {
-          utils.forEach(requestHeaders, function setRequestHeader(val, key) {
-            if (typeof requestData === "undefined" && key.toLowerCase() === "content-type") {
-              delete requestHeaders[key];
+          utils.forEach(requestHeaders, function setRequestHeader(val, key2) {
+            if (typeof requestData === "undefined" && key2.toLowerCase() === "content-type") {
+              delete requestHeaders[key2];
             } else {
-              request.setRequestHeader(key, val);
+              request.setRequestHeader(key2, val);
             }
           });
         }
@@ -5678,8 +6592,8 @@ var require_common = __commonJS({
       createDebug.enabled = enabled;
       createDebug.humanize = require_ms();
       createDebug.destroy = destroy;
-      Object.keys(env).forEach((key) => {
-        createDebug[key] = env[key];
+      Object.keys(env).forEach((key2) => {
+        createDebug[key2] = env[key2];
       });
       createDebug.names = [];
       createDebug.skips = [];
@@ -5713,18 +6627,18 @@ var require_common = __commonJS({
           if (typeof args[0] !== "string") {
             args.unshift("%O");
           }
-          let index2 = 0;
+          let index = 0;
           args[0] = args[0].replace(/%([a-zA-Z%])/g, (match, format2) => {
             if (match === "%%") {
               return "%";
             }
-            index2++;
+            index++;
             const formatter = createDebug.formatters[format2];
             if (typeof formatter === "function") {
-              const val = args[index2];
+              const val = args[index];
               match = formatter.call(self2, val);
-              args.splice(index2, 1);
-              index2--;
+              args.splice(index, 1);
+              index--;
             }
             return match;
           });
@@ -5835,7 +6749,7 @@ var require_browser = __commonJS({
     init_shims();
     exports.formatArgs = formatArgs;
     exports.save = save;
-    exports.load = load2;
+    exports.load = load8;
     exports.useColors = useColors;
     exports.storage = localstorage();
     exports.destroy = (() => {
@@ -5941,15 +6855,15 @@ var require_browser = __commonJS({
       }
       const c = "color: " + this.color;
       args.splice(1, 0, c, "color: inherit");
-      let index2 = 0;
+      let index = 0;
       let lastC = 0;
       args[0].replace(/%[a-zA-Z%]/g, (match) => {
         if (match === "%%") {
           return;
         }
-        index2++;
+        index++;
         if (match === "%c") {
-          lastC = index2;
+          lastC = index;
         }
       });
       args.splice(lastC, 0, c);
@@ -5966,7 +6880,7 @@ var require_browser = __commonJS({
       } catch (error2) {
       }
     }
-    function load2() {
+    function load8() {
       let r;
       try {
         r = exports.storage.getItem("debug");
@@ -6005,7 +6919,7 @@ var require_node = __commonJS({
     exports.log = log;
     exports.formatArgs = formatArgs;
     exports.save = save;
-    exports.load = load2;
+    exports.load = load8;
     exports.useColors = useColors;
     exports.destroy = util.deprecate(() => {
     }, "Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.");
@@ -6094,13 +7008,13 @@ var require_node = __commonJS({
       }
     } catch (error2) {
     }
-    exports.inspectOpts = Object.keys(process.env).filter((key) => {
-      return /^debug_/i.test(key);
-    }).reduce((obj, key) => {
-      const prop = key.substring(6).toLowerCase().replace(/_([a-z])/g, (_, k) => {
+    exports.inspectOpts = Object.keys(process.env).filter((key2) => {
+      return /^debug_/i.test(key2);
+    }).reduce((obj, key2) => {
+      const prop = key2.substring(6).toLowerCase().replace(/_([a-z])/g, (_, k) => {
         return k.toUpperCase();
       });
-      let val = process.env[key];
+      let val = process.env[key2];
       if (/^(yes|on|true|enabled)$/i.test(val)) {
         val = true;
       } else if (/^(no|off|false|disabled)$/i.test(val)) {
@@ -6144,7 +7058,7 @@ var require_node = __commonJS({
         delete process.env.DEBUG;
       }
     }
-    function load2() {
+    function load8() {
       return process.env.DEBUG;
     }
     function init2(debug) {
@@ -6211,14 +7125,14 @@ var require_follow_redirects = __commonJS({
     var Writable = require("stream").Writable;
     var assert = require("assert");
     var debug = require_debug();
-    var events2 = ["abort", "aborted", "connect", "error", "socket", "timeout"];
+    var events = ["abort", "aborted", "connect", "error", "socket", "timeout"];
     var eventHandlers = Object.create(null);
-    events2.forEach(function(event) {
+    events.forEach(function(event) {
       eventHandlers[event] = function(arg1, arg2, arg3) {
         this._redirectable.emit(event, arg1, arg2, arg3);
       };
     });
-    var RedirectionError = createErrorType("ERR_FR_REDIRECTION_FAILURE", "");
+    var RedirectionError = createErrorType("ERR_FR_REDIRECTION_FAILURE", "Redirected request failed");
     var TooManyRedirectsError = createErrorType("ERR_FR_TOO_MANY_REDIRECTS", "Maximum number of redirects exceeded");
     var MaxBodyLengthExceededError = createErrorType("ERR_FR_MAX_BODY_LENGTH_EXCEEDED", "Request body larger than maxBodyLength limit");
     var WriteAfterEndError = createErrorType("ERR_STREAM_WRITE_AFTER_END", "write after end");
@@ -6323,6 +7237,9 @@ var require_follow_redirects = __commonJS({
           clearTimeout(self2._timeout);
           self2._timeout = null;
         }
+        self2.removeListener("abort", clearTimer);
+        self2.removeListener("error", clearTimer);
+        self2.removeListener("response", clearTimer);
         if (callback) {
           self2.removeListener("timeout", callback);
         }
@@ -6339,8 +7256,9 @@ var require_follow_redirects = __commonJS({
         this._currentRequest.once("socket", startTimer);
       }
       this.on("socket", destroyOnTimeout);
-      this.once("response", clearTimer);
-      this.once("error", clearTimer);
+      this.on("abort", clearTimer);
+      this.on("error", clearTimer);
+      this.on("response", clearTimer);
       return this;
     };
     [
@@ -6388,14 +7306,14 @@ var require_follow_redirects = __commonJS({
         return;
       }
       if (this._options.agents) {
-        var scheme = protocol2.substr(0, protocol2.length - 1);
-        this._options.agent = this._options.agents[scheme];
+        var scheme2 = protocol2.substr(0, protocol2.length - 1);
+        this._options.agent = this._options.agents[scheme2];
       }
       var request = this._currentRequest = nativeProtocol.request(this._options, this._onNativeResponse);
       this._currentUrl = url2.format(this._options);
       request._redirectable = this;
-      for (var e = 0; e < events2.length; e++) {
-        request.on(events2[e], eventHandlers[events2[e]]);
+      for (var e = 0; e < events.length; e++) {
+        request.on(events[e], eventHandlers[events[e]]);
       }
       if (this._isRedirect) {
         var i = 0;
@@ -6439,13 +7357,22 @@ var require_follow_redirects = __commonJS({
           this._requestBodyBuffers = [];
           removeMatchingHeaders(/^content-/i, this._options.headers);
         }
-        var previousHostName = removeMatchingHeaders(/^host$/i, this._options.headers) || url2.parse(this._currentUrl).hostname;
-        var redirectUrl = url2.resolve(this._currentUrl, location);
+        var currentHostHeader = removeMatchingHeaders(/^host$/i, this._options.headers);
+        var currentUrlParts = url2.parse(this._currentUrl);
+        var currentHost = currentHostHeader || currentUrlParts.host;
+        var currentUrl = /^\w+:/.test(location) ? this._currentUrl : url2.format(Object.assign(currentUrlParts, { host: currentHost }));
+        var redirectUrl;
+        try {
+          redirectUrl = url2.resolve(currentUrl, location);
+        } catch (cause) {
+          this.emit("error", new RedirectionError(cause));
+          return;
+        }
         debug("redirecting to", redirectUrl);
         this._isRedirect = true;
         var redirectUrlParts = url2.parse(redirectUrl);
         Object.assign(this._options, redirectUrlParts);
-        if (redirectUrlParts.hostname !== previousHostName) {
+        if (!(redirectUrlParts.host === currentHost || isSubdomainOf(redirectUrlParts.host, currentHost))) {
           removeMatchingHeaders(/^authorization$/i, this._options.headers);
         }
         if (typeof this._options.beforeRedirect === "function") {
@@ -6461,9 +7388,7 @@ var require_follow_redirects = __commonJS({
         try {
           this._performRequest();
         } catch (cause) {
-          var error2 = new RedirectionError("Redirected request failed: " + cause.message);
-          error2.cause = cause;
-          this.emit("error", error2);
+          this.emit("error", new RedirectionError(cause));
         }
       } else {
         response.responseUrl = this._currentUrl;
@@ -6478,10 +7403,10 @@ var require_follow_redirects = __commonJS({
         maxBodyLength: 10 * 1024 * 1024
       };
       var nativeProtocols = {};
-      Object.keys(protocols).forEach(function(scheme) {
-        var protocol2 = scheme + ":";
-        var nativeProtocol = nativeProtocols[protocol2] = protocols[scheme];
-        var wrappedProtocol = exports2[scheme] = Object.create(nativeProtocol);
+      Object.keys(protocols).forEach(function(scheme2) {
+        var protocol2 = scheme2 + ":";
+        var nativeProtocol = nativeProtocols[protocol2] = protocols[scheme2];
+        var wrappedProtocol = exports2[scheme2] = Object.create(nativeProtocol);
         function request(input, options2, callback) {
           if (typeof input === "string") {
             var urlStr = input;
@@ -6543,16 +7468,21 @@ var require_follow_redirects = __commonJS({
       var lastValue;
       for (var header in headers) {
         if (regex.test(header)) {
-          lastValue = headers[header];
+          lastValue = headers[header].toString().trim();
           delete headers[header];
         }
       }
       return lastValue;
     }
     function createErrorType(code, defaultMessage) {
-      function CustomError(message) {
+      function CustomError(cause) {
         Error.captureStackTrace(this, this.constructor);
-        this.message = message || defaultMessage;
+        if (!cause) {
+          this.message = defaultMessage;
+        } else {
+          this.message = defaultMessage + ": " + cause.message;
+          this.cause = cause;
+        }
       }
       CustomError.prototype = new Error();
       CustomError.prototype.constructor = CustomError;
@@ -6561,11 +7491,15 @@ var require_follow_redirects = __commonJS({
       return CustomError;
     }
     function abortRequest(request) {
-      for (var e = 0; e < events2.length; e++) {
-        request.removeListener(events2[e], eventHandlers[events2[e]]);
+      for (var e = 0; e < events.length; e++) {
+        request.removeListener(events[e], eventHandlers[events[e]]);
       }
       request.on("error", noop2);
       request.abort();
+    }
+    function isSubdomainOf(subdomain, domain2) {
+      const dot = subdomain.length - domain2.length - 1;
+      return dot > 0 && subdomain[dot] === "." && subdomain.endsWith(domain2);
     }
     module2.exports = wrap({ http: http2, https: https2 });
     module2.exports.wrap = wrap;
@@ -6576,33 +7510,28 @@ var require_follow_redirects = __commonJS({
 var require_package = __commonJS({
   "node_modules/axios/package.json"(exports, module2) {
     module2.exports = {
-      _args: [
-        [
-          "axios@0.21.4",
-          "C:\\Users\\flemi\\Documents\\Github\\ThinkTeacher\\frontend-thinkteacher"
-        ]
-      ],
-      _from: "axios@0.21.4",
+      _from: "axios@^0.21.4",
       _id: "axios@0.21.4",
       _inBundle: false,
       _integrity: "sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==",
       _location: "/axios",
       _phantomChildren: {},
       _requested: {
-        type: "version",
+        type: "range",
         registry: true,
-        raw: "axios@0.21.4",
+        raw: "axios@^0.21.4",
         name: "axios",
         escapedName: "axios",
-        rawSpec: "0.21.4",
+        rawSpec: "^0.21.4",
         saveSpec: null,
-        fetchSpec: "0.21.4"
+        fetchSpec: "^0.21.4"
       },
       _requiredBy: [
         "/"
       ],
       _resolved: "https://registry.npmjs.org/axios/-/axios-0.21.4.tgz",
-      _spec: "0.21.4",
+      _shasum: "c67b90dc0568e5c1cf2b0b858c43ba28e2eda575",
+      _spec: "axios@^0.21.4",
       _where: "C:\\Users\\flemi\\Documents\\Github\\ThinkTeacher\\frontend-thinkteacher",
       author: {
         name: "Matt Zabriskie"
@@ -6613,6 +7542,7 @@ var require_package = __commonJS({
       bugs: {
         url: "https://github.com/axios/axios/issues"
       },
+      bundleDependencies: false,
       bundlesize: [
         {
           path: "./dist/axios.min.js",
@@ -6622,6 +7552,7 @@ var require_package = __commonJS({
       dependencies: {
         "follow-redirects": "^1.14.0"
       },
+      deprecated: false,
       description: "Promise based HTTP client for the browser and node.js",
       devDependencies: {
         coveralls: "^3.0.0",
@@ -7188,8 +8119,8 @@ var require_mergeConfig = __commonJS({
         }
       });
       var axiosKeys = valueFromConfig2Keys.concat(mergeDeepPropertiesKeys).concat(defaultToConfig2Keys).concat(directMergeKeys);
-      var otherKeys = Object.keys(config1).concat(Object.keys(config2)).filter(function filterAxiosKeys(key) {
-        return axiosKeys.indexOf(key) === -1;
+      var otherKeys = Object.keys(config1).concat(Object.keys(config2)).filter(function filterAxiosKeys(key2) {
+        return axiosKeys.indexOf(key2) === -1;
       });
       utils.forEach(otherKeys, mergeDeepProperties);
       return config;
@@ -7507,6 +8438,36 @@ var require_axios2 = __commonJS({
   }
 });
 
+// .svelte-kit/output/server/chunks/forgot-password-94a9d219.js
+var forgot_password_94a9d219_exports = {};
+__export(forgot_password_94a9d219_exports, {
+  default: () => Forgot_password
+});
+var import_axios, Forgot_password;
+var init_forgot_password_94a9d219 = __esm({
+  ".svelte-kit/output/server/chunks/forgot-password-94a9d219.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    import_axios = __toModule(require_axios2());
+    Forgot_password = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let email;
+      return `${$$result.head += `${$$result.title = `<title>Forgot Password</title>`, ""}`, ""}
+
+<section class="${"vh-50 gradient-custom container mt-4 mb-4"}"><div class="${"py-3 h-100"}"><div class="${"row d-flex justify-content-center align-items-center h-100"}"><div class="${"col-12 col-md-8 col-lg-6 col-xl-6"}"><div class="${"card bg-dark text-white"}" style="${"border-radius: 1rem;"}"><div class="${"card-body p-md-4 p-lg-5 text-center"}"><h2 class="${"fw-bold mb-2 text-uppercase"}">Forgot Password</h2>
+                    <p class="${"text-white-50 mb-3"}">Please enter your email, where you will receive your reset password link.</p>
+
+                    ${``}
+
+                    ${``}
+    
+                    <div class="${"form-outline form-white mb-4"}"><label class="${"form-label"}" for="${"Email"}">Email</label>
+                        <input type="${"email"}" id="${"Email"}" class="${"form-control form-control-lg"}" placeholder="${"Enter email"}" required${add_attribute("value", email, 0)}></div>
+    
+                    <button class="${"btn btn-outline-light btn-lg px-4"}" type="${"submit"}">Submit</button></div></div></div></div></div></section>`;
+    });
+  }
+});
+
 // node_modules/zxcvbn/lib/frequency_lists.js
 var require_frequency_lists = __commonJS({
   "node_modules/zxcvbn/lib/frequency_lists.js"(exports, module2) {
@@ -7777,10 +8738,10 @@ var require_scoring = __commonJS({
     var v;
     adjacency_graphs = require_adjacency_graphs();
     calc_average_degree = function(graph) {
-      var average, k2, key, n, neighbors, v2;
+      var average, k2, key2, n, neighbors, v2;
       average = 0;
-      for (key in graph) {
-        neighbors = graph[key];
+      for (key2 in graph) {
+        neighbors = graph[key2];
         average += function() {
           var len, o, results;
           results = [];
@@ -9167,6 +10128,2790 @@ var require_main = __commonJS({
   }
 });
 
+// .svelte-kit/output/server/chunks/eye-5d9d46b8.js
+var eye;
+var init_eye_5d9d46b8 = __esm({
+  ".svelte-kit/output/server/chunks/eye-5d9d46b8.js"() {
+    init_shims();
+    eye = { eye: { width: 1792, height: 1792, paths: [{ d: "M1664 960q-152-236-381-353 61 104 61 225 0 185-131.5 316.5t-316.5 131.5-316.5-131.5-131.5-316.5q0-121 61-225-229 117-381 353 133 205 333.5 326.5t434.5 121.5 434.5-121.5 333.5-326.5zM944 576q0-20-14-34t-34-14q-125 0-214.5 89.5t-89.5 214.5q0 20 14 34t34 14 34-14 14-34q0-86 61-147t147-61q20 0 34-14t14-34zM1792 960q0 34-20 69-140 230-376.5 368.5t-499.5 138.5-499.5-139-376.5-368q-20-35-20-69t20-69q140-229 376.5-368t499.5-139 499.5 139 376.5 368q20 35 20 69z" }] } };
+  }
+});
+
+// .svelte-kit/output/server/chunks/reset-password-f7b69d36.js
+var reset_password_f7b69d36_exports = {};
+__export(reset_password_f7b69d36_exports, {
+  default: () => Reset_password,
+  prerender: () => prerender
+});
+var import_axios2, import_zxcvbn, prerender, Reset_password;
+var init_reset_password_f7b69d36 = __esm({
+  ".svelte-kit/output/server/chunks/reset-password-f7b69d36.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    import_axios2 = __toModule(require_axios2());
+    import_zxcvbn = __toModule(require_main());
+    init_Icon_7dad3475();
+    init_eye_5d9d46b8();
+    prerender = true;
+    Reset_password = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let s2;
+      let progress;
+      let password = "", passwordConfirmation;
+      let barCol = "";
+      s2 = (0, import_zxcvbn.default)(password).score > 2;
+      progress = (0, import_zxcvbn.default)(password).score / 4 * 100;
+      {
+        if (s2) {
+          barCol = "bg-success";
+        } else {
+          barCol = "bg-danger";
+        }
+      }
+      return `${$$result.head += `${$$result.title = `<title>Reset Password</title>`, ""}`, ""}
+
+<section class="${"vh-50 gradient-custom container mt-4 mb-4"}"><div class="${"py-3 h-100"}"><div class="${"row d-flex justify-content-center align-items-center h-100"}"><div class="${"col-12 col-md-8 col-lg-6 col-xl-6"}"><div class="${"card bg-dark text-white"}" style="${"border-radius: 1rem;"}"><div class="${"card-body p-md-4 p-lg-5 text-center"}"><h2 class="${"fw-bold mb-2 text-uppercase"}">Forgot Password</h2>
+                    <p class="${"text-white-50 mb-3"}">Please enter your new password below.</p>
+
+                    ${``}
+
+                    ${``}
+                    <form><div class="${"form-outline form-white mb-2 text-left"}"><label class="${"form-label"}" for="${"Password"}">Password</label>
+                            <input type="${"password"}" id="${"Password"}" class="${"form-control form-control-lg"}" placeholder="${"Password"}" style="${"margin-right: -2.2rem; display:inline-block;"}" required${add_attribute("value", password, 0)}>
+                            <i>${validate_component(Icon, "Icon").$$render($$result, {
+        data: eye,
+        scale: "1.5",
+        style: "cursor: pointer; display:inline-block; z-index: 99;"
+      }, {}, {})}</i></div>   
+                        <div class="${"progress mt-2"}"><div class="${"progress-bar " + escape(barCol)}" role="${"progressbar"}" style="${"width: " + escape(progress) + "%;"}" aria-valuenow="${"100"}" aria-valuemin="${"0"}" aria-valuemax="${"100"}"></div></div>   
+                        <p${add_attribute("style", s2 || "color:red", 0)}>${escape(s2 ? "Strong password" : "Password not strong enough. Try using a mix of capital letters, numbers and special characters with a length > 8.")}</p>
+                        <div class="${"form-outline form-white mb-4 mt-3 text-left"}"><label class="${"form-label"}" for="${"PasswordConfirm"}">Password Confirmation</label>
+                            <input type="${"password"}" id="${"PasswordConfirm"}" class="${"form-control form-control-lg"}" placeholder="${"Password (again)"}" style="${"margin-right: -2.2rem; display:inline-block;"}" required${add_attribute("value", passwordConfirmation, 0)}>
+                            <i>${validate_component(Icon, "Icon").$$render($$result, {
+        data: eye,
+        scale: "1.5",
+        style: "cursor: pointer; display:inline-block; z-index: 99;"
+      }, {}, {})}</i></div>
+        
+                        <button class="${"btn btn-outline-light btn-lg px-4"}" type="${"submit"}">Submit</button></form></div></div></div></div></div></section>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/confirm-email-2c5bfc23.js
+var confirm_email_2c5bfc23_exports = {};
+__export(confirm_email_2c5bfc23_exports, {
+  default: () => Confirm_email
+});
+var import_axios3, Confirm_email;
+var init_confirm_email_2c5bfc23 = __esm({
+  ".svelte-kit/output/server/chunks/confirm-email-2c5bfc23.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    import_axios3 = __toModule(require_axios2());
+    Confirm_email = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let email;
+      return `<section class="${"vh-50 gradient-custom container mt-4 mb-4"}"><div class="${"py-3 h-100"}"><div class="${"row d-flex justify-content-center align-items-center h-100"}"><div class="${"col-12 col-md-8 col-lg-6 col-xl-6"}"><div class="${"card bg-dark text-white"}" style="${"border-radius: 1rem;"}"><div class="${"card-body p-md-4 p-lg-5 text-center"}"><h2 class="${"fw-bold mb-2 text-uppercase"}">Resend confirmation</h2>
+                    <p class="${"text-white-50 mb-3"}">Please enter your email you wish to confirm</p>
+
+                    ${``}
+
+                    ${``}
+    
+                    <div class="${"form-outline form-white mb-4"}"><label class="${"form-label"}" for="${"Email"}">Email</label>
+                        <input type="${"email"}" id="${"Email"}" class="${"form-control form-control-lg"}" placeholder="${"Enter email"}" required${add_attribute("value", email, 0)}></div>
+    
+                    <button class="${"btn btn-outline-light btn-lg px-4"}" type="${"submit"}">Submit</button>
+                    <p class="${"mt-4 fs-5"}">If you are still not receiving your confirmation email, please contact: <strong><a href="${"/contact-us"}">Zani</a></strong></p>
+                    <p class="${"mb-0"}">Want to login now? <a href="${"/login"}" class="${"text-white-50 fw-bold"}">Login</a></p></div></div></div></div></div></section>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/contact-us-3803aa09.js
+var contact_us_3803aa09_exports = {};
+__export(contact_us_3803aa09_exports, {
+  default: () => Contact_us,
+  prerender: () => prerender2
+});
+var send, prerender2, Contact_us;
+var init_contact_us_3803aa09 = __esm({
+  ".svelte-kit/output/server/chunks/contact-us-3803aa09.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    init_Icon_7dad3475();
+    send = { send: { width: 1792, height: 1792, paths: [{ d: "M1764 11q33 24 27 64l-256 1536q-5 29-32 45-14 8-31 8-11 0-24-5l-453-185-242 295q-18 23-49 23-13 0-22-4-19-7-30.5-23.5t-11.5-36.5v-349l864-1059-1069 925-395-162q-37-14-40-55-2-40 32-59l1664-960q15-9 32-9 20 0 36 11z" }] } };
+    prerender2 = true;
+    Contact_us = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `${$$result.head += `${$$result.title = `<title>Contact</title>`, ""}`, ""}
+
+<div class="${"container mt-5 mb-5"}"><section class="${"vh-50 gradient-custom"}"><div class="${"py-3 h-100"}"><div class="${"row d-flex justify-content-center align-items-center h-100"}"><div class="${"col-12 col-md-8 col-lg-6 col-xl-6"}"><div class="${"card bg-dark text-white"}" style="${"border-radius: 1rem;"}"><div class="${"card-body p-md-4 p-lg-5 text-center"}"><h2 class="${"fw-bold mb-2 text-uppercase"}">Contact</h2>
+                        <p class="${"text-white-50 mb-3"}">Please feel free to contact us.</p>
+
+                        <form name="${"contact"}" method="${"POST"}" netlify-honeypot="${"bot-field"}" data-netlify="${"true"}"><p class="${"hidden"}"><label>Don\u2019t fill this out if you\u2019re human: <input name="${"bot-field"}"></label></p>
+
+                            <input type="${"hidden"}" name="${"form-name"}" value="${"contact"}">
+
+                            <div class="${"form-outline form-white mb-2"}"><label class="${"form-label"}" for="${"Name"}">Name</label>
+                                <input type="${"text"}" name="${"Name"}" id="${"Name"}" class="${"form-control form-control-lg"}" placeholder="${"Enter your name"}" required></div>
+                            <div class="${"form-outline form-white mb-4"}"><label class="${"form-label"}" for="${"Email"}">Email</label>
+                                <input type="${"email"}" id="${"Email"}" class="${"form-control form-control-lg"}" placeholder="${"Enter your email"}" required></div>
+                            <div class="${"form-outline form-white mb-2"}"><label class="${"form-label"}" for="${"Subject"}">Subject</label>
+                                <input type="${"text"}" name="${"subject"}" id="${"Subject"}" class="${"form-control form-control-lg"}" placeholder="${"Enter your subject"}" required></div>
+                            <div class="${"form-outline form-white mb-4"}"><label class="${"form-label"}" for="${"Message"}">Message</label>
+                                <textarea id="${"Message"}" name="${"message"}" class="${"form-control"}" rows="${"8"}" placeholder="${"Enter your message"}" required></textarea></div>
+        
+                            <button class="${"btn btn-outline-light btn-lg px-4"}" type="${"submit"}">Submit</button></form></div></div></div></div></div></section>
+
+    <div class="${"row justify-content-center text-center grey-grad mt-5"}"><h2 class="${"mb-4"}">Contact Details:</h2>
+        
+        <div class="${"col-md-4 col-sm-12"}"><h4>Email: <span class="${"text-logo-gold"}"><a href="${"mailto:zani@thinkteacher.co.za"}">zani@thinkteacher.co.za</a></span></h4><i class="${"fas fa-paper-plane"}"></i>${validate_component(Icon, "Icon").$$render($$result, {
+        data: send,
+        scale: "3",
+        class: "text-blue"
+      }, {}, {})}</div></div></div>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/SvelteMarkdown-baee76c8.js
+function getDefaults$1() {
+  return {
+    baseUrl: null,
+    breaks: false,
+    extensions: null,
+    gfm: true,
+    headerIds: true,
+    headerPrefix: "",
+    highlight: null,
+    langPrefix: "language-",
+    mangle: true,
+    pedantic: false,
+    renderer: null,
+    sanitize: false,
+    sanitizer: null,
+    silent: false,
+    smartLists: false,
+    smartypants: false,
+    tokenizer: null,
+    walkTokens: null,
+    xhtml: false
+  };
+}
+function changeDefaults$1(newDefaults) {
+  defaults$5.exports.defaults = newDefaults;
+}
+function escape$3(html, encode) {
+  if (encode) {
+    if (escapeTest.test(html)) {
+      return html.replace(escapeReplace, getEscapeReplacement);
+    }
+  } else {
+    if (escapeTestNoEncode.test(html)) {
+      return html.replace(escapeReplaceNoEncode, getEscapeReplacement);
+    }
+  }
+  return html;
+}
+function unescape$1(html) {
+  return html.replace(unescapeTest, (_, n) => {
+    n = n.toLowerCase();
+    if (n === "colon")
+      return ":";
+    if (n.charAt(0) === "#") {
+      return n.charAt(1) === "x" ? String.fromCharCode(parseInt(n.substring(2), 16)) : String.fromCharCode(+n.substring(1));
+    }
+    return "";
+  });
+}
+function edit$1(regex, opt) {
+  regex = regex.source || regex;
+  opt = opt || "";
+  const obj = {
+    replace: (name2, val) => {
+      val = val.source || val;
+      val = val.replace(caret, "$1");
+      regex = regex.replace(name2, val);
+      return obj;
+    },
+    getRegex: () => {
+      return new RegExp(regex, opt);
+    }
+  };
+  return obj;
+}
+function cleanUrl$1(sanitize, base2, href) {
+  if (sanitize) {
+    let prot;
+    try {
+      prot = decodeURIComponent(unescape$1(href)).replace(nonWordAndColonTest, "").toLowerCase();
+    } catch (e) {
+      return null;
+    }
+    if (prot.indexOf("javascript:") === 0 || prot.indexOf("vbscript:") === 0 || prot.indexOf("data:") === 0) {
+      return null;
+    }
+  }
+  if (base2 && !originIndependentUrl.test(href)) {
+    href = resolveUrl(base2, href);
+  }
+  try {
+    href = encodeURI(href).replace(/%25/g, "%");
+  } catch (e) {
+    return null;
+  }
+  return href;
+}
+function resolveUrl(base2, href) {
+  if (!baseUrls[" " + base2]) {
+    if (justDomain.test(base2)) {
+      baseUrls[" " + base2] = base2 + "/";
+    } else {
+      baseUrls[" " + base2] = rtrim$1(base2, "/", true);
+    }
+  }
+  base2 = baseUrls[" " + base2];
+  const relativeBase = base2.indexOf(":") === -1;
+  if (href.substring(0, 2) === "//") {
+    if (relativeBase) {
+      return href;
+    }
+    return base2.replace(protocol, "$1") + href;
+  } else if (href.charAt(0) === "/") {
+    if (relativeBase) {
+      return href;
+    }
+    return base2.replace(domain, "$1") + href;
+  } else {
+    return base2 + href;
+  }
+}
+function merge$2(obj) {
+  let i = 1, target, key2;
+  for (; i < arguments.length; i++) {
+    target = arguments[i];
+    for (key2 in target) {
+      if (Object.prototype.hasOwnProperty.call(target, key2)) {
+        obj[key2] = target[key2];
+      }
+    }
+  }
+  return obj;
+}
+function splitCells$1(tableRow, count) {
+  const row = tableRow.replace(/\|/g, (match, offset, str) => {
+    let escaped2 = false, curr = offset;
+    while (--curr >= 0 && str[curr] === "\\")
+      escaped2 = !escaped2;
+    if (escaped2) {
+      return "|";
+    } else {
+      return " |";
+    }
+  }), cells = row.split(/ \|/);
+  let i = 0;
+  if (cells.length > count) {
+    cells.splice(count);
+  } else {
+    while (cells.length < count)
+      cells.push("");
+  }
+  for (; i < cells.length; i++) {
+    cells[i] = cells[i].trim().replace(/\\\|/g, "|");
+  }
+  return cells;
+}
+function rtrim$1(str, c, invert) {
+  const l = str.length;
+  if (l === 0) {
+    return "";
+  }
+  let suffLen = 0;
+  while (suffLen < l) {
+    const currChar = str.charAt(l - suffLen - 1);
+    if (currChar === c && !invert) {
+      suffLen++;
+    } else if (currChar !== c && invert) {
+      suffLen++;
+    } else {
+      break;
+    }
+  }
+  return str.substr(0, l - suffLen);
+}
+function findClosingBracket$1(str, b) {
+  if (str.indexOf(b[1]) === -1) {
+    return -1;
+  }
+  const l = str.length;
+  let level = 0, i = 0;
+  for (; i < l; i++) {
+    if (str[i] === "\\") {
+      i++;
+    } else if (str[i] === b[0]) {
+      level++;
+    } else if (str[i] === b[1]) {
+      level--;
+      if (level < 0) {
+        return i;
+      }
+    }
+  }
+  return -1;
+}
+function checkSanitizeDeprecation$1(opt) {
+  if (opt && opt.sanitize && !opt.silent) {
+    console.warn("marked(): sanitize and sanitizer parameters are deprecated since version 0.7.0, should not be used and will be removed in the future. Read more here: https://marked.js.org/#/USING_ADVANCED.md#options");
+  }
+}
+function repeatString$1(pattern, count) {
+  if (count < 1) {
+    return "";
+  }
+  let result = "";
+  while (count > 1) {
+    if (count & 1) {
+      result += pattern;
+    }
+    count >>= 1;
+    pattern += pattern;
+  }
+  return result + pattern;
+}
+function outputLink(cap, link, raw) {
+  const href = link.href;
+  const title = link.title ? escape$2(link.title) : null;
+  const text = cap[1].replace(/\\([\[\]])/g, "$1");
+  if (cap[0].charAt(0) !== "!") {
+    return {
+      type: "link",
+      raw,
+      href,
+      title,
+      text
+    };
+  } else {
+    return {
+      type: "image",
+      raw,
+      href,
+      title,
+      text: escape$2(text)
+    };
+  }
+}
+function indentCodeCompensation(raw, text) {
+  const matchIndentToCode = raw.match(/^(\s+)(?:```)/);
+  if (matchIndentToCode === null) {
+    return text;
+  }
+  const indentToCode = matchIndentToCode[1];
+  return text.split("\n").map((node) => {
+    const matchIndentInNode = node.match(/^\s+/);
+    if (matchIndentInNode === null) {
+      return node;
+    }
+    const [indentInNode] = matchIndentInNode;
+    if (indentInNode.length >= indentToCode.length) {
+      return node.slice(indentToCode.length);
+    }
+    return node;
+  }).join("\n");
+}
+function smartypants(text) {
+  return text.replace(/---/g, "\u2014").replace(/--/g, "\u2013").replace(/(^|[-\u2014/(\[{"\s])'/g, "$1\u2018").replace(/'/g, "\u2019").replace(/(^|[-\u2014/(\[{\u2018\s])"/g, "$1\u201C").replace(/"/g, "\u201D").replace(/\.{3}/g, "\u2026");
+}
+function mangle(text) {
+  let out = "", i, ch;
+  const l = text.length;
+  for (i = 0; i < l; i++) {
+    ch = text.charCodeAt(i);
+    if (Math.random() > 0.5) {
+      ch = "x" + ch.toString(16);
+    }
+    out += "&#" + ch + ";";
+  }
+  return out;
+}
+function marked(src2, opt, callback) {
+  if (typeof src2 === "undefined" || src2 === null) {
+    throw new Error("marked(): input parameter is undefined or null");
+  }
+  if (typeof src2 !== "string") {
+    throw new Error("marked(): input parameter is of type " + Object.prototype.toString.call(src2) + ", string expected");
+  }
+  if (typeof opt === "function") {
+    callback = opt;
+    opt = null;
+  }
+  opt = merge({}, marked.defaults, opt || {});
+  checkSanitizeDeprecation(opt);
+  if (callback) {
+    const highlight = opt.highlight;
+    let tokens;
+    try {
+      tokens = Lexer$1.lex(src2, opt);
+    } catch (e) {
+      return callback(e);
+    }
+    const done = function(err) {
+      let out;
+      if (!err) {
+        try {
+          if (opt.walkTokens) {
+            marked.walkTokens(tokens, opt.walkTokens);
+          }
+          out = Parser2.parse(tokens, opt);
+        } catch (e) {
+          err = e;
+        }
+      }
+      opt.highlight = highlight;
+      return err ? callback(err) : callback(null, out);
+    };
+    if (!highlight || highlight.length < 3) {
+      return done();
+    }
+    delete opt.highlight;
+    if (!tokens.length)
+      return done();
+    let pending = 0;
+    marked.walkTokens(tokens, function(token) {
+      if (token.type === "code") {
+        pending++;
+        setTimeout(() => {
+          highlight(token.text, token.lang, function(err, code) {
+            if (err) {
+              return done(err);
+            }
+            if (code != null && code !== token.text) {
+              token.text = code;
+              token.escaped = true;
+            }
+            pending--;
+            if (pending === 0) {
+              done();
+            }
+          });
+        }, 0);
+      }
+    });
+    if (pending === 0) {
+      done();
+    }
+    return;
+  }
+  try {
+    const tokens = Lexer$1.lex(src2, opt);
+    if (opt.walkTokens) {
+      marked.walkTokens(tokens, opt.walkTokens);
+    }
+    return Parser2.parse(tokens, opt);
+  } catch (e) {
+    e.message += "\nPlease report this to https://github.com/markedjs/marked.";
+    if (opt.silent) {
+      return "<p>An error occurred:</p><pre>" + escape2(e.message + "", true) + "</pre>";
+    }
+    throw e;
+  }
+}
+var Parser$1, defaults$5, escapeTest, escapeReplace, escapeTestNoEncode, escapeReplaceNoEncode, escapeReplacements, getEscapeReplacement, unescapeTest, caret, nonWordAndColonTest, originIndependentUrl, baseUrls, justDomain, protocol, domain, noopTest$1, helpers, defaults$4, rtrim, splitCells, escape$2, findClosingBracket, Tokenizer_1, noopTest2, edit, merge$1, block$1, inline$1, rules, Tokenizer$1, defaults$3, block, inline, repeatString, Lexer_1, defaults$2, cleanUrl, escape$1, Renderer_1, TextRenderer_1, Slugger_1, Renderer$1, TextRenderer$1, Slugger$1, defaults$1, unescape2, Parser_1, Lexer$1, Parser2, Tokenizer2, Renderer2, TextRenderer2, Slugger$2, merge, checkSanitizeDeprecation, escape2, getDefaults, changeDefaults, defaults, marked_1, key, Heading, Paragraph, Text, Image, Link, Em, Del, Codespan, Strong, Table, TableHead, TableBody, TableRow, TableCell, List, ListItem, Hr, Html, Blockquote, Code, Br, defaultRenderers, defaultOptions, Lexer2, Slugger2, SvelteMarkdown;
+var init_SvelteMarkdown_baee76c8 = __esm({
+  ".svelte-kit/output/server/chunks/SvelteMarkdown-baee76c8.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    Parser$1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let $$restProps = compute_rest_props($$props, ["type", "tokens", "ordered", "renderers"]);
+      let { type = void 0 } = $$props;
+      let { tokens = void 0 } = $$props;
+      let { ordered = false } = $$props;
+      let { renderers } = $$props;
+      if ($$props.type === void 0 && $$bindings.type && type !== void 0)
+        $$bindings.type(type);
+      if ($$props.tokens === void 0 && $$bindings.tokens && tokens !== void 0)
+        $$bindings.tokens(tokens);
+      if ($$props.ordered === void 0 && $$bindings.ordered && ordered !== void 0)
+        $$bindings.ordered(ordered);
+      if ($$props.renderers === void 0 && $$bindings.renderers && renderers !== void 0)
+        $$bindings.renderers(renderers);
+      return `${!type ? `${each(tokens, (token) => `${validate_component(Parser$1, "svelte:self").$$render($$result, Object.assign(token, { renderers }), {}, {})}`)}` : `${renderers[type] ? `${type === "table" ? `${validate_component(renderers.table || missing_component, "svelte:component").$$render($$result, {}, {}, {
+        default: () => `${validate_component(renderers.tablehead || missing_component, "svelte:component").$$render($$result, {}, {}, {
+          default: () => `${validate_component(renderers.tablerow || missing_component, "svelte:component").$$render($$result, {}, {}, {
+            default: () => `${each(tokens.header, (cells, i) => `${validate_component(renderers.tablecell || missing_component, "svelte:component").$$render($$result, {
+              header: true,
+              align: $$restProps.align[i] || "center"
+            }, {}, {
+              default: () => `${validate_component(Parser$1, "svelte:self").$$render($$result, { tokens: cells, renderers }, {}, {})}
+              `
+            })}`)}`
+          })}`
+        })}
+        ${validate_component(renderers.tablebody || missing_component, "svelte:component").$$render($$result, {}, {}, {
+          default: () => `${each(tokens.cells, (row) => `${validate_component(renderers.tablerow || missing_component, "svelte:component").$$render($$result, {}, {}, {
+            default: () => `${each(row, (cells, i) => `${validate_component(renderers.tablecell || missing_component, "svelte:component").$$render($$result, {
+              header: false,
+              align: $$restProps.align[i] || "center"
+            }, {}, {
+              default: () => `${validate_component(Parser$1, "svelte:self").$$render($$result, { tokens: cells, renderers }, {}, {})}
+                `
+            })}`)}
+            `
+          })}`)}`
+        })}`
+      })}` : `${type === "list" ? `${ordered ? `${validate_component(renderers.list || missing_component, "svelte:component").$$render($$result, Object.assign({ ordered }, $$restProps), {}, {
+        default: () => `${each($$restProps.items, (item) => `${validate_component(renderers.orderedlistitem || renderers.listitem || missing_component, "svelte:component").$$render($$result, Object.assign(item), {}, {
+          default: () => `${validate_component(Parser$1, "svelte:self").$$render($$result, { tokens: item.tokens, renderers }, {}, {})}
+            `
+        })}`)}`
+      })}` : `${validate_component(renderers.list || missing_component, "svelte:component").$$render($$result, Object.assign({ ordered }, $$restProps), {}, {
+        default: () => `${each($$restProps.items, (item) => `${validate_component(renderers.unorderedlistitem || renderers.listitem || missing_component, "svelte:component").$$render($$result, Object.assign(item), {}, {
+          default: () => `${validate_component(Parser$1, "svelte:self").$$render($$result, { tokens: item.tokens, renderers }, {}, {})}
+            `
+        })}`)}`
+      })}`}` : `${validate_component(renderers[type] || missing_component, "svelte:component").$$render($$result, Object.assign($$restProps), {}, {
+        default: () => `${tokens ? `${validate_component(Parser$1, "svelte:self").$$render($$result, { tokens, renderers }, {}, {})}` : `${escape($$restProps.raw)}`}`
+      })}`}`}` : ``}`}`;
+    });
+    defaults$5 = { exports: {} };
+    defaults$5.exports = {
+      defaults: getDefaults$1(),
+      getDefaults: getDefaults$1,
+      changeDefaults: changeDefaults$1
+    };
+    escapeTest = /[&<>"']/;
+    escapeReplace = /[&<>"']/g;
+    escapeTestNoEncode = /[<>"']|&(?!#?\w+;)/;
+    escapeReplaceNoEncode = /[<>"']|&(?!#?\w+;)/g;
+    escapeReplacements = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    };
+    getEscapeReplacement = (ch) => escapeReplacements[ch];
+    unescapeTest = /&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/ig;
+    caret = /(^|[^\[])\^/g;
+    nonWordAndColonTest = /[^\w:]/g;
+    originIndependentUrl = /^$|^[a-z][a-z0-9+.-]*:|^[?#]/i;
+    baseUrls = {};
+    justDomain = /^[^:]+:\/*[^/]*$/;
+    protocol = /^([^:]+:)[\s\S]*$/;
+    domain = /^([^:]+:\/*[^/]*)[\s\S]*$/;
+    noopTest$1 = { exec: function noopTest() {
+    } };
+    helpers = {
+      escape: escape$3,
+      unescape: unescape$1,
+      edit: edit$1,
+      cleanUrl: cleanUrl$1,
+      resolveUrl,
+      noopTest: noopTest$1,
+      merge: merge$2,
+      splitCells: splitCells$1,
+      rtrim: rtrim$1,
+      findClosingBracket: findClosingBracket$1,
+      checkSanitizeDeprecation: checkSanitizeDeprecation$1,
+      repeatString: repeatString$1
+    };
+    ({ defaults: defaults$4 } = defaults$5.exports);
+    ({
+      rtrim,
+      splitCells,
+      escape: escape$2,
+      findClosingBracket
+    } = helpers);
+    Tokenizer_1 = class Tokenizer {
+      constructor(options2) {
+        this.options = options2 || defaults$4;
+      }
+      space(src2) {
+        const cap = this.rules.block.newline.exec(src2);
+        if (cap) {
+          if (cap[0].length > 1) {
+            return {
+              type: "space",
+              raw: cap[0]
+            };
+          }
+          return { raw: "\n" };
+        }
+      }
+      code(src2) {
+        const cap = this.rules.block.code.exec(src2);
+        if (cap) {
+          const text = cap[0].replace(/^ {1,4}/gm, "");
+          return {
+            type: "code",
+            raw: cap[0],
+            codeBlockStyle: "indented",
+            text: !this.options.pedantic ? rtrim(text, "\n") : text
+          };
+        }
+      }
+      fences(src2) {
+        const cap = this.rules.block.fences.exec(src2);
+        if (cap) {
+          const raw = cap[0];
+          const text = indentCodeCompensation(raw, cap[3] || "");
+          return {
+            type: "code",
+            raw,
+            lang: cap[2] ? cap[2].trim() : cap[2],
+            text
+          };
+        }
+      }
+      heading(src2) {
+        const cap = this.rules.block.heading.exec(src2);
+        if (cap) {
+          let text = cap[2].trim();
+          if (/#$/.test(text)) {
+            const trimmed = rtrim(text, "#");
+            if (this.options.pedantic) {
+              text = trimmed.trim();
+            } else if (!trimmed || / $/.test(trimmed)) {
+              text = trimmed.trim();
+            }
+          }
+          return {
+            type: "heading",
+            raw: cap[0],
+            depth: cap[1].length,
+            text
+          };
+        }
+      }
+      nptable(src2) {
+        const cap = this.rules.block.nptable.exec(src2);
+        if (cap) {
+          const item = {
+            type: "table",
+            header: splitCells(cap[1].replace(/^ *| *\| *$/g, "")),
+            align: cap[2].replace(/^ *|\| *$/g, "").split(/ *\| */),
+            cells: cap[3] ? cap[3].replace(/\n$/, "").split("\n") : [],
+            raw: cap[0]
+          };
+          if (item.header.length === item.align.length) {
+            let l = item.align.length;
+            let i;
+            for (i = 0; i < l; i++) {
+              if (/^ *-+: *$/.test(item.align[i])) {
+                item.align[i] = "right";
+              } else if (/^ *:-+: *$/.test(item.align[i])) {
+                item.align[i] = "center";
+              } else if (/^ *:-+ *$/.test(item.align[i])) {
+                item.align[i] = "left";
+              } else {
+                item.align[i] = null;
+              }
+            }
+            l = item.cells.length;
+            for (i = 0; i < l; i++) {
+              item.cells[i] = splitCells(item.cells[i], item.header.length);
+            }
+            return item;
+          }
+        }
+      }
+      hr(src2) {
+        const cap = this.rules.block.hr.exec(src2);
+        if (cap) {
+          return {
+            type: "hr",
+            raw: cap[0]
+          };
+        }
+      }
+      blockquote(src2) {
+        const cap = this.rules.block.blockquote.exec(src2);
+        if (cap) {
+          const text = cap[0].replace(/^ *> ?/gm, "");
+          return {
+            type: "blockquote",
+            raw: cap[0],
+            text
+          };
+        }
+      }
+      list(src2) {
+        const cap = this.rules.block.list.exec(src2);
+        if (cap) {
+          let raw = cap[0];
+          const bull = cap[2];
+          const isordered = bull.length > 1;
+          const list = {
+            type: "list",
+            raw,
+            ordered: isordered,
+            start: isordered ? +bull.slice(0, -1) : "",
+            loose: false,
+            items: []
+          };
+          const itemMatch = cap[0].match(this.rules.block.item);
+          let next = false, item, space, bcurr, bnext, addBack, loose, istask, ischecked, endMatch;
+          let l = itemMatch.length;
+          bcurr = this.rules.block.listItemStart.exec(itemMatch[0]);
+          for (let i = 0; i < l; i++) {
+            item = itemMatch[i];
+            raw = item;
+            if (!this.options.pedantic) {
+              endMatch = item.match(new RegExp("\\n\\s*\\n {0," + (bcurr[0].length - 1) + "}\\S"));
+              if (endMatch) {
+                addBack = item.length - endMatch.index + itemMatch.slice(i + 1).join("\n").length;
+                list.raw = list.raw.substring(0, list.raw.length - addBack);
+                item = item.substring(0, endMatch.index);
+                raw = item;
+                l = i + 1;
+              }
+            }
+            if (i !== l - 1) {
+              bnext = this.rules.block.listItemStart.exec(itemMatch[i + 1]);
+              if (!this.options.pedantic ? bnext[1].length >= bcurr[0].length || bnext[1].length > 3 : bnext[1].length > bcurr[1].length) {
+                itemMatch.splice(i, 2, itemMatch[i] + (!this.options.pedantic && bnext[1].length < bcurr[0].length && !itemMatch[i].match(/\n$/) ? "" : "\n") + itemMatch[i + 1]);
+                i--;
+                l--;
+                continue;
+              } else if (!this.options.pedantic || this.options.smartLists ? bnext[2][bnext[2].length - 1] !== bull[bull.length - 1] : isordered === (bnext[2].length === 1)) {
+                addBack = itemMatch.slice(i + 1).join("\n").length;
+                list.raw = list.raw.substring(0, list.raw.length - addBack);
+                i = l - 1;
+              }
+              bcurr = bnext;
+            }
+            space = item.length;
+            item = item.replace(/^ *([*+-]|\d+[.)]) ?/, "");
+            if (~item.indexOf("\n ")) {
+              space -= item.length;
+              item = !this.options.pedantic ? item.replace(new RegExp("^ {1," + space + "}", "gm"), "") : item.replace(/^ {1,4}/gm, "");
+            }
+            item = rtrim(item, "\n");
+            if (i !== l - 1) {
+              raw = raw + "\n";
+            }
+            loose = next || /\n\n(?!\s*$)/.test(raw);
+            if (i !== l - 1) {
+              next = raw.slice(-2) === "\n\n";
+              if (!loose)
+                loose = next;
+            }
+            if (loose) {
+              list.loose = true;
+            }
+            if (this.options.gfm) {
+              istask = /^\[[ xX]\] /.test(item);
+              ischecked = void 0;
+              if (istask) {
+                ischecked = item[1] !== " ";
+                item = item.replace(/^\[[ xX]\] +/, "");
+              }
+            }
+            list.items.push({
+              type: "list_item",
+              raw,
+              task: istask,
+              checked: ischecked,
+              loose,
+              text: item
+            });
+          }
+          return list;
+        }
+      }
+      html(src2) {
+        const cap = this.rules.block.html.exec(src2);
+        if (cap) {
+          return {
+            type: this.options.sanitize ? "paragraph" : "html",
+            raw: cap[0],
+            pre: !this.options.sanitizer && (cap[1] === "pre" || cap[1] === "script" || cap[1] === "style"),
+            text: this.options.sanitize ? this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape$2(cap[0]) : cap[0]
+          };
+        }
+      }
+      def(src2) {
+        const cap = this.rules.block.def.exec(src2);
+        if (cap) {
+          if (cap[3])
+            cap[3] = cap[3].substring(1, cap[3].length - 1);
+          const tag = cap[1].toLowerCase().replace(/\s+/g, " ");
+          return {
+            type: "def",
+            tag,
+            raw: cap[0],
+            href: cap[2],
+            title: cap[3]
+          };
+        }
+      }
+      table(src2) {
+        const cap = this.rules.block.table.exec(src2);
+        if (cap) {
+          const item = {
+            type: "table",
+            header: splitCells(cap[1].replace(/^ *| *\| *$/g, "")),
+            align: cap[2].replace(/^ *|\| *$/g, "").split(/ *\| */),
+            cells: cap[3] ? cap[3].replace(/\n$/, "").split("\n") : []
+          };
+          if (item.header.length === item.align.length) {
+            item.raw = cap[0];
+            let l = item.align.length;
+            let i;
+            for (i = 0; i < l; i++) {
+              if (/^ *-+: *$/.test(item.align[i])) {
+                item.align[i] = "right";
+              } else if (/^ *:-+: *$/.test(item.align[i])) {
+                item.align[i] = "center";
+              } else if (/^ *:-+ *$/.test(item.align[i])) {
+                item.align[i] = "left";
+              } else {
+                item.align[i] = null;
+              }
+            }
+            l = item.cells.length;
+            for (i = 0; i < l; i++) {
+              item.cells[i] = splitCells(item.cells[i].replace(/^ *\| *| *\| *$/g, ""), item.header.length);
+            }
+            return item;
+          }
+        }
+      }
+      lheading(src2) {
+        const cap = this.rules.block.lheading.exec(src2);
+        if (cap) {
+          return {
+            type: "heading",
+            raw: cap[0],
+            depth: cap[2].charAt(0) === "=" ? 1 : 2,
+            text: cap[1]
+          };
+        }
+      }
+      paragraph(src2) {
+        const cap = this.rules.block.paragraph.exec(src2);
+        if (cap) {
+          return {
+            type: "paragraph",
+            raw: cap[0],
+            text: cap[1].charAt(cap[1].length - 1) === "\n" ? cap[1].slice(0, -1) : cap[1]
+          };
+        }
+      }
+      text(src2) {
+        const cap = this.rules.block.text.exec(src2);
+        if (cap) {
+          return {
+            type: "text",
+            raw: cap[0],
+            text: cap[0]
+          };
+        }
+      }
+      escape(src2) {
+        const cap = this.rules.inline.escape.exec(src2);
+        if (cap) {
+          return {
+            type: "escape",
+            raw: cap[0],
+            text: escape$2(cap[1])
+          };
+        }
+      }
+      tag(src2, inLink, inRawBlock) {
+        const cap = this.rules.inline.tag.exec(src2);
+        if (cap) {
+          if (!inLink && /^<a /i.test(cap[0])) {
+            inLink = true;
+          } else if (inLink && /^<\/a>/i.test(cap[0])) {
+            inLink = false;
+          }
+          if (!inRawBlock && /^<(pre|code|kbd|script)(\s|>)/i.test(cap[0])) {
+            inRawBlock = true;
+          } else if (inRawBlock && /^<\/(pre|code|kbd|script)(\s|>)/i.test(cap[0])) {
+            inRawBlock = false;
+          }
+          return {
+            type: this.options.sanitize ? "text" : "html",
+            raw: cap[0],
+            inLink,
+            inRawBlock,
+            text: this.options.sanitize ? this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape$2(cap[0]) : cap[0]
+          };
+        }
+      }
+      link(src2) {
+        const cap = this.rules.inline.link.exec(src2);
+        if (cap) {
+          const trimmedUrl = cap[2].trim();
+          if (!this.options.pedantic && /^</.test(trimmedUrl)) {
+            if (!/>$/.test(trimmedUrl)) {
+              return;
+            }
+            const rtrimSlash = rtrim(trimmedUrl.slice(0, -1), "\\");
+            if ((trimmedUrl.length - rtrimSlash.length) % 2 === 0) {
+              return;
+            }
+          } else {
+            const lastParenIndex = findClosingBracket(cap[2], "()");
+            if (lastParenIndex > -1) {
+              const start = cap[0].indexOf("!") === 0 ? 5 : 4;
+              const linkLen = start + cap[1].length + lastParenIndex;
+              cap[2] = cap[2].substring(0, lastParenIndex);
+              cap[0] = cap[0].substring(0, linkLen).trim();
+              cap[3] = "";
+            }
+          }
+          let href = cap[2];
+          let title = "";
+          if (this.options.pedantic) {
+            const link = /^([^'"]*[^\s])\s+(['"])(.*)\2/.exec(href);
+            if (link) {
+              href = link[1];
+              title = link[3];
+            }
+          } else {
+            title = cap[3] ? cap[3].slice(1, -1) : "";
+          }
+          href = href.trim();
+          if (/^</.test(href)) {
+            if (this.options.pedantic && !/>$/.test(trimmedUrl)) {
+              href = href.slice(1);
+            } else {
+              href = href.slice(1, -1);
+            }
+          }
+          return outputLink(cap, {
+            href: href ? href.replace(this.rules.inline._escapes, "$1") : href,
+            title: title ? title.replace(this.rules.inline._escapes, "$1") : title
+          }, cap[0]);
+        }
+      }
+      reflink(src2, links) {
+        let cap;
+        if ((cap = this.rules.inline.reflink.exec(src2)) || (cap = this.rules.inline.nolink.exec(src2))) {
+          let link = (cap[2] || cap[1]).replace(/\s+/g, " ");
+          link = links[link.toLowerCase()];
+          if (!link || !link.href) {
+            const text = cap[0].charAt(0);
+            return {
+              type: "text",
+              raw: text,
+              text
+            };
+          }
+          return outputLink(cap, link, cap[0]);
+        }
+      }
+      emStrong(src2, maskedSrc, prevChar = "") {
+        let match = this.rules.inline.emStrong.lDelim.exec(src2);
+        if (!match)
+          return;
+        if (match[3] && prevChar.match(/[\p{L}\p{N}]/u))
+          return;
+        const nextChar = match[1] || match[2] || "";
+        if (!nextChar || nextChar && (prevChar === "" || this.rules.inline.punctuation.exec(prevChar))) {
+          const lLength = match[0].length - 1;
+          let rDelim, rLength, delimTotal = lLength, midDelimTotal = 0;
+          const endReg = match[0][0] === "*" ? this.rules.inline.emStrong.rDelimAst : this.rules.inline.emStrong.rDelimUnd;
+          endReg.lastIndex = 0;
+          maskedSrc = maskedSrc.slice(-1 * src2.length + lLength);
+          while ((match = endReg.exec(maskedSrc)) != null) {
+            rDelim = match[1] || match[2] || match[3] || match[4] || match[5] || match[6];
+            if (!rDelim)
+              continue;
+            rLength = rDelim.length;
+            if (match[3] || match[4]) {
+              delimTotal += rLength;
+              continue;
+            } else if (match[5] || match[6]) {
+              if (lLength % 3 && !((lLength + rLength) % 3)) {
+                midDelimTotal += rLength;
+                continue;
+              }
+            }
+            delimTotal -= rLength;
+            if (delimTotal > 0)
+              continue;
+            rLength = Math.min(rLength, rLength + delimTotal + midDelimTotal);
+            if (Math.min(lLength, rLength) % 2) {
+              return {
+                type: "em",
+                raw: src2.slice(0, lLength + match.index + rLength + 1),
+                text: src2.slice(1, lLength + match.index + rLength)
+              };
+            }
+            return {
+              type: "strong",
+              raw: src2.slice(0, lLength + match.index + rLength + 1),
+              text: src2.slice(2, lLength + match.index + rLength - 1)
+            };
+          }
+        }
+      }
+      codespan(src2) {
+        const cap = this.rules.inline.code.exec(src2);
+        if (cap) {
+          let text = cap[2].replace(/\n/g, " ");
+          const hasNonSpaceChars = /[^ ]/.test(text);
+          const hasSpaceCharsOnBothEnds = /^ /.test(text) && / $/.test(text);
+          if (hasNonSpaceChars && hasSpaceCharsOnBothEnds) {
+            text = text.substring(1, text.length - 1);
+          }
+          text = escape$2(text, true);
+          return {
+            type: "codespan",
+            raw: cap[0],
+            text
+          };
+        }
+      }
+      br(src2) {
+        const cap = this.rules.inline.br.exec(src2);
+        if (cap) {
+          return {
+            type: "br",
+            raw: cap[0]
+          };
+        }
+      }
+      del(src2) {
+        const cap = this.rules.inline.del.exec(src2);
+        if (cap) {
+          return {
+            type: "del",
+            raw: cap[0],
+            text: cap[2]
+          };
+        }
+      }
+      autolink(src2, mangle2) {
+        const cap = this.rules.inline.autolink.exec(src2);
+        if (cap) {
+          let text, href;
+          if (cap[2] === "@") {
+            text = escape$2(this.options.mangle ? mangle2(cap[1]) : cap[1]);
+            href = "mailto:" + text;
+          } else {
+            text = escape$2(cap[1]);
+            href = text;
+          }
+          return {
+            type: "link",
+            raw: cap[0],
+            text,
+            href,
+            tokens: [
+              {
+                type: "text",
+                raw: text,
+                text
+              }
+            ]
+          };
+        }
+      }
+      url(src2, mangle2) {
+        let cap;
+        if (cap = this.rules.inline.url.exec(src2)) {
+          let text, href;
+          if (cap[2] === "@") {
+            text = escape$2(this.options.mangle ? mangle2(cap[0]) : cap[0]);
+            href = "mailto:" + text;
+          } else {
+            let prevCapZero;
+            do {
+              prevCapZero = cap[0];
+              cap[0] = this.rules.inline._backpedal.exec(cap[0])[0];
+            } while (prevCapZero !== cap[0]);
+            text = escape$2(cap[0]);
+            if (cap[1] === "www.") {
+              href = "http://" + text;
+            } else {
+              href = text;
+            }
+          }
+          return {
+            type: "link",
+            raw: cap[0],
+            text,
+            href,
+            tokens: [
+              {
+                type: "text",
+                raw: text,
+                text
+              }
+            ]
+          };
+        }
+      }
+      inlineText(src2, inRawBlock, smartypants2) {
+        const cap = this.rules.inline.text.exec(src2);
+        if (cap) {
+          let text;
+          if (inRawBlock) {
+            text = this.options.sanitize ? this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape$2(cap[0]) : cap[0];
+          } else {
+            text = escape$2(this.options.smartypants ? smartypants2(cap[0]) : cap[0]);
+          }
+          return {
+            type: "text",
+            raw: cap[0],
+            text
+          };
+        }
+      }
+    };
+    ({
+      noopTest: noopTest2,
+      edit,
+      merge: merge$1
+    } = helpers);
+    block$1 = {
+      newline: /^(?: *(?:\n|$))+/,
+      code: /^( {4}[^\n]+(?:\n(?: *(?:\n|$))*)?)+/,
+      fences: /^ {0,3}(`{3,}(?=[^`\n]*\n)|~{3,})([^\n]*)\n(?:|([\s\S]*?)\n)(?: {0,3}\1[~`]* *(?:\n+|$)|$)/,
+      hr: /^ {0,3}((?:- *){3,}|(?:_ *){3,}|(?:\* *){3,})(?:\n+|$)/,
+      heading: /^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/,
+      blockquote: /^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/,
+      list: /^( {0,3})(bull) [\s\S]+?(?:hr|def|\n{2,}(?! )(?! {0,3}bull )\n*|\s*$)/,
+      html: "^ {0,3}(?:<(script|pre|style|textarea)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n+|$)|comment[^\\n]*(\\n+|$)|<\\?[\\s\\S]*?(?:\\?>\\n*|$)|<![A-Z][\\s\\S]*?(?:>\\n*|$)|<!\\[CDATA\\[[\\s\\S]*?(?:\\]\\]>\\n*|$)|</?(tag)(?: +|\\n|/?>)[\\s\\S]*?(?:(?:\\n *)+\\n|$)|<(?!script|pre|style|textarea)([a-z][\\w-]*)(?:attribute)*? */?>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n *)+\\n|$)|</(?!script|pre|style|textarea)[a-z][\\w-]*\\s*>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n *)+\\n|$))",
+      def: /^ {0,3}\[(label)\]: *\n? *<?([^\s>]+)>?(?:(?: +\n? *| *\n *)(title))? *(?:\n+|$)/,
+      nptable: noopTest2,
+      table: noopTest2,
+      lheading: /^([^\n]+)\n {0,3}(=+|-+) *(?:\n+|$)/,
+      _paragraph: /^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html| +\n)[^\n]+)*)/,
+      text: /^[^\n]+/
+    };
+    block$1._label = /(?!\s*\])(?:\\[\[\]]|[^\[\]])+/;
+    block$1._title = /(?:"(?:\\"?|[^"\\])*"|'[^'\n]*(?:\n[^'\n]+)*\n?'|\([^()]*\))/;
+    block$1.def = edit(block$1.def).replace("label", block$1._label).replace("title", block$1._title).getRegex();
+    block$1.bullet = /(?:[*+-]|\d{1,9}[.)])/;
+    block$1.item = /^( *)(bull) ?[^\n]*(?:\n(?! *bull ?)[^\n]*)*/;
+    block$1.item = edit(block$1.item, "gm").replace(/bull/g, block$1.bullet).getRegex();
+    block$1.listItemStart = edit(/^( *)(bull) */).replace("bull", block$1.bullet).getRegex();
+    block$1.list = edit(block$1.list).replace(/bull/g, block$1.bullet).replace("hr", "\\n+(?=\\1?(?:(?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$))").replace("def", "\\n+(?=" + block$1.def.source + ")").getRegex();
+    block$1._tag = "address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option|p|param|section|source|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul";
+    block$1._comment = /<!--(?!-?>)[\s\S]*?(?:-->|$)/;
+    block$1.html = edit(block$1.html, "i").replace("comment", block$1._comment).replace("tag", block$1._tag).replace("attribute", / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/).getRegex();
+    block$1.paragraph = edit(block$1._paragraph).replace("hr", block$1.hr).replace("heading", " {0,3}#{1,6} ").replace("|lheading", "").replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", block$1._tag).getRegex();
+    block$1.blockquote = edit(block$1.blockquote).replace("paragraph", block$1.paragraph).getRegex();
+    block$1.normal = merge$1({}, block$1);
+    block$1.gfm = merge$1({}, block$1.normal, {
+      nptable: "^ *([^|\\n ].*\\|.*)\\n {0,3}([-:]+ *\\|[-| :]*)(?:\\n((?:(?!\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)",
+      table: "^ *\\|(.+)\\n {0,3}\\|?( *[-:]+[-| :]*)(?:\\n *((?:(?!\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)"
+    });
+    block$1.gfm.nptable = edit(block$1.gfm.nptable).replace("hr", block$1.hr).replace("heading", " {0,3}#{1,6} ").replace("blockquote", " {0,3}>").replace("code", " {4}[^\\n]").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", block$1._tag).getRegex();
+    block$1.gfm.table = edit(block$1.gfm.table).replace("hr", block$1.hr).replace("heading", " {0,3}#{1,6} ").replace("blockquote", " {0,3}>").replace("code", " {4}[^\\n]").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", block$1._tag).getRegex();
+    block$1.pedantic = merge$1({}, block$1.normal, {
+      html: edit(`^ *(?:comment *(?:\\n|\\s*$)|<(tag)[\\s\\S]+?</\\1> *(?:\\n{2,}|\\s*$)|<tag(?:"[^"]*"|'[^']*'|\\s[^'"/>\\s]*)*?/?> *(?:\\n{2,}|\\s*$))`).replace("comment", block$1._comment).replace(/tag/g, "(?!(?:a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b").getRegex(),
+      def: /^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +(["(][^\n]+[")]))? *(?:\n+|$)/,
+      heading: /^(#{1,6})(.*)(?:\n+|$)/,
+      fences: noopTest2,
+      paragraph: edit(block$1.normal._paragraph).replace("hr", block$1.hr).replace("heading", " *#{1,6} *[^\n]").replace("lheading", block$1.lheading).replace("blockquote", " {0,3}>").replace("|fences", "").replace("|list", "").replace("|html", "").getRegex()
+    });
+    inline$1 = {
+      escape: /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/,
+      autolink: /^<(scheme:[^\s\x00-\x1f<>]*|email)>/,
+      url: noopTest2,
+      tag: "^comment|^</[a-zA-Z][\\w:-]*\\s*>|^<[a-zA-Z][\\w-]*(?:attribute)*?\\s*/?>|^<\\?[\\s\\S]*?\\?>|^<![a-zA-Z]+\\s[\\s\\S]*?>|^<!\\[CDATA\\[[\\s\\S]*?\\]\\]>",
+      link: /^!?\[(label)\]\(\s*(href)(?:\s+(title))?\s*\)/,
+      reflink: /^!?\[(label)\]\[(?!\s*\])((?:\\[\[\]]?|[^\[\]\\])+)\]/,
+      nolink: /^!?\[(?!\s*\])((?:\[[^\[\]]*\]|\\[\[\]]|[^\[\]])*)\](?:\[\])?/,
+      reflinkSearch: "reflink|nolink(?!\\()",
+      emStrong: {
+        lDelim: /^(?:\*+(?:([punct_])|[^\s*]))|^_+(?:([punct*])|([^\s_]))/,
+        rDelimAst: /\_\_[^_*]*?\*[^_*]*?\_\_|[punct_](\*+)(?=[\s]|$)|[^punct*_\s](\*+)(?=[punct_\s]|$)|[punct_\s](\*+)(?=[^punct*_\s])|[\s](\*+)(?=[punct_])|[punct_](\*+)(?=[punct_])|[^punct*_\s](\*+)(?=[^punct*_\s])/,
+        rDelimUnd: /\*\*[^_*]*?\_[^_*]*?\*\*|[punct*](\_+)(?=[\s]|$)|[^punct*_\s](\_+)(?=[punct*\s]|$)|[punct*\s](\_+)(?=[^punct*_\s])|[\s](\_+)(?=[punct*])|[punct*](\_+)(?=[punct*])/
+      },
+      code: /^(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/,
+      br: /^( {2,}|\\)\n(?!\s*$)/,
+      del: noopTest2,
+      text: /^(`+|[^`])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*_]|\b_|$)|[^ ](?= {2,}\n)))/,
+      punctuation: /^([\spunctuation])/
+    };
+    inline$1._punctuation = "!\"#$%&'()+\\-.,/:;<=>?@\\[\\]`^{|}~";
+    inline$1.punctuation = edit(inline$1.punctuation).replace(/punctuation/g, inline$1._punctuation).getRegex();
+    inline$1.blockSkip = /\[[^\]]*?\]\([^\)]*?\)|`[^`]*?`|<[^>]*?>/g;
+    inline$1.escapedEmSt = /\\\*|\\_/g;
+    inline$1._comment = edit(block$1._comment).replace("(?:-->|$)", "-->").getRegex();
+    inline$1.emStrong.lDelim = edit(inline$1.emStrong.lDelim).replace(/punct/g, inline$1._punctuation).getRegex();
+    inline$1.emStrong.rDelimAst = edit(inline$1.emStrong.rDelimAst, "g").replace(/punct/g, inline$1._punctuation).getRegex();
+    inline$1.emStrong.rDelimUnd = edit(inline$1.emStrong.rDelimUnd, "g").replace(/punct/g, inline$1._punctuation).getRegex();
+    inline$1._escapes = /\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/g;
+    inline$1._scheme = /[a-zA-Z][a-zA-Z0-9+.-]{1,31}/;
+    inline$1._email = /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/;
+    inline$1.autolink = edit(inline$1.autolink).replace("scheme", inline$1._scheme).replace("email", inline$1._email).getRegex();
+    inline$1._attribute = /\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/;
+    inline$1.tag = edit(inline$1.tag).replace("comment", inline$1._comment).replace("attribute", inline$1._attribute).getRegex();
+    inline$1._label = /(?:\[(?:\\.|[^\[\]\\])*\]|\\.|`[^`]*`|[^\[\]\\`])*?/;
+    inline$1._href = /<(?:\\.|[^\n<>\\])+>|[^\s\x00-\x1f]*/;
+    inline$1._title = /"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/;
+    inline$1.link = edit(inline$1.link).replace("label", inline$1._label).replace("href", inline$1._href).replace("title", inline$1._title).getRegex();
+    inline$1.reflink = edit(inline$1.reflink).replace("label", inline$1._label).getRegex();
+    inline$1.reflinkSearch = edit(inline$1.reflinkSearch, "g").replace("reflink", inline$1.reflink).replace("nolink", inline$1.nolink).getRegex();
+    inline$1.normal = merge$1({}, inline$1);
+    inline$1.pedantic = merge$1({}, inline$1.normal, {
+      strong: {
+        start: /^__|\*\*/,
+        middle: /^__(?=\S)([\s\S]*?\S)__(?!_)|^\*\*(?=\S)([\s\S]*?\S)\*\*(?!\*)/,
+        endAst: /\*\*(?!\*)/g,
+        endUnd: /__(?!_)/g
+      },
+      em: {
+        start: /^_|\*/,
+        middle: /^()\*(?=\S)([\s\S]*?\S)\*(?!\*)|^_(?=\S)([\s\S]*?\S)_(?!_)/,
+        endAst: /\*(?!\*)/g,
+        endUnd: /_(?!_)/g
+      },
+      link: edit(/^!?\[(label)\]\((.*?)\)/).replace("label", inline$1._label).getRegex(),
+      reflink: edit(/^!?\[(label)\]\s*\[([^\]]*)\]/).replace("label", inline$1._label).getRegex()
+    });
+    inline$1.gfm = merge$1({}, inline$1.normal, {
+      escape: edit(inline$1.escape).replace("])", "~|])").getRegex(),
+      _extended_email: /[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/,
+      url: /^((?:ftp|https?):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/,
+      _backpedal: /(?:[^?!.,:;*_~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_~)]+(?!$))+/,
+      del: /^(~~?)(?=[^\s~])([\s\S]*?[^\s~])\1(?=[^~]|$)/,
+      text: /^([`~]+|[^`~])(?:(?= {2,}\n)|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)|[\s\S]*?(?:(?=[\\<!\[`*~_]|\b_|https?:\/\/|ftp:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)))/
+    });
+    inline$1.gfm.url = edit(inline$1.gfm.url, "i").replace("email", inline$1.gfm._extended_email).getRegex();
+    inline$1.breaks = merge$1({}, inline$1.gfm, {
+      br: edit(inline$1.br).replace("{2,}", "*").getRegex(),
+      text: edit(inline$1.gfm.text).replace("\\b_", "\\b_| {2,}\\n").replace(/\{2,\}/g, "*").getRegex()
+    });
+    rules = {
+      block: block$1,
+      inline: inline$1
+    };
+    Tokenizer$1 = Tokenizer_1;
+    ({ defaults: defaults$3 } = defaults$5.exports);
+    ({ block, inline } = rules);
+    ({ repeatString } = helpers);
+    Lexer_1 = class Lexer {
+      constructor(options2) {
+        this.tokens = [];
+        this.tokens.links = Object.create(null);
+        this.options = options2 || defaults$3;
+        this.options.tokenizer = this.options.tokenizer || new Tokenizer$1();
+        this.tokenizer = this.options.tokenizer;
+        this.tokenizer.options = this.options;
+        const rules2 = {
+          block: block.normal,
+          inline: inline.normal
+        };
+        if (this.options.pedantic) {
+          rules2.block = block.pedantic;
+          rules2.inline = inline.pedantic;
+        } else if (this.options.gfm) {
+          rules2.block = block.gfm;
+          if (this.options.breaks) {
+            rules2.inline = inline.breaks;
+          } else {
+            rules2.inline = inline.gfm;
+          }
+        }
+        this.tokenizer.rules = rules2;
+      }
+      static get rules() {
+        return {
+          block,
+          inline
+        };
+      }
+      static lex(src2, options2) {
+        const lexer = new Lexer(options2);
+        return lexer.lex(src2);
+      }
+      static lexInline(src2, options2) {
+        const lexer = new Lexer(options2);
+        return lexer.inlineTokens(src2);
+      }
+      lex(src2) {
+        src2 = src2.replace(/\r\n|\r/g, "\n").replace(/\t/g, "    ");
+        this.blockTokens(src2, this.tokens, true);
+        this.inline(this.tokens);
+        return this.tokens;
+      }
+      blockTokens(src2, tokens = [], top = true) {
+        if (this.options.pedantic) {
+          src2 = src2.replace(/^ +$/gm, "");
+        }
+        let token, i, l, lastToken, cutSrc, lastParagraphClipped;
+        while (src2) {
+          if (this.options.extensions && this.options.extensions.block && this.options.extensions.block.some((extTokenizer) => {
+            if (token = extTokenizer.call(this, src2, tokens)) {
+              src2 = src2.substring(token.raw.length);
+              tokens.push(token);
+              return true;
+            }
+            return false;
+          })) {
+            continue;
+          }
+          if (token = this.tokenizer.space(src2)) {
+            src2 = src2.substring(token.raw.length);
+            if (token.type) {
+              tokens.push(token);
+            }
+            continue;
+          }
+          if (token = this.tokenizer.code(src2)) {
+            src2 = src2.substring(token.raw.length);
+            lastToken = tokens[tokens.length - 1];
+            if (lastToken && lastToken.type === "paragraph") {
+              lastToken.raw += "\n" + token.raw;
+              lastToken.text += "\n" + token.text;
+            } else {
+              tokens.push(token);
+            }
+            continue;
+          }
+          if (token = this.tokenizer.fences(src2)) {
+            src2 = src2.substring(token.raw.length);
+            tokens.push(token);
+            continue;
+          }
+          if (token = this.tokenizer.heading(src2)) {
+            src2 = src2.substring(token.raw.length);
+            tokens.push(token);
+            continue;
+          }
+          if (token = this.tokenizer.nptable(src2)) {
+            src2 = src2.substring(token.raw.length);
+            tokens.push(token);
+            continue;
+          }
+          if (token = this.tokenizer.hr(src2)) {
+            src2 = src2.substring(token.raw.length);
+            tokens.push(token);
+            continue;
+          }
+          if (token = this.tokenizer.blockquote(src2)) {
+            src2 = src2.substring(token.raw.length);
+            token.tokens = this.blockTokens(token.text, [], top);
+            tokens.push(token);
+            continue;
+          }
+          if (token = this.tokenizer.list(src2)) {
+            src2 = src2.substring(token.raw.length);
+            l = token.items.length;
+            for (i = 0; i < l; i++) {
+              token.items[i].tokens = this.blockTokens(token.items[i].text, [], false);
+            }
+            tokens.push(token);
+            continue;
+          }
+          if (token = this.tokenizer.html(src2)) {
+            src2 = src2.substring(token.raw.length);
+            tokens.push(token);
+            continue;
+          }
+          if (top && (token = this.tokenizer.def(src2))) {
+            src2 = src2.substring(token.raw.length);
+            if (!this.tokens.links[token.tag]) {
+              this.tokens.links[token.tag] = {
+                href: token.href,
+                title: token.title
+              };
+            }
+            continue;
+          }
+          if (token = this.tokenizer.table(src2)) {
+            src2 = src2.substring(token.raw.length);
+            tokens.push(token);
+            continue;
+          }
+          if (token = this.tokenizer.lheading(src2)) {
+            src2 = src2.substring(token.raw.length);
+            tokens.push(token);
+            continue;
+          }
+          cutSrc = src2;
+          if (this.options.extensions && this.options.extensions.startBlock) {
+            let startIndex = Infinity;
+            const tempSrc = src2.slice(1);
+            let tempStart;
+            this.options.extensions.startBlock.forEach(function(getStartIndex) {
+              tempStart = getStartIndex.call(this, tempSrc);
+              if (typeof tempStart === "number" && tempStart >= 0) {
+                startIndex = Math.min(startIndex, tempStart);
+              }
+            });
+            if (startIndex < Infinity && startIndex >= 0) {
+              cutSrc = src2.substring(0, startIndex + 1);
+            }
+          }
+          if (top && (token = this.tokenizer.paragraph(cutSrc))) {
+            lastToken = tokens[tokens.length - 1];
+            if (lastParagraphClipped && lastToken.type === "paragraph") {
+              lastToken.raw += "\n" + token.raw;
+              lastToken.text += "\n" + token.text;
+            } else {
+              tokens.push(token);
+            }
+            lastParagraphClipped = cutSrc.length !== src2.length;
+            src2 = src2.substring(token.raw.length);
+            continue;
+          }
+          if (token = this.tokenizer.text(src2)) {
+            src2 = src2.substring(token.raw.length);
+            lastToken = tokens[tokens.length - 1];
+            if (lastToken && lastToken.type === "text") {
+              lastToken.raw += "\n" + token.raw;
+              lastToken.text += "\n" + token.text;
+            } else {
+              tokens.push(token);
+            }
+            continue;
+          }
+          if (src2) {
+            const errMsg2 = "Infinite loop on byte: " + src2.charCodeAt(0);
+            if (this.options.silent) {
+              console.error(errMsg2);
+              break;
+            } else {
+              throw new Error(errMsg2);
+            }
+          }
+        }
+        return tokens;
+      }
+      inline(tokens) {
+        let i, j, k, l2, row, token;
+        const l = tokens.length;
+        for (i = 0; i < l; i++) {
+          token = tokens[i];
+          switch (token.type) {
+            case "paragraph":
+            case "text":
+            case "heading": {
+              token.tokens = [];
+              this.inlineTokens(token.text, token.tokens);
+              break;
+            }
+            case "table": {
+              token.tokens = {
+                header: [],
+                cells: []
+              };
+              l2 = token.header.length;
+              for (j = 0; j < l2; j++) {
+                token.tokens.header[j] = [];
+                this.inlineTokens(token.header[j], token.tokens.header[j]);
+              }
+              l2 = token.cells.length;
+              for (j = 0; j < l2; j++) {
+                row = token.cells[j];
+                token.tokens.cells[j] = [];
+                for (k = 0; k < row.length; k++) {
+                  token.tokens.cells[j][k] = [];
+                  this.inlineTokens(row[k], token.tokens.cells[j][k]);
+                }
+              }
+              break;
+            }
+            case "blockquote": {
+              this.inline(token.tokens);
+              break;
+            }
+            case "list": {
+              l2 = token.items.length;
+              for (j = 0; j < l2; j++) {
+                this.inline(token.items[j].tokens);
+              }
+              break;
+            }
+          }
+        }
+        return tokens;
+      }
+      inlineTokens(src2, tokens = [], inLink = false, inRawBlock = false) {
+        let token, lastToken, cutSrc;
+        let maskedSrc = src2;
+        let match;
+        let keepPrevChar, prevChar;
+        if (this.tokens.links) {
+          const links = Object.keys(this.tokens.links);
+          if (links.length > 0) {
+            while ((match = this.tokenizer.rules.inline.reflinkSearch.exec(maskedSrc)) != null) {
+              if (links.includes(match[0].slice(match[0].lastIndexOf("[") + 1, -1))) {
+                maskedSrc = maskedSrc.slice(0, match.index) + "[" + repeatString("a", match[0].length - 2) + "]" + maskedSrc.slice(this.tokenizer.rules.inline.reflinkSearch.lastIndex);
+              }
+            }
+          }
+        }
+        while ((match = this.tokenizer.rules.inline.blockSkip.exec(maskedSrc)) != null) {
+          maskedSrc = maskedSrc.slice(0, match.index) + "[" + repeatString("a", match[0].length - 2) + "]" + maskedSrc.slice(this.tokenizer.rules.inline.blockSkip.lastIndex);
+        }
+        while ((match = this.tokenizer.rules.inline.escapedEmSt.exec(maskedSrc)) != null) {
+          maskedSrc = maskedSrc.slice(0, match.index) + "++" + maskedSrc.slice(this.tokenizer.rules.inline.escapedEmSt.lastIndex);
+        }
+        while (src2) {
+          if (!keepPrevChar) {
+            prevChar = "";
+          }
+          keepPrevChar = false;
+          if (this.options.extensions && this.options.extensions.inline && this.options.extensions.inline.some((extTokenizer) => {
+            if (token = extTokenizer.call(this, src2, tokens)) {
+              src2 = src2.substring(token.raw.length);
+              tokens.push(token);
+              return true;
+            }
+            return false;
+          })) {
+            continue;
+          }
+          if (token = this.tokenizer.escape(src2)) {
+            src2 = src2.substring(token.raw.length);
+            tokens.push(token);
+            continue;
+          }
+          if (token = this.tokenizer.tag(src2, inLink, inRawBlock)) {
+            src2 = src2.substring(token.raw.length);
+            inLink = token.inLink;
+            inRawBlock = token.inRawBlock;
+            lastToken = tokens[tokens.length - 1];
+            if (lastToken && token.type === "text" && lastToken.type === "text") {
+              lastToken.raw += token.raw;
+              lastToken.text += token.text;
+            } else {
+              tokens.push(token);
+            }
+            continue;
+          }
+          if (token = this.tokenizer.link(src2)) {
+            src2 = src2.substring(token.raw.length);
+            if (token.type === "link") {
+              token.tokens = this.inlineTokens(token.text, [], true, inRawBlock);
+            }
+            tokens.push(token);
+            continue;
+          }
+          if (token = this.tokenizer.reflink(src2, this.tokens.links)) {
+            src2 = src2.substring(token.raw.length);
+            lastToken = tokens[tokens.length - 1];
+            if (token.type === "link") {
+              token.tokens = this.inlineTokens(token.text, [], true, inRawBlock);
+              tokens.push(token);
+            } else if (lastToken && token.type === "text" && lastToken.type === "text") {
+              lastToken.raw += token.raw;
+              lastToken.text += token.text;
+            } else {
+              tokens.push(token);
+            }
+            continue;
+          }
+          if (token = this.tokenizer.emStrong(src2, maskedSrc, prevChar)) {
+            src2 = src2.substring(token.raw.length);
+            token.tokens = this.inlineTokens(token.text, [], inLink, inRawBlock);
+            tokens.push(token);
+            continue;
+          }
+          if (token = this.tokenizer.codespan(src2)) {
+            src2 = src2.substring(token.raw.length);
+            tokens.push(token);
+            continue;
+          }
+          if (token = this.tokenizer.br(src2)) {
+            src2 = src2.substring(token.raw.length);
+            tokens.push(token);
+            continue;
+          }
+          if (token = this.tokenizer.del(src2)) {
+            src2 = src2.substring(token.raw.length);
+            token.tokens = this.inlineTokens(token.text, [], inLink, inRawBlock);
+            tokens.push(token);
+            continue;
+          }
+          if (token = this.tokenizer.autolink(src2, mangle)) {
+            src2 = src2.substring(token.raw.length);
+            tokens.push(token);
+            continue;
+          }
+          if (!inLink && (token = this.tokenizer.url(src2, mangle))) {
+            src2 = src2.substring(token.raw.length);
+            tokens.push(token);
+            continue;
+          }
+          cutSrc = src2;
+          if (this.options.extensions && this.options.extensions.startInline) {
+            let startIndex = Infinity;
+            const tempSrc = src2.slice(1);
+            let tempStart;
+            this.options.extensions.startInline.forEach(function(getStartIndex) {
+              tempStart = getStartIndex.call(this, tempSrc);
+              if (typeof tempStart === "number" && tempStart >= 0) {
+                startIndex = Math.min(startIndex, tempStart);
+              }
+            });
+            if (startIndex < Infinity && startIndex >= 0) {
+              cutSrc = src2.substring(0, startIndex + 1);
+            }
+          }
+          if (token = this.tokenizer.inlineText(cutSrc, inRawBlock, smartypants)) {
+            src2 = src2.substring(token.raw.length);
+            if (token.raw.slice(-1) !== "_") {
+              prevChar = token.raw.slice(-1);
+            }
+            keepPrevChar = true;
+            lastToken = tokens[tokens.length - 1];
+            if (lastToken && lastToken.type === "text") {
+              lastToken.raw += token.raw;
+              lastToken.text += token.text;
+            } else {
+              tokens.push(token);
+            }
+            continue;
+          }
+          if (src2) {
+            const errMsg2 = "Infinite loop on byte: " + src2.charCodeAt(0);
+            if (this.options.silent) {
+              console.error(errMsg2);
+              break;
+            } else {
+              throw new Error(errMsg2);
+            }
+          }
+        }
+        return tokens;
+      }
+    };
+    ({ defaults: defaults$2 } = defaults$5.exports);
+    ({
+      cleanUrl,
+      escape: escape$1
+    } = helpers);
+    Renderer_1 = class Renderer {
+      constructor(options2) {
+        this.options = options2 || defaults$2;
+      }
+      code(code, infostring, escaped2) {
+        const lang = (infostring || "").match(/\S*/)[0];
+        if (this.options.highlight) {
+          const out = this.options.highlight(code, lang);
+          if (out != null && out !== code) {
+            escaped2 = true;
+            code = out;
+          }
+        }
+        code = code.replace(/\n$/, "") + "\n";
+        if (!lang) {
+          return "<pre><code>" + (escaped2 ? code : escape$1(code, true)) + "</code></pre>\n";
+        }
+        return '<pre><code class="' + this.options.langPrefix + escape$1(lang, true) + '">' + (escaped2 ? code : escape$1(code, true)) + "</code></pre>\n";
+      }
+      blockquote(quote) {
+        return "<blockquote>\n" + quote + "</blockquote>\n";
+      }
+      html(html) {
+        return html;
+      }
+      heading(text, level, raw, slugger) {
+        if (this.options.headerIds) {
+          return "<h" + level + ' id="' + this.options.headerPrefix + slugger.slug(raw) + '">' + text + "</h" + level + ">\n";
+        }
+        return "<h" + level + ">" + text + "</h" + level + ">\n";
+      }
+      hr() {
+        return this.options.xhtml ? "<hr/>\n" : "<hr>\n";
+      }
+      list(body, ordered, start) {
+        const type = ordered ? "ol" : "ul", startatt = ordered && start !== 1 ? ' start="' + start + '"' : "";
+        return "<" + type + startatt + ">\n" + body + "</" + type + ">\n";
+      }
+      listitem(text) {
+        return "<li>" + text + "</li>\n";
+      }
+      checkbox(checked) {
+        return "<input " + (checked ? 'checked="" ' : "") + 'disabled="" type="checkbox"' + (this.options.xhtml ? " /" : "") + "> ";
+      }
+      paragraph(text) {
+        return "<p>" + text + "</p>\n";
+      }
+      table(header, body) {
+        if (body)
+          body = "<tbody>" + body + "</tbody>";
+        return "<table>\n<thead>\n" + header + "</thead>\n" + body + "</table>\n";
+      }
+      tablerow(content) {
+        return "<tr>\n" + content + "</tr>\n";
+      }
+      tablecell(content, flags) {
+        const type = flags.header ? "th" : "td";
+        const tag = flags.align ? "<" + type + ' align="' + flags.align + '">' : "<" + type + ">";
+        return tag + content + "</" + type + ">\n";
+      }
+      strong(text) {
+        return "<strong>" + text + "</strong>";
+      }
+      em(text) {
+        return "<em>" + text + "</em>";
+      }
+      codespan(text) {
+        return "<code>" + text + "</code>";
+      }
+      br() {
+        return this.options.xhtml ? "<br/>" : "<br>";
+      }
+      del(text) {
+        return "<del>" + text + "</del>";
+      }
+      link(href, title, text) {
+        href = cleanUrl(this.options.sanitize, this.options.baseUrl, href);
+        if (href === null) {
+          return text;
+        }
+        let out = '<a href="' + escape$1(href) + '"';
+        if (title) {
+          out += ' title="' + title + '"';
+        }
+        out += ">" + text + "</a>";
+        return out;
+      }
+      image(href, title, text) {
+        href = cleanUrl(this.options.sanitize, this.options.baseUrl, href);
+        if (href === null) {
+          return text;
+        }
+        let out = '<img src="' + href + '" alt="' + text + '"';
+        if (title) {
+          out += ' title="' + title + '"';
+        }
+        out += this.options.xhtml ? "/>" : ">";
+        return out;
+      }
+      text(text) {
+        return text;
+      }
+    };
+    TextRenderer_1 = class TextRenderer {
+      strong(text) {
+        return text;
+      }
+      em(text) {
+        return text;
+      }
+      codespan(text) {
+        return text;
+      }
+      del(text) {
+        return text;
+      }
+      html(text) {
+        return text;
+      }
+      text(text) {
+        return text;
+      }
+      link(href, title, text) {
+        return "" + text;
+      }
+      image(href, title, text) {
+        return "" + text;
+      }
+      br() {
+        return "";
+      }
+    };
+    Slugger_1 = class Slugger {
+      constructor() {
+        this.seen = {};
+      }
+      serialize(value) {
+        return value.toLowerCase().trim().replace(/<[!\/a-z].*?>/ig, "").replace(/[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,./:;<=>?@[\]^`{|}~]/g, "").replace(/\s/g, "-");
+      }
+      getNextSafeSlug(originalSlug, isDryRun) {
+        let slug = originalSlug;
+        let occurenceAccumulator = 0;
+        if (this.seen.hasOwnProperty(slug)) {
+          occurenceAccumulator = this.seen[originalSlug];
+          do {
+            occurenceAccumulator++;
+            slug = originalSlug + "-" + occurenceAccumulator;
+          } while (this.seen.hasOwnProperty(slug));
+        }
+        if (!isDryRun) {
+          this.seen[originalSlug] = occurenceAccumulator;
+          this.seen[slug] = 0;
+        }
+        return slug;
+      }
+      slug(value, options2 = {}) {
+        const slug = this.serialize(value);
+        return this.getNextSafeSlug(slug, options2.dryrun);
+      }
+    };
+    Renderer$1 = Renderer_1;
+    TextRenderer$1 = TextRenderer_1;
+    Slugger$1 = Slugger_1;
+    ({ defaults: defaults$1 } = defaults$5.exports);
+    ({
+      unescape: unescape2
+    } = helpers);
+    Parser_1 = class Parser {
+      constructor(options2) {
+        this.options = options2 || defaults$1;
+        this.options.renderer = this.options.renderer || new Renderer$1();
+        this.renderer = this.options.renderer;
+        this.renderer.options = this.options;
+        this.textRenderer = new TextRenderer$1();
+        this.slugger = new Slugger$1();
+      }
+      static parse(tokens, options2) {
+        const parser = new Parser(options2);
+        return parser.parse(tokens);
+      }
+      static parseInline(tokens, options2) {
+        const parser = new Parser(options2);
+        return parser.parseInline(tokens);
+      }
+      parse(tokens, top = true) {
+        let out = "", i, j, k, l2, l3, row, cell, header, body, token, ordered, start, loose, itemBody, item, checked, task, checkbox, ret;
+        const l = tokens.length;
+        for (i = 0; i < l; i++) {
+          token = tokens[i];
+          if (this.options.extensions && this.options.extensions.renderers && this.options.extensions.renderers[token.type]) {
+            ret = this.options.extensions.renderers[token.type].call(this, token);
+            if (ret !== false || !["space", "hr", "heading", "code", "table", "blockquote", "list", "html", "paragraph", "text"].includes(token.type)) {
+              out += ret || "";
+              continue;
+            }
+          }
+          switch (token.type) {
+            case "space": {
+              continue;
+            }
+            case "hr": {
+              out += this.renderer.hr();
+              continue;
+            }
+            case "heading": {
+              out += this.renderer.heading(this.parseInline(token.tokens), token.depth, unescape2(this.parseInline(token.tokens, this.textRenderer)), this.slugger);
+              continue;
+            }
+            case "code": {
+              out += this.renderer.code(token.text, token.lang, token.escaped);
+              continue;
+            }
+            case "table": {
+              header = "";
+              cell = "";
+              l2 = token.header.length;
+              for (j = 0; j < l2; j++) {
+                cell += this.renderer.tablecell(this.parseInline(token.tokens.header[j]), { header: true, align: token.align[j] });
+              }
+              header += this.renderer.tablerow(cell);
+              body = "";
+              l2 = token.cells.length;
+              for (j = 0; j < l2; j++) {
+                row = token.tokens.cells[j];
+                cell = "";
+                l3 = row.length;
+                for (k = 0; k < l3; k++) {
+                  cell += this.renderer.tablecell(this.parseInline(row[k]), { header: false, align: token.align[k] });
+                }
+                body += this.renderer.tablerow(cell);
+              }
+              out += this.renderer.table(header, body);
+              continue;
+            }
+            case "blockquote": {
+              body = this.parse(token.tokens);
+              out += this.renderer.blockquote(body);
+              continue;
+            }
+            case "list": {
+              ordered = token.ordered;
+              start = token.start;
+              loose = token.loose;
+              l2 = token.items.length;
+              body = "";
+              for (j = 0; j < l2; j++) {
+                item = token.items[j];
+                checked = item.checked;
+                task = item.task;
+                itemBody = "";
+                if (item.task) {
+                  checkbox = this.renderer.checkbox(checked);
+                  if (loose) {
+                    if (item.tokens.length > 0 && item.tokens[0].type === "text") {
+                      item.tokens[0].text = checkbox + " " + item.tokens[0].text;
+                      if (item.tokens[0].tokens && item.tokens[0].tokens.length > 0 && item.tokens[0].tokens[0].type === "text") {
+                        item.tokens[0].tokens[0].text = checkbox + " " + item.tokens[0].tokens[0].text;
+                      }
+                    } else {
+                      item.tokens.unshift({
+                        type: "text",
+                        text: checkbox
+                      });
+                    }
+                  } else {
+                    itemBody += checkbox;
+                  }
+                }
+                itemBody += this.parse(item.tokens, loose);
+                body += this.renderer.listitem(itemBody, task, checked);
+              }
+              out += this.renderer.list(body, ordered, start);
+              continue;
+            }
+            case "html": {
+              out += this.renderer.html(token.text);
+              continue;
+            }
+            case "paragraph": {
+              out += this.renderer.paragraph(this.parseInline(token.tokens));
+              continue;
+            }
+            case "text": {
+              body = token.tokens ? this.parseInline(token.tokens) : token.text;
+              while (i + 1 < l && tokens[i + 1].type === "text") {
+                token = tokens[++i];
+                body += "\n" + (token.tokens ? this.parseInline(token.tokens) : token.text);
+              }
+              out += top ? this.renderer.paragraph(body) : body;
+              continue;
+            }
+            default: {
+              const errMsg2 = 'Token with "' + token.type + '" type was not found.';
+              if (this.options.silent) {
+                console.error(errMsg2);
+                return;
+              } else {
+                throw new Error(errMsg2);
+              }
+            }
+          }
+        }
+        return out;
+      }
+      parseInline(tokens, renderer) {
+        renderer = renderer || this.renderer;
+        let out = "", i, token, ret;
+        const l = tokens.length;
+        for (i = 0; i < l; i++) {
+          token = tokens[i];
+          if (this.options.extensions && this.options.extensions.renderers && this.options.extensions.renderers[token.type]) {
+            ret = this.options.extensions.renderers[token.type].call(this, token);
+            if (ret !== false || !["escape", "html", "link", "image", "strong", "em", "codespan", "br", "del", "text"].includes(token.type)) {
+              out += ret || "";
+              continue;
+            }
+          }
+          switch (token.type) {
+            case "escape": {
+              out += renderer.text(token.text);
+              break;
+            }
+            case "html": {
+              out += renderer.html(token.text);
+              break;
+            }
+            case "link": {
+              out += renderer.link(token.href, token.title, this.parseInline(token.tokens, renderer));
+              break;
+            }
+            case "image": {
+              out += renderer.image(token.href, token.title, token.text);
+              break;
+            }
+            case "strong": {
+              out += renderer.strong(this.parseInline(token.tokens, renderer));
+              break;
+            }
+            case "em": {
+              out += renderer.em(this.parseInline(token.tokens, renderer));
+              break;
+            }
+            case "codespan": {
+              out += renderer.codespan(token.text);
+              break;
+            }
+            case "br": {
+              out += renderer.br();
+              break;
+            }
+            case "del": {
+              out += renderer.del(this.parseInline(token.tokens, renderer));
+              break;
+            }
+            case "text": {
+              out += renderer.text(token.text);
+              break;
+            }
+            default: {
+              const errMsg2 = 'Token with "' + token.type + '" type was not found.';
+              if (this.options.silent) {
+                console.error(errMsg2);
+                return;
+              } else {
+                throw new Error(errMsg2);
+              }
+            }
+          }
+        }
+        return out;
+      }
+    };
+    Lexer$1 = Lexer_1;
+    Parser2 = Parser_1;
+    Tokenizer2 = Tokenizer_1;
+    Renderer2 = Renderer_1;
+    TextRenderer2 = TextRenderer_1;
+    Slugger$2 = Slugger_1;
+    ({
+      merge,
+      checkSanitizeDeprecation,
+      escape: escape2
+    } = helpers);
+    ({
+      getDefaults,
+      changeDefaults,
+      defaults
+    } = defaults$5.exports);
+    marked.options = marked.setOptions = function(opt) {
+      merge(marked.defaults, opt);
+      changeDefaults(marked.defaults);
+      return marked;
+    };
+    marked.getDefaults = getDefaults;
+    marked.defaults = defaults;
+    marked.use = function(...args) {
+      const opts = merge({}, ...args);
+      const extensions = marked.defaults.extensions || { renderers: {}, childTokens: {} };
+      let hasExtensions;
+      args.forEach((pack) => {
+        if (pack.extensions) {
+          hasExtensions = true;
+          pack.extensions.forEach((ext) => {
+            if (!ext.name) {
+              throw new Error("extension name required");
+            }
+            if (ext.renderer) {
+              const prevRenderer = extensions.renderers ? extensions.renderers[ext.name] : null;
+              if (prevRenderer) {
+                extensions.renderers[ext.name] = function(...args2) {
+                  let ret = ext.renderer.apply(this, args2);
+                  if (ret === false) {
+                    ret = prevRenderer.apply(this, args2);
+                  }
+                  return ret;
+                };
+              } else {
+                extensions.renderers[ext.name] = ext.renderer;
+              }
+            }
+            if (ext.tokenizer) {
+              if (!ext.level || ext.level !== "block" && ext.level !== "inline") {
+                throw new Error("extension level must be 'block' or 'inline'");
+              }
+              if (extensions[ext.level]) {
+                extensions[ext.level].unshift(ext.tokenizer);
+              } else {
+                extensions[ext.level] = [ext.tokenizer];
+              }
+              if (ext.start) {
+                if (ext.level === "block") {
+                  if (extensions.startBlock) {
+                    extensions.startBlock.push(ext.start);
+                  } else {
+                    extensions.startBlock = [ext.start];
+                  }
+                } else if (ext.level === "inline") {
+                  if (extensions.startInline) {
+                    extensions.startInline.push(ext.start);
+                  } else {
+                    extensions.startInline = [ext.start];
+                  }
+                }
+              }
+            }
+            if (ext.childTokens) {
+              extensions.childTokens[ext.name] = ext.childTokens;
+            }
+          });
+        }
+        if (pack.renderer) {
+          const renderer = marked.defaults.renderer || new Renderer2();
+          for (const prop in pack.renderer) {
+            const prevRenderer = renderer[prop];
+            renderer[prop] = (...args2) => {
+              let ret = pack.renderer[prop].apply(renderer, args2);
+              if (ret === false) {
+                ret = prevRenderer.apply(renderer, args2);
+              }
+              return ret;
+            };
+          }
+          opts.renderer = renderer;
+        }
+        if (pack.tokenizer) {
+          const tokenizer = marked.defaults.tokenizer || new Tokenizer2();
+          for (const prop in pack.tokenizer) {
+            const prevTokenizer = tokenizer[prop];
+            tokenizer[prop] = (...args2) => {
+              let ret = pack.tokenizer[prop].apply(tokenizer, args2);
+              if (ret === false) {
+                ret = prevTokenizer.apply(tokenizer, args2);
+              }
+              return ret;
+            };
+          }
+          opts.tokenizer = tokenizer;
+        }
+        if (pack.walkTokens) {
+          const walkTokens = marked.defaults.walkTokens;
+          opts.walkTokens = (token) => {
+            pack.walkTokens.call(this, token);
+            if (walkTokens) {
+              walkTokens(token);
+            }
+          };
+        }
+        if (hasExtensions) {
+          opts.extensions = extensions;
+        }
+        marked.setOptions(opts);
+      });
+    };
+    marked.walkTokens = function(tokens, callback) {
+      for (const token of tokens) {
+        callback(token);
+        switch (token.type) {
+          case "table": {
+            for (const cell of token.tokens.header) {
+              marked.walkTokens(cell, callback);
+            }
+            for (const row of token.tokens.cells) {
+              for (const cell of row) {
+                marked.walkTokens(cell, callback);
+              }
+            }
+            break;
+          }
+          case "list": {
+            marked.walkTokens(token.items, callback);
+            break;
+          }
+          default: {
+            if (marked.defaults.extensions && marked.defaults.extensions.childTokens && marked.defaults.extensions.childTokens[token.type]) {
+              marked.defaults.extensions.childTokens[token.type].forEach(function(childTokens) {
+                marked.walkTokens(token[childTokens], callback);
+              });
+            } else if (token.tokens) {
+              marked.walkTokens(token.tokens, callback);
+            }
+          }
+        }
+      }
+    };
+    marked.parseInline = function(src2, opt) {
+      if (typeof src2 === "undefined" || src2 === null) {
+        throw new Error("marked.parseInline(): input parameter is undefined or null");
+      }
+      if (typeof src2 !== "string") {
+        throw new Error("marked.parseInline(): input parameter is of type " + Object.prototype.toString.call(src2) + ", string expected");
+      }
+      opt = merge({}, marked.defaults, opt || {});
+      checkSanitizeDeprecation(opt);
+      try {
+        const tokens = Lexer$1.lexInline(src2, opt);
+        if (opt.walkTokens) {
+          marked.walkTokens(tokens, opt.walkTokens);
+        }
+        return Parser2.parseInline(tokens, opt);
+      } catch (e) {
+        e.message += "\nPlease report this to https://github.com/markedjs/marked.";
+        if (opt.silent) {
+          return "<p>An error occurred:</p><pre>" + escape2(e.message + "", true) + "</pre>";
+        }
+        throw e;
+      }
+    };
+    marked.Parser = Parser2;
+    marked.parser = Parser2.parse;
+    marked.Renderer = Renderer2;
+    marked.TextRenderer = TextRenderer2;
+    marked.Lexer = Lexer$1;
+    marked.lexer = Lexer$1.lex;
+    marked.Tokenizer = Tokenizer2;
+    marked.Slugger = Slugger$2;
+    marked.parse = marked;
+    marked_1 = marked;
+    key = {};
+    Heading = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let id2;
+      let { depth } = $$props;
+      let { raw } = $$props;
+      let { text } = $$props;
+      const { slug, getOptions } = getContext(key);
+      const options2 = getOptions();
+      if ($$props.depth === void 0 && $$bindings.depth && depth !== void 0)
+        $$bindings.depth(depth);
+      if ($$props.raw === void 0 && $$bindings.raw && raw !== void 0)
+        $$bindings.raw(raw);
+      if ($$props.text === void 0 && $$bindings.text && text !== void 0)
+        $$bindings.text(text);
+      id2 = options2.headerIds ? options2.headerPrefix + slug(text) : void 0;
+      return `${depth === 1 ? `<h1${add_attribute("id", id2, 0)}>${slots.default ? slots.default({}) : ``}</h1>` : `${depth === 2 ? `<h2${add_attribute("id", id2, 0)}>${slots.default ? slots.default({}) : ``}</h2>` : `${depth === 3 ? `<h3${add_attribute("id", id2, 0)}>${slots.default ? slots.default({}) : ``}</h3>` : `${depth === 4 ? `<h4${add_attribute("id", id2, 0)}>${slots.default ? slots.default({}) : ``}</h4>` : `${depth === 5 ? `<h5${add_attribute("id", id2, 0)}>${slots.default ? slots.default({}) : ``}</h5>` : `${depth === 6 ? `<h6${add_attribute("id", id2, 0)}>${slots.default ? slots.default({}) : ``}</h6>` : `${escape(raw)}`}`}`}`}`}`}`;
+    });
+    Paragraph = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<p>${slots.default ? slots.default({}) : ``}</p>`;
+    });
+    Text = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { text } = $$props;
+      let { raw } = $$props;
+      if ($$props.text === void 0 && $$bindings.text && text !== void 0)
+        $$bindings.text(text);
+      if ($$props.raw === void 0 && $$bindings.raw && raw !== void 0)
+        $$bindings.raw(raw);
+      return `${slots.default ? slots.default({}) : ``}`;
+    });
+    Image = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { href = "" } = $$props;
+      let { title = void 0 } = $$props;
+      let { text = "" } = $$props;
+      if ($$props.href === void 0 && $$bindings.href && href !== void 0)
+        $$bindings.href(href);
+      if ($$props.title === void 0 && $$bindings.title && title !== void 0)
+        $$bindings.title(title);
+      if ($$props.text === void 0 && $$bindings.text && text !== void 0)
+        $$bindings.text(text);
+      return `<img${add_attribute("src", href, 0)}${add_attribute("title", title, 0)}${add_attribute("alt", text, 0)}>`;
+    });
+    Link = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { href = "" } = $$props;
+      let { title = void 0 } = $$props;
+      if ($$props.href === void 0 && $$bindings.href && href !== void 0)
+        $$bindings.href(href);
+      if ($$props.title === void 0 && $$bindings.title && title !== void 0)
+        $$bindings.title(title);
+      return `<a${add_attribute("href", href, 0)}${add_attribute("title", title, 0)}>${slots.default ? slots.default({}) : ``}</a>`;
+    });
+    Em = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<em>${slots.default ? slots.default({}) : ``}</em>`;
+    });
+    Del = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<del>${slots.default ? slots.default({}) : ``}</del>`;
+    });
+    Codespan = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { raw } = $$props;
+      if ($$props.raw === void 0 && $$bindings.raw && raw !== void 0)
+        $$bindings.raw(raw);
+      return `<code>${escape(raw.replace(/`/g, ""))}</code>`;
+    });
+    Strong = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<strong>${slots.default ? slots.default({}) : ``}</strong>`;
+    });
+    Table = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<table>${slots.default ? slots.default({}) : ``}</table>`;
+    });
+    TableHead = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<thead>${slots.default ? slots.default({}) : ``}</thead>`;
+    });
+    TableBody = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<tbody>${slots.default ? slots.default({}) : ``}</tbody>`;
+    });
+    TableRow = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<tr>${slots.default ? slots.default({}) : ``}</tr>`;
+    });
+    TableCell = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { header } = $$props;
+      let { align } = $$props;
+      if ($$props.header === void 0 && $$bindings.header && header !== void 0)
+        $$bindings.header(header);
+      if ($$props.align === void 0 && $$bindings.align && align !== void 0)
+        $$bindings.align(align);
+      return `${header ? `<th${add_attribute("align", align, 0)}>${slots.default ? slots.default({}) : ``}</th>` : `<td${add_attribute("align", align, 0)}>${slots.default ? slots.default({}) : ``}</td>`}`;
+    });
+    List = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { ordered } = $$props;
+      let { start } = $$props;
+      if ($$props.ordered === void 0 && $$bindings.ordered && ordered !== void 0)
+        $$bindings.ordered(ordered);
+      if ($$props.start === void 0 && $$bindings.start && start !== void 0)
+        $$bindings.start(start);
+      return `${ordered ? `<ol${add_attribute("start", start, 0)}>${slots.default ? slots.default({}) : ``}</ol>` : `<ul>${slots.default ? slots.default({}) : ``}</ul>`}`;
+    });
+    ListItem = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<li>${slots.default ? slots.default({}) : ``}</li>`;
+    });
+    Hr = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<hr>`;
+    });
+    Html = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { text } = $$props;
+      if ($$props.text === void 0 && $$bindings.text && text !== void 0)
+        $$bindings.text(text);
+      return `<!-- HTML_TAG_START -->${text}<!-- HTML_TAG_END -->`;
+    });
+    Blockquote = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<blockquote>${slots.default ? slots.default({}) : ``}</blockquote>`;
+    });
+    Code = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { lang } = $$props;
+      let { text } = $$props;
+      if ($$props.lang === void 0 && $$bindings.lang && lang !== void 0)
+        $$bindings.lang(lang);
+      if ($$props.text === void 0 && $$bindings.text && text !== void 0)
+        $$bindings.text(text);
+      return `<pre${add_attribute("class", lang, 0)}><code>${escape(text)}</code></pre>`;
+    });
+    Br = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<br>${slots.default ? slots.default({}) : ``}`;
+    });
+    defaultRenderers = {
+      heading: Heading,
+      paragraph: Paragraph,
+      text: Text,
+      image: Image,
+      link: Link,
+      em: Em,
+      strong: Strong,
+      codespan: Codespan,
+      del: Del,
+      table: Table,
+      tablehead: TableHead,
+      tablebody: TableBody,
+      tablerow: TableRow,
+      tablecell: TableCell,
+      list: List,
+      orderedlistitem: null,
+      unorderedlistitem: null,
+      listitem: ListItem,
+      hr: Hr,
+      html: Html,
+      blockquote: Blockquote,
+      code: Code,
+      br: Br
+    };
+    defaultOptions = {
+      baseUrl: null,
+      breaks: false,
+      gfm: true,
+      headerIds: true,
+      headerPrefix: "",
+      highlight: null,
+      langPrefix: "language-",
+      mangle: true,
+      pedantic: false,
+      renderer: null,
+      sanitize: false,
+      sanitizer: null,
+      silent: false,
+      smartLists: false,
+      smartypants: false,
+      tokenizer: null,
+      xhtml: false
+    };
+    Lexer2 = marked_1.Lexer;
+    Slugger2 = marked_1.Slugger;
+    SvelteMarkdown = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let slugger;
+      let combinedOptions;
+      let combinedRenderers;
+      let { source = "" } = $$props;
+      let { renderers = {} } = $$props;
+      let { options: options2 = {} } = $$props;
+      let { isInline = false } = $$props;
+      const dispatch = createEventDispatcher();
+      let tokens;
+      let lexer;
+      setContext(key, {
+        slug: (val) => slugger ? slugger.slug(val) : "",
+        getOptions: () => combinedOptions
+      });
+      if ($$props.source === void 0 && $$bindings.source && source !== void 0)
+        $$bindings.source(source);
+      if ($$props.renderers === void 0 && $$bindings.renderers && renderers !== void 0)
+        $$bindings.renderers(renderers);
+      if ($$props.options === void 0 && $$bindings.options && options2 !== void 0)
+        $$bindings.options(options2);
+      if ($$props.isInline === void 0 && $$bindings.isInline && isInline !== void 0)
+        $$bindings.isInline(isInline);
+      slugger = source ? new Slugger2() : void 0;
+      combinedOptions = { ...defaultOptions, ...options2 };
+      {
+        {
+          lexer = new Lexer2(combinedOptions);
+          tokens = isInline ? lexer.inlineTokens(source) : lexer.lex(source);
+          dispatch("parsed", { tokens });
+        }
+      }
+      combinedRenderers = { ...defaultRenderers, ...renderers };
+      return `${validate_component(Parser$1, "Parser").$$render($$result, { tokens, renderers: combinedRenderers }, {}, {})}`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/index-7dbefb41.js
+var index_7dbefb41_exports = {};
+__export(index_7dbefb41_exports, {
+  default: () => Benefits,
+  load: () => load3
+});
+var css$13, Benefit, PartnerBenefit, css4, API_URL2, health_cat, travel_cat, course_cat, wellbeing_cat, finance_cat, load3, Benefits;
+var init_index_7dbefb41 = __esm({
+  ".svelte-kit/output/server/chunks/index-7dbefb41.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    init_stores_6349963b();
+    init_SvelteMarkdown_baee76c8();
+    css$13 = {
+      code: ".card.svelte-o82prf{height:92%;padding:3%}",
+      map: null
+    };
+    Benefit = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let $$unsubscribe_courseType;
+      let $$unsubscribe_travelType;
+      $$unsubscribe_courseType = subscribe(courseType, (value) => value);
+      $$unsubscribe_travelType = subscribe(travelType, (value) => value);
+      let { benefitData } = $$props;
+      if ($$props.benefitData === void 0 && $$bindings.benefitData && benefitData !== void 0)
+        $$bindings.benefitData(benefitData);
+      $$result.css.add(css$13);
+      $$unsubscribe_courseType();
+      $$unsubscribe_travelType();
+      return `<div class="${"row mt-2 justify-content-center"}">${each(benefitData, (benData) => `<div class="${"col-sm-12 col-md-10 col-lg-6"}"><div class="${"card bg-dark m-2 shadow-lg svelte-o82prf"}"><img class="${"img-fluid rounded cta"}"${add_attribute("src", benData.banner.url, 0)} alt="${"cover"}">
+                <div class="${"card-body"}"><h3 class="${"card-title text-logo-gold"}">Think <span class="${"text-lighter-blue"}">${escape(benData.name)}</span></h3>
+                    <p class="${"card-text"}"><!-- HTML_TAG_START -->${benData.description}<!-- HTML_TAG_END --></p>
+                    <button class="${"btn bg-gold shadow cta text-black fs-5 p-1"}">Enquire</button></div>
+                <div class="${"card-footer"}"><span class="${"badge bg-light"}">${escape(benData.partner.company_name)}</span>
+                </div></div>
+        </div>`)}
+</div>`;
+    });
+    PartnerBenefit = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { partnerData } = $$props;
+      if ($$props.partnerData === void 0 && $$bindings.partnerData && partnerData !== void 0)
+        $$bindings.partnerData(partnerData);
+      return `<h4 class="${"mt-3"}">Our Partner:</h4>
+<div class="${"col-8"}"><div class="${"mb-3 mx-auto"}" style="${"max-width: 540px;"}"><div class="${"row g-0"}"><div class="${"col-md-5"}"><img${add_attribute("src", partnerData[0].partner.logo.url, 0)} alt="${"logo"}" class="${"img-fluid"}"></div>
+        <div class="${"col-md-7"}"><div class="${"card-body"}"><h3 class="${"text-black"}">${escape(partnerData[0].partner.company_name)}</h3>
+                <p class="${"text-black"}">${escape(partnerData[0].partner.description)}</p>
+                <div class="${"border-bottom border-dark border-1 mb-2"}"></div>
+                <button class="${"btn btn-sm bg-gold shadow cta text-black"}">Read More</button></div></div></div></div></div>`;
+    });
+    css4 = {
+      code: "ul.svelte-3webrh li h4.svelte-3webrh{transition:0.3s}ul.svelte-3webrh li h4.svelte-3webrh:hover{cursor:pointer;font-size:135%}",
+      map: null
+    };
+    API_URL2 = "http://localhost:1337";
+    health_cat = 3;
+    travel_cat = 2;
+    course_cat = 5;
+    wellbeing_cat = 4;
+    finance_cat = 6;
+    load3 = async ({ fetch: fetch2 }) => {
+      const endpoint = `${API_URL2}/graphql`;
+      const headers = { "content-type": "application/json" };
+      const graphqlQuery = {
+        "operationName": "fetchBenefits",
+        "query": `query fetchBenefits {     
+                packages {
+                    name,
+                    description,
+                    partner {
+                        company_name,
+                        description,
+                        category{
+                            id,
+                        },
+                        logo{
+                            url
+                        },
+                        slug
+                    },
+                    details,
+                    banner{
+                        url
+                    }
+                } 
+            }`,
+        "variables": {}
+      };
+      const options2 = {
+        "method": "POST",
+        headers,
+        "body": JSON.stringify(graphqlQuery)
+      };
+      const res = await fetch2(endpoint, options2);
+      let packages = [], travel = [], health = [], wellness = [], courses = [], finance = [], source;
+      if (res.ok) {
+        let seperatePackages = function(item) {
+          if (item.partner.category.id == travel_cat) {
+            travel.push(item);
+          } else if (item.partner.category.id == health_cat) {
+            health.push(item);
+          } else if (item.partner.category.id == wellbeing_cat) {
+            wellness.push(item);
+            source = wellness[0].details;
+          } else if (item.partner.category.id == course_cat) {
+            courses.push(item);
+          } else if (item.partner.category.id == finance_cat) {
+            finance.push(item);
+          }
+        };
+        const data = await res.json();
+        packages = data.data.packages;
+        packages.forEach(seperatePackages);
+        return {
+          props: {
+            travel,
+            health,
+            wellness,
+            courses,
+            finance,
+            source
+          }
+        };
+      }
+      return {
+        status: res.status,
+        error: new Error(`Could not load page`)
+      };
+    };
+    Benefits = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let $$unsubscribe_travelScroll;
+      $$unsubscribe_travelScroll = subscribe(travelScroll, (value) => value);
+      let { travel, wellness, health, courses, finance } = $$props;
+      let { source, readMore = false } = $$props;
+      if ($$props.travel === void 0 && $$bindings.travel && travel !== void 0)
+        $$bindings.travel(travel);
+      if ($$props.wellness === void 0 && $$bindings.wellness && wellness !== void 0)
+        $$bindings.wellness(wellness);
+      if ($$props.health === void 0 && $$bindings.health && health !== void 0)
+        $$bindings.health(health);
+      if ($$props.courses === void 0 && $$bindings.courses && courses !== void 0)
+        $$bindings.courses(courses);
+      if ($$props.finance === void 0 && $$bindings.finance && finance !== void 0)
+        $$bindings.finance(finance);
+      if ($$props.source === void 0 && $$bindings.source && source !== void 0)
+        $$bindings.source(source);
+      if ($$props.readMore === void 0 && $$bindings.readMore && readMore !== void 0)
+        $$bindings.readMore(readMore);
+      $$result.css.add(css4);
+      $$unsubscribe_travelScroll();
+      return `${$$result.head += `${$$result.title = `<title>Benefits</title>`, ""}`, ""}
+
+
+
+<h1 class="${"text-center"}">Exclusive benefits for <span class="${"think"}">Think</span>Teacher members</h1>
+
+<div class="${"text-center"}" id="${"nav-benefits"}"><ul class="${"list-inline svelte-3webrh"}"><li class="${"list-inline-item"}"><h4 class="${"svelte-3webrh"}">Travel <span class="${"text-logo-gold"}">-</span></h4></li>
+        <li class="${"list-inline-item"}"><h4 class="${"svelte-3webrh"}">Wellbeing <span class="${"text-logo-gold"}">-</span></h4></li>
+        <li class="${"list-inline-item"}"><h4 class="${"svelte-3webrh"}">Medical Aid <span class="${"text-logo-gold"}">-</span></h4></li>
+        <li class="${"list-inline-item"}"><h4 class="${"svelte-3webrh"}">Legal <span class="${"text-logo-gold"}">-</span></h4></li>
+        <li class="${"list-inline-item"}"><h4 class="${"svelte-3webrh"}">Courses <span class="${"text-logo-gold"}">-</span></h4></li>
+        <li class="${"list-inline-item"}"><h4 class="${"svelte-3webrh"}">Finance <span class="${"text-logo-gold"}">-</span></h4></li>
+        
+        <li class="${"list-inline-item"}"><h4 class="${"svelte-3webrh"}">Photography <span class="${"text-logo-gold"}">-</span></h4></li>
+        <li class="${"list-inline-item"}"><h4 class="${"svelte-3webrh"}">IT <span class="${"text-logo-gold"}">-</span></h4></li>
+        <li class="${"list-inline-item"}"><h4 class="${"svelte-3webrh"}">Spa</h4></li></ul></div>
+
+<div class="${"container text-center"}"><div class="${"row mt-4 mb-5 justify-content-center"}">
+        <div class="${"grey-grad row justify-content-center"}"><h2 id="${"travel"}" class="${"display-3"}">Travel</h2>
+
+            ${validate_component(Benefit, "Benefit").$$render($$result, { benefitData: travel }, {}, {})}
+
+            ${validate_component(PartnerBenefit, "PartnerBenefit").$$render($$result, { partnerData: travel }, {}, {})}</div>
+
+        
+        <div class="${"grey-grad row big-gap justify-content-center"}" id="${"wellbeing"}"><h2 class="${"display-3"}">Wellbeing</h2>
+            
+            <div class="${"row mt-2 justify-content-center"}">${each(wellness, (well) => `<div class="${"col-sm-12 col-md-10 col-lg-6"}"><div class="${"card bg-dark m-2 shadow-lg"}"><img class="${"img-fluid rounded cta"}"${add_attribute("src", well.banner.url, 0)} alt="${"cover"}">
+
+                            
+                            <div class="${"card-body"}"><h3 class="${"card-title text-logo-gold"}">Think <span class="${"text-lighter-blue"}">${escape(well.name)}</span></h3>
+                                <p class="${"card-text"}"><!-- HTML_TAG_START -->${well.description}<!-- HTML_TAG_END --></p>
+                                ${readMore ? `<button class="${"btn btn-sm bg-gold shadow cta text-black"}">Read less</button><br><br>
+                                    <p style="${"text-align: justify;"}">${validate_component(SvelteMarkdown, "SvelteMarkdown").$$render($$result, { source }, {}, {})}</p>` : `<button class="${"btn btn-sm bg-gold shadow cta text-black"}">Read more</button>`}</div>
+                            <div class="${"card-footer"}"><span class="${"badge bg-light"}">${escape(well.partner.company_name)}</span>
+                            </div></div>
+                    </div>`)}</div>
+
+            ${validate_component(PartnerBenefit, "PartnerBenefit").$$render($$result, { partnerData: wellness }, {}, {})}</div>
+
+
+
+        
+        <div class="${"grey-grad row justify-content-center big-gap"}" id="${"medical_aid"}"><h2 class="${"display-3"}">Medical Aid</h2>
+            
+            ${validate_component(Benefit, "Benefit").$$render($$result, { benefitData: health }, {}, {})}
+
+            ${validate_component(PartnerBenefit, "PartnerBenefit").$$render($$result, { partnerData: health }, {}, {})}</div>
+
+        
+        <div class="${"grey-grad row justify-content-center big-gap"}" id="${"legal"}"><h2 class="${"display-3"}">Legal</h2>
+            <h4>Nearly there...</h4></div>
+
+        
+        <div class="${"grey-grad row justify-content-center big-gap"}" id="${"courses"}"><h2 class="${"display-3"}">Courses</h2>
+
+            ${validate_component(Benefit, "Benefit").$$render($$result, { benefitData: courses }, {}, {})}
+
+            ${validate_component(PartnerBenefit, "PartnerBenefit").$$render($$result, { partnerData: courses }, {}, {})}</div>
+
+        
+        <div class="${"grey-grad row justify-content-center big-gap"}" id="${"finance"}"><h2 class="${"display-3"}">Finance</h2>
+
+            ${validate_component(Benefit, "Benefit").$$render($$result, { benefitData: finance }, {}, {})}
+
+            ${validate_component(PartnerBenefit, "PartnerBenefit").$$render($$result, { partnerData: finance }, {}, {})}
+            </div>
+
+        
+        
+        
+        
+        <div class="${"grey-grad row justify-content-center big-gap"}" id="${"photography"}"><h2 class="${"display-3"}">Photography</h2>
+            <h4>Coming soon</h4></div>
+        
+        <div class="${"grey-grad row justify-content-center big-gap"}" id="${"IT"}"><h2 class="${"display-3"}">IT</h2>
+            <h4>Coming soon</h4></div>
+        
+        <div class="${"grey-grad row justify-content-center big-gap"}" id="${"spa"}"><h2 class="${"display-3"}">Spa</h2>
+            <h4>Coming soon</h4></div></div>
+</div>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/index-3afefee0.js
+var index_3afefee0_exports = {};
+__export(index_3afefee0_exports, {
+  default: () => Partners,
+  load: () => load4
+});
+var API_URL3, load4, Partners;
+var init_index_3afefee0 = __esm({
+  ".svelte-kit/output/server/chunks/index-3afefee0.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    init_stores_6349963b();
+    API_URL3 = "http://localhost:1337";
+    load4 = async ({ fetch: fetch2 }) => {
+      const endpoint = `${API_URL3}/graphql`;
+      const headers = { "content-type": "application/json" };
+      const graphqlQuery = {
+        "operationName": "fetchPartners",
+        "query": `query fetchPartners {     
+                partners (sort: "id") {
+                    id,
+                    name,
+                    description,
+                    logo{url},
+                    company_name,
+                    category{name},
+                    slug
+                } 
+            }`,
+        "variables": {}
+      };
+      const options2 = {
+        "method": "POST",
+        headers,
+        "body": JSON.stringify(graphqlQuery)
+      };
+      const res = await fetch2(endpoint, options2);
+      if (res.ok) {
+        const data = await res.json();
+        return { props: { partners: data.data.partners } };
+      }
+      return {
+        status: res.status,
+        error: new Error(`Could not load page`)
+      };
+    };
+    Partners = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let $$unsubscribe_travelScroll;
+      $$unsubscribe_travelScroll = subscribe(travelScroll, (value) => value);
+      let { partners } = $$props;
+      if ($$props.partners === void 0 && $$bindings.partners && partners !== void 0)
+        $$bindings.partners(partners);
+      $$unsubscribe_travelScroll();
+      return `${$$result.head += `${$$result.title = `<title>Partners</title>`, ""}`, ""}
+
+<div class="${"container mb-5"}"><h1 class="${"text-center mb-4"}"><span class="${"think"}">Think</span>Teacher Partners</h1>
+
+    <div class="${"row justify-content-center"}">${each(partners, (partner) => `<div class="${"col-sm-12 col-md-6 col-lg-4"}"><div class="${"card bg-dark m-2 shadow-lg"}"><img class="${"img-fluid rounded cta"}"${add_attribute("src", partner.logo.url, 0)} alt="${"cover"}">
+                    
+                    <div class="${"card-body"}"><h5 class="${"card-title"}">${escape(partner.company_name)}</h5>
+                        <p class="${"card-text"}">${escape(partner.description)}</p>
+                        <button class="${"btn-sm btn bg-gold mx-auto shadow cta"}">Read More</button></div>
+                    <div class="${"card-footer"}"><a href="${"/benefits"}"><span class="${"badge bg-light"}">${escape(partner.category.name.replace("_", " "))}</span></a>
+                    </div></div>
+            </div>`)}
+
+        <div class="${"mt-4 text-center"}"><button class="${"btn btn-lg bg-gold mx-auto shadow-lg cta"}" style="${"width: 300px;"}"><h4 class="${"text-black mt-2"}">Check their benefits</h4></button>
+            <p class="${"mt-3"}">Interested in being a ThinkTeacher partner? Contact <a href="${"mailto:bridget@thinkteacher.co.za"}">bridget@thinkteacher.co.za</a>.</p></div></div>
+</div>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/arrow-left-eef75369.js
+var arrowLeft;
+var init_arrow_left_eef75369 = __esm({
+  ".svelte-kit/output/server/chunks/arrow-left-eef75369.js"() {
+    init_shims();
+    arrowLeft = { "arrow-left": { width: 1536, height: 1792, paths: [{ d: "M1536 896v128q0 53-32.5 90.5t-84.5 37.5h-704l293 294q38 36 38 90t-38 90l-75 76q-37 37-90 37-52 0-91-37l-651-652q-37-37-37-90 0-52 37-91l651-650q38-38 91-38 52 0 90 38l75 74q38 38 38 91t-38 91l-293 293h704q52 0 84.5 37.5t32.5 90.5z" }] } };
+  }
+});
+
+// .svelte-kit/output/server/chunks/_slug_-e9d98ea3.js
+var slug_e9d98ea3_exports = {};
+__export(slug_e9d98ea3_exports, {
+  default: () => U5Bslugu5D,
+  load: () => load5
+});
+var css5, API_URL4, load5, U5Bslugu5D;
+var init_slug_e9d98ea3 = __esm({
+  ".svelte-kit/output/server/chunks/_slug_-e9d98ea3.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    init_Icon_7dad3475();
+    init_arrow_left_eef75369();
+    init_SvelteMarkdown_baee76c8();
+    css5 = {
+      code: "img.svelte-veamth{max-height:295px;width:auto}.container.svelte-veamth{border-radius:20px}@media screen and (max-width: 1000px){.container.svelte-veamth{padding:1rem}}@media screen and (min-width: 999px){.container.svelte-veamth{padding:5rem}}.border-custom.svelte-veamth{border-top:3px solid var(--logo-gold);border-left:3px solid var(--logo-gold);border-bottom:3px solid var(--logo-grey);border-right:3px solid var(--logo-grey)}",
+      map: null
+    };
+    API_URL4 = "http://localhost:1337";
+    load5 = async ({ page: { params }, fetch: fetch2 }) => {
+      const { slug } = params;
+      const res = await fetch2(`${API_URL4}/partners?slug=${slug}`);
+      if (res.status === 404) {
+        const error2 = new Error(`The partner with slug of ${slug} was not found`);
+        return { status: 404, error: error2 };
+      } else {
+        const data = await res.json();
+        return { props: { partner: data[0] } };
+      }
+    };
+    U5Bslugu5D = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { partner } = $$props;
+      let source;
+      if (partner)
+        source = partner.bio;
+      if ($$props.partner === void 0 && $$bindings.partner && partner !== void 0)
+        $$bindings.partner(partner);
+      $$result.css.add(css5);
+      return `${$$result.head += `${partner ? `${$$result.title = `<title>${escape(partner.name)}</title>`, ""}` : `${$$result.title = `<title>404</title>`, ""}`}`, ""}
+
+
+
+${partner ? `<div class="${"container bg-dark mt-4 border-custom mt-5 mb-5 svelte-veamth"}"><a href="${"/partners"}">${validate_component(Icon, "Icon").$$render($$result, { data: arrowLeft, scale: "1.8" }, {}, {})}</a>
+        ${`<img class="${"img-fluid mx-auto d-block mt-2 svelte-veamth"}"${add_attribute("src", partner.image.url, 0)} alt="${"Partner"}">`}
+
+        <h2 class="${"text-center mt-3"}">${escape(partner.name)}</h2>
+        <h4 class="${"text-center text-white"}">${escape(partner.description)}</h4>
+
+        <div id="${"mark-down"}">${validate_component(SvelteMarkdown, "SvelteMarkdown").$$render($$result, { source }, {}, {})}</div></div>` : `<div class="${"p-5 text-center"}"><h2>Not found: 404</h2></div>`}`;
+    });
+  }
+});
+
 // node_modules/south-african-id-parser/south-african-id-parser.js
 var require_south_african_id_parser = __commonJS({
   "node_modules/south-african-id-parser/south-african-id-parser.js"(exports, module2) {
@@ -9277,57 +13022,807 @@ var require_south_african_id_parser = __commonJS({
   }
 });
 
-// .svelte-kit/netlify/entry.js
-__export(exports, {
-  handler: () => handler
+// .svelte-kit/output/server/chunks/register-e132d3cb.js
+var register_e132d3cb_exports = {};
+__export(register_e132d3cb_exports, {
+  default: () => Register,
+  prerender: () => prerender3
 });
-init_shims();
+var import_axios4, import_zxcvbn2, import_south_african_id_parser, css6, prerender3, Register;
+var init_register_e132d3cb = __esm({
+  ".svelte-kit/output/server/chunks/register-e132d3cb.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    import_axios4 = __toModule(require_axios2());
+    init_Icon_7dad3475();
+    init_eye_5d9d46b8();
+    import_zxcvbn2 = __toModule(require_main());
+    import_south_african_id_parser = __toModule(require_south_african_id_parser());
+    css6 = {
+      code: "i.svelte-137b9xh{cursor:pointer}input[type=number].svelte-137b9xh::-webkit-outer-spin-button,input[type=number].svelte-137b9xh::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}input[type=number].svelte-137b9xh{-moz-appearance:textfield}",
+      map: null
+    };
+    prerender3 = true;
+    Register = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let s2;
+      let progress;
+      let buttonNext = true;
+      let username, email, password = "";
+      let idNum;
+      let ttCode = "TT";
+      var dateObj = new Date();
+      var dateNow = dateObj.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      });
+      ttCode += dateNow.replace(new RegExp("/", "g"), "");
+      ttCode += Math.floor(Math.random() * 899 + 100);
+      let barCol = "";
+      $$result.css.add(css6);
+      s2 = (0, import_zxcvbn2.default)(password).score > 2;
+      {
+        buttonNext = true;
+      }
+      import_south_african_id_parser.default.validate(idNum);
+      progress = (0, import_zxcvbn2.default)(password).score / 4 * 100;
+      {
+        if (s2) {
+          barCol = "bg-success";
+        } else {
+          barCol = "bg-danger";
+        }
+      }
+      return `${$$result.head += `${$$result.title = `<title>Register</title>`, ""}`, ""}
 
-// .svelte-kit/output/server/app.js
-init_shims();
-var import_countup = __toModule(require_countUp_umd());
-var import_axios = __toModule(require_axios2());
-var import_zxcvbn = __toModule(require_main());
-var import_south_african_id_parser = __toModule(require_south_african_id_parser());
-var __accessCheck = (obj, member, msg) => {
-  if (!member.has(obj))
-    throw TypeError("Cannot " + msg);
-};
-var __privateGet = (obj, member, getter) => {
-  __accessCheck(obj, member, "read from private field");
-  return getter ? getter.call(obj) : member.get(obj);
-};
-var __privateAdd = (obj, member, value) => {
-  if (member.has(obj))
-    throw TypeError("Cannot add the same private member more than once");
-  member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
-};
-var __privateSet = (obj, member, value, setter) => {
-  __accessCheck(obj, member, "write to private field");
-  setter ? setter.call(obj, value) : member.set(obj, value);
-  return value;
-};
-var _map;
-function get_single_valued_header(headers, key) {
-  const value = headers[key];
+<section class="${"vh-50 gradient-custom container mt-4 mb-4"}"><div class="${"py-3 h-100"}"><div class="${"row d-flex justify-content-center align-items-center h-100"}"><div class="${"col-12 col-md-8 col-lg-6 col-xl-6"}"><div class="${"card bg-dark text-white"}" style="${"border-radius: 1rem;"}">${``}
+                <div class="${"card-body p-md-3 p-lg-4 text-center"}"><div class="${"mb-md-3 mt-md-2"}"><h2 class="${"fw-bold mb-2 text-uppercase"}">Register</h2>
+                    ${`${``}`}
+
+                    ${``}
+                    
+                    <form id="${"register"}">${`<p class="${"text-white-50 mb-3"}">Please enter your email and password</p>
+                            <div class="${"form-outline form-white mb-2"}"><label class="${"form-label"}" for="${"Username"}">Username</label>
+                                <input type="${"text"}" name="${"username"}" id="${"username"}" class="${"form-control form-control-lg"}" placeholder="${"username"}" required${add_attribute("value", username, 0)}></div>
+                            <div class="${"form-outline form-white mb-2"}"><label class="${"form-label"}" for="${"Email"}">Email</label>
+                                <input type="${"email"}" id="${"Email"}" class="${"form-control form-control-lg"}" placeholder="${"email"}" required${add_attribute("value", email, 0)}></div>
+                            <div class="${"form-outline form-white mb-4 text-left"}"><label class="${"form-label"}" for="${"Password"}">Password</label>
+                                <input type="${"password"}" id="${"Password"}" class="${"form-control form-control-lg"}" placeholder="${"password"}" style="${"margin-right: -2.2rem; display:inline-block;"}" required${add_attribute("value", password, 0)}>
+                                <i class="${"svelte-137b9xh"}">${validate_component(Icon, "Icon").$$render($$result, {
+        data: eye,
+        scale: "1.5",
+        style: "cursor: pointer; display:inline-block; z-index: 99;"
+      }, {}, {})}</i>
+                                ${password.length > 0 ? `<div class="${"progress mt-2"}"><div class="${"progress-bar " + escape(barCol)}" role="${"progressbar"}" style="${"width: " + escape(progress) + "%;"}" aria-valuenow="${"100"}" aria-valuemin="${"0"}" aria-valuemax="${"100"}"></div></div>
+                                    <p${add_attribute("style", s2 || "color:red", 0)}>${escape(s2 ? "Strong password" : "Password not strong enough. Try using a mix of capital letters, numbers and special characters with a length > 8.")}</p>` : ``}</div>
+
+                            <button class="${"btn btn-outline-light btn-lg px-4"}" ${buttonNext ? "disabled" : ""}>Next</button>`}</form></div>
+    
+                <div><p class="${"mb-0 mt-3"}">Already have an account? <a href="${"/login"}" class="${"text-white-50 fw-bold"}">Login</a></p></div></div></div></div></div></div>
+</section>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/Clock.svelte_svelte_type_style_lang-166352fe.js
+var durationUnitRegex, range, css7, Jumper;
+var init_Clock_svelte_svelte_type_style_lang_166352fe = __esm({
+  ".svelte-kit/output/server/chunks/Clock.svelte_svelte_type_style_lang-166352fe.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    durationUnitRegex = /[a-zA-Z]/;
+    range = (size, startAt = 0) => [...Array(size).keys()].map((i) => i + startAt);
+    css7 = {
+      code: ".wrapper.svelte-1cy66mt{width:var(--size);height:var(--size)}.circle.svelte-1cy66mt{border-radius:100%;animation-fill-mode:both;position:absolute;opacity:0;width:var(--size);height:var(--size);background-color:var(--color);animation:svelte-1cy66mt-bounce var(--duration) linear infinite}@keyframes svelte-1cy66mt-bounce{0%{opacity:0;transform:scale(0)}5%{opacity:1}100%{opacity:0;transform:scale(1)}}",
+      map: null
+    };
+    Jumper = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { color = "#FF3E00" } = $$props;
+      let { unit = "px" } = $$props;
+      let { duration = "1s" } = $$props;
+      let { size = "60" } = $$props;
+      let durationUnit = duration.match(durationUnitRegex)[0];
+      let durationNum = duration.replace(durationUnitRegex, "");
+      if ($$props.color === void 0 && $$bindings.color && color !== void 0)
+        $$bindings.color(color);
+      if ($$props.unit === void 0 && $$bindings.unit && unit !== void 0)
+        $$bindings.unit(unit);
+      if ($$props.duration === void 0 && $$bindings.duration && duration !== void 0)
+        $$bindings.duration(duration);
+      if ($$props.size === void 0 && $$bindings.size && size !== void 0)
+        $$bindings.size(size);
+      $$result.css.add(css7);
+      return `<div class="${"wrapper svelte-1cy66mt"}" style="${"--size: " + escape(size) + escape(unit) + "; --color: " + escape(color) + "; --duration: " + escape(duration) + ";"}">${each(range(3, 1), (version) => `<div class="${"circle svelte-1cy66mt"}" style="${"animation-delay: " + escape(durationNum / 3 * (version - 1) + durationUnit) + ";"}"></div>`)}</div>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/webinars-ab005991.js
+var webinars_ab005991_exports = {};
+__export(webinars_ab005991_exports, {
+  default: () => Webinars
+});
+var import_axios5, css8, Webinars;
+var init_webinars_ab005991 = __esm({
+  ".svelte-kit/output/server/chunks/webinars-ab005991.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    import_axios5 = __toModule(require_axios2());
+    init_Clock_svelte_svelte_type_style_lang_166352fe();
+    css8 = {
+      code: "iframe.svelte-1nj4xuj{max-width:800px;top:0;left:0;width:100%;height:320px}p.svelte-1nj4xuj{text-align:justify}.frame-wrapper.svelte-1nj4xuj{background-color:var(--logo-grey);width:100%;height:100%;padding:3%;border-radius:5px;border:3px solid var(--logo-gold)}",
+      map: null
+    };
+    Webinars = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      $$result.css.add(css8);
+      return `${$$result.head += `${$$result.title = `<title>Webinars</title>`, ""}`, ""}
+
+<div class="${"container mt-5 mb-5"}"><div class="${"row text-center justify-content-center"}"><h1 class="${"mb-4"}"><span class="${"think"}">Think</span>Teacher Webinars</h1>
+
+        ${`<div class="${"d-flex justify-content-center mt-5"}">${validate_component(Jumper, "Jumper").$$render($$result, {
+        size: "150",
+        color: "#5C677D",
+        unit: "px",
+        duration: "1s"
+      }, {}, {})}</div>`}</div>
+</div>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/events-0a284b8f.js
+var events_0a284b8f_exports = {};
+__export(events_0a284b8f_exports, {
+  default: () => Events,
+  prerender: () => prerender4
+});
+var prerender4, Events;
+var init_events_0a284b8f = __esm({
+  ".svelte-kit/output/server/chunks/events-0a284b8f.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    prerender4 = true;
+    Events = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `${$$result.head += `${$$result.title = `<title>Events</title>`, ""}`, ""}
+
+<div class="${"container p-5"}"><div class="${"row text-center"}"><h1><span class="${"think"}">Think</span>Teacher Events</h1>
+        <h3>Coming Soon!</h3></div>
+</div>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/about-56eea26e.js
+var about_56eea26e_exports = {};
+__export(about_56eea26e_exports, {
+  default: () => About,
+  prerender: () => prerender5
+});
+var linkedinSquare, css9, prerender5, About;
+var init_about_56eea26e = __esm({
+  ".svelte-kit/output/server/chunks/about-56eea26e.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    init_Icon_7dad3475();
+    linkedinSquare = { "linkedin-square": { width: 1536, height: 1792, paths: [{ d: "M237 1414h231v-694h-231v694zM483 506q-1-52-36-86t-93-34-94.5 34-36.5 86q0 51 35.5 85.5t92.5 34.5h1q59 0 95-34.5t36-85.5zM1068 1414h231v-398q0-154-73-233t-193-79q-136 0-209 117h2v-101h-231q3 66 0 694h231v-388q0-38 7-56 15-35 45-59.5t74-24.5q116 0 116 157v371zM1536 416v960q0 119-84.5 203.5t-203.5 84.5h-960q-119 0-203.5-84.5t-84.5-203.5v-960q0-119 84.5-203.5t203.5-84.5h960q119 0 203.5 84.5t84.5 203.5z" }] } };
+    css9 = {
+      code: "img.svelte-r5ehkv{max-width:300px;height:auto;align-self:center}.card-text.svelte-r5ehkv{text-align:justify}.card.svelte-r5ehkv{height:100%}iframe.svelte-r5ehkv{max-width:800px;top:0;left:0;width:100%;height:320px}.frame-wrapper.svelte-r5ehkv{background-color:var(--logo-grey);width:100%;height:auto;padding:3%;border-radius:5px;border:3px solid var(--logo-gold)}",
+      map: null
+    };
+    prerender5 = true;
+    About = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      $$result.css.add(css9);
+      return `${$$result.head += `${$$result.title = `<title>About</title>`, ""}`, ""}
+
+<h1 class="${"mb-4 text-center"}">The <span class="${"think"}">Think</span>Teacher Team</h1>
+
+<div class="${"container"}"><div class="${"row text-center mt-5 mb-5 justify-content-center"}"><h3 class="${"read"}">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
+            and nurturing networks. Think Teacher&#39;s vision is to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
+        </h3>
+        <h2 class="${"mt-3"}">Message from our Founder</h2>
+        <div class="${"col-lg-6 col-md-12"}"><div class="${"frame-wrapper svelte-r5ehkv"}"><iframe src="${"https://www.youtube.com/embed/JcCvutWW_QM"}" title="${"YouTube video player"}" frameborder="${"0"}" allow="${"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"}" allowfullscreen class="${"svelte-r5ehkv"}"></iframe></div></div></div>
+
+    <div class="${"row mb-5"}"><div class="${"col-sm-12 col-md-12 col-lg-7 g-2"}"><div class="${"card bg-dark mb-3 svelte-r5ehkv"}"><h3 class="${"card-header"}">Bridget Fleming</h3>
+                    <div class="${"card-body"}"><h5 class="${"card-title"}">Founder</h5>
+                        <h6 class="${"card-subtitle text-muted"}">MSc | HDE (Wits)</h6></div>
+                    <img class="${"d-block user-select-none img-fluid svelte-r5ehkv"}" src="${"https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/Bio/Bridget_New.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL0JyaWRnZXRfTmV3LmpwZyIsImlhdCI6MTYzMjg0NjYwNiwiZXhwIjoxOTQ4MjA2NjA2fQ.HwyEWrK_IWIfX3zfIG4gKQMgP858eAP90cxaAAkob9k"}" alt="${"profile img"}">
+                    <div class="${"card-body"}"><p class="${"card-text svelte-r5ehkv"}">Bridget Fleming is a passionate advocate for teacher wellbeing. <br><br>
+                            Having taught secondary school Geography for the past 30 years, primarily in the private sector, Bridget is the IEB NSC Geography Internal Moderator and the founder of the Southern 
+                            African Geography Teachers\u2019 Association (SAGTA). <br><br>
+                            She has authored many textbooks and digital classroom resources. She left the classroom recently (where she was HOD Geography, St John\u2019s College) to start <span class="${"think"}">ThinkTeacher</span>, 
+                            an organisation to support, care for and arrange benefits for teachers. This has been her dream and passion for many years, and she is currently gathering her team of change-agents 
+                            to grow human capital. In addition, she is involved with online teacher training and content creation for Curro Online and DigiEd and GIS teacher training for Kartoza.
+
+                        </p></div>
+                <div class="${"card-footer text-muted"}"><a href="${"https://www.linkedin.com/in/bridget-fleming-a1b33551/"}" class="${"card-link"}">${validate_component(Icon, "Icon").$$render($$result, { data: linkedinSquare, scale: "1.8" }, {}, {})}</a></div></div></div>
+
+        <div class="${"col-sm-12 col-md-12 col-lg-5 g-2"}"><div class="${"card bg-dark mb-3 svelte-r5ehkv"}"><h3 class="${"card-header"}">Rebecca Maluka</h3>
+                    <div class="${"card-body"}"><h5 class="${"card-title"}">Head of Membership</h5>
+                        <h6 class="${"card-subtitle text-muted"}">Bachelor of Public Administration | 
+                            PG Dip. in Education Management | 
+                            Cert. in Customer Management | 
+                            Cert. in Project Management
+                        </h6></div>
+                    <img class="${"d-block user-select-none img-fluid svelte-r5ehkv"}" src="${"https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Rebecca.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL1JlYmVjY2EuanBnIiwiaWF0IjoxNjI1NzY1NDA5LCJleHAiOjE5NDExMjU0MDl9.R3if5ZEbhRmE9mV-2eFpP-QATKO6uCZ88jK4P3SoiQQ"}" alt="${"profile img"}">
+                    <div class="${"card-body"}"><p class="${"card-text svelte-r5ehkv"}">Rebecca Maluka is a School Operations Manager at Spark Schools and has been in the education field for 14 years. She also has experience in student enrollment within the sales and marketing environment. <br><br>
+                            She is passionate about education and leadership. Rebecca was part of the future leaders\u2019 programme at one the schools at which she worked. She has been involved in numerous non-profit organisations in the community of Alexandra. 
+                            She is driven by her desire for all South African children to have access to quality education and strives to assist young people both to achieve success and to overcome generational barriers.
+                        </p></div>
+                <div class="${"card-footer text-muted"}"><a href="${"https://www.linkedin.com/in/rebecca-maluka-1997a119/"}" class="${"card-link"}">${validate_component(Icon, "Icon").$$render($$result, { data: linkedinSquare, scale: "1.8" }, {}, {})}</a></div></div></div>
+
+        <div class="${"col-sm-12 col-md-12 col-lg-5 g-2"}"><div class="${"card bg-dark mb-3 svelte-r5ehkv"}"><h3 class="${"card-header"}">Paul Edey</h3>
+                    <div class="${"card-body"}"><h5 class="${"card-title"}">Liaison to Head of Schools &amp; Webinars</h5>
+                        <h6 class="${"card-subtitle text-muted"}">BA (Hons) | PGCE | FDE | PMD</h6></div>
+                    <img class="${"d-block user-select-none img-fluid svelte-r5ehkv"}" src="${"https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Paul.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL1BhdWwuanBnIiwiaWF0IjoxNjI1NzY1NzkyLCJleHAiOjE5NDExMjU3OTJ9.oFg1MQ2D_59BaN7tze_IOUPTb26-1upr-bnvnIcVV30"}" alt="${"profile img"}">
+                    <div class="${"card-body"}"><p class="${"card-text svelte-r5ehkv"}">In 2020 Paul was appointed as the SAHISA Stakeholder Manager at ISASA. His primary role is to act as a support for school leaders in ISASA schools and as a link between the ISASA office and the SAHISA executive. <br><br>
+                            With over 40 years in secondary and tertiary level education, Paul has been Headmaster of St David\u2019s Marist Inanda, St Andrew\u2019s College and St John\u2019s College. He is a past chairman of JOCASCO and SAHISA. <br><br>
+                            As Director of Executive Education at GIBS, Paul led Global Executive Education programmes; this experience exposed him to adult education, issues of leadership, the political economy and strategy. <br><br>
+                            Paul is <span class="${"think"}">ThinkTeacher\u2019s</span> mentor to school principals and Head of Leadership programmes. He believes with a committed, motivated teaching corps, South Africa is more likely to become a prosperous and more equitable society.
+                        </p></div>
+                <div class="${"card-footer text-muted"}"><a href="${"https://www.linkedin.com/in/paul-edey-86952814a/"}" class="${"card-link"}">${validate_component(Icon, "Icon").$$render($$result, { data: linkedinSquare, scale: "1.8" }, {}, {})}</a></div></div></div>
+
+        <div class="${"col-sm-12 col-md-12 col-lg-7 g-2"}"><div class="${"card bg-dark mb-3 svelte-r5ehkv"}"><h3 class="${"card-header"}">Kim Forbes</h3>
+                    <div class="${"card-body"}"><h5 class="${"card-title"}">Head of Wellbeing</h5>
+                        <h6 class="${"card-subtitle text-muted"}">BA Hons | 
+                            H Dip.Ed. | 
+                            PMD (GIBS) | 
+                            Higher Cert. in Financial Planning | 
+                            Cert. in Digital Marketing
+                        </h6></div>
+                    <img class="${"d-block user-select-none img-fluid svelte-r5ehkv"}" src="${"https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Kim.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL0tpbS5qcGciLCJpYXQiOjE2MjU3NjY4MzEsImV4cCI6MTk0MTEyNjgzMX0.8P2A7c2pt0ptsvFGcIyGUiHHJ-juJ3ylvdt6N4U4qxY"}" alt="${"profile img"}">
+                    <div class="${"card-body"}"><p class="${"card-text svelte-r5ehkv"}">Kim\u2019s commitment to helping people achieve their potential found its expression in her English teaching career. Her love of the power of words transitioned her to a financial publication editor role and writer for a financial planning company. <br><br>
+                            A combination of these two interests has culminated in Kim\u2019s current Transition Coaching and Writing business. A member of COMENSA, she has a Master Coach qualification.  It is her coaching skills that she will use as she heads up the Wellbeing component of <span class="${"think"}">ThinkTeacher</span>, to equip teachers to create a successful and purposeful future. <br><br>
+                            To expand her business savvy, Kim studied for her PMD through GIBS, and a Higher Certificate in Financial Planning from Milpark Business School. <br><br>
+                            Kim is a founding member of Third Thursday, uplifting SA communities through raising funds and hosting events; Gill Marcus, Debra Patta, Jonathan Jansen, Ruda Landman, Helen Zille, Michael Mol, Graeme Codrington, Ian von Memerty have featured as speakers. Projects include building Habitat for Humanity houses in Soweto, creating an Iphutheng Primary School library in Alexandra, funding an equipped bus for Mthimkhulu Centre for handicapped children and contributing to the funding of LEAP School, Alexandra, and Lawyers Against Abuse, Diepsloot. <br><br>
+                            Kim loves South Africa and is committed to working towards a more hopeful and equitable future. 
+                        </p></div>
+                <div class="${"card-footer text-muted"}"><a href="${"https://www.linkedin.com/in/kim-forbes-transition-coach-36608750/"}" class="${"card-link"}">${validate_component(Icon, "Icon").$$render($$result, { data: linkedinSquare, scale: "1.8" }, {}, {})}</a></div></div></div>
+
+        <div class="${"col-sm-12 col-md-12 col-lg-7 g-2"}"><div class="${"card bg-dark mb-3 svelte-r5ehkv"}"><h3 class="${"card-header"}">Zanele Masuku</h3>
+                    <div class="${"card-body"}"><h5 class="${"card-title"}">Administration</h5>
+                        <h6 class="${"card-subtitle text-muted"}">Professional Dip in Business Management and Marketing |
+                            SAIM Programme in Business Management |
+                            Higher Dip in Business Management and Marketing |
+                            Dip in Business Management and Marketing                   
+                        </h6></div>
+                    <img class="${"d-block user-select-none img-fluid svelte-r5ehkv"}" src="${"https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Zanele.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL1phbmVsZS5wbmciLCJpYXQiOjE2MjU3NjczNDMsImV4cCI6MTk0MTEyNzM0M30.q1H3Q_VB5zcZqso_43xwbrzEEgPTetTXKShBiPHB0kI"}" alt="${"profile img"}">
+                    <div class="${"card-body"}"><p class="${"card-text svelte-r5ehkv"}">Zanele Masuku started her career in the banking sector before becoming a school librarian for four years. <br><br>
+                            Zanele\u2019s love for accounting inspired her shift to being a bursar in\xA0various schools. She established and ran a Homework Centre, in Manzini, Eswatini, where students aged between 8 and 18 were assisted with their homework across different subjects. <br><br>
+                            In addition, Zanele founded and managed a consultancy, collecting school fees on behalf of schools and ensuring the financial sustainability of each institution involved. <br><br>
+                            Zanele manages the administrative tasks for <span class="${"think"}">ThinkTeacher</span>, ensuring that each team member can operate optimally in their sector of expertise. 
+                        </p></div>
+                <div class="${"card-footer text-muted"}"><a href="${"https://www.linkedin.com/in/zanele-portia-masuku/"}" class="${"card-link"}">${validate_component(Icon, "Icon").$$render($$result, { data: linkedinSquare, scale: "1.8" }, {}, {})}</a></div></div></div>
+        
+        <div class="${"col-sm-12 col-md-5 col-lg-5 g-2"}"><div class="${"card bg-dark mb-3 svelte-r5ehkv"}"><h3 class="${"card-header"}">Ferdie Heunis</h3>
+                    <div class="${"card-body"}"><h5 class="${"card-title"}">Head of Marketing</h5>
+                        <h6 class="${"card-subtitle text-muted"}">BCom (Marketing Management) | BCom Hons (Communication Management) | Gallup Strengths Coaching
+                        </h6></div>
+                    <img class="${"d-block user-select-none img-fluid svelte-r5ehkv"}" src="${"https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Ferdie.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL0ZlcmRpZS5wbmciLCJpYXQiOjE2MjU3Njc0NjQsImV4cCI6MTk0MTEyNzQ2NH0.YQqrWDsYD_OfVHdLElaR1aVw9wWL0VoTlYxj8K8lQKQ"}" alt="${"profile img"}">
+                    <div class="${"card-body"}"><p class="${"card-text svelte-r5ehkv"}">Ferdie thrives on seeing individuals, teams and organisations develop into authentic entities. He sees himself as an activator: activating people and entities in their uniqueness and empowering them to become leaders, wherever they find themselves. <br><br>
+                            The future plays a significant role in how he approaches development. That is why, over the past 12 years, he has equipped himself with key personal and leadership development skills that will assist individuals, teams and organisations in seeing a better future, and then working with them to co-create it. <br><br>
+                            Ferdie\u2019s experience as Marketing Co-ordinator for Chameleon Adventures will stand him in good stead as he heads up the <span class="${"think"}">ThinkTeacher</span> marketing initiatives which are geared towards making teachers aware that there is an organisation dedicated to supporting, caring for and growing them.
+                        </p></div>
+                <div class="${"card-footer text-muted"}"><a href="${"https://www.linkedin.com/in/ferdie-heunis-8bb3943a/"}" class="${"card-link"}">${validate_component(Icon, "Icon").$$render($$result, { data: linkedinSquare, scale: "1.8" }, {}, {})}</a></div></div></div>
+
+        <div class="${"col-sm-12 col-md-5 col-lg-5 g-2"}"><div class="${"card bg-dark mb-3 svelte-r5ehkv"}"><h3 class="${"card-header"}">Frances Kerr-Phillips</h3>
+                    <div class="${"card-body"}"><h5 class="${"card-title"}">Head of Operations, Content &amp; Internships</h5>
+                        <h6 class="${"card-subtitle text-muted"}">MA (Hons) | PGCE | MEd
+                        </h6></div>
+                    <img class="${"d-block user-select-none img-fluid svelte-r5ehkv"}" src="${"https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Frances Kerr-Phillips photograph 2.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL0ZyYW5jZXMgS2Vyci1QaGlsbGlwcyBwaG90b2dyYXBoIDIuanBnIiwiaWF0IjoxNjI1NzY3NzE2LCJleHAiOjE5NDExMjc3MTZ9.KsHs9cILZIksJjgleeb-U3427yh-Afg-1DuhCG6LPnM"}" alt="${"profile img"}">
+                    <div class="${"card-body"}"><p class="${"card-text svelte-r5ehkv"}">Frances\u2019 passion for growing top quality South African teachers, and keeping them in the system, is what has led to her involvement with <span class="${"think"}">ThinkTeacher</span>. <br><br>
+                            This interest in teacher training and mentoring continues in her current role as the intern mentor at St John\u2019s College. <br><br>
+                            Frances has 35 years of experience in a diverse range of educational institutions in Southern Africa. During her 8 years as an Assessment Specialist with the Independent Examinations Board (IEB) she visited over 100 schools in the region, and has worked with teachers, examiners, moderators and consultants in a variety of training and mentoring roles. <br><br>
+                            Frances is currently the Managing Editor for <span class="${"think"}">ThinkTeacher</span> and will then drive the <span class="${"think"}">ThinkTeacher</span> internship initiative.
+                        </p></div>
+                <div class="${"card-footer text-muted"}"><a href="${"https://www.linkedin.com/in/frances-kerr-phillips-768a34216/"}" class="${"card-link"}">${validate_component(Icon, "Icon").$$render($$result, { data: linkedinSquare, scale: "1.8" }, {}, {})}</a></div></div></div>
+
+        <div class="${"col-sm-12 col-md-12 col-lg-7 g-2"}"><div class="${"card bg-dark mb-3 svelte-r5ehkv"}"><h3 class="${"card-header"}">Malcolm Williams</h3>
+                    <div class="${"card-body"}"><h5 class="${"card-title"}">Head of Operations</h5>
+                        <h6 class="${"card-subtitle text-muted"}">BA (Wits) | HDE (Wits) | BA Hons (SA) | MEd(Wits)  
+                        </h6></div>
+                    <img class="${"d-block user-select-none img-fluid svelte-r5ehkv"}" src="${"https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Malcolm.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL01hbGNvbG0ucG5nIiwiaWF0IjoxNjI1NzY3OTcxLCJleHAiOjE5NDExMjc5NzF9.M1B3cACdVsZkHKoY8nI7FzgzhUx_0k4_i0vBVrv5CSE"}" alt="${"profile img"}">
+                    <div class="${"card-body"}"><p class="${"card-text svelte-r5ehkv"}">Teachers, more than any others, have the capacity to change the lives of individuals and, indeed, the future of a nation. <br><br>
+                            This belief has driven Malcolm Williams\u2019 career in education, with 18 years as a Head of top schools across the Independent, Public and Cambridge school sectors. <br><br>
+                            Malcolm thrives on coaching, developing and growing others, and celebrating the success which follows the pursuit of excellence.  As a teacher and family man, Malcolm enjoys building relationships and engaging with others; he believes that positive relationships are the core of the learning experience and of attaining fulfilment. <br><br>
+                            <span class="${"think"}">ThinkTeacher\u2019s</span> goal is to ensure that each teacher receives the specific support they may require to be the best they can be as people, and as teachers. As Head of Operations, Malcolm is excited by the opportunity to oversee the range of inputs and support options which <span class="${"think"}">ThinkTeacher</span> will be offering its members. <br><br>
+                            Malcolm seeks to live life to the full, savour each moment and experience, and get the job done, properly ... with large dollops of fun thrown in for good measure!
+                        </p></div>
+                <div class="${"card-footer text-muted"}"><a href="${"https://www.linkedin.com/in/malcolm-williams-7939a7b5/"}" class="${"card-link"}">${validate_component(Icon, "Icon").$$render($$result, { data: linkedinSquare, scale: "1.8" }, {}, {})}</a></div></div></div></div>
+</div>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/login-f62a7f3c.js
+var login_f62a7f3c_exports = {};
+__export(login_f62a7f3c_exports, {
+  default: () => Login,
+  prerender: () => prerender6
+});
+var import_axios6, prerender6, Login;
+var init_login_f62a7f3c = __esm({
+  ".svelte-kit/output/server/chunks/login-f62a7f3c.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    import_axios6 = __toModule(require_axios2());
+    init_Icon_7dad3475();
+    init_stores_6349963b();
+    init_instagram_60dc2453();
+    prerender6 = true;
+    Login = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let $$unsubscribe_ttNum;
+      let $$unsubscribe_id;
+      let $$unsubscribe_surname;
+      let $$unsubscribe_name;
+      let $$unsubscribe_user;
+      let $errMsg, $$unsubscribe_errMsg;
+      $$unsubscribe_ttNum = subscribe(ttNum, (value) => value);
+      $$unsubscribe_id = subscribe(id, (value) => value);
+      $$unsubscribe_surname = subscribe(surname, (value) => value);
+      $$unsubscribe_name = subscribe(name, (value) => value);
+      $$unsubscribe_user = subscribe(user, (value) => value);
+      $$unsubscribe_errMsg = subscribe(errMsg, (value) => $errMsg = value);
+      let usernameEmail, password;
+      $$unsubscribe_ttNum();
+      $$unsubscribe_id();
+      $$unsubscribe_surname();
+      $$unsubscribe_name();
+      $$unsubscribe_user();
+      $$unsubscribe_errMsg();
+      return `${$$result.head += `${$$result.title = `<title>Login</title>`, ""}`, ""}
+
+<section class="${"vh-50 gradient-custom container mt-4 mb-4"}"><div class="${"py-3 h-100"}"><div class="${"row d-flex justify-content-center align-items-center h-100"}"><div class="${"col-12 col-md-8 col-lg-6 col-xl-6"}"><div class="${"card bg-dark text-white"}" style="${"border-radius: 1rem;"}"><div class="${"card-body p-md-4 p-lg-5 text-center"}"><div class="${"mb-md-3 mt-md-2"}"><h2 class="${"fw-bold mb-2 text-uppercase"}">Login</h2>
+                    <p class="${"text-white-50 mb-3"}">Please enter your email and password</p>
+
+                    ${``}
+
+                    ${$errMsg ? `<h4 class="${"error-col"}">${escape($errMsg)}</h4>` : ``}
+                    
+                    <form name="${"login"}"><div class="${"form-outline form-white mb-2 mt-3"}"><label class="${"form-label"}" for="${"Email"}">Email</label>
+                            <input type="${"email"}" id="${"Email"}" class="${"form-control form-control-lg"}" placeholder="${"Enter email or username"}" required${add_attribute("value", usernameEmail, 0)}></div>
+                        <div class="${"form-outline form-white mb-2 text-left"}"><label class="${"form-label"}" for="${"Password"}">Password</label>
+                            <input type="${"password"}" id="${"Password"}" class="${"form-control form-control-lg"}" placeholder="${"Password"}" required${add_attribute("value", password, 0)}></div>
+                        <p class="${"small mb-3 pb-lg-2"}"><a class="${"text-white-50"}" href="${"/forgot-password"}">Forgot password?</a></p>
+        
+                        <button class="${"btn btn-outline-light btn-lg px-4"}" type="${"submit"}">Login</button></form>
+                
+                    <div class="${"mt-2 pt-1"}"><a href="${"https://www.facebook.com/thinkteacher"}" class="${"text-white px-2"}">${validate_component(Icon, "Icon").$$render($$result, { data: facebook, scale: "1.4" }, {}, {})}</a>
+                        <a href="${"https://twitter.com/thinkteacher_sa"}" class="${"text-white px-2"}">${validate_component(Icon, "Icon").$$render($$result, { data: twitter, scale: "1.4" }, {}, {})}</a>
+                        <a href="${"https://www.instagram.com/thinkteacher_rsa"}" class="${"text-white px-2"}">${validate_component(Icon, "Icon").$$render($$result, { data: instagram, scale: "1.4" }, {}, {})}</a></div></div>
+    
+                <div><p class="${"mb-0"}">Don&#39;t have an account? <a href="${"/register"}" class="${"text-white-50 fw-bold"}">Register</a></p></div></div></div></div></div></div></section>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/__layout-a6e50c53.js
+var layout_a6e50c53_exports = {};
+__export(layout_a6e50c53_exports, {
+  default: () => _layout2
+});
+var import_axios7, css10, _layout2;
+var init_layout_a6e50c53 = __esm({
+  ".svelte-kit/output/server/chunks/__layout-a6e50c53.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    import_axios7 = __toModule(require_axios2());
+    init_stores_6349963b();
+    css10 = {
+      code: "nav.svelte-aiuavh a.svelte-aiuavh{padding:1rem;font-size:1.2em}",
+      map: null
+    };
+    _layout2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let $$unsubscribe_errMsg;
+      $$unsubscribe_errMsg = subscribe(errMsg, (value) => value);
+      $$result.css.add(css10);
+      $$unsubscribe_errMsg();
+      return `<div class="${"container text-center mt-4"}"><nav class="${"svelte-aiuavh"}"><a href="${"/auth"}" class="${"svelte-aiuavh"}">Home</a>
+        <a href="${"/auth/selections"}" class="${"svelte-aiuavh"}">Selections</a>
+        <a href="${"/auth/profile"}" class="${"svelte-aiuavh"}">Profile</a></nav>
+    ${slots.default ? slots.default({}) : ``}
+</div>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/index-046ea3d5.js
+var index_046ea3d5_exports = {};
+__export(index_046ea3d5_exports, {
+  default: () => Auth,
+  prerender: () => prerender7
+});
+var prerender7, Auth;
+var init_index_046ea3d5 = __esm({
+  ".svelte-kit/output/server/chunks/index-046ea3d5.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    prerender7 = true;
+    Auth = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<div class="${"container mt-4"}"><h3>Coming Soon</h3></div>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/form-medical-aid-61b78d7a.js
+var form_medical_aid_61b78d7a_exports = {};
+__export(form_medical_aid_61b78d7a_exports, {
+  default: () => Form_medical_aid
+});
+var import_axios8, css11, Form_medical_aid;
+var init_form_medical_aid_61b78d7a = __esm({
+  ".svelte-kit/output/server/chunks/form-medical-aid-61b78d7a.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    import_axios8 = __toModule(require_axios2());
+    init_Clock_svelte_svelte_type_style_lang_166352fe();
+    css11 = {
+      code: ".form-check-input.svelte-1fkefwm{margin:0 auto !important}.form-check-input.svelte-1fkefwm:checked{background-color:var(--logo-gold);border-color:var(--logo-gold)}.form-check-input.svelte-1fkefwm:focus{border-color:rgba(255, 255, 255, 0.4);outline:0;box-shadow:0 0 0 0.25rem rgba(217, 183, 61, 0.055)}",
+      map: null
+    };
+    Form_medical_aid = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      $$result.css.add(css11);
+      return `${$$result.head += `${$$result.title = `<title>Contact Partner</title>`, ""}`, ""}
+
+${`<div class="${"d-flex justify-content-center mt-5"}">${validate_component(Jumper, "Jumper").$$render($$result, {
+        size: "150",
+        color: "#5C677D",
+        unit: "px",
+        duration: "1s"
+      }, {}, {})}</div>`}`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/form-wellbeing-019dbcf3.js
+var form_wellbeing_019dbcf3_exports = {};
+__export(form_wellbeing_019dbcf3_exports, {
+  default: () => Form_wellbeing
+});
+var import_axios9, css12, Form_wellbeing;
+var init_form_wellbeing_019dbcf3 = __esm({
+  ".svelte-kit/output/server/chunks/form-wellbeing-019dbcf3.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    import_axios9 = __toModule(require_axios2());
+    init_Clock_svelte_svelte_type_style_lang_166352fe();
+    css12 = {
+      code: ".form-check-input.svelte-1fkefwm{margin:0 auto !important}.form-check-input.svelte-1fkefwm:checked{background-color:var(--logo-gold);border-color:var(--logo-gold)}.form-check-input.svelte-1fkefwm:focus{border-color:rgba(255, 255, 255, 0.4);outline:0;box-shadow:0 0 0 0.25rem rgba(217, 183, 61, 0.055)}",
+      map: null
+    };
+    Form_wellbeing = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      $$result.css.add(css12);
+      return `${$$result.head += `${$$result.title = `<title>Contact Partner</title>`, ""}`, ""}
+
+${`<div class="${"d-flex justify-content-center mt-5"}">${validate_component(Jumper, "Jumper").$$render($$result, {
+        size: "150",
+        color: "#5C677D",
+        unit: "px",
+        duration: "1s"
+      }, {}, {})}</div>`}`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/form-courses-5aa81170.js
+var form_courses_5aa81170_exports = {};
+__export(form_courses_5aa81170_exports, {
+  default: () => Form_courses
+});
+var import_axios10, css13, Form_courses;
+var init_form_courses_5aa81170 = __esm({
+  ".svelte-kit/output/server/chunks/form-courses-5aa81170.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    import_axios10 = __toModule(require_axios2());
+    init_Clock_svelte_svelte_type_style_lang_166352fe();
+    init_stores_6349963b();
+    css13 = {
+      code: ".form-check-input.svelte-1fkefwm{margin:0 auto !important}.form-check-input.svelte-1fkefwm:checked{background-color:var(--logo-gold);border-color:var(--logo-gold)}.form-check-input.svelte-1fkefwm:focus{border-color:rgba(255, 255, 255, 0.4);outline:0;box-shadow:0 0 0 0.25rem rgba(217, 183, 61, 0.055)}",
+      map: null
+    };
+    Form_courses = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let $$unsubscribe_courseType;
+      $$unsubscribe_courseType = subscribe(courseType, (value) => value);
+      $$result.css.add(css13);
+      $$unsubscribe_courseType();
+      return `${$$result.head += `${$$result.title = `<title>Contact Partner</title>`, ""}`, ""}
+
+${`<div class="${"d-flex justify-content-center mt-5"}">${validate_component(Jumper, "Jumper").$$render($$result, {
+        size: "150",
+        color: "#5C677D",
+        unit: "px",
+        duration: "1s"
+      }, {}, {})}</div>`}`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/form-finance-ef643a9e.js
+var form_finance_ef643a9e_exports = {};
+__export(form_finance_ef643a9e_exports, {
+  default: () => Form_finance
+});
+var Form_finance;
+var init_form_finance_ef643a9e = __esm({
+  ".svelte-kit/output/server/chunks/form-finance-ef643a9e.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    Form_finance = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<h1>Coming soon!</h1>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/form-travel-39aacc1b.js
+var form_travel_39aacc1b_exports = {};
+__export(form_travel_39aacc1b_exports, {
+  default: () => Form_travel
+});
+var import_axios11, css14, Form_travel;
+var init_form_travel_39aacc1b = __esm({
+  ".svelte-kit/output/server/chunks/form-travel-39aacc1b.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    import_axios11 = __toModule(require_axios2());
+    init_Clock_svelte_svelte_type_style_lang_166352fe();
+    init_stores_6349963b();
+    css14 = {
+      code: ".form-check-input.svelte-1fkefwm{margin:0 auto !important}.form-check-input.svelte-1fkefwm:checked{background-color:var(--logo-gold);border-color:var(--logo-gold)}.form-check-input.svelte-1fkefwm:focus{border-color:rgba(255, 255, 255, 0.4);outline:0;box-shadow:0 0 0 0.25rem rgba(217, 183, 61, 0.055)}",
+      map: null
+    };
+    Form_travel = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let $$unsubscribe_travelType;
+      $$unsubscribe_travelType = subscribe(travelType, (value) => value);
+      $$result.css.add(css14);
+      $$unsubscribe_travelType();
+      return `${$$result.head += `${$$result.title = `<title>Contact Partner</title>`, ""}`, ""}
+
+${`<div class="${"d-flex justify-content-center mt-5"}">${validate_component(Jumper, "Jumper").$$render($$result, {
+        size: "150",
+        color: "#5C677D",
+        unit: "px",
+        duration: "1s"
+      }, {}, {})}</div>`}`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/form-legal-cd0927e2.js
+var form_legal_cd0927e2_exports = {};
+__export(form_legal_cd0927e2_exports, {
+  default: () => Form_legal
+});
+var Form_legal;
+var init_form_legal_cd0927e2 = __esm({
+  ".svelte-kit/output/server/chunks/form-legal-cd0927e2.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    Form_legal = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return ``;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/selections-964c9a19.js
+var selections_964c9a19_exports = {};
+__export(selections_964c9a19_exports, {
+  default: () => Selections
+});
+var import_axios12, Selections;
+var init_selections_964c9a19 = __esm({
+  ".svelte-kit/output/server/chunks/selections-964c9a19.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    import_axios12 = __toModule(require_axios2());
+    init_Clock_svelte_svelte_type_style_lang_166352fe();
+    Selections = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let travel = [];
+      {
+        console.log(travel);
+      }
+      return `<div class="${"container mb-5"}"><h1 class="${"mb-4"}">Selection history:</h1>
+
+${`<div class="${"d-flex justify-content-center mt-5"}">${validate_component(Jumper, "Jumper").$$render($$result, {
+        size: "150",
+        color: "#5C677D",
+        unit: "px",
+        duration: "1s"
+      }, {}, {})}</div>`}
+</div>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/profile-e791d98e.js
+var profile_e791d98e_exports = {};
+__export(profile_e791d98e_exports, {
+  default: () => Profile
+});
+var import_axios13, Profile;
+var init_profile_e791d98e = __esm({
+  ".svelte-kit/output/server/chunks/profile-e791d98e.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    import_axios13 = __toModule(require_axios2());
+    init_Clock_svelte_svelte_type_style_lang_166352fe();
+    init_stores_6349963b();
+    Profile = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let $$unsubscribe_name;
+      $$unsubscribe_name = subscribe(name, (value) => value);
+      $$unsubscribe_name();
+      return `${$$result.head += `${$$result.title = `<title>ThinkTeacher Profile</title>`, ""}`, ""}
+
+
+${`<div class="${"d-flex justify-content-center mt-5"}">${validate_component(Jumper, "Jumper").$$render($$result, {
+        size: "150",
+        color: "#5C677D",
+        unit: "px",
+        duration: "1s"
+      }, {}, {})}</div>`}`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/index-eb6dbc82.js
+var index_eb6dbc82_exports = {};
+__export(index_eb6dbc82_exports, {
+  default: () => Blog,
+  load: () => load6
+});
+var css15, API_URL5, load6, Blog;
+var init_index_eb6dbc82 = __esm({
+  ".svelte-kit/output/server/chunks/index-eb6dbc82.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    css15 = {
+      code: "h4.svelte-e8chb9{color:#fff}.blog-block.svelte-e8chb9{border-radius:20px;border:3px solid var(--logo-gold)}.blog-block.svelte-e8chb9:hover{cursor:pointer;border:3px solid var(--logo-grey)}",
+      map: null
+    };
+    API_URL5 = "http://localhost:1337";
+    load6 = async ({ fetch: fetch2 }) => {
+      const res = await fetch2(`${API_URL5}/posts`);
+      if (res.ok) {
+        const data = await res.json();
+        return { props: { posts: data } };
+      }
+      return {
+        status: res.status,
+        error: new Error(`Could not load ${url}`)
+      };
+    };
+    Blog = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { posts } = $$props;
+      if ($$props.posts === void 0 && $$bindings.posts && posts !== void 0)
+        $$bindings.posts(posts);
+      $$result.css.add(css15);
+      return `${$$result.head += `${$$result.title = `<title>Blog</title>`, ""}`, ""}
+
+<div class="${"my-4"}"><h1 class="${"text-center text-3xl font-bold"}"><span class="${"think"}">Think</span>Teacher Blog</h1></div>
+
+<div class="${"container mx-auto mt-4 mb-5"}">${posts.length <= 0 ? `<h3 class="${"text-center"}">No posts are on the blog yet, check back another time.</h3>` : `<div class="${"row justify-content-center"}">${each(posts, (post) => `<div class="${"col-sm-12 col-md-6 col-lg-4 text-center mt-3"}"><div class="${"blog-block bg-dark p-3 svelte-e8chb9"}"><h4 class="${"font-bold svelte-e8chb9"}">${escape(post.title)}</h4>
+                        <p class="${"mt-2 text-white"}">${escape(post.description)}</p>
+                        <p class="${"text-logo-gold"}">By: ${escape(post.Author)}</p>
+                        <button class="${"btn btn-sm bg-gold shadow cta text-black"}">Read More</button></div>
+                </div>`)}</div>`}
+</div>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/_slug_-c0721700.js
+var slug_c0721700_exports = {};
+__export(slug_c0721700_exports, {
+  default: () => U5Bslugu5D2,
+  load: () => load7
+});
+var css16, API_URL6, load7, U5Bslugu5D2;
+var init_slug_c0721700 = __esm({
+  ".svelte-kit/output/server/chunks/_slug_-c0721700.js"() {
+    init_shims();
+    init_app_f93ccc42();
+    init_Icon_7dad3475();
+    init_arrow_left_eef75369();
+    init_SvelteMarkdown_baee76c8();
+    css16 = {
+      code: "img.svelte-1wkd7gu{max-height:400px;width:auto}h1.svelte-1wkd7gu{color:var(--logo-gold)}h5.svelte-1wkd7gu{color:var(--bg-banner);line-height:0}time.svelte-1wkd7gu{color:#fff}.container.svelte-1wkd7gu{border-radius:20px}@media screen and (max-width: 1000px){.container.svelte-1wkd7gu{padding:1rem}}@media screen and (min-width: 999px){.container.svelte-1wkd7gu{padding:5rem}}.border-custom.svelte-1wkd7gu{border-top:3px solid var(--logo-gold);border-left:3px solid var(--logo-gold);border-bottom:3px solid var(--logo-grey);border-right:3px solid var(--logo-grey)}",
+      map: null
+    };
+    API_URL6 = "http://localhost:1337";
+    load7 = async ({ page: { params }, fetch: fetch2 }) => {
+      const { slug } = params;
+      const res = await fetch2(`${API_URL6}/posts?slug=${slug}`);
+      if (res.ok) {
+        const data = await res.json();
+        return { props: { post: data[0] } };
+      }
+      return {
+        status: res.status,
+        error: new Error(`Could not load ${url}`)
+      };
+    };
+    U5Bslugu5D2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { post } = $$props;
+      let date;
+      let publish;
+      let source;
+      if (post) {
+        date = new Date(post.published_at);
+        publish = date.toLocaleString("en-ZA", {
+          month: "long",
+          day: "2-digit",
+          year: "numeric"
+        });
+        source = post.content;
+      }
+      if ($$props.post === void 0 && $$bindings.post && post !== void 0)
+        $$bindings.post(post);
+      $$result.css.add(css16);
+      return `${$$result.head += `${post ? `${$$result.title = `<title>${escape(post.title)}</title>`, ""}` : `${$$result.title = `<title>404</title>`, ""}`}`, ""}
+
+
+
+${post ? `<div class="${"container bg-dark mt-4 border-custom mb-5 svelte-1wkd7gu"}"><a href="${"/blog"}">${validate_component(Icon, "Icon").$$render($$result, { data: arrowLeft, scale: "1.8" }, {}, {})}</a>
+        <img class="${"img-fluid mx-auto d-block mt-2 svelte-1wkd7gu"}"${add_attribute("src", post.image.url, 0)} alt="${"Blog banner"}">
+
+        <h1 class="${"text-center svelte-1wkd7gu"}">${escape(post.title)}</h1>
+        <h4 class="${"text-center text-white"}">${escape(post.description)}</h4>
+
+        <h5 class="${"mt-5 svelte-1wkd7gu"}">Author: ${escape(post.Author)}</h5>
+        ${post.source_url ? `<a sveltekit:prefetch${add_attribute("href", post.source_url, 0)} target="${"_blank"}">${escape(post.source_url)}</a><br>` : ``}
+        <time${add_attribute("datetime", publish, 0)} class="${"svelte-1wkd7gu"}">${escape(publish)}</time>  
+        
+        <div id="${"mark-down"}">${validate_component(SvelteMarkdown, "SvelteMarkdown").$$render($$result, { source }, {}, {})}</div></div>` : `<div class="${"p-5 text-center"}"><h2>Not found: 404</h2></div>`}`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/app-f93ccc42.js
+function get_single_valued_header(headers, key2) {
+  const value = headers[key2];
   if (Array.isArray(value)) {
     if (value.length === 0) {
       return void 0;
     }
     if (value.length > 1) {
-      throw new Error(`Multiple headers provided for ${key}. Multiple may be provided only for set-cookie`);
+      throw new Error(`Multiple headers provided for ${key2}. Multiple may be provided only for set-cookie`);
     }
     return value[0];
   }
   return value;
+}
+function resolve(base2, path) {
+  if (scheme.test(path))
+    return path;
+  const base_match = absolute.exec(base2);
+  const path_match = absolute.exec(path);
+  if (!base_match) {
+    throw new Error(`bad base path: "${base2}"`);
+  }
+  const baseparts = path_match ? [] : base2.slice(base_match[0].length).split("/");
+  const pathparts = path_match ? path.slice(path_match[0].length).split("/") : path.split("/");
+  baseparts.pop();
+  for (let i = 0; i < pathparts.length; i += 1) {
+    const part = pathparts[i];
+    if (part === ".")
+      continue;
+    else if (part === "..")
+      baseparts.pop();
+    else
+      baseparts.push(part);
+  }
+  const prefix = path_match && path_match[0] || base_match && base_match[0] || "";
+  return `${prefix}${baseparts.join("/")}`;
+}
+function is_root_relative(path) {
+  return path[0] === "/" && path[1] !== "/";
 }
 function coalesce_to_error(err) {
   return err instanceof Error || err && err.name && err.message ? err : new Error(JSON.stringify(err));
 }
 function lowercase_keys(obj) {
   const clone2 = {};
-  for (const key in obj) {
-    clone2[key.toLowerCase()] = obj[key];
+  for (const key2 in obj) {
+    clone2[key2.toLowerCase()] = obj[key2];
   }
   return clone2;
 }
@@ -9378,24 +13873,6 @@ async function render_endpoint(request, route, match) {
   }
   return { status, body: normalized_body, headers };
 }
-var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$";
-var unsafeChars = /[<>\b\f\n\r\t\0\u2028\u2029]/g;
-var reserved = /^(?:do|if|in|for|int|let|new|try|var|byte|case|char|else|enum|goto|long|this|void|with|await|break|catch|class|const|final|float|short|super|throw|while|yield|delete|double|export|import|native|return|switch|throws|typeof|boolean|default|extends|finally|package|private|abstract|continue|debugger|function|volatile|interface|protected|transient|implements|instanceof|synchronized)$/;
-var escaped$1 = {
-  "<": "\\u003C",
-  ">": "\\u003E",
-  "/": "\\u002F",
-  "\\": "\\\\",
-  "\b": "\\b",
-  "\f": "\\f",
-  "\n": "\\n",
-  "\r": "\\r",
-  "	": "\\t",
-  "\0": "\\0",
-  "\u2028": "\\u2028",
-  "\u2029": "\\u2029"
-};
-var objectProtoOwnPropertyNames = Object.getOwnPropertyNames(Object.prototype).sort().join("\0");
 function devalue(value) {
   var counts = new Map();
   function walk(thing) {
@@ -9431,8 +13908,8 @@ function devalue(value) {
           if (Object.getOwnPropertySymbols(thing).length > 0) {
             throw new Error("Cannot stringify POJOs with symbolic keys");
           }
-          Object.keys(thing).forEach(function(key) {
-            return walk(thing[key]);
+          Object.keys(thing).forEach(function(key2) {
+            return walk(thing[key2]);
           });
       }
     }
@@ -9473,8 +13950,8 @@ function devalue(value) {
       case "Map":
         return "new " + type + "([" + Array.from(thing).map(stringify).join(",") + "])";
       default:
-        var obj = "{" + Object.keys(thing).map(function(key) {
-          return safeKey(key) + ":" + stringify(thing[key]);
+        var obj = "{" + Object.keys(thing).map(function(key2) {
+          return safeKey(key2) + ":" + stringify(thing[key2]);
         }).join(",") + "}";
         var proto = Object.getPrototypeOf(thing);
         if (proto === null) {
@@ -9528,8 +14005,8 @@ function devalue(value) {
           break;
         default:
           values_1.push(Object.getPrototypeOf(thing) === null ? "Object.create(null)" : "{}");
-          Object.keys(thing).forEach(function(key) {
-            statements_1.push("" + name2 + safeProp(key) + "=" + stringify(thing[key]));
+          Object.keys(thing).forEach(function(key2) {
+            statements_1.push("" + name2 + safeProp(key2) + "=" + stringify(thing[key2]));
           });
       }
     });
@@ -9571,11 +14048,11 @@ function escapeUnsafeChar(c) {
 function escapeUnsafeChars(str) {
   return str.replace(unsafeChars, escapeUnsafeChar);
 }
-function safeKey(key) {
-  return /^[_$a-zA-Z][_$a-zA-Z0-9]*$/.test(key) ? key : escapeUnsafeChars(JSON.stringify(key));
+function safeKey(key2) {
+  return /^[_$a-zA-Z][_$a-zA-Z0-9]*$/.test(key2) ? key2 : escapeUnsafeChars(JSON.stringify(key2));
 }
-function safeProp(key) {
-  return /^[_$a-zA-Z][_$a-zA-Z0-9]*$/.test(key) ? "." + key : "[" + escapeUnsafeChars(JSON.stringify(key)) + "]";
+function safeProp(key2) {
+  return /^[_$a-zA-Z][_$a-zA-Z0-9]*$/.test(key2) ? "." + key2 : "[" + escapeUnsafeChars(JSON.stringify(key2)) + "]";
 }
 function stringifyString(str) {
   var result = '"';
@@ -9605,25 +14082,23 @@ function noop$1() {
 function safe_not_equal$1(a, b) {
   return a != a ? b == b : a !== b || (a && typeof a === "object" || typeof a === "function");
 }
-Promise.resolve();
-var subscriber_queue$1 = [];
-function writable$1(value, start = noop$1) {
+function writable2(value, start = noop$1) {
   let stop;
   const subscribers = new Set();
   function set(new_value) {
     if (safe_not_equal$1(value, new_value)) {
       value = new_value;
       if (stop) {
-        const run_queue = !subscriber_queue$1.length;
+        const run_queue = !subscriber_queue2.length;
         for (const subscriber of subscribers) {
           subscriber[1]();
-          subscriber_queue$1.push(subscriber, value);
+          subscriber_queue2.push(subscriber, value);
         }
         if (run_queue) {
-          for (let i = 0; i < subscriber_queue$1.length; i += 2) {
-            subscriber_queue$1[i][0](subscriber_queue$1[i + 1]);
+          for (let i = 0; i < subscriber_queue2.length; i += 2) {
+            subscriber_queue2[i][0](subscriber_queue2[i + 1]);
           }
-          subscriber_queue$1.length = 0;
+          subscriber_queue2.length = 0;
         }
       }
     }
@@ -9660,33 +14135,13 @@ function hash(value) {
   }
   return (hash2 >>> 0).toString(36);
 }
-var escape_json_string_in_html_dict = {
-  '"': '\\"',
-  "<": "\\u003C",
-  ">": "\\u003E",
-  "/": "\\u002F",
-  "\\": "\\\\",
-  "\b": "\\b",
-  "\f": "\\f",
-  "\n": "\\n",
-  "\r": "\\r",
-  "	": "\\t",
-  "\0": "\\0",
-  "\u2028": "\\u2028",
-  "\u2029": "\\u2029"
-};
 function escape_json_string_in_html(str) {
-  return escape$5(str, escape_json_string_in_html_dict, (code) => `\\u${code.toString(16).toUpperCase()}`);
+  return escape$12(str, escape_json_string_in_html_dict, (code) => `\\u${code.toString(16).toUpperCase()}`);
 }
-var escape_html_attr_dict = {
-  "<": "&lt;",
-  ">": "&gt;",
-  '"': "&quot;"
-};
 function escape_html_attr(str) {
-  return '"' + escape$5(str, escape_html_attr_dict, (code) => `&#${code};`) + '"';
+  return '"' + escape$12(str, escape_html_attr_dict, (code) => `&#${code};`) + '"';
 }
-function escape$5(str, dict, unicode_encoder) {
+function escape$12(str, dict, unicode_encoder) {
   let result = "";
   for (let i = 0; i < str.length; i += 1) {
     const char = str.charAt(i);
@@ -9706,7 +14161,6 @@ function escape$5(str, dict, unicode_encoder) {
   }
   return result;
 }
-var s$1 = JSON.stringify;
 async function render_response({
   branch,
   options: options2,
@@ -9716,7 +14170,7 @@ async function render_response({
   error: error2,
   page
 }) {
-  const css2 = new Set(options2.entry.css);
+  const css22 = new Set(options2.entry.css);
   const js = new Set(options2.entry.js);
   const styles = new Set();
   const serialized_data = [];
@@ -9729,7 +14183,7 @@ async function render_response({
   if (page_config.ssr) {
     branch.forEach(({ node, loaded, fetched, uses_credentials }) => {
       if (node.css)
-        node.css.forEach((url2) => css2.add(url2));
+        node.css.forEach((url2) => css22.add(url2));
       if (node.js)
         node.js.forEach((url2) => js.add(url2));
       if (node.styles)
@@ -9740,11 +14194,11 @@ async function render_response({
         is_private = true;
       maxage = loaded.maxage;
     });
-    const session = writable$1($session);
+    const session = writable2($session);
     const props = {
       stores: {
-        page: writable$1(null),
-        navigating: writable$1(null),
+        page: writable2(null),
+        navigating: writable2(null),
         session
       },
       page,
@@ -9772,7 +14226,7 @@ async function render_response({
     js.clear();
   const links = options2.amp ? styles.size > 0 || rendered.css.code.length > 0 ? `<style amp-custom>${Array.from(styles).concat(rendered.css.code).join("\n")}</style>` : "" : [
     ...Array.from(js).map((dep) => `<link rel="modulepreload" href="${dep}">`),
-    ...Array.from(css2).map((dep) => `<link rel="stylesheet" href="${dep}">`)
+    ...Array.from(css22).map((dep) => `<link rel="stylesheet" href="${dep}">`)
   ].join("\n		");
   let init2 = "";
   if (options2.amp) {
@@ -9780,6 +14234,7 @@ async function render_response({
 		<style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style>
 		<noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
 		<script async src="https://cdn.ampproject.org/v0.js"><\/script>`;
+    init2 += options2.service_worker ? '<script async custom-element="amp-install-serviceworker" src="https://cdn.ampproject.org/v0/amp-install-serviceworker-0.1.js"><\/script>' : "";
   } else if (include_js) {
     init2 = `<script type="module">
 			import { start } from ${s$1(options2.entry.file)};
@@ -9814,7 +14269,7 @@ async function render_response({
 		<\/script>`;
   }
   if (options2.service_worker) {
-    init2 += `<script>
+    init2 += options2.amp ? `<amp-install-serviceworker src="${options2.service_worker}" layout="nodisplay"></amp-install-serviceworker>` : `<script>
 			if ('serviceWorker' in navigator) {
 				navigator.serviceWorker.register('${options2.service_worker}');
 			}
@@ -9914,7 +14369,6 @@ function normalize(loaded) {
   }
   return loaded;
 }
-var s = JSON.stringify;
 async function load_node({
   request,
   options: options2,
@@ -9979,7 +14433,7 @@ async function load_node({
           response = options2.read ? new Response(options2.read(asset.file), {
             headers: asset.type ? { "content-type": asset.type } : {}
           }) : await fetch(`http://${page.host}/${asset.file}`, opts);
-        } else if (resolved.startsWith("/") && !resolved.startsWith("//")) {
+        } else if (is_root_relative(resolved)) {
           const relative = resolved;
           const headers = {
             ...opts.headers
@@ -10035,15 +14489,15 @@ async function load_node({
         }
         if (response) {
           const proxy = new Proxy(response, {
-            get(response2, key, _receiver) {
+            get(response2, key2, _receiver) {
               async function text() {
                 const body = await response2.text();
                 const headers = {};
-                for (const [key2, value] of response2.headers) {
-                  if (key2 === "set-cookie") {
+                for (const [key22, value] of response2.headers) {
+                  if (key22 === "set-cookie") {
                     set_cookie_headers = set_cookie_headers.concat(value);
-                  } else if (key2 !== "etag") {
-                    headers[key2] = value;
+                  } else if (key22 !== "etag") {
+                    headers[key22] = value;
                   }
                 }
                 if (!opts.body || typeof opts.body === "string") {
@@ -10055,15 +14509,15 @@ async function load_node({
                 }
                 return body;
               }
-              if (key === "text") {
+              if (key2 === "text") {
                 return text;
               }
-              if (key === "json") {
+              if (key2 === "json") {
                 return async () => {
                   return JSON.parse(await text());
                 };
               }
-              return Reflect.get(response2, key, response2);
+              return Reflect.get(response2, key2, response2);
             }
           });
           return proxy;
@@ -10095,28 +14549,6 @@ async function load_node({
     set_cookie_headers,
     uses_credentials
   };
-}
-var absolute = /^([a-z]+:)?\/?\//;
-function resolve(base2, path) {
-  const base_match = absolute.exec(base2);
-  const path_match = absolute.exec(path);
-  if (!base_match) {
-    throw new Error(`bad base path: "${base2}"`);
-  }
-  const baseparts = path_match ? [] : base2.slice(base_match[0].length).split("/");
-  const pathparts = path_match ? path.slice(path_match[0].length).split("/") : path.split("/");
-  baseparts.pop();
-  for (let i = 0; i < pathparts.length; i += 1) {
-    const part = pathparts[i];
-    if (part === ".")
-      continue;
-    else if (part === "..")
-      baseparts.pop();
-    else
-      baseparts.push(part);
-  }
-  const prefix = path_match && path_match[0] || base_match && base_match[0] || "";
-  return `${prefix}${baseparts.join("/")}`;
 }
 async function respond_with_error({ request, options: options2, state, $session, status, error: error2 }) {
   const default_layout = await options2.load_component(options2.manifest.layout);
@@ -10207,8 +14639,7 @@ async function respond$1(opts) {
   if (!leaf.prerender && state.prerender && !state.prerender.all) {
     return {
       status: 204,
-      headers: {},
-      body: ""
+      headers: {}
     };
   }
   let branch = [];
@@ -10374,58 +14805,16 @@ async function render_page(request, route, match, options2, state) {
 function read_only_form_data() {
   const map = new Map();
   return {
-    append(key, value) {
-      if (map.has(key)) {
-        (map.get(key) || []).push(value);
+    append(key2, value) {
+      if (map.has(key2)) {
+        (map.get(key2) || []).push(value);
       } else {
-        map.set(key, [value]);
+        map.set(key2, [value]);
       }
     },
     data: new ReadOnlyFormData(map)
   };
 }
-var ReadOnlyFormData = class {
-  constructor(map) {
-    __privateAdd(this, _map, void 0);
-    __privateSet(this, _map, map);
-  }
-  get(key) {
-    const value = __privateGet(this, _map).get(key);
-    return value && value[0];
-  }
-  getAll(key) {
-    return __privateGet(this, _map).get(key);
-  }
-  has(key) {
-    return __privateGet(this, _map).has(key);
-  }
-  *[Symbol.iterator]() {
-    for (const [key, value] of __privateGet(this, _map)) {
-      for (let i = 0; i < value.length; i += 1) {
-        yield [key, value[i]];
-      }
-    }
-  }
-  *entries() {
-    for (const [key, value] of __privateGet(this, _map)) {
-      for (let i = 0; i < value.length; i += 1) {
-        yield [key, value[i]];
-      }
-    }
-  }
-  *keys() {
-    for (const [key] of __privateGet(this, _map))
-      yield key;
-  }
-  *values() {
-    for (const [, value] of __privateGet(this, _map)) {
-      for (let i = 0; i < value.length; i += 1) {
-        yield value[i];
-      }
-    }
-  }
-};
-_map = new WeakMap();
 function parse_body(raw, headers) {
   if (!raw)
     return raw;
@@ -10452,8 +14841,8 @@ function parse_body(raw, headers) {
 function get_urlencoded(text) {
   const { data, append } = read_only_form_data();
   text.replace(/\+/g, " ").split("&").forEach((str) => {
-    const [key, value] = str.split("=");
-    append(decodeURIComponent(key), decodeURIComponent(value));
+    const [key2, value] = str.split("=");
+    append(decodeURIComponent(key2), decodeURIComponent(value));
   });
   return data;
 }
@@ -10470,7 +14859,7 @@ function get_multipart(text, boundary) {
     }
     const raw_headers = match[1];
     const body = match[2].trim();
-    let key;
+    let key2;
     const headers = {};
     raw_headers.split("\r\n").forEach((str) => {
       const [raw_header, ...raw_directives] = str.split("; ");
@@ -10479,8 +14868,8 @@ function get_multipart(text, boundary) {
       headers[name2] = value;
       const directives = {};
       raw_directives.forEach((raw_directive) => {
-        const [name3, value2] = raw_directive.split("=");
-        directives[name3] = JSON.parse(value2);
+        const [name22, value2] = raw_directive.split("=");
+        directives[name22] = JSON.parse(value2);
       });
       if (name2 === "content-disposition") {
         if (value !== "form-data")
@@ -10489,13 +14878,13 @@ function get_multipart(text, boundary) {
           throw new Error("File upload is not yet implemented");
         }
         if (directives.name) {
-          key = directives.name;
+          key2 = directives.name;
         }
       }
     });
-    if (!key)
+    if (!key2)
       throw new Error("Malformed form data");
-    append(key, body);
+    append(key2, body);
   });
   return data;
 }
@@ -10544,12 +14933,15 @@ async function respond(incoming, options2, state = {}) {
             if (response.status === 200) {
               const cache_control = get_single_valued_header(response.headers, "cache-control");
               if (!cache_control || !/(no-store|immutable)/.test(cache_control)) {
+                let if_none_match_value = request2.headers["if-none-match"];
+                if (if_none_match_value?.startsWith('W/"')) {
+                  if_none_match_value = if_none_match_value.substring(2);
+                }
                 const etag = `"${hash(response.body || "")}"`;
-                if (request2.headers["if-none-match"] === etag) {
+                if (if_none_match_value === etag) {
                   return {
                     status: 304,
-                    headers: {},
-                    body: ""
+                    headers: {}
                   };
                 }
                 response.headers["etag"] = etag;
@@ -10608,11 +15000,18 @@ function compute_rest_props(props, keys) {
       rest[k] = props[k];
   return rest;
 }
+function null_to_empty(value) {
+  return value == null ? "" : value;
+}
 function set_store_value(store, ret, value) {
   store.set(value);
   return ret;
 }
-var current_component;
+function custom_event(type, detail, bubbles = false) {
+  const e = document.createEvent("CustomEvent");
+  e.initCustomEvent(type, bubbles, false, detail);
+  return e;
+}
 function set_current_component(component) {
   current_component = component;
 }
@@ -10624,37 +15023,24 @@ function get_current_component() {
 function onDestroy(fn) {
   get_current_component().$$.on_destroy.push(fn);
 }
-function setContext(key, context) {
-  get_current_component().$$.context.set(key, context);
+function createEventDispatcher() {
+  const component = get_current_component();
+  return (type, detail) => {
+    const callbacks = component.$$.callbacks[type];
+    if (callbacks) {
+      const event = custom_event(type, detail);
+      callbacks.slice().forEach((fn) => {
+        fn.call(component, event);
+      });
+    }
+  };
 }
-Promise.resolve();
-var boolean_attributes = new Set([
-  "allowfullscreen",
-  "allowpaymentrequest",
-  "async",
-  "autofocus",
-  "autoplay",
-  "checked",
-  "controls",
-  "default",
-  "defer",
-  "disabled",
-  "formnovalidate",
-  "hidden",
-  "ismap",
-  "loop",
-  "multiple",
-  "muted",
-  "nomodule",
-  "novalidate",
-  "open",
-  "playsinline",
-  "readonly",
-  "required",
-  "reversed",
-  "selected"
-]);
-var invalid_attribute_name_character = /[\s'">/=\u{FDD0}-\u{FDEF}\u{FFFE}\u{FFFF}\u{1FFFE}\u{1FFFF}\u{2FFFE}\u{2FFFF}\u{3FFFE}\u{3FFFF}\u{4FFFE}\u{4FFFF}\u{5FFFE}\u{5FFFF}\u{6FFFE}\u{6FFFF}\u{7FFFE}\u{7FFFF}\u{8FFFE}\u{8FFFF}\u{9FFFE}\u{9FFFF}\u{AFFFE}\u{AFFFF}\u{BFFFE}\u{BFFFF}\u{CFFFE}\u{CFFFF}\u{DFFFE}\u{DFFFF}\u{EFFFE}\u{EFFFF}\u{FFFFE}\u{FFFFF}\u{10FFFE}\u{10FFFF}]/u;
+function setContext(key2, context) {
+  get_current_component().$$.context.set(key2, context);
+}
+function getContext(key2) {
+  return get_current_component().$$.context.get(key2);
+}
 function spread(args, classes_to_add) {
   const attributes = Object.assign({}, ...args);
   if (classes_to_add) {
@@ -10680,23 +15066,16 @@ function spread(args, classes_to_add) {
   });
   return str;
 }
-var escaped = {
-  '"': "&quot;",
-  "'": "&#39;",
-  "&": "&amp;",
-  "<": "&lt;",
-  ">": "&gt;"
-};
-function escape$4(html) {
+function escape(html) {
   return String(html).replace(/["'&<>]/g, (match) => escaped[match]);
 }
 function escape_attribute_value(value) {
-  return typeof value === "string" ? escape$4(value) : value;
+  return typeof value === "string" ? escape(value) : value;
 }
 function escape_object(obj) {
   const result = {};
-  for (const key in obj) {
-    result[key] = escape_attribute_value(obj[key]);
+  for (const key2 in obj) {
+    result[key2] = escape_attribute_value(obj[key2]);
   }
   return result;
 }
@@ -10707,9 +15086,6 @@ function each(items, fn) {
   }
   return str;
 }
-var missing_component = {
-  $$render: () => ""
-};
 function validate_component(component, name2) {
   if (!component || !component.$$render) {
     if (name2 === "svelte:component")
@@ -10718,7 +15094,6 @@ function validate_component(component, name2) {
   }
   return component;
 }
-var on_destroy;
 function create_ssr_component(fn) {
   function $$render(result, props, bindings, slots, context) {
     const parent_component = current_component;
@@ -10744,7 +15119,7 @@ function create_ssr_component(fn) {
       return {
         html,
         css: {
-          code: Array.from(result.css).map((css2) => css2.code).join("\n"),
+          code: Array.from(result.css).map((css22) => css22.code).join("\n"),
           map: null
         },
         head: result.title + result.head
@@ -10756,94 +15131,16 @@ function create_ssr_component(fn) {
 function add_attribute(name2, value, boolean) {
   if (value == null || boolean && !value)
     return "";
-  return ` ${name2}${value === true ? "" : `=${typeof value === "string" ? JSON.stringify(escape$4(value)) : `"${value}"`}`}`;
+  return ` ${name2}${value === true ? "" : `=${typeof value === "string" ? JSON.stringify(escape(value)) : `"${value}"`}`}`;
 }
 function afterUpdate() {
 }
-var css$i = {
-  code: "#svelte-announcer.svelte-1j55zn5{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}",
-  map: null
-};
-var Root = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { stores } = $$props;
-  let { page } = $$props;
-  let { components } = $$props;
-  let { props_0 = null } = $$props;
-  let { props_1 = null } = $$props;
-  let { props_2 = null } = $$props;
-  let { props_3 = null } = $$props;
-  setContext("__svelte__", stores);
-  afterUpdate(stores.page.notify);
-  if ($$props.stores === void 0 && $$bindings.stores && stores !== void 0)
-    $$bindings.stores(stores);
-  if ($$props.page === void 0 && $$bindings.page && page !== void 0)
-    $$bindings.page(page);
-  if ($$props.components === void 0 && $$bindings.components && components !== void 0)
-    $$bindings.components(components);
-  if ($$props.props_0 === void 0 && $$bindings.props_0 && props_0 !== void 0)
-    $$bindings.props_0(props_0);
-  if ($$props.props_1 === void 0 && $$bindings.props_1 && props_1 !== void 0)
-    $$bindings.props_1(props_1);
-  if ($$props.props_2 === void 0 && $$bindings.props_2 && props_2 !== void 0)
-    $$bindings.props_2(props_2);
-  if ($$props.props_3 === void 0 && $$bindings.props_3 && props_3 !== void 0)
-    $$bindings.props_3(props_3);
-  $$result.css.add(css$i);
-  {
-    stores.page.set(page);
-  }
-  return `
-
-
-${validate_component(components[0] || missing_component, "svelte:component").$$render($$result, Object.assign(props_0 || {}), {}, {
-    default: () => `${components[1] ? `${validate_component(components[1] || missing_component, "svelte:component").$$render($$result, Object.assign(props_1 || {}), {}, {
-      default: () => `${components[2] ? `${validate_component(components[2] || missing_component, "svelte:component").$$render($$result, Object.assign(props_2 || {}), {}, {
-        default: () => `${components[3] ? `${validate_component(components[3] || missing_component, "svelte:component").$$render($$result, Object.assign(props_3 || {}), {}, {})}` : ``}`
-      })}` : ``}`
-    })}` : ``}`
-  })}
-
-${``}`;
-});
-var base = "";
-var assets = "";
 function set_paths(paths) {
   base = paths.base;
   assets = paths.assets || base;
 }
 function set_prerendering(value) {
 }
-var user_hooks = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module"
-});
-var template = ({ head, body }) => `<!DOCTYPE html>\r
-<html lang="en">\r
-	<head>\r
-		<meta charset="utf-8" />\r
-		<link rel="icon" href="/favicon.png" />\r
-		<meta name="viewport" content="width=device-width, initial-scale=1" />\r
-        <meta name="description" \r
-                content="Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities \r
-                and nurturing networks. Think Teacher's vision is to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.">\r
-\r
-        <link rel="preconnect" href="https://fonts.googleapis.com">\r
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\r
-        <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@600&display=swap" rel="stylesheet">\r
-\r
-        <!-- Global site tag (gtag.js) - Google Analytics -->\r
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WDY2MMJWR"><\/script>\r
-        <script>\r
-            window.dataLayer = window.dataLayer || [];\r
-            function gtag(){dataLayer.push(arguments);}\r
-            gtag('js', new Date());\r
-\r
-            gtag('config', 'G-4WDY2MMJWR');\r
-        <\/script>\r
-\r
-		` + head + '\r\n	</head>\r\n	<body>\r\n\r\n		<div id="svelte">' + body + '</div>\r\n\r\n        <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"><\/script> -->\r\n        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"><\/script>\r\n	</body>\r\n</html>\r\n';
-var options = null;
-var default_settings = { paths: { "base": "", "assets": "" } };
 function init(settings = default_settings) {
   set_paths(settings.paths);
   set_prerendering(settings.prerendering || false);
@@ -10852,9 +15149,9 @@ function init(settings = default_settings) {
     amp: false,
     dev: false,
     entry: {
-      file: assets + "/_app/start-6973717a.js",
-      css: [assets + "/_app/assets/start-61d1577b.css", assets + "/_app/assets/vendor-09b942c7.css"],
-      js: [assets + "/_app/start-6973717a.js", assets + "/_app/chunks/vendor-03523d0d.js", assets + "/_app/chunks/singletons-12a22614.js"]
+      file: assets + "/_app/start-c651fbf3.js",
+      css: [assets + "/_app/assets/start-61d1577b.css", assets + "/_app/assets/vendor-2450db17.css"],
+      js: [assets + "/_app/start-c651fbf3.js", assets + "/_app/chunks/vendor-bedbfd59.js", assets + "/_app/chunks/singletons-12a22614.js"]
     },
     fetched: void 0,
     floc: false,
@@ -10881,3753 +15178,467 @@ function init(settings = default_settings) {
     trailing_slash: "never"
   };
 }
-var d = (s2) => s2.replace(/%23/g, "#").replace(/%3[Bb]/g, ";").replace(/%2[Cc]/g, ",").replace(/%2[Ff]/g, "/").replace(/%3[Ff]/g, "?").replace(/%3[Aa]/g, ":").replace(/%40/g, "@").replace(/%26/g, "&").replace(/%3[Dd]/g, "=").replace(/%2[Bb]/g, "+").replace(/%24/g, "$");
-var empty = () => ({});
-var manifest = {
-  assets: [{ "file": "BG-HomePage-High.png", "size": 6532, "type": "image/png" }, { "file": "Cirrus.webp", "size": 11220, "type": "image/webp" }, { "file": "courses.webp", "size": 32152, "type": "image/webp" }, { "file": "favicon.png", "size": 34087, "type": "image/png" }, { "file": "final-logo-edited-for-site.svg", "size": 42260, "type": "image/svg+xml" }, { "file": "health.webp", "size": 21652, "type": "image/webp" }, { "file": "insurance.webp", "size": 21730, "type": "image/webp" }, { "file": "kim.webp", "size": 14084, "type": "image/webp" }, { "file": "legal.webp", "size": 52764, "type": "image/webp" }, { "file": "ROARRR.webp", "size": 81342, "type": "image/webp" }, { "file": "robots.txt", "size": 70, "type": "text/plain" }, { "file": "SAHB.webp", "size": 51696, "type": "image/webp" }, { "file": "shape-overly.png", "size": 40083, "type": "image/png" }, { "file": "thinkteacherlogo-final-no-dots.png", "size": 79531, "type": "image/png" }, { "file": "thinkteacherlogo-final.png", "size": 80103, "type": "image/png" }, { "file": "travel.webp", "size": 53868, "type": "image/webp" }, { "file": "Vector.svg", "size": 1168, "type": "image/svg+xml" }, { "file": "well-being.png", "size": 310197, "type": "image/png" }, { "file": "well-being.webp", "size": 29264, "type": "image/webp" }],
-  layout: "src/routes/__layout.svelte",
-  error: "src/routes/__error.svelte",
-  routes: [
-    {
-      type: "page",
-      pattern: /^\/$/,
-      params: empty,
-      a: ["src/routes/__layout.svelte", "src/routes/index.svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/forgot-password\/?$/,
-      params: empty,
-      a: ["src/routes/__layout.svelte", "src/routes/forgot-password.svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/reset-password\/?$/,
-      params: empty,
-      a: ["src/routes/__layout.svelte", "src/routes/reset-password.svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/confirm-email\/?$/,
-      params: empty,
-      a: ["src/routes/__layout.svelte", "src/routes/confirm-email.svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/contact-us\/?$/,
-      params: empty,
-      a: ["src/routes/__layout.svelte", "src/routes/contact-us.svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/benefits\/?$/,
-      params: empty,
-      a: ["src/routes/__layout.svelte", "src/routes/benefits/index.svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/partners\/?$/,
-      params: empty,
-      a: ["src/routes/__layout.svelte", "src/routes/partners/index.svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/partners\/([^/]+?)\/?$/,
-      params: (m) => ({ slug: d(m[1]) }),
-      a: ["src/routes/__layout.svelte", "src/routes/partners/[slug].svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/register\/?$/,
-      params: empty,
-      a: ["src/routes/__layout.svelte", "src/routes/register.svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/webinars\/?$/,
-      params: empty,
-      a: ["src/routes/__layout.svelte", "src/routes/webinars.svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/events\/?$/,
-      params: empty,
-      a: ["src/routes/__layout.svelte", "src/routes/events.svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/about\/?$/,
-      params: empty,
-      a: ["src/routes/__layout.svelte", "src/routes/about.svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/login\/?$/,
-      params: empty,
-      a: ["src/routes/__layout.svelte", "src/routes/login.svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/auth\/?$/,
-      params: empty,
-      a: ["src/routes/__layout.svelte", "src/routes/auth/__layout.svelte", "src/routes/auth/index.svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/auth\/form-medical-aid\/?$/,
-      params: empty,
-      a: ["src/routes/__layout.svelte", "src/routes/auth/__layout.svelte", "src/routes/auth/form-medical-aid.svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/auth\/form-wellbeing\/?$/,
-      params: empty,
-      a: ["src/routes/__layout.svelte", "src/routes/auth/__layout.svelte", "src/routes/auth/form-wellbeing.svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/auth\/form-travel\/?$/,
-      params: empty,
-      a: ["src/routes/__layout.svelte", "src/routes/auth/__layout.svelte", "src/routes/auth/form-travel.svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/auth\/selections\/?$/,
-      params: empty,
-      a: ["src/routes/__layout.svelte", "src/routes/auth/__layout.svelte", "src/routes/auth/selections.svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/auth\/profile\/?$/,
-      params: empty,
-      a: ["src/routes/__layout.svelte", "src/routes/auth/__layout.svelte", "src/routes/auth/profile.svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/blog\/?$/,
-      params: empty,
-      a: ["src/routes/__layout.svelte", "src/routes/blog/index.svelte"],
-      b: ["src/routes/__error.svelte"]
-    },
-    {
-      type: "page",
-      pattern: /^\/blog\/([^/]+?)\/?$/,
-      params: (m) => ({ slug: d(m[1]) }),
-      a: ["src/routes/__layout.svelte", "src/routes/blog/[slug].svelte"],
-      b: ["src/routes/__error.svelte"]
-    }
-  ]
-};
-var get_hooks = (hooks) => ({
-  getSession: hooks.getSession || (() => ({})),
-  handle: hooks.handle || (({ request, resolve: resolve2 }) => resolve2(request)),
-  handleError: hooks.handleError || (({ error: error2 }) => console.error(error2.stack)),
-  externalFetch: hooks.externalFetch || fetch
-});
-var module_lookup = {
-  "src/routes/__layout.svelte": () => Promise.resolve().then(function() {
-    return __layout$1;
-  }),
-  "src/routes/__error.svelte": () => Promise.resolve().then(function() {
-    return __error;
-  }),
-  "src/routes/index.svelte": () => Promise.resolve().then(function() {
-    return index$4;
-  }),
-  "src/routes/forgot-password.svelte": () => Promise.resolve().then(function() {
-    return forgotPassword;
-  }),
-  "src/routes/reset-password.svelte": () => Promise.resolve().then(function() {
-    return resetPassword;
-  }),
-  "src/routes/confirm-email.svelte": () => Promise.resolve().then(function() {
-    return confirmEmail;
-  }),
-  "src/routes/contact-us.svelte": () => Promise.resolve().then(function() {
-    return contactUs;
-  }),
-  "src/routes/benefits/index.svelte": () => Promise.resolve().then(function() {
-    return index$3;
-  }),
-  "src/routes/partners/index.svelte": () => Promise.resolve().then(function() {
-    return index$2;
-  }),
-  "src/routes/partners/[slug].svelte": () => Promise.resolve().then(function() {
-    return _slug_$1;
-  }),
-  "src/routes/register.svelte": () => Promise.resolve().then(function() {
-    return register;
-  }),
-  "src/routes/webinars.svelte": () => Promise.resolve().then(function() {
-    return webinars;
-  }),
-  "src/routes/events.svelte": () => Promise.resolve().then(function() {
-    return events;
-  }),
-  "src/routes/about.svelte": () => Promise.resolve().then(function() {
-    return about;
-  }),
-  "src/routes/login.svelte": () => Promise.resolve().then(function() {
-    return login;
-  }),
-  "src/routes/auth/__layout.svelte": () => Promise.resolve().then(function() {
-    return __layout;
-  }),
-  "src/routes/auth/index.svelte": () => Promise.resolve().then(function() {
-    return index$1;
-  }),
-  "src/routes/auth/form-medical-aid.svelte": () => Promise.resolve().then(function() {
-    return formMedicalAid;
-  }),
-  "src/routes/auth/form-wellbeing.svelte": () => Promise.resolve().then(function() {
-    return formWellbeing;
-  }),
-  "src/routes/auth/form-travel.svelte": () => Promise.resolve().then(function() {
-    return formTravel;
-  }),
-  "src/routes/auth/selections.svelte": () => Promise.resolve().then(function() {
-    return selections;
-  }),
-  "src/routes/auth/profile.svelte": () => Promise.resolve().then(function() {
-    return profile;
-  }),
-  "src/routes/blog/index.svelte": () => Promise.resolve().then(function() {
-    return index;
-  }),
-  "src/routes/blog/[slug].svelte": () => Promise.resolve().then(function() {
-    return _slug_;
-  })
-};
-var metadata_lookup = { "src/routes/__layout.svelte": { "entry": "pages/__layout.svelte-f4daf013.js", "css": ["assets/pages/__layout.svelte-d8403fe6.css", "assets/vendor-09b942c7.css"], "js": ["pages/__layout.svelte-f4daf013.js", "chunks/vendor-03523d0d.js", "chunks/stores-d09b134b.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js"], "styles": [] }, "src/routes/__error.svelte": { "entry": "pages/__error.svelte-78963999.js", "css": ["assets/vendor-09b942c7.css"], "js": ["pages/__error.svelte-78963999.js", "chunks/vendor-03523d0d.js"], "styles": [] }, "src/routes/index.svelte": { "entry": "pages/index.svelte-9c36cf67.js", "css": ["assets/pages/index.svelte-bc6e09a2.css", "assets/vendor-09b942c7.css"], "js": ["pages/index.svelte-9c36cf67.js", "chunks/vendor-03523d0d.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js", "chunks/stores-d09b134b.js"], "styles": [] }, "src/routes/forgot-password.svelte": { "entry": "pages/forgot-password.svelte-0007461c.js", "css": ["assets/vendor-09b942c7.css"], "js": ["pages/forgot-password.svelte-0007461c.js", "chunks/vendor-03523d0d.js"], "styles": [] }, "src/routes/reset-password.svelte": { "entry": "pages/reset-password.svelte-fafd7c13.js", "css": ["assets/vendor-09b942c7.css"], "js": ["pages/reset-password.svelte-fafd7c13.js", "chunks/vendor-03523d0d.js"], "styles": [] }, "src/routes/confirm-email.svelte": { "entry": "pages/confirm-email.svelte-789ef28c.js", "css": ["assets/vendor-09b942c7.css"], "js": ["pages/confirm-email.svelte-789ef28c.js", "chunks/vendor-03523d0d.js"], "styles": [] }, "src/routes/contact-us.svelte": { "entry": "pages/contact-us.svelte-f1833d8b.js", "css": ["assets/vendor-09b942c7.css"], "js": ["pages/contact-us.svelte-f1833d8b.js", "chunks/vendor-03523d0d.js"], "styles": [] }, "src/routes/benefits/index.svelte": { "entry": "pages/benefits/index.svelte-54a298f1.js", "css": ["assets/pages/benefits/index.svelte-5fd4c783.css", "assets/vendor-09b942c7.css"], "js": ["pages/benefits/index.svelte-54a298f1.js", "chunks/vendor-03523d0d.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js", "chunks/stores-d09b134b.js"], "styles": [] }, "src/routes/partners/index.svelte": { "entry": "pages/partners/index.svelte-e6a87c01.js", "css": ["assets/pages/partners/index.svelte-56e7e615.css", "assets/vendor-09b942c7.css"], "js": ["pages/partners/index.svelte-e6a87c01.js", "chunks/vendor-03523d0d.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js"], "styles": [] }, "src/routes/partners/[slug].svelte": { "entry": "pages/partners/[slug].svelte-6e3721e3.js", "css": ["assets/pages/partners/[slug].svelte-57d4ab8f.css", "assets/vendor-09b942c7.css"], "js": ["pages/partners/[slug].svelte-6e3721e3.js", "chunks/vendor-03523d0d.js"], "styles": [] }, "src/routes/register.svelte": { "entry": "pages/register.svelte-33c65452.js", "css": ["assets/pages/register.svelte-0d2cec04.css", "assets/vendor-09b942c7.css"], "js": ["pages/register.svelte-33c65452.js", "chunks/vendor-03523d0d.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js"], "styles": [] }, "src/routes/webinars.svelte": { "entry": "pages/webinars.svelte-6c16d29c.js", "css": ["assets/pages/webinars.svelte-b42d8925.css", "assets/vendor-09b942c7.css"], "js": ["pages/webinars.svelte-6c16d29c.js", "chunks/vendor-03523d0d.js"], "styles": [] }, "src/routes/events.svelte": { "entry": "pages/events.svelte-1525af83.js", "css": ["assets/vendor-09b942c7.css"], "js": ["pages/events.svelte-1525af83.js", "chunks/vendor-03523d0d.js"], "styles": [] }, "src/routes/about.svelte": { "entry": "pages/about.svelte-735de926.js", "css": ["assets/pages/about.svelte-c71667cf.css", "assets/vendor-09b942c7.css"], "js": ["pages/about.svelte-735de926.js", "chunks/vendor-03523d0d.js"], "styles": [] }, "src/routes/login.svelte": { "entry": "pages/login.svelte-1a458b96.js", "css": ["assets/vendor-09b942c7.css"], "js": ["pages/login.svelte-1a458b96.js", "chunks/vendor-03523d0d.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js", "chunks/stores-d09b134b.js", "chunks/re_utils-37172e43.js"], "styles": [] }, "src/routes/auth/__layout.svelte": { "entry": "pages/auth/__layout.svelte-97ea0e7f.js", "css": ["assets/pages/auth/__layout.svelte-947cf4eb.css", "assets/vendor-09b942c7.css"], "js": ["pages/auth/__layout.svelte-97ea0e7f.js", "chunks/vendor-03523d0d.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js"], "styles": [] }, "src/routes/auth/index.svelte": { "entry": "pages/auth/index.svelte-f37db3cb.js", "css": ["assets/vendor-09b942c7.css"], "js": ["pages/auth/index.svelte-f37db3cb.js", "chunks/vendor-03523d0d.js"], "styles": [] }, "src/routes/auth/form-medical-aid.svelte": { "entry": "pages/auth/form-medical-aid.svelte-aa526978.js", "css": ["assets/pages/auth/form-medical-aid.svelte-3e792700.css", "assets/vendor-09b942c7.css"], "js": ["pages/auth/form-medical-aid.svelte-aa526978.js", "chunks/vendor-03523d0d.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js"], "styles": [] }, "src/routes/auth/form-wellbeing.svelte": { "entry": "pages/auth/form-wellbeing.svelte-ece51e11.js", "css": ["assets/pages/auth/form-medical-aid.svelte-3e792700.css", "assets/vendor-09b942c7.css"], "js": ["pages/auth/form-wellbeing.svelte-ece51e11.js", "chunks/vendor-03523d0d.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js"], "styles": [] }, "src/routes/auth/form-travel.svelte": { "entry": "pages/auth/form-travel.svelte-6e9e39cf.js", "css": ["assets/pages/auth/form-medical-aid.svelte-3e792700.css", "assets/vendor-09b942c7.css"], "js": ["pages/auth/form-travel.svelte-6e9e39cf.js", "chunks/vendor-03523d0d.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js", "chunks/stores-d09b134b.js"], "styles": [] }, "src/routes/auth/selections.svelte": { "entry": "pages/auth/selections.svelte-29befcaf.js", "css": ["assets/vendor-09b942c7.css"], "js": ["pages/auth/selections.svelte-29befcaf.js", "chunks/vendor-03523d0d.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js"], "styles": [] }, "src/routes/auth/profile.svelte": { "entry": "pages/auth/profile.svelte-3c3bba55.js", "css": ["assets/vendor-09b942c7.css"], "js": ["pages/auth/profile.svelte-3c3bba55.js", "chunks/vendor-03523d0d.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js", "chunks/stores-d09b134b.js", "chunks/re_utils-37172e43.js"], "styles": [] }, "src/routes/blog/index.svelte": { "entry": "pages/blog/index.svelte-30b04d1c.js", "css": ["assets/pages/blog/index.svelte-18ab40a2.css", "assets/vendor-09b942c7.css"], "js": ["pages/blog/index.svelte-30b04d1c.js", "chunks/vendor-03523d0d.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js"], "styles": [] }, "src/routes/blog/[slug].svelte": { "entry": "pages/blog/[slug].svelte-5ab52f0e.js", "css": ["assets/pages/blog/[slug].svelte-2becd893.css", "assets/vendor-09b942c7.css"], "js": ["pages/blog/[slug].svelte-5ab52f0e.js", "chunks/vendor-03523d0d.js"], "styles": [] } };
 async function load_component(file) {
-  const { entry, css: css2, js, styles } = metadata_lookup[file];
+  const { entry, css: css22, js, styles } = metadata_lookup[file];
   return {
     module: await module_lookup[file](),
     entry: assets + "/_app/" + entry,
-    css: css2.map((dep) => assets + "/_app/" + dep),
+    css: css22.map((dep) => assets + "/_app/" + dep),
     js: js.map((dep) => assets + "/_app/" + dep),
     styles
   };
 }
 function render(request, {
-  prerender: prerender2
+  prerender: prerender8
 } = {}) {
   const host = request.headers["host"];
-  return respond({ ...request, host }, options, { prerender: prerender2 });
+  return respond({ ...request, host }, options, { prerender: prerender8 });
 }
-var subscriber_queue = [];
-function writable(value, start = noop) {
-  let stop;
-  const subscribers = new Set();
-  function set(new_value) {
-    if (safe_not_equal(value, new_value)) {
-      value = new_value;
-      if (stop) {
-        const run_queue = !subscriber_queue.length;
-        for (const subscriber of subscribers) {
-          subscriber[1]();
-          subscriber_queue.push(subscriber, value);
-        }
-        if (run_queue) {
-          for (let i = 0; i < subscriber_queue.length; i += 2) {
-            subscriber_queue[i][0](subscriber_queue[i + 1]);
+var __accessCheck, __privateGet, __privateAdd, __privateSet, _map, absolute, scheme, chars, unsafeChars, reserved, escaped$1, objectProtoOwnPropertyNames, subscriber_queue2, escape_json_string_in_html_dict, escape_html_attr_dict, s$1, s, ReadOnlyFormData, current_component, boolean_attributes, invalid_attribute_name_character, escaped, missing_component, on_destroy, css17, Root, base, assets, user_hooks, template, options, default_settings, d, empty, manifest, get_hooks, module_lookup, metadata_lookup;
+var init_app_f93ccc42 = __esm({
+  ".svelte-kit/output/server/chunks/app-f93ccc42.js"() {
+    init_shims();
+    __accessCheck = (obj, member, msg) => {
+      if (!member.has(obj))
+        throw TypeError("Cannot " + msg);
+    };
+    __privateGet = (obj, member, getter) => {
+      __accessCheck(obj, member, "read from private field");
+      return getter ? getter.call(obj) : member.get(obj);
+    };
+    __privateAdd = (obj, member, value) => {
+      if (member.has(obj))
+        throw TypeError("Cannot add the same private member more than once");
+      member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
+    };
+    __privateSet = (obj, member, value, setter) => {
+      __accessCheck(obj, member, "write to private field");
+      setter ? setter.call(obj, value) : member.set(obj, value);
+      return value;
+    };
+    absolute = /^([a-z]+:)?\/?\//;
+    scheme = /^[a-z]+:/;
+    chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$";
+    unsafeChars = /[<>\b\f\n\r\t\0\u2028\u2029]/g;
+    reserved = /^(?:do|if|in|for|int|let|new|try|var|byte|case|char|else|enum|goto|long|this|void|with|await|break|catch|class|const|final|float|short|super|throw|while|yield|delete|double|export|import|native|return|switch|throws|typeof|boolean|default|extends|finally|package|private|abstract|continue|debugger|function|volatile|interface|protected|transient|implements|instanceof|synchronized)$/;
+    escaped$1 = {
+      "<": "\\u003C",
+      ">": "\\u003E",
+      "/": "\\u002F",
+      "\\": "\\\\",
+      "\b": "\\b",
+      "\f": "\\f",
+      "\n": "\\n",
+      "\r": "\\r",
+      "	": "\\t",
+      "\0": "\\0",
+      "\u2028": "\\u2028",
+      "\u2029": "\\u2029"
+    };
+    objectProtoOwnPropertyNames = Object.getOwnPropertyNames(Object.prototype).sort().join("\0");
+    Promise.resolve();
+    subscriber_queue2 = [];
+    escape_json_string_in_html_dict = {
+      '"': '\\"',
+      "<": "\\u003C",
+      ">": "\\u003E",
+      "/": "\\u002F",
+      "\\": "\\\\",
+      "\b": "\\b",
+      "\f": "\\f",
+      "\n": "\\n",
+      "\r": "\\r",
+      "	": "\\t",
+      "\0": "\\0",
+      "\u2028": "\\u2028",
+      "\u2029": "\\u2029"
+    };
+    escape_html_attr_dict = {
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;"
+    };
+    s$1 = JSON.stringify;
+    s = JSON.stringify;
+    ReadOnlyFormData = class {
+      constructor(map) {
+        __privateAdd(this, _map, void 0);
+        __privateSet(this, _map, map);
+      }
+      get(key2) {
+        const value = __privateGet(this, _map).get(key2);
+        return value && value[0];
+      }
+      getAll(key2) {
+        return __privateGet(this, _map).get(key2);
+      }
+      has(key2) {
+        return __privateGet(this, _map).has(key2);
+      }
+      *[Symbol.iterator]() {
+        for (const [key2, value] of __privateGet(this, _map)) {
+          for (let i = 0; i < value.length; i += 1) {
+            yield [key2, value[i]];
           }
-          subscriber_queue.length = 0;
         }
       }
-    }
-  }
-  function update(fn) {
-    set(fn(value));
-  }
-  function subscribe2(run2, invalidate = noop) {
-    const subscriber = [run2, invalidate];
-    subscribers.add(subscriber);
-    if (subscribers.size === 1) {
-      stop = start(set) || noop;
-    }
-    run2(value);
-    return () => {
-      subscribers.delete(subscriber);
-      if (subscribers.size === 0) {
-        stop();
-        stop = null;
+      *entries() {
+        for (const [key2, value] of __privateGet(this, _map)) {
+          for (let i = 0; i < value.length; i += 1) {
+            yield [key2, value[i]];
+          }
+        }
+      }
+      *keys() {
+        for (const [key2] of __privateGet(this, _map))
+          yield key2;
+      }
+      *values() {
+        for (const [, value] of __privateGet(this, _map)) {
+          for (let i = 0; i < value.length; i += 1) {
+            yield value[i];
+          }
+        }
       }
     };
-  }
-  return { set, update, subscribe: subscribe2 };
-}
-var user = writable();
-var name = writable();
-var id = writable();
-var firstTime = writable(true);
-var travelScroll = writable("");
-var travelType = writable("");
-var Path = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { id: id2 = "" } = $$props;
-  let { data = {} } = $$props;
-  if ($$props.id === void 0 && $$bindings.id && id2 !== void 0)
-    $$bindings.id(id2);
-  if ($$props.data === void 0 && $$bindings.data && data !== void 0)
-    $$bindings.data(data);
-  return `<path${spread([{ key: "path-" + escape$4(id2) }, escape_object(data)])}></path>`;
-});
-var Polygon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { id: id2 = "" } = $$props;
-  let { data = {} } = $$props;
-  if ($$props.id === void 0 && $$bindings.id && id2 !== void 0)
-    $$bindings.id(id2);
-  if ($$props.data === void 0 && $$bindings.data && data !== void 0)
-    $$bindings.data(data);
-  return `<polygon${spread([{ key: "polygon-" + escape$4(id2) }, escape_object(data)])}></polygon>`;
-});
-var Raw = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let cursor = 870711;
-  function getId() {
-    cursor += 1;
-    return `fa-${cursor.toString(16)}`;
-  }
-  let raw;
-  let { data } = $$props;
-  function getRaw(data2) {
-    if (!data2 || !data2.raw) {
-      return null;
-    }
-    let rawData = data2.raw;
-    const ids = {};
-    rawData = rawData.replace(/\s(?:xml:)?id=["']?([^"')\s]+)/g, (match, id2) => {
-      const uniqueId = getId();
-      ids[id2] = uniqueId;
-      return ` id="${uniqueId}"`;
-    });
-    rawData = rawData.replace(/#(?:([^'")\s]+)|xpointer\(id\((['"]?)([^')]+)\2\)\))/g, (match, rawId, _, pointerId) => {
-      const id2 = rawId || pointerId;
-      if (!id2 || !ids[id2]) {
-        return match;
-      }
-      return `#${ids[id2]}`;
-    });
-    return rawData;
-  }
-  if ($$props.data === void 0 && $$bindings.data && data !== void 0)
-    $$bindings.data(data);
-  raw = getRaw(data);
-  return `<g><!-- HTML_TAG_START -->${raw}<!-- HTML_TAG_END --></g>`;
-});
-var css$h = {
-  code: ".fa-icon.svelte-1dof0an{display:inline-block;fill:currentColor}.fa-flip-horizontal.svelte-1dof0an{transform:scale(-1, 1)}.fa-flip-vertical.svelte-1dof0an{transform:scale(1, -1)}.fa-spin.svelte-1dof0an{animation:svelte-1dof0an-fa-spin 1s 0s infinite linear}.fa-inverse.svelte-1dof0an{color:#fff}.fa-pulse.svelte-1dof0an{animation:svelte-1dof0an-fa-spin 1s infinite steps(8)}@keyframes svelte-1dof0an-fa-spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}",
-  map: null
-};
-var Svg = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { class: className } = $$props;
-  let { width } = $$props;
-  let { height } = $$props;
-  let { box } = $$props;
-  let { spin = false } = $$props;
-  let { inverse = false } = $$props;
-  let { pulse = false } = $$props;
-  let { flip = null } = $$props;
-  let { x = void 0 } = $$props;
-  let { y = void 0 } = $$props;
-  let { style = void 0 } = $$props;
-  let { label = void 0 } = $$props;
-  if ($$props.class === void 0 && $$bindings.class && className !== void 0)
-    $$bindings.class(className);
-  if ($$props.width === void 0 && $$bindings.width && width !== void 0)
-    $$bindings.width(width);
-  if ($$props.height === void 0 && $$bindings.height && height !== void 0)
-    $$bindings.height(height);
-  if ($$props.box === void 0 && $$bindings.box && box !== void 0)
-    $$bindings.box(box);
-  if ($$props.spin === void 0 && $$bindings.spin && spin !== void 0)
-    $$bindings.spin(spin);
-  if ($$props.inverse === void 0 && $$bindings.inverse && inverse !== void 0)
-    $$bindings.inverse(inverse);
-  if ($$props.pulse === void 0 && $$bindings.pulse && pulse !== void 0)
-    $$bindings.pulse(pulse);
-  if ($$props.flip === void 0 && $$bindings.flip && flip !== void 0)
-    $$bindings.flip(flip);
-  if ($$props.x === void 0 && $$bindings.x && x !== void 0)
-    $$bindings.x(x);
-  if ($$props.y === void 0 && $$bindings.y && y !== void 0)
-    $$bindings.y(y);
-  if ($$props.style === void 0 && $$bindings.style && style !== void 0)
-    $$bindings.style(style);
-  if ($$props.label === void 0 && $$bindings.label && label !== void 0)
-    $$bindings.label(label);
-  $$result.css.add(css$h);
-  return `<svg version="${"1.1"}" class="${[
-    "fa-icon " + escape$4(className) + " svelte-1dof0an",
-    (spin ? "fa-spin" : "") + " " + (pulse ? "fa-pulse" : "") + " " + (inverse ? "fa-inverse" : "") + " " + (flip === "horizontal" ? "fa-flip-horizontal" : "") + " " + (flip === "vertical" ? "fa-flip-vertical" : "")
-  ].join(" ").trim()}"${add_attribute("x", x, 0)}${add_attribute("y", y, 0)}${add_attribute("width", width, 0)}${add_attribute("height", height, 0)}${add_attribute("aria-label", label, 0)}${add_attribute("role", label ? "img" : "presentation", 0)}${add_attribute("viewBox", box, 0)}${add_attribute("style", style, 0)}>${slots.default ? slots.default({}) : ``}</svg>`;
-});
-var outerScale = 1;
-function normaliseData(data) {
-  if ("iconName" in data && "icon" in data) {
-    let normalisedData = {};
-    let faIcon = data.icon;
-    let name2 = data.iconName;
-    let width = faIcon[0];
-    let height = faIcon[1];
-    let paths = faIcon[4];
-    let iconData = { width, height, paths: [{ d: paths }] };
-    normalisedData[name2] = iconData;
-    return normalisedData;
-  }
-  return data;
-}
-var Icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { class: className = "" } = $$props;
-  let { data } = $$props;
-  let { scale = 1 } = $$props;
-  let { spin = false } = $$props;
-  let { inverse = false } = $$props;
-  let { pulse = false } = $$props;
-  let { flip = null } = $$props;
-  let { label = null } = $$props;
-  let { self: self2 = null } = $$props;
-  let { style = null } = $$props;
-  let width;
-  let height;
-  let combinedStyle;
-  let box;
-  function init2() {
-    if (typeof data === "undefined") {
-      return;
-    }
-    const normalisedData = normaliseData(data);
-    const [name2] = Object.keys(normalisedData);
-    const icon = normalisedData[name2];
-    if (!icon.paths) {
-      icon.paths = [];
-    }
-    if (icon.d) {
-      icon.paths.push({ d: icon.d });
-    }
-    if (!icon.polygons) {
-      icon.polygons = [];
-    }
-    if (icon.points) {
-      icon.polygons.push({ points: icon.points });
-    }
-    self2 = icon;
-  }
-  function normalisedScale() {
-    let numScale = 1;
-    if (typeof scale !== "undefined") {
-      numScale = Number(scale);
-    }
-    if (isNaN(numScale) || numScale <= 0) {
-      console.warn('Invalid prop: prop "scale" should be a number over 0.');
-      return outerScale;
-    }
-    return numScale * outerScale;
-  }
-  function calculateBox() {
-    if (self2) {
-      return `0 0 ${self2.width} ${self2.height}`;
-    }
-    return `0 0 ${width} ${height}`;
-  }
-  function calculateRatio() {
-    if (!self2) {
-      return 1;
-    }
-    return Math.max(self2.width, self2.height) / 16;
-  }
-  function calculateWidth() {
-    if (self2) {
-      return self2.width / calculateRatio() * normalisedScale();
-    }
-    return 0;
-  }
-  function calculateHeight() {
-    if (self2) {
-      return self2.height / calculateRatio() * normalisedScale();
-    }
-    return 0;
-  }
-  function calculateStyle() {
-    let combined = "";
-    if (style !== null) {
-      combined += style;
-    }
-    let size = normalisedScale();
-    if (size === 1) {
-      if (combined.length === 0) {
-        return void 0;
-      }
-      return combined;
-    }
-    if (combined !== "" && !combined.endsWith(";")) {
-      combined += "; ";
-    }
-    return `${combined}font-size: ${size}em`;
-  }
-  if ($$props.class === void 0 && $$bindings.class && className !== void 0)
-    $$bindings.class(className);
-  if ($$props.data === void 0 && $$bindings.data && data !== void 0)
-    $$bindings.data(data);
-  if ($$props.scale === void 0 && $$bindings.scale && scale !== void 0)
-    $$bindings.scale(scale);
-  if ($$props.spin === void 0 && $$bindings.spin && spin !== void 0)
-    $$bindings.spin(spin);
-  if ($$props.inverse === void 0 && $$bindings.inverse && inverse !== void 0)
-    $$bindings.inverse(inverse);
-  if ($$props.pulse === void 0 && $$bindings.pulse && pulse !== void 0)
-    $$bindings.pulse(pulse);
-  if ($$props.flip === void 0 && $$bindings.flip && flip !== void 0)
-    $$bindings.flip(flip);
-  if ($$props.label === void 0 && $$bindings.label && label !== void 0)
-    $$bindings.label(label);
-  if ($$props.self === void 0 && $$bindings.self && self2 !== void 0)
-    $$bindings.self(self2);
-  if ($$props.style === void 0 && $$bindings.style && style !== void 0)
-    $$bindings.style(style);
-  let $$settled;
-  let $$rendered;
-  do {
-    $$settled = true;
-    {
+    _map = new WeakMap();
+    Promise.resolve();
+    boolean_attributes = new Set([
+      "allowfullscreen",
+      "allowpaymentrequest",
+      "async",
+      "autofocus",
+      "autoplay",
+      "checked",
+      "controls",
+      "default",
+      "defer",
+      "disabled",
+      "formnovalidate",
+      "hidden",
+      "ismap",
+      "loop",
+      "multiple",
+      "muted",
+      "nomodule",
+      "novalidate",
+      "open",
+      "playsinline",
+      "readonly",
+      "required",
+      "reversed",
+      "selected"
+    ]);
+    invalid_attribute_name_character = /[\s'">/=\u{FDD0}-\u{FDEF}\u{FFFE}\u{FFFF}\u{1FFFE}\u{1FFFF}\u{2FFFE}\u{2FFFF}\u{3FFFE}\u{3FFFF}\u{4FFFE}\u{4FFFF}\u{5FFFE}\u{5FFFF}\u{6FFFE}\u{6FFFF}\u{7FFFE}\u{7FFFF}\u{8FFFE}\u{8FFFF}\u{9FFFE}\u{9FFFF}\u{AFFFE}\u{AFFFF}\u{BFFFE}\u{BFFFF}\u{CFFFE}\u{CFFFF}\u{DFFFE}\u{DFFFF}\u{EFFFE}\u{EFFFF}\u{FFFFE}\u{FFFFF}\u{10FFFE}\u{10FFFF}]/u;
+    escaped = {
+      '"': "&quot;",
+      "'": "&#39;",
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;"
+    };
+    missing_component = {
+      $$render: () => ""
+    };
+    css17 = {
+      code: "#svelte-announcer.svelte-1j55zn5{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}",
+      map: null
+    };
+    Root = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { stores } = $$props;
+      let { page } = $$props;
+      let { components } = $$props;
+      let { props_0 = null } = $$props;
+      let { props_1 = null } = $$props;
+      let { props_2 = null } = $$props;
+      let { props_3 = null } = $$props;
+      setContext("__svelte__", stores);
+      afterUpdate(stores.page.notify);
+      if ($$props.stores === void 0 && $$bindings.stores && stores !== void 0)
+        $$bindings.stores(stores);
+      if ($$props.page === void 0 && $$bindings.page && page !== void 0)
+        $$bindings.page(page);
+      if ($$props.components === void 0 && $$bindings.components && components !== void 0)
+        $$bindings.components(components);
+      if ($$props.props_0 === void 0 && $$bindings.props_0 && props_0 !== void 0)
+        $$bindings.props_0(props_0);
+      if ($$props.props_1 === void 0 && $$bindings.props_1 && props_1 !== void 0)
+        $$bindings.props_1(props_1);
+      if ($$props.props_2 === void 0 && $$bindings.props_2 && props_2 !== void 0)
+        $$bindings.props_2(props_2);
+      if ($$props.props_3 === void 0 && $$bindings.props_3 && props_3 !== void 0)
+        $$bindings.props_3(props_3);
+      $$result.css.add(css17);
       {
-        init2();
-        width = calculateWidth();
-        height = calculateHeight();
-        combinedStyle = calculateStyle();
-        box = calculateBox();
+        stores.page.set(page);
       }
-    }
-    $$rendered = `${validate_component(Svg, "Svg").$$render($$result, {
-      label,
-      width,
-      height,
-      box,
-      style: combinedStyle,
-      spin,
-      flip,
-      inverse,
-      pulse,
-      class: className
-    }, {}, {
-      default: () => `${slots.default ? slots.default({}) : `
-    ${self2 ? `${self2.paths ? `${each(self2.paths, (path, i) => `${validate_component(Path, "Path").$$render($$result, { id: i, data: path }, {}, {})}`)}` : ``}
-      ${self2.polygons ? `${each(self2.polygons, (polygon, i) => `${validate_component(Polygon, "Polygon").$$render($$result, { id: i, data: polygon }, {}, {})}`)}` : ``}
-      ${self2.raw ? `${validate_component(Raw, "Raw").$$render($$result, { data: self2 }, {
-        data: ($$value) => {
-          self2 = $$value;
-          $$settled = false;
-        }
-      }, {})}` : ``}` : ``}
-  `}`
-    })}`;
-  } while (!$$settled);
-  return $$rendered;
-});
-var arrowLeft = { "arrow-left": { width: 1536, height: 1792, paths: [{ d: "M1536 896v128q0 53-32.5 90.5t-84.5 37.5h-704l293 294q38 36 38 90t-38 90l-75 76q-37 37-90 37-52 0-91-37l-651-652q-37-37-37-90 0-52 37-91l651-650q38-38 91-38 52 0 90 38l75 74q38 38 38 91t-38 91l-293 293h704q52 0 84.5 37.5t32.5 90.5z" }] } };
-var linkedinSquare = { "linkedin-square": { width: 1536, height: 1792, paths: [{ d: "M237 1414h231v-694h-231v694zM483 506q-1-52-36-86t-93-34-94.5 34-36.5 86q0 51 35.5 85.5t92.5 34.5h1q59 0 95-34.5t36-85.5zM1068 1414h231v-398q0-154-73-233t-193-79q-136 0-209 117h2v-101h-231q3 66 0 694h231v-388q0-38 7-56 15-35 45-59.5t74-24.5q116 0 116 157v371zM1536 416v960q0 119-84.5 203.5t-203.5 84.5h-960q-119 0-203.5-84.5t-84.5-203.5v-960q0-119 84.5-203.5t203.5-84.5h960q119 0 203.5 84.5t84.5 203.5z" }] } };
-var twitter = { twitter: { width: 1664, height: 1792, paths: [{ d: "M1620 408q-67 98-162 167 1 14 1 42 0 130-38 259.5t-115.5 248.5-184.5 210.5-258 146-323 54.5q-271 0-496-145 35 4 78 4 225 0 401-138-105-2-188-64.5t-114-159.5q33 5 61 5 43 0 85-11-112-23-185.5-111.5t-73.5-205.5v-4q68 38 146 41-66-44-105-115t-39-154q0-88 44-163 121 149 294.5 238.5t371.5 99.5q-8-38-8-74 0-134 94.5-228.5t228.5-94.5q140 0 236 102 109-21 205-78-37 115-142 178 93-10 186-50z" }] } };
-var facebook = { facebook: { width: 1024, height: 1792, paths: [{ d: "M959 12v264h-157q-86 0-116 36t-30 108v189h293l-39 296h-254v759h-306v-759h-255v-296h255v-218q0-186 104-288.5t277-102.5q147 0 228 12z" }] } };
-var linkedin = { linkedin: { width: 1536, height: 1792, paths: [{ d: "M349 625v991h-330v-991h330zM370 319q1 73-50.5 122t-135.5 49h-2q-82 0-132-49t-50-122q0-74 51.5-122.5t134.5-48.5 133 48.5 51 122.5zM1536 1048v568h-329v-530q0-105-40.5-164.5t-126.5-59.5q-63 0-105.5 34.5t-63.5 85.5q-11 30-11 81v553h-329q2-399 2-647t-1-296l-1-48h329v144h-2q20-32 41-56t56.5-52 87-43.5 114.5-15.5q171 0 275 113.5t104 332.5z" }] } };
-var youtubeSquare = { "youtube-square": { width: 1536, height: 1792, paths: [{ d: "M919 1303v-157q0-50-29-50-17 0-33 16v224q16 16 33 16 29 0 29-49zM1103 1181h66v-34q0-51-33-51t-33 51v34zM532 915v70h-80v423h-74v-423h-78v-70h232zM733 1041v367h-67v-40q-39 45-76 45-33 0-42-28-6-17-6-54v-290h66v270q0 24 1 26 1 15 15 15 20 0 42-31v-280h67zM985 1152v146q0 52-7 73-12 42-53 42-35 0-68-41v36h-67v-493h67v161q32-40 68-40 41 0 53 42 7 21 7 74zM1236 1281v9q0 29-2 43-3 22-15 40-27 40-80 40-52 0-81-38-21-27-21-86v-129q0-59 20-86 29-38 80-38t78 38q21 29 21 86v76h-133v65q0 51 34 51 24 0 30-26 0-1 0.5-7t0.5-16.5v-21.5h68zM785 457v156q0 51-32 51t-32-51v-156q0-52 32-52t32 52zM1318 1170q0-177-19-260-10-44-43-73.5t-76-34.5q-136-15-412-15-275 0-411 15-44 5-76.5 34.5t-42.5 73.5q-20 87-20 260 0 176 20 260 10 43 42.5 73t75.5 35q137 15 412 15t412-15q43-5 75.5-35t42.5-73q20-84 20-260zM563 519l90-296h-75l-51 195-53-195h-78q7 23 23 69l24 69q35 103 46 158v201h74v-201zM852 600v-130q0-58-21-87-29-38-78-38-51 0-78 38-21 29-21 87v130q0 58 21 87 27 38 78 38 49 0 78-38 21-27 21-87zM1033 720h67v-370h-67v283q-22 31-42 31-15 0-16-16-1-2-1-26v-272h-67v293q0 37 6 55 11 27 43 27 36 0 77-45v40zM1536 416v960q0 119-84.5 203.5t-203.5 84.5h-960q-119 0-203.5-84.5t-84.5-203.5v-960q0-119 84.5-203.5t203.5-84.5h960q119 0 203.5 84.5t84.5 203.5z" }] } };
-var instagram = { instagram: { width: 1536, height: 1792, paths: [{ d: "M1024 896q0-106-75-181t-181-75-181 75-75 181 75 181 181 75 181-75 75-181zM1162 896q0 164-115 279t-279 115-279-115-115-279 115-279 279-115 279 115 115 279zM1270 486q0 38-27 65t-65 27-65-27-27-65 27-65 65-27 65 27 27 65zM768 266q-7 0-76.5-0.5t-105.5 0-96.5 3-103 10-71.5 18.5q-50 20-88 58t-58 88q-11 29-18.5 71.5t-10 103-3 96.5 0 105.5 0.5 76.5-0.5 76.5 0 105.5 3 96.5 10 103 18.5 71.5q20 50 58 88t88 58q29 11 71.5 18.5t103 10 96.5 3 105.5 0 76.5-0.5 76.5 0.5 105.5 0 96.5-3 103-10 71.5-18.5q50-20 88-58t58-88q11-29 18.5-71.5t10-103 3-96.5 0-105.5-0.5-76.5 0.5-76.5 0-105.5-3-96.5-10-103-18.5-71.5q-20-50-58-88t-88-58q-29-11-71.5-18.5t-103-10-96.5-3-105.5 0-76.5 0.5zM1536 896q0 229-5 317-10 208-124 322t-322 124q-88 5-317 5t-317-5q-208-10-322-124t-124-322q-5-88-5-317t5-317q10-208 124-322t322-124q88-5 317-5t317 5q208 10 322 124t124 322q5 88 5 317z" }] } };
-var send = { send: { width: 1792, height: 1792, paths: [{ d: "M1764 11q33 24 27 64l-256 1536q-5 29-32 45-14 8-31 8-11 0-24-5l-453-185-242 295q-18 23-49 23-13 0-22-4-19-7-30.5-23.5t-11.5-36.5v-349l864-1059-1069 925-395-162q-37-14-40-55-2-40 32-59l1664-960q15-9 32-9 20 0 36 11z" }] } };
-var userCircle = { "user-circle": { width: 1792, height: 1792, paths: [{ d: "M1523 1339q-22-155-87.5-257.5t-184.5-118.5q-67 74-159.5 115.5t-195.5 41.5-195.5-41.5-159.5-115.5q-119 16-184.5 118.5t-87.5 257.5q106 150 271 237.5t356 87.5 356-87.5 271-237.5zM1280 640q0-159-112.5-271.5t-271.5-112.5-271.5 112.5-112.5 271.5 112.5 271.5 271.5 112.5 271.5-112.5 112.5-271.5zM1792 896q0 182-71 347.5t-190.5 286-285.5 191.5-349 71q-182 0-348-71t-286-191-191-286-71-348 71-348 191-286 286-191 348-71 348 71 286 191 191 286 71 348z" }] } };
-var css$g = {
-  code: "@media screen and (min-width: 1200px){li.svelte-88l3xh.svelte-88l3xh{font-size:1.16em;font-weight:500}a.svelte-88l3xh.svelte-88l3xh{line-height:2.8rem}.nav-img.svelte-88l3xh.svelte-88l3xh{padding-right:6rem}.navbar-nav.svelte-88l3xh .nav-link.svelte-88l3xh{margin-right:15px;margin-left:15px}}@media screen and (max-width: 1200px){li.svelte-88l3xh.svelte-88l3xh{font-size:0.9em;font-weight:400}a.svelte-88l3xh.svelte-88l3xh{line-height:2.5rem}}@media screen and (max-width: 992px){img.svelte-88l3xh.svelte-88l3xh{max-width:80px;height:auto}a.svelte-88l3xh.svelte-88l3xh{font-size:1.14em;line-height:3rem;text-align:center}li.svelte-88l3xh.svelte-88l3xh{text-align:center}}nav.svelte-88l3xh.svelte-88l3xh{border-bottom:var(--logo-gold) 4px solid}a.svelte-88l3xh.svelte-88l3xh{display:inline-block;width:auto}.dropdown-menu.svelte-88l3xh.svelte-88l3xh{background-color:#FEFEFF}.dropdown-item.svelte-88l3xh.svelte-88l3xh{color:black}.dropdown-item.svelte-88l3xh.svelte-88l3xh:active{color:#fff;text-decoration:none;background-color:#fff}#logout.svelte-88l3xh.svelte-88l3xh{cursor:pointer;font-size:1.12em;transition:0.3s}h6.svelte-88l3xh.svelte-88l3xh{color:var(--logo-grey);margin-right:1rem}#logout.svelte-88l3xh.svelte-88l3xh:hover{font-size:1.15em}a.svelte-88l3xh.svelte-88l3xh:after{display:block;content:'';border-bottom:solid 3px var(--logo-gold);transform:scaleX(0);transition:transform 250ms ease-in-out}a.fromLeft.svelte-88l3xh.svelte-88l3xh:after{transform-origin:100% 50%}a.fromLeft.svelte-88l3xh.svelte-88l3xh:hover:after{transform:scaleX(1);transform-origin:0% 50%}",
-  map: null
-};
-var Header = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let $name, $$unsubscribe_name;
-  $$unsubscribe_name = subscribe(name, (value) => $name = value);
-  $$result.css.add(css$g);
-  $$unsubscribe_name();
-  return `<nav class="${"navbar navbar-expand-lg navbar-light svelte-88l3xh"}"><div class="${"container-fluid"}"><button id="${"burger"}" class="${"navbar-toggler third-button mx-auto"}" type="${"button"}" data-bs-toggle="${"collapse"}" data-bs-target="${"#navbar"}" aria-controls="${"navbar"}" aria-expanded="${"false"}" aria-label="${"Toggle navigation"}"><div class="${"animated-icon3"}"><span></span><span></span><span></span></div></button>
-        <div class="${"collapse navbar-collapse justify-content-end"}" id="${"navbar"}"><ul class="${"navbar-nav svelte-88l3xh"}"><div class="${"nav-img mx-auto svelte-88l3xh"}"><a class="${"navbar-brand svelte-88l3xh"}" href="${"/"}"><img src="${"/thinkteacherlogo-final.png"}" alt="${"logo"}" width="${"200"}" class="${"svelte-88l3xh"}"></a></div>
-                <li class="${"nav-item svelte-88l3xh"}"><a class="${"nav-link fromLeft svelte-88l3xh"}" sveltekit:prefetch href="${"/about"}">About</a></li>
-                <li class="${"nav-item svelte-88l3xh"}"><a class="${"nav-link fromLeft svelte-88l3xh"}" sveltekit:prefetch href="${"/partners"}">Partners</a></li>
-                <li class="${"nav-item svelte-88l3xh"}"><a class="${"nav-link fromLeft svelte-88l3xh"}" sveltekit:prefetch href="${"/benefits"}">Benefits</a></li>
-                <li class="${"nav-item svelte-88l3xh"}"><a class="${"nav-link fromLeft svelte-88l3xh"}" sveltekit:prefetch href="${"/blog"}">Blog</a></li>
-                <li class="${"nav-item dropdown svelte-88l3xh"}"><a class="${"nav-link from-left dropdown-toggle svelte-88l3xh"}" data-bs-toggle="${"dropdown"}" href="${"/"}" role="${"button"}" aria-expanded="${"false"}">Webinars</a>
-                    <ul class="${"dropdown-menu svelte-88l3xh"}"><li class="${"svelte-88l3xh"}"><a class="${"dropdown-item svelte-88l3xh"}" href="${"/events"}">Events</a></li>
-                      <li class="${"svelte-88l3xh"}"><a class="${"dropdown-item svelte-88l3xh"}" href="${"/webinars"}">Webinars</a></li></ul></li>
-                <li class="${"nav-item svelte-88l3xh"}"><a class="${"nav-link fromLeft svelte-88l3xh"}" href="${"/contact-us"}">Contact</a></li></ul></div>
-        <div class="${"collapse navbar-collapse justify-content-end"}" id="${"navbar"}">
-                <div class="${"d-flex align-items-center align-top"}">${$name ? `<a class="${"mb-2 svelte-88l3xh"}" title="${"User profile"}" href="${"/auth/profile"}">${validate_component(Icon, "Icon").$$render($$result, { data: userCircle, scale: "2" }, {}, {})}</a>
-                        <h6 class="${"svelte-88l3xh"}">\xA0\xA0Welcome ${escape$4($name)}, <span id="${"logout"}" style="${"color: var(--logo-gold);"}" class="${"svelte-88l3xh"}">Logout</span></h6>` : `<p><a href="${"/login"}" class="${"nav-link align-top svelte-88l3xh"}" style="${"color: var(--logo-gold); font-size: 1.16em;"}">Login</a></p>
-                        <h5>/</h5>
-                        <p><a href="${"/register"}" class="${"nav-link svelte-88l3xh"}" style="${"color: var(--logo-grey); font-size: 1.16em;"}">Register</a></p>`}</div></div></div>
-</nav>`;
-});
-var css$f = {
-  code: "footer.svelte-19n6n29.svelte-19n6n29{margin-top:auto !important}h5.svelte-19n6n29.svelte-19n6n29,p.svelte-19n6n29.svelte-19n6n29{color:var(--bg-primary)}li.svelte-19n6n29 a.svelte-19n6n29{color:var(--bg-primary) !important}",
-  map: null
-};
-var Footer = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  $$result.css.add(css$f);
-  return `<footer style="${"background-color: var(--default-text);"}" class="${"text-center text-black mt-5 svelte-19n6n29"}"><div class="${"container-fluid p-4"}"><section class="${"mb-2"}">
-        <a class="${"btn btn-outline-light btn-floating m-1"}" href="${"https://www.facebook.com/thinkteacher"}" target="${"_blank"}" role="${"button"}">${validate_component(Icon, "Icon").$$render($$result, { data: facebook, scale: "1.8" }, {}, {})}</a>  
-        
-        <a class="${"btn btn-outline-light btn-floating m-1"}" href="${"https://twitter.com/thinkteacher_sa"}" target="${"_blank"}" role="${"button"}">${validate_component(Icon, "Icon").$$render($$result, { data: twitter, scale: "1.8" }, {}, {})}</a>
-        
-        <a class="${"btn btn-outline-light btn-floating m-1"}" href="${"https://www.instagram.com/thinkteacher_rsa"}" target="${"_blank"}" role="${"button"}">${validate_component(Icon, "Icon").$$render($$result, { data: instagram, scale: "1.8" }, {}, {})}</a>
-        
-        <a class="${"btn btn-outline-light btn-floating m-1"}" href="${"https://www.linkedin.com/company/think-teacher"}" target="${"_blank"}" role="${"button"}">${validate_component(Icon, "Icon").$$render($$result, { data: linkedin, scale: "1.8" }, {}, {})}</a>
-        
-        <a class="${"btn btn-outline-light btn-floating m-1"}" href="${"https://www.youtube.com/channel/UCN-byMa-sTVbwKWNkbMM9bQ"}" target="${"_blank"}" role="${"button"}">${validate_component(Icon, "Icon").$$render($$result, { data: youtubeSquare, scale: "1.8" }, {}, {})}</a>
-        <i class="${"fab fa-youtube"}"></i></section>
-  
-      
-      <section class="${"mb-4"}"><p class="${"svelte-19n6n29"}">________________________________________________________
-        </p></section>
-  
-      
-      <section class="${""}">
-        <div class="${"row"}">
-            <div class="${"col-lg-3 col-md-6 mb-4 mb-md-0"}"><h5 class="${"text-uppercase svelte-19n6n29"}">Socials</h5>
-    
-                <ul class="${"list-unstyled mb-0"}"><li class="${"svelte-19n6n29"}"><a href="${"https://www.facebook.com/thinkteacher"}" target="${"_blank"}" class="${"text-white svelte-19n6n29"}">Facebook</a></li>
-                    <li class="${"svelte-19n6n29"}"><a href="${"https://twitter.com/thinkteacher_sa"}" target="${"_blank"}" class="${"text-white svelte-19n6n29"}">Twitter</a></li>
-                    <li class="${"svelte-19n6n29"}"><a href="${"https://www.instagram.com/thinkteacher_rsa"}" target="${"_blank"}" class="${"text-white svelte-19n6n29"}">Instagram</a></li>
-                    <li class="${"svelte-19n6n29"}"><a href="${"https://www.linkedin.com/company/think-teacher"}" target="${"_blank"}" class="${"text-white svelte-19n6n29"}">Linkedin</a></li>
-                    <li class="${"svelte-19n6n29"}"><a href="${"https://www.youtube.com/channel/UCN-byMa-sTVbwKWNkbMM9bQ"}" target="${"_blank"}" class="${"text-white svelte-19n6n29"}">YouTube</a></li></ul></div>
+      return `
 
-            <div class="${"col-lg-3 col-md-6 mb-4 mb-md-0"}"><h5 class="${"text-uppercase svelte-19n6n29"}">Useful Links</h5>
-    
-                <ul class="${"list-unstyled mb-0"}"><li class="${"svelte-19n6n29"}"><a href="${"/login"}" class="${"text-white svelte-19n6n29"}">Login</a></li>
-                    <li class="${"svelte-19n6n29"}"><a href="${"/forgot-password"}" class="${"text-white svelte-19n6n29"}">Forgot Password</a></li>
-                    <li class="${"svelte-19n6n29"}"><a href="${"/register"}" class="${"text-white svelte-19n6n29"}">Register</a></li>
-                    <li class="${"svelte-19n6n29"}"><a href="${"/contact-us"}" class="${"text-white svelte-19n6n29"}">Contact</a></li></ul></div>
 
-            <div class="${"col-lg-3 col-md-6 mb-4 mb-md-0"}"><h5 class="${"text-uppercase svelte-19n6n29"}">Contact</h5>
-    
-                <ul class="${"list-unstyled mb-0"}"><li class="${"svelte-19n6n29"}"><a href="${"mailto:zani@thinkteacher.co.za"}" class="${"text-white svelte-19n6n29"}">zani@thinkteacher.co.za</a></li></ul></div>
+${validate_component(components[0] || missing_component, "svelte:component").$$render($$result, Object.assign(props_0 || {}), {}, {
+        default: () => `${components[1] ? `${validate_component(components[1] || missing_component, "svelte:component").$$render($$result, Object.assign(props_1 || {}), {}, {
+          default: () => `${components[2] ? `${validate_component(components[2] || missing_component, "svelte:component").$$render($$result, Object.assign(props_2 || {}), {}, {
+            default: () => `${components[3] ? `${validate_component(components[3] || missing_component, "svelte:component").$$render($$result, Object.assign(props_3 || {}), {}, {})}` : ``}`
+          })}` : ``}`
+        })}` : ``}`
+      })}
 
-            <div class="${"col-lg-3 col-md-6 mb-4 mb-md-0"}"><button class="${"mt-3 btn btn-outline-light px-2"}">Scroll to top</button></div></div></section></div>
-  
-    
-    <div class="${"text-center p-2"}" style="${"background-color: var(--logo-gold);"}">\xA9 2021 Copyright:
-      <a class="${"text-white"}" href="${"https://thinkteacher.co.za"}">Think Teacher</a>
-      </div>
-</footer>`;
-});
-var _layout$1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `${validate_component(Header, "Header").$$render($$result, {}, {}, {})}
-
-<div class="${"container-fluid"}">${slots.default ? slots.default({}) : ``}</div>
-
-${validate_component(Footer, "Footer").$$render($$result, {}, {}, {})}`;
-});
-var __layout$1 = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": _layout$1
-});
-function load$4({ error: error2, status }) {
-  return {
-    props: { title: `${status}: ${error2.message}` }
-  };
-}
-var _error = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { title } = $$props;
-  if ($$props.title === void 0 && $$bindings.title && title !== void 0)
-    $$bindings.title(title);
-  return `<div class="${"container p-4 text-center"}"><h1>${escape$4(title)}</h1></div>`;
-});
-var __error = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": _error,
-  load: load$4
-});
-var css$e = {
-  code: "#logo-box.svelte-1r3kpdu{margin:auto;padding-top:0%;text-align:center;max-width:850px;height:auto;position:relative}@media screen and (max-width: 1000px){#logo-box.svelte-1r3kpdu{max-width:600px;padding-left:1rem;padding-right:1rem}}",
-  map: null
-};
-var Logo = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  $$result.css.add(css$e);
-  return `<div id="${"logo-box"}" class="${"svelte-1r3kpdu"}"><svg id="${"thinkTeacherLogo"}" viewBox="${"0 0 2224 527"}" fill="${"none"}" xmlns="${"http://www.w3.org/2000/svg"}"><g id="${"final-logo-edited-for-site"}"><g id="${"main-text"}"><path id="${"Vector"}" d="${"M1330.07 311.949C1318.34 311.949 1308.7 310.097 1301.4 306.657C1294.1 303.217 1288.62 297.396 1285.49 289.194C1282.36 280.992 1280.8 270.144 1281.32 256.385L1282.63 190.503H1258.64V162.721L1284.19 155.842L1289.93 112.185H1323.55V155.842H1359.53V190.503H1323.55V256.121C1323.55 260.354 1323.82 263.794 1324.6 266.704C1325.38 269.35 1326.42 271.731 1327.99 273.319C1329.29 274.906 1331.12 276.229 1332.94 277.023C1334.76 277.817 1336.85 278.346 1338.68 278.346L1358.23 280.198V312.213H1330.07V311.949Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_2"}" d="${"M1442.95 313.271C1426.01 313.271 1412.45 310.89 1402.29 306.392C1392.12 301.894 1384.82 293.692 1380.39 282.05C1375.96 270.408 1373.61 254.268 1373.61 233.895C1373.61 212.728 1375.69 196.324 1379.87 184.682C1384.04 173.04 1391.08 164.838 1400.98 160.34C1410.89 155.577 1424.44 153.46 1441.39 153.46C1456.77 153.46 1468.76 155.048 1478.15 158.223C1487.27 161.398 1494.05 166.69 1497.96 174.627C1502.13 182.3 1504.22 193.413 1504.22 207.436C1504.22 218.02 1502.13 226.222 1497.96 232.308C1493.79 238.393 1488.05 242.891 1480.75 245.272C1473.19 247.918 1464.59 249.241 1454.42 249.241H1415.84C1416.1 257.179 1417.41 263.529 1419.49 268.291C1421.58 273.054 1425.23 276.494 1430.7 278.346C1436.18 280.462 1444 281.521 1454.42 281.521H1499V306.921C1491.44 308.509 1483.36 310.096 1474.5 311.419C1465.63 312.478 1455.21 313.271 1442.95 313.271ZM1415.32 223.576H1450.25C1455.99 223.576 1460.16 222.518 1462.77 220.137C1465.37 217.755 1466.68 213.522 1466.68 207.701C1466.68 202.145 1465.9 197.647 1464.07 194.207C1462.25 190.767 1459.64 188.386 1455.99 187.063C1452.34 185.74 1447.39 184.946 1441.39 184.946C1434.87 184.946 1429.66 186.005 1426.01 188.386C1422.1 190.503 1419.49 194.472 1417.67 200.292C1415.84 206.113 1415.32 213.257 1415.32 223.576Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_3"}" d="${"M1557.92 313.536C1546.19 313.536 1536.8 310.096 1529.51 302.952C1522.21 296.073 1518.56 286.283 1518.56 273.848V259.825C1518.56 247.918 1522.73 238.393 1530.81 230.72C1538.89 223.047 1551.93 219.343 1569.13 219.343H1608.24V208.495C1608.24 203.732 1607.45 199.499 1605.63 196.324C1603.8 193.149 1600.68 190.767 1595.98 189.444C1591.29 188.121 1584.25 187.328 1574.61 187.328H1528.46V162.456C1536.02 160.075 1544.63 158.223 1554.27 156.371C1564.18 154.519 1575.91 153.725 1589.99 153.725C1602.76 153.725 1613.71 155.313 1622.83 158.488C1631.96 161.663 1638.74 166.954 1643.43 174.363C1648.12 182.036 1650.47 192.355 1650.47 205.849V311.948H1616.84L1610.06 295.279C1608.76 296.867 1606.41 298.454 1603.28 300.571C1600.15 302.688 1595.98 304.54 1591.29 306.657C1586.6 308.773 1581.38 310.361 1575.65 311.684C1569.91 313.007 1564.18 313.536 1557.92 313.536ZM1579.3 283.638C1581.12 283.638 1583.47 283.373 1585.82 282.844C1588.16 282.315 1590.77 281.785 1593.38 280.992C1595.98 280.198 1598.33 279.669 1600.41 278.875C1602.5 278.081 1604.32 277.552 1605.89 277.023C1607.19 276.494 1608.24 275.965 1608.5 275.965V239.716L1582.69 241.568C1575.13 242.097 1569.65 244.214 1566.26 247.389C1562.61 250.564 1561.05 255.062 1561.05 260.883V267.233C1561.05 271.202 1561.83 274.377 1563.4 276.758C1564.96 279.404 1567.31 280.992 1569.91 282.05C1572.78 283.108 1575.91 283.638 1579.3 283.638Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_4"}" d="${"M1737.28 313.536C1727.9 313.536 1719.29 312.213 1711.47 309.832C1703.65 307.186 1696.61 303.217 1690.88 297.131C1685.14 291.311 1680.71 283.108 1677.58 273.054C1674.45 263 1672.89 250.035 1672.89 234.424C1672.89 218.549 1674.19 205.32 1677.06 195.001C1679.93 184.417 1684.1 176.215 1689.83 170.129C1695.57 164.044 1702.35 159.811 1710.69 157.165C1718.77 154.519 1728.16 153.46 1738.58 153.46C1747.97 153.46 1756.83 153.99 1765.44 155.048C1774.04 156.106 1782.9 157.958 1792.29 160.604V185.211H1751.88C1743.02 185.211 1735.98 186.534 1730.76 189.18C1725.29 191.826 1721.64 196.588 1719.29 203.732C1716.95 210.876 1715.64 220.93 1715.64 234.16C1715.64 247.124 1716.95 256.914 1719.29 263.793C1721.64 270.673 1725.55 275.171 1731.02 277.552C1736.5 279.933 1743.8 280.992 1752.66 280.992H1794.63V305.334C1789.94 306.921 1784.21 308.244 1777.95 309.567C1771.69 310.89 1764.91 311.684 1758.14 312.478C1750.84 313.271 1744.06 313.536 1737.28 313.536Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_5"}" d="${"M1812.62 311.95V90.4902H1855.11V171.983C1860.59 167.221 1867.89 162.987 1876.75 159.283C1885.62 155.314 1894.74 153.462 1904.13 153.462C1915.86 153.462 1924.98 155.843 1932.02 160.341C1938.8 165.104 1943.75 171.454 1946.88 179.921C1950.01 188.388 1951.57 197.913 1951.57 209.025V312.215H1909.08V214.317C1909.08 209.29 1908.04 205.057 1906.21 201.882C1904.39 198.707 1901.78 196.061 1898.39 194.473C1895.26 192.886 1891.35 192.092 1886.92 192.092C1883.01 192.092 1879.1 192.621 1875.45 193.679C1871.8 194.738 1868.15 196.061 1864.76 197.913C1861.37 199.765 1858.24 201.617 1855.11 203.734V312.215H1812.62V311.95Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_6"}" d="${"M2042.56 313.271C2025.61 313.271 2012.05 310.89 2001.89 306.392C1991.72 301.894 1984.42 293.692 1979.99 282.05C1975.56 270.408 1973.21 254.268 1973.21 233.895C1973.21 212.728 1975.3 196.324 1979.47 184.682C1983.64 173.04 1990.68 164.838 2000.58 160.34C2010.49 155.577 2024.05 153.46 2040.99 153.46C2056.37 153.46 2068.36 155.048 2077.75 158.223C2086.87 161.398 2093.65 166.69 2097.56 174.627C2101.73 182.3 2103.82 193.413 2103.82 207.436C2103.82 218.02 2101.73 226.222 2097.56 232.308C2093.39 238.393 2087.66 242.891 2080.36 245.272C2073.06 247.654 2064.19 249.241 2054.03 249.241H2015.44C2015.7 257.179 2017.01 263.529 2019.09 268.291C2021.18 273.054 2024.83 276.494 2030.3 278.346C2035.78 280.462 2043.6 281.521 2054.03 281.521H2098.87V306.921C2091.31 308.509 2083.22 310.096 2074.36 311.419C2065.5 312.478 2054.81 313.271 2042.56 313.271ZM2014.92 223.576H2049.85C2055.59 223.576 2059.76 222.518 2062.37 220.137C2064.98 217.755 2066.28 213.522 2066.28 207.701C2066.28 202.145 2065.5 197.647 2063.67 194.207C2061.85 190.767 2059.24 188.386 2055.59 187.063C2051.94 185.74 2046.99 184.946 2040.99 184.946C2034.47 184.946 2029.26 186.005 2025.61 188.386C2021.7 190.503 2019.09 194.472 2017.27 200.292C2015.7 205.32 2014.92 213.257 2014.92 223.576Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_7"}" d="${"M2125.46 311.948V155.842H2158.04L2167.69 179.655C2173.16 172.511 2179.42 166.425 2186.46 161.398C2193.5 156.371 2201.58 153.725 2211.23 153.725C2213.31 153.725 2215.4 153.725 2217.74 153.99C2219.83 154.254 2221.91 154.519 2224 155.048V199.234C2221.13 198.97 2218 198.44 2214.88 198.176C2211.75 197.911 2208.62 197.647 2205.75 197.647C2200.28 197.647 2195.32 198.176 2190.63 199.499C2186.2 200.822 2182.03 202.674 2178.38 205.055C2174.73 207.436 2171.08 210.611 2167.69 214.58V311.684H2125.46V311.948Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_8"}" d="${"M661.387 311.949C649.655 311.949 640.01 310.097 632.71 306.657C625.411 303.218 619.936 297.397 616.808 289.195C613.679 280.992 612.115 270.144 612.636 256.386L613.94 190.503H589.956V162.722L615.504 155.842L621.239 112.186H654.869V155.842H690.845V190.503H654.869V256.121C654.869 260.355 655.13 263.794 655.912 266.705C656.694 269.35 657.737 271.732 659.301 273.319C660.605 274.907 662.429 276.23 664.254 277.024C666.079 277.817 668.165 278.346 669.99 278.346L689.542 280.199V312.214H661.387V311.949Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_9"}" d="${"M710.398 311.951V90.4907H752.891V171.984C758.366 167.221 765.665 162.988 774.529 159.284C783.393 155.315 792.517 153.463 801.902 153.463C813.633 153.463 822.758 155.844 829.797 160.342C836.575 165.104 841.528 171.455 844.656 179.921C847.785 188.388 849.349 197.913 849.349 209.026V312.215H806.855V214.318C806.855 209.291 805.812 205.057 803.988 201.882C802.163 198.707 799.556 196.061 796.167 194.474C793.038 192.886 789.128 192.092 784.696 192.092C780.786 192.092 776.875 192.622 773.225 193.68C769.576 194.738 765.926 196.061 762.537 197.913C759.148 199.765 756.019 201.618 752.891 203.734V312.215H710.398V311.951Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_10"}" d="${"M880.372 132.823C876.461 132.823 874.376 130.971 874.376 127.002V98.4268C874.376 94.458 876.461 92.3413 880.372 92.3413H912.959C914.784 92.3413 916.087 92.8705 916.869 94.1934C917.912 95.2518 918.173 96.8393 918.173 98.4268V127.002C918.173 130.971 916.348 132.823 912.698 132.823H880.372ZM875.418 311.949V155.842H917.651V311.949H875.418Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_11"}" d="${"M945.285 311.949V155.842H980.218L987.778 171.717C993.514 166.955 1000.81 162.457 1009.42 158.753C1018.02 155.048 1027.14 153.196 1036.27 153.196C1048.78 153.196 1058.69 155.842 1065.47 160.869C1072.24 165.896 1077.2 172.511 1079.8 180.978C1082.67 189.445 1083.98 198.705 1083.98 209.024V311.949H1041.48V214.581C1041.48 209.553 1040.7 205.32 1038.87 202.145C1037.05 198.97 1034.44 196.324 1031.31 194.472C1028.19 192.62 1024.28 191.826 1019.58 191.826C1015.67 191.826 1011.76 192.355 1008.11 193.149C1004.46 194.207 1000.81 195.53 997.424 197.118C994.035 198.97 990.907 200.822 987.778 203.203V311.684H945.285V311.949Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_12"}" d="${"M1110.57 311.949V90.2246H1153.06V210.083H1171.05L1204.94 156.107H1247.95L1202.59 229.662L1252.39 312.214H1209.37L1170.53 248.713H1153.06V311.684H1110.57V311.949Z"}" fill="${"#D9B73D"}"></path></g><g id="${"gold-circles"}"><path id="${"Vector_13"}" d="${"M217.942 152.138C239.683 152.138 257.307 134.25 257.307 112.185C257.307 90.1199 239.683 72.2324 217.942 72.2324C196.201 72.2324 178.577 90.1199 178.577 112.185C178.577 134.25 196.201 152.138 217.942 152.138Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_14"}" d="${"M281.031 22.7545C287.222 22.7545 292.241 17.6608 292.241 11.3773C292.241 5.09377 287.222 0 281.031 0C274.84 0 269.821 5.09377 269.821 11.3773C269.821 17.6608 274.84 22.7545 281.031 22.7545Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_15"}" d="${"M321.699 122.769C327.89 122.769 332.909 117.675 332.909 111.391C332.909 105.108 327.89 100.014 321.699 100.014C315.508 100.014 310.489 105.108 310.489 111.391C310.489 117.675 315.508 122.769 321.699 122.769Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_16"}" d="${"M157.982 273.319C164.173 273.319 169.192 268.225 169.192 261.942C169.192 255.658 164.173 250.564 157.982 250.564C151.791 250.564 146.772 255.658 146.772 261.942C146.772 268.225 151.791 273.319 157.982 273.319Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_17"}" d="${"M86.2905 393.706C92.4816 393.706 97.5005 388.612 97.5005 382.329C97.5005 376.045 92.4816 370.952 86.2905 370.952C80.0994 370.952 75.0806 376.045 75.0806 382.329C75.0806 388.612 80.0994 393.706 86.2905 393.706Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_18"}" d="${"M370.971 362.75C377.162 362.75 382.181 357.656 382.181 351.372C382.181 345.089 377.162 339.995 370.971 339.995C364.78 339.995 359.761 345.089 359.761 351.372C359.761 357.656 364.78 362.75 370.971 362.75Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_19"}" d="${"M430.67 286.284C441.469 286.284 450.223 277.399 450.223 266.44C450.223 255.48 441.469 246.596 430.67 246.596C419.872 246.596 411.118 255.48 411.118 266.44C411.118 277.399 419.872 286.284 430.67 286.284Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_20"}" d="${"M206.732 526.264C217.531 526.264 226.284 517.38 226.284 506.42C226.284 495.461 217.531 486.576 206.732 486.576C195.934 486.576 187.18 495.461 187.18 506.42C187.18 517.38 195.934 526.264 206.732 526.264Z"}" fill="${"#D9B73D"}"></path></g><g id="${"blue-circles"}"><path id="${"Vector_21"}" d="${"M74.8199 165.103C92.9612 165.103 107.668 150.177 107.668 131.765C107.668 113.353 92.9612 98.4268 74.8199 98.4268C56.6786 98.4268 41.9722 113.353 41.9722 131.765C41.9722 150.177 56.6786 165.103 74.8199 165.103Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_22"}" d="${"M140.515 98.6912C158.657 98.6912 173.363 83.7653 173.363 65.3532C173.363 46.9411 158.657 32.0151 140.515 32.0151C122.374 32.0151 107.668 46.9411 107.668 65.3532C107.668 83.7653 122.374 98.6912 140.515 98.6912Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_23"}" d="${"M343.858 424.663C362 424.663 376.706 409.737 376.706 391.325C376.706 372.913 362 357.987 343.858 357.987C325.717 357.987 311.011 372.913 311.011 391.325C311.011 409.737 325.717 424.663 343.858 424.663Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_24"}" d="${"M441.098 157.165C459.239 157.165 473.946 142.239 473.946 123.827C473.946 105.415 459.239 90.4888 441.098 90.4888C422.957 90.4888 408.25 105.415 408.25 123.827C408.25 142.239 422.957 157.165 441.098 157.165Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_25"}" d="${"M154.593 506.421C172.734 506.421 187.441 491.495 187.441 473.083C187.441 454.671 172.734 439.745 154.593 439.745C136.452 439.745 121.745 454.671 121.745 473.083C121.745 491.495 136.452 506.421 154.593 506.421Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_26"}" d="${"M45.8825 384.71C64.0238 384.71 78.7303 369.784 78.7303 351.372C78.7303 332.96 64.0238 318.034 45.8825 318.034C27.7412 318.034 13.0348 332.96 13.0348 351.372C13.0348 369.784 27.7412 384.71 45.8825 384.71Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_27"}" d="${"M107.668 289.988C118.466 289.988 127.22 281.103 127.22 270.144C127.22 259.184 118.466 250.3 107.668 250.3C96.8692 250.3 88.1154 259.184 88.1154 270.144C88.1154 281.103 96.8692 289.988 107.668 289.988Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_28"}" d="${"M122.006 436.834C132.804 436.834 141.558 427.95 141.558 416.99C141.558 406.03 132.804 397.146 122.006 397.146C111.207 397.146 102.454 406.03 102.454 416.99C102.454 427.95 111.207 436.834 122.006 436.834Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_29"}" d="${"M146.511 151.609C157.31 151.609 166.064 142.724 166.064 131.764C166.064 120.805 157.31 111.92 146.511 111.92C135.713 111.92 126.959 120.805 126.959 131.764C126.959 142.724 135.713 151.609 146.511 151.609Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_30"}" d="${"M206.732 45.5089C217.531 45.5089 226.284 36.6244 226.284 25.6649C226.284 14.7053 217.531 5.8208 206.732 5.8208C195.934 5.8208 187.18 14.7053 187.18 25.6649C187.18 36.6244 195.934 45.5089 206.732 45.5089Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_31"}" d="${"M292.501 151.609C303.3 151.609 312.054 142.724 312.054 131.764C312.054 120.805 303.3 111.92 292.501 111.92C281.703 111.92 272.949 120.805 272.949 131.764C272.949 142.724 281.703 151.609 292.501 151.609Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_32"}" d="${"M248.183 37.0421C254.374 37.0421 259.393 31.9484 259.393 25.6649C259.393 19.3814 254.374 14.2876 248.183 14.2876C241.992 14.2876 236.973 19.3814 236.973 25.6649C236.973 31.9484 241.992 37.0421 248.183 37.0421Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_33"}" d="${"M246.097 72.2325C252.288 72.2325 257.307 67.1388 257.307 60.8553C257.307 54.5718 252.288 49.478 246.097 49.478C239.906 49.478 234.887 54.5718 234.887 60.8553C234.887 67.1388 239.906 72.2325 246.097 72.2325Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_34"}" d="${"M326.392 154.784C332.583 154.784 337.602 149.69 337.602 143.407C337.602 137.123 332.583 132.029 326.392 132.029C320.201 132.029 315.182 137.123 315.182 143.407C315.182 149.69 320.201 154.784 326.392 154.784Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_35"}" d="${"M59.1781 197.382C65.3692 197.382 70.388 192.289 70.388 186.005C70.388 179.722 65.3692 174.628 59.1781 174.628C52.987 174.628 47.9681 179.722 47.9681 186.005C47.9681 192.289 52.987 197.382 59.1781 197.382Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_36"}" d="${"M203.082 428.367C209.273 428.367 214.292 423.274 214.292 416.99C214.292 410.707 209.273 405.613 203.082 405.613C196.891 405.613 191.872 410.707 191.872 416.99C191.872 423.274 196.891 428.367 203.082 428.367Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_37"}" d="${"M86.2905 318.034C92.4816 318.034 97.5005 312.941 97.5005 306.657C97.5005 300.374 92.4816 295.28 86.2905 295.28C80.0994 295.28 75.0806 300.374 75.0806 306.657C75.0806 312.941 80.0994 318.034 86.2905 318.034Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_38"}" d="${"M122.006 341.053C128.197 341.053 133.216 335.96 133.216 329.676C133.216 323.393 128.197 318.299 122.006 318.299C115.815 318.299 110.796 323.393 110.796 329.676C110.796 335.96 115.815 341.053 122.006 341.053Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_39"}" d="${"M140.515 307.186C146.706 307.186 151.725 302.092 151.725 295.809C151.725 289.525 146.706 284.432 140.515 284.432C134.324 284.432 129.305 289.525 129.305 295.809C129.305 302.092 134.324 307.186 140.515 307.186Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_40"}" d="${"M204.386 323.061C210.577 323.061 215.596 317.967 215.596 311.684C215.596 305.4 210.577 300.307 204.386 300.307C198.195 300.307 193.176 305.4 193.176 311.684C193.176 317.967 198.195 323.061 204.386 323.061Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_41"}" d="${"M254.961 484.46C261.152 484.46 266.171 479.366 266.171 473.082C266.171 466.799 261.152 461.705 254.961 461.705C248.77 461.705 243.751 466.799 243.751 473.082C243.751 479.366 248.77 484.46 254.961 484.46Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_42"}" d="${"M243.751 517.798C249.942 517.798 254.961 512.704 254.961 506.421C254.961 500.137 249.942 495.043 243.751 495.043C237.56 495.043 232.541 500.137 232.541 506.421C232.541 512.704 237.56 517.798 243.751 517.798Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_43"}" d="${"M359.761 459.588C365.952 459.588 370.971 454.495 370.971 448.211C370.971 441.928 365.952 436.834 359.761 436.834C353.57 436.834 348.551 441.928 348.551 448.211C348.551 454.495 353.57 459.588 359.761 459.588Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_44"}" d="${"M321.699 351.372C327.89 351.372 332.909 346.278 332.909 339.995C332.909 333.711 327.89 328.618 321.699 328.618C315.508 328.618 310.489 333.711 310.489 339.995C310.489 346.278 315.508 351.372 321.699 351.372Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_45"}" d="${"M214.292 459.588C220.483 459.588 225.502 454.495 225.502 448.211C225.502 441.928 220.483 436.834 214.292 436.834C208.101 436.834 203.082 441.928 203.082 448.211C203.082 454.495 208.101 459.588 214.292 459.588Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_46"}" d="${"M407.468 323.061C413.659 323.061 418.678 317.967 418.678 311.684C418.678 305.4 413.659 300.307 407.468 300.307C401.277 300.307 396.258 305.4 396.258 311.684C396.258 317.967 401.277 323.061 407.468 323.061Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_47"}" d="${"M411.379 364.072C417.57 364.072 422.589 358.979 422.589 352.695C422.589 346.412 417.57 341.318 411.379 341.318C405.188 341.318 400.169 346.412 400.169 352.695C400.169 358.979 405.188 364.072 411.379 364.072Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_48"}" d="${"M286.766 96.5744C292.957 96.5744 297.976 91.4806 297.976 85.1971C297.976 78.9136 292.957 73.8198 286.766 73.8198C280.575 73.8198 275.556 78.9136 275.556 85.1971C275.556 91.4806 280.575 96.5744 286.766 96.5744Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_49"}" d="${"M445.269 451.386C451.46 451.386 456.479 446.293 456.479 440.009C456.479 433.726 451.46 428.632 445.269 428.632C439.078 428.632 434.059 433.726 434.059 440.009C434.059 446.293 439.078 451.386 445.269 451.386Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_50"}" d="${"M374.881 102.66C381.072 102.66 386.091 97.566 386.091 91.2825C386.091 84.999 381.072 79.9053 374.881 79.9053C368.69 79.9053 363.671 84.999 363.671 91.2825C363.671 97.566 368.69 102.66 374.881 102.66Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_51"}" d="${"M419.721 80.9635C425.912 80.9635 430.931 75.8697 430.931 69.5862C430.931 63.3028 425.912 58.209 419.721 58.209C413.53 58.209 408.511 63.3028 408.511 69.5862C408.511 75.8697 413.53 80.9635 419.721 80.9635Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_52"}" d="${"M501.319 189.71C507.51 189.71 512.529 184.616 512.529 178.332C512.529 172.049 507.51 166.955 501.319 166.955C495.128 166.955 490.109 172.049 490.109 178.332C490.109 184.616 495.128 189.71 501.319 189.71Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_53"}" d="${"M462.475 189.71C468.666 189.71 473.685 184.616 473.685 178.332C473.685 172.049 468.666 166.955 462.475 166.955C456.284 166.955 451.265 172.049 451.265 178.332C451.265 184.616 456.284 189.71 462.475 189.71Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_54"}" d="${"M458.304 244.743C464.495 244.743 469.514 239.649 469.514 233.366C469.514 227.083 464.495 221.989 458.304 221.989C452.113 221.989 447.094 227.083 447.094 233.366C447.094 239.649 452.113 244.743 458.304 244.743Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_55"}" d="${"M376.706 151.609C387.505 151.609 396.258 142.724 396.258 131.764C396.258 120.805 387.505 111.92 376.706 111.92C365.908 111.92 357.154 120.805 357.154 131.764C357.154 142.724 365.908 151.609 376.706 151.609Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_56"}" d="${"M194.74 289.988C205.539 289.988 214.292 281.103 214.292 270.144C214.292 259.184 205.539 250.3 194.74 250.3C183.942 250.3 175.188 259.184 175.188 270.144C175.188 281.103 183.942 289.988 194.74 289.988Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_57"}" d="${"M501.319 237.6C512.117 237.6 520.871 228.715 520.871 217.756C520.871 206.796 512.117 197.912 501.319 197.912C490.521 197.912 481.767 206.796 481.767 217.756C481.767 228.715 490.521 237.6 501.319 237.6Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_58"}" d="${"M408.25 483.93C419.049 483.93 427.803 475.046 427.803 464.086C427.803 453.127 419.049 444.242 408.25 444.242C397.452 444.242 388.698 453.127 388.698 464.086C388.698 475.046 397.452 483.93 408.25 483.93Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_59"}" d="${"M78.4696 448.211C89.268 448.211 98.0218 439.327 98.0218 428.367C98.0218 417.407 89.268 408.523 78.4696 408.523C67.6712 408.523 58.9174 417.407 58.9174 428.367C58.9174 439.327 67.6712 448.211 78.4696 448.211Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_60"}" d="${"M408.25 422.017C419.049 422.017 427.803 413.133 427.803 402.173C427.803 391.214 419.049 382.329 408.25 382.329C397.452 382.329 388.698 391.214 388.698 402.173C388.698 413.133 397.452 422.017 408.25 422.017Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_61"}" d="${"M482.027 306.657C492.826 306.657 501.58 297.772 501.58 286.813C501.58 275.853 492.826 266.969 482.027 266.969C471.229 266.969 462.475 275.853 462.475 286.813C462.475 297.772 471.229 306.657 482.027 306.657Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_62"}" d="${"M470.035 391.325C491.776 391.325 509.401 373.437 509.401 351.372C509.401 329.307 491.776 311.419 470.035 311.419C448.295 311.419 430.67 329.307 430.67 351.372C430.67 373.437 448.295 391.325 470.035 391.325Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_63"}" d="${"M331.606 90.7536C353.346 90.7536 370.971 72.8661 370.971 50.8009C370.971 28.7356 353.346 10.8481 331.606 10.8481C309.865 10.8481 292.24 28.7356 292.24 50.8009C292.24 72.8661 309.865 90.7536 331.606 90.7536Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_64"}" d="${"M315.182 524.148C336.923 524.148 354.547 506.26 354.547 484.195C354.547 462.13 336.923 444.242 315.182 444.242C293.441 444.242 275.817 462.13 275.817 484.195C275.817 506.26 293.441 524.148 315.182 524.148Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_65"}" d="${"M173.102 402.173C194.843 402.173 212.467 384.286 212.467 362.22C212.467 340.155 194.843 322.268 173.102 322.268C151.362 322.268 133.737 340.155 133.737 362.22C133.737 384.286 151.362 402.173 173.102 402.173Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_66"}" d="${"M39.3651 286.813C61.1059 286.813 78.7303 268.926 78.7303 246.86C78.7303 224.795 61.1059 206.908 39.3651 206.908C17.6244 206.908 0 224.795 0 246.86C0 268.926 17.6244 286.813 39.3651 286.813Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_67"}" d="${"M350.376 330.205C372.117 330.205 389.741 312.318 389.741 290.252C389.741 268.187 372.117 250.3 350.376 250.3C328.635 250.3 311.011 268.187 311.011 290.252C311.011 312.318 328.635 330.205 350.376 330.205Z"}" fill="${"#4F5D89"}"></path></g><g id="${"bottom-text"}"><path id="${"Vector_68"}" d="${"M1219.21 451.754C1225.4 451.754 1230.42 446.661 1230.42 440.377C1230.42 434.094 1225.4 429 1219.21 429C1213.02 429 1208 434.094 1208 440.377C1208 446.661 1213.02 451.754 1219.21 451.754Z"}" fill="${"#D9B73D"}"></path><path id="${"Vector_69"}" d="${"M1850.21 451.754C1856.4 451.754 1861.42 446.661 1861.42 440.377C1861.42 434.094 1856.4 429 1850.21 429C1844.02 429 1839 434.094 1839 440.377C1839 446.661 1844.02 451.754 1850.21 451.754Z"}" fill="${"#D9B73D"}"></path><g id="${"Group 5"}"><path id="${"Vector_70"}" d="${"M652.523 484.989C648.352 484.989 644.702 484.459 641.052 483.401C637.663 482.343 634.274 481.02 631.406 479.697C628.539 478.109 625.932 476.786 623.585 475.199L621.239 483.93H610.811V358.78H623.585V404.289C627.757 401.908 632.188 399.791 637.402 397.939C642.616 396.087 647.309 395.029 651.741 395.029C658.519 395.029 664.254 396.616 668.947 399.527C673.378 402.437 676.768 407.2 679.114 414.079C681.46 420.694 682.503 429.69 682.503 440.802C682.503 449.798 681.46 457.736 679.375 464.351C677.289 470.965 674.161 475.993 669.468 479.697C665.558 483.401 659.822 484.989 652.523 484.989ZM648.352 474.14C653.044 474.14 656.955 472.817 660.344 470.436C663.472 468.055 665.818 464.351 667.643 459.324C669.207 454.296 670.25 447.946 670.25 440.538C670.25 431.013 669.207 423.604 667.382 418.842C665.558 414.079 662.951 410.639 659.822 408.787C656.694 406.935 652.783 406.141 648.612 406.141C643.659 406.141 639.488 406.935 635.578 408.258C631.667 409.581 627.757 411.433 623.846 413.55V467.261C627.235 468.849 630.885 470.436 634.795 472.024C638.706 473.347 643.398 474.14 648.352 474.14Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_71"}" d="${"M737.249 484.989C728.125 484.989 721.086 483.666 715.872 480.756C710.658 478.11 707.008 473.347 704.662 466.732C702.316 460.118 701.273 451.122 701.273 439.745C701.273 428.103 702.316 419.107 704.662 412.492C707.008 405.877 710.658 401.379 716.133 398.733C721.347 396.088 728.646 394.765 737.51 394.765C745.07 394.765 751.327 395.558 756.28 397.411C760.972 399.263 764.622 402.173 766.968 406.407C769.315 410.64 770.357 416.461 770.357 423.869C770.357 428.896 769.315 433.13 767.49 436.305C765.404 439.48 762.537 441.597 758.887 442.92C755.237 444.243 750.805 445.036 745.591 445.036H714.047C714.047 452.18 714.829 457.736 716.393 462.234C717.697 466.468 720.304 469.643 723.954 471.495C727.603 473.347 733.078 474.406 740.377 474.406H768.272V482.343C763.319 482.872 758.365 483.666 753.673 483.931C748.98 484.724 743.506 484.989 737.249 484.989ZM713.786 437.099H744.549C749.502 437.099 752.891 436.305 755.237 434.453C757.583 432.601 758.626 429.426 758.626 424.663C758.626 419.636 757.844 415.667 756.541 413.021C754.976 410.111 752.891 408.259 749.762 407.2C746.634 406.142 742.463 405.348 737.51 405.348C731.514 405.348 726.821 406.142 723.171 407.994C719.782 409.846 717.175 413.021 715.872 417.519C714.568 422.017 713.786 428.632 713.786 437.099Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_72"}" d="${"M791.735 484.195V396.616H801.641L804.509 406.406C808.68 403.496 813.372 400.85 818.847 398.733C824.322 396.616 830.057 395.293 836.053 395.293C842.31 395.293 847.524 396.616 851.434 399.527C855.344 402.173 858.212 405.877 860.037 410.375C861.862 414.873 862.905 419.636 862.905 424.927V484.195H850.131V425.986C850.131 422.281 849.348 418.842 848.045 415.931C846.741 413.021 844.656 410.64 841.788 409.052C839.181 407.465 835.792 406.671 831.882 406.671C828.232 406.671 825.104 406.935 821.975 407.729C818.847 408.523 815.979 409.317 813.372 410.64C810.505 411.962 807.637 413.285 804.769 415.138V483.93H791.735V484.195Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_73"}" d="${"M919.997 484.989C910.873 484.989 903.834 483.666 898.62 480.756C893.406 478.11 889.756 473.347 887.41 466.732C885.064 460.118 884.021 451.122 884.021 439.745C884.021 428.103 885.064 419.107 887.41 412.492C889.756 405.877 893.406 401.379 898.881 398.733C904.095 396.088 911.394 394.765 920.258 394.765C927.818 394.765 934.075 395.558 939.028 397.411C943.721 399.263 947.37 402.173 949.717 406.407C952.063 410.64 953.106 416.461 953.106 423.869C953.106 428.896 952.063 433.13 950.238 436.305C948.152 439.48 945.285 441.597 941.635 442.92C937.985 444.243 933.553 445.036 928.34 445.036H896.795C896.795 452.18 897.577 457.736 899.141 462.234C900.445 466.468 903.052 469.643 906.702 471.495C910.351 473.347 915.826 474.406 923.126 474.406H951.02V482.343C946.067 482.872 941.114 483.666 936.421 483.931C931.468 484.724 925.993 484.989 919.997 484.989ZM896.535 437.099H927.297C932.25 437.099 935.639 436.305 937.985 434.453C940.332 432.601 941.374 429.426 941.374 424.663C941.374 419.636 940.592 415.667 939.289 413.021C937.725 410.111 935.639 408.259 932.511 407.2C929.382 406.142 925.211 405.348 920.258 405.348C914.262 405.348 909.569 406.142 905.92 407.994C902.531 409.846 899.924 413.021 898.62 417.519C897.056 422.017 896.535 428.632 896.535 437.099Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_74"}" d="${"M978.654 484.195V407.2H965.358V398.733L978.654 396.352V384.71C978.654 378.625 979.436 373.597 980.74 369.629C982.304 365.66 984.65 362.749 988.3 360.633C991.689 358.781 996.642 357.722 1002.38 357.722C1006.55 357.722 1009.94 357.987 1012.81 358.516C1015.67 359.045 1018.28 359.574 1020.63 360.368V369.629C1018.28 369.364 1015.93 369.099 1013.33 369.099C1010.72 368.835 1008.37 368.835 1006.03 368.835C1002.12 368.835 998.988 369.364 996.903 370.687C994.817 372.01 993.253 373.862 992.471 376.508C991.689 379.154 991.167 382.329 991.167 386.298V396.352H1042.26V406.935H991.167V484.195H978.654ZM1038.35 380.741C1036.53 380.741 1035.75 379.947 1035.75 378.095V365.395C1035.75 363.543 1036.53 362.749 1038.35 362.749H1047.48C1048.26 362.749 1048.78 363.014 1049.3 363.543C1049.56 364.072 1049.82 364.601 1049.82 365.395V378.095C1049.82 379.947 1049.04 380.741 1047.48 380.741H1038.35ZM1036.27 484.195V396.616H1049.04V484.195H1036.27Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_75"}" d="${"M1102.22 484.195C1096.49 484.195 1092.06 483.137 1088.41 481.285C1084.76 479.433 1082.15 476.522 1080.33 472.289C1078.5 468.055 1077.72 462.499 1077.98 455.62L1078.5 406.936H1064.68V398.469L1078.5 396.088L1080.59 371.746H1090.49V396.088H1115.52V406.671H1090.49V455.355C1090.49 459.06 1091.01 462.235 1091.8 464.616C1092.58 466.997 1093.62 468.585 1094.92 469.908C1096.23 471.231 1097.79 472.024 1099.1 472.553C1100.66 473.083 1101.96 473.347 1103.53 473.347L1113.96 474.406V483.931H1102.22V484.195Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_76"}" d="${"M1162.71 484.989C1160.62 484.989 1158.01 484.989 1154.88 484.724C1151.76 484.724 1148.37 484.459 1144.98 484.195C1141.59 483.93 1138.46 483.666 1135.85 483.401C1132.99 483.137 1130.9 482.872 1129.34 482.607V474.67H1164.79C1168.44 474.67 1171.31 474.405 1173.92 473.876C1176.52 473.347 1178.61 472.024 1179.91 470.172C1181.48 468.32 1182 465.409 1182 461.705V457.736C1182 454.032 1180.69 450.857 1178.35 448.74C1175.74 446.623 1171.83 445.565 1166.36 445.565H1154.1C1149.15 445.565 1144.46 445.036 1140.55 443.713C1136.64 442.39 1133.51 440.273 1131.42 437.098C1129.34 433.923 1128.29 429.425 1128.29 423.869V419.371C1128.29 413.815 1129.34 409.317 1131.42 405.877C1133.51 402.437 1136.9 399.791 1141.33 397.939C1145.76 396.087 1151.5 395.293 1158.79 395.293C1161.92 395.293 1165.31 395.293 1169.22 395.558C1173.13 395.823 1177.04 396.087 1180.69 396.352C1184.34 396.616 1187.47 397.146 1189.82 397.675V405.612H1156.45C1150.97 405.612 1146.8 406.671 1143.67 408.523C1140.81 410.375 1139.24 414.079 1139.24 419.371V423.075C1139.24 426.515 1140.02 428.896 1141.33 430.748C1142.63 432.336 1144.72 433.659 1147.32 434.188C1149.93 434.717 1152.8 434.982 1156.19 434.982H1168.44C1176.26 434.982 1182.52 436.834 1186.69 440.538C1191.12 444.242 1193.21 449.534 1193.21 456.678V462.763C1193.21 468.584 1191.9 473.347 1189.3 476.522C1186.69 479.697 1183.04 482.078 1178.35 483.137C1174.18 484.46 1168.96 484.989 1162.71 484.989Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_77"}" d="${"M1287.32 484.989C1285.23 484.989 1282.63 484.989 1279.5 484.724C1276.37 484.724 1272.98 484.459 1269.59 484.195C1266.2 483.93 1263.07 483.666 1260.47 483.401C1257.6 483.137 1255.51 482.872 1253.95 482.607V474.67H1289.4C1293.05 474.67 1295.92 474.405 1298.53 473.876C1301.14 473.347 1303.22 472.024 1304.52 470.172C1306.09 468.32 1306.61 465.409 1306.61 461.705V457.736C1306.61 454.032 1305.31 450.857 1302.96 448.74C1300.35 446.623 1296.44 445.565 1290.97 445.565H1278.72C1273.76 445.565 1269.07 445.036 1265.16 443.713C1261.25 442.39 1258.12 440.273 1256.03 437.098C1253.95 433.923 1252.91 429.425 1252.91 423.869V419.371C1252.91 413.815 1253.95 409.317 1256.03 405.877C1258.12 402.437 1261.51 399.791 1265.94 397.939C1270.37 396.087 1276.11 395.293 1283.41 395.293C1286.54 395.293 1289.93 395.293 1293.84 395.558C1297.75 395.823 1301.66 396.087 1305.31 396.352C1308.96 396.616 1312.08 397.146 1314.43 397.675V405.612H1281.06C1275.59 405.612 1271.42 406.671 1268.29 408.523C1265.42 410.375 1263.86 414.079 1263.86 419.371V423.075C1263.86 426.515 1264.64 428.896 1265.94 430.748C1267.24 432.336 1269.33 433.659 1271.94 434.188C1274.54 434.717 1277.41 434.982 1280.8 434.982H1293.05C1300.87 434.982 1307.13 436.834 1311.3 440.538C1315.73 444.242 1317.82 449.534 1317.82 456.678V462.763C1317.82 468.584 1316.52 473.347 1313.91 476.522C1311.3 479.697 1307.65 482.078 1302.96 483.137C1298.79 484.46 1293.31 484.989 1287.32 484.989Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_78"}" d="${"M1363.96 484.989C1355.62 484.989 1349.36 482.872 1344.93 478.374C1340.5 473.876 1338.15 467.262 1338.15 458.001V396.352H1350.93V454.826C1350.93 462.234 1352.49 466.997 1355.88 469.643C1359.27 472.289 1363.7 473.612 1369.7 473.612C1374.65 473.612 1379.34 472.818 1383.52 471.495C1387.69 469.907 1392.12 468.055 1396.55 465.409V396.617H1409.32V484.195H1399.42L1396.55 474.405C1392.12 477.316 1387.17 479.697 1381.69 481.814C1375.96 483.931 1370.22 484.989 1363.96 484.989Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_79"}" d="${"M1433.31 522.825V396.352H1443.74L1446.08 405.348C1447.91 404.025 1450.51 402.437 1453.64 400.85C1456.77 399.262 1460.16 397.939 1463.55 396.881C1467.2 395.823 1470.85 395.293 1474.24 395.293C1479.71 395.293 1484.67 396.616 1488.58 398.998C1492.49 401.379 1495.61 404.819 1498.22 409.052C1500.83 413.285 1502.39 418.048 1503.44 423.34C1504.48 428.632 1505 434.452 1505 440.273C1505 450.063 1503.96 458.53 1501.61 465.145C1499.53 471.759 1496.14 477.051 1491.44 480.226C1487.01 483.666 1481.02 485.253 1473.98 485.253C1469.02 485.253 1464.33 484.46 1459.38 482.872C1454.42 481.284 1449.99 479.168 1445.82 476.786V522.825H1433.31V522.825ZM1470.85 474.141C1475.02 474.141 1478.67 473.082 1481.8 470.966C1484.93 468.849 1487.53 465.409 1489.62 460.382C1491.44 455.355 1492.49 448.476 1492.49 440.009C1492.49 431.807 1491.44 425.192 1489.36 420.165C1487.27 415.138 1484.67 411.698 1481.54 409.317C1478.41 407.2 1474.76 405.877 1470.85 405.877C1465.9 405.877 1461.46 406.671 1457.29 408.258C1453.12 409.846 1449.47 411.433 1446.34 413.285V466.997C1449.99 469.113 1454.16 470.701 1458.34 472.024C1462.51 473.611 1466.68 474.141 1470.85 474.141Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_80"}" d="${"M1526.9 522.825V396.352H1537.33L1539.67 405.348C1541.5 404.025 1544.1 402.437 1547.23 400.85C1550.36 399.262 1553.75 397.939 1557.14 396.881C1560.79 395.823 1564.44 395.293 1567.83 395.293C1573.3 395.293 1578.26 396.616 1582.17 398.998C1586.08 401.379 1589.2 404.819 1591.81 409.052C1594.42 413.285 1595.98 418.048 1597.03 423.34C1598.07 428.632 1598.59 434.452 1598.59 440.273C1598.59 450.063 1597.55 458.53 1595.2 465.145C1593.12 471.759 1589.73 477.051 1585.03 480.226C1580.6 483.666 1574.61 485.253 1567.57 485.253C1562.61 485.253 1557.92 484.46 1552.97 482.872C1548.01 481.284 1543.58 479.168 1539.41 476.786V522.825H1526.9V522.825ZM1564.44 474.141C1568.61 474.141 1572.26 473.082 1575.39 470.966C1578.52 468.849 1581.12 465.409 1583.21 460.382C1585.03 455.355 1586.08 448.476 1586.08 440.009C1586.08 431.807 1585.03 425.192 1582.95 420.165C1580.86 415.138 1578.26 411.698 1575.13 409.317C1572 407.2 1568.35 405.877 1564.44 405.877C1559.49 405.877 1555.05 406.671 1550.88 408.258C1546.71 409.846 1543.06 411.433 1539.93 413.285V466.997C1543.58 469.113 1547.75 470.701 1551.92 472.024C1555.84 473.611 1560.01 474.141 1564.44 474.141Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_81"}" d="${"M1654.64 484.989C1648.38 484.989 1642.91 484.46 1638.22 483.137C1633.52 481.814 1629.61 479.432 1626.48 476.257C1623.36 473.082 1621.01 468.32 1619.45 462.499C1617.88 456.678 1617.1 449.269 1617.1 440.009C1617.1 430.748 1617.88 423.34 1619.45 417.519C1621.01 411.698 1623.36 407.2 1626.48 404.025C1629.61 400.85 1633.52 398.469 1638.22 397.41C1642.91 396.087 1648.38 395.558 1654.64 395.558C1660.9 395.558 1666.37 396.087 1671.06 397.41C1675.76 398.733 1679.67 401.114 1682.79 404.29C1685.92 407.465 1688.27 411.963 1689.83 417.783C1691.4 423.604 1692.18 431.013 1692.18 440.273C1692.18 449.534 1691.4 456.942 1689.83 462.763C1688.27 468.584 1685.92 473.082 1682.79 476.257C1679.67 479.432 1675.76 481.814 1671.06 483.137C1666.37 484.46 1660.9 484.989 1654.64 484.989ZM1654.64 474.405C1658.55 474.405 1662.2 474.141 1665.33 473.347C1668.46 472.553 1671.06 470.966 1672.89 468.849C1674.97 466.468 1676.54 463.028 1677.58 458.53C1678.62 454.032 1679.14 447.946 1679.14 440.273C1679.14 432.6 1678.62 426.515 1677.58 422.017C1676.54 417.519 1674.97 414.079 1672.89 411.963C1670.8 409.581 1668.2 408.258 1665.33 407.465C1662.2 406.671 1658.81 406.406 1654.64 406.406C1650.47 406.406 1647.08 406.671 1643.95 407.465C1640.82 408.258 1638.48 409.846 1636.39 411.963C1634.31 414.344 1632.74 417.783 1631.7 422.017C1630.66 426.515 1630.13 432.6 1630.13 440.273C1630.13 447.946 1630.66 453.767 1631.7 458.53C1632.74 463.028 1634.31 466.468 1636.39 468.849C1638.48 471.23 1641.08 472.553 1643.95 473.347C1646.82 474.141 1650.47 474.405 1654.64 474.405Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_82"}" d="${"M1713.56 484.195V396.616H1723.2L1726.33 411.963C1730.24 407.2 1734.67 403.496 1739.37 400.321C1744.06 397.146 1749.79 395.823 1756.05 395.823C1757.61 395.823 1758.92 395.823 1760.22 396.087C1761.53 396.087 1762.83 396.352 1764.13 396.616V409.846C1762.83 409.581 1761.26 409.317 1759.7 409.317C1758.14 409.052 1756.57 409.052 1754.75 409.052C1750.84 409.052 1747.19 409.581 1744.06 410.64C1740.93 411.698 1738.06 413.021 1735.19 415.138C1732.33 416.99 1729.46 419.636 1726.59 422.282V484.195H1713.56Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_83"}" d="${"M1810.27 484.195C1804.54 484.195 1800.11 483.137 1796.46 481.285C1792.81 479.433 1790.2 476.522 1788.38 472.289C1786.55 468.055 1785.77 462.499 1786.03 455.62L1786.55 406.936H1772.73V398.469L1786.55 396.088L1788.64 371.746H1798.54V396.088H1823.57V406.671H1798.54V455.355C1798.54 459.06 1799.06 462.235 1799.85 464.616C1800.63 466.997 1801.67 468.585 1802.98 469.908C1804.28 471.231 1805.84 472.024 1807.15 472.553C1808.71 473.083 1810.01 473.347 1811.58 473.347L1822.01 474.406V483.931H1810.27V484.195Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_84"}" d="${"M1916.12 484.989C1911.16 484.989 1906.73 484.46 1902.56 483.137C1898.39 481.814 1894.74 479.432 1891.61 476.257C1888.48 473.082 1886.14 468.32 1884.31 462.763C1882.49 456.942 1881.71 449.534 1881.71 440.538C1881.71 431.542 1882.49 423.869 1884.05 418.048C1885.62 412.227 1887.96 407.729 1891.09 404.29C1894.22 401.114 1897.87 398.733 1902.04 397.41C1906.47 396.087 1911.16 395.558 1916.38 395.558C1920.81 395.558 1925.5 395.823 1930.46 396.087C1935.41 396.352 1940.36 397.146 1945.05 397.939V405.612H1919.77C1914.29 405.612 1909.6 406.671 1905.95 408.523C1902.3 410.375 1899.43 413.815 1897.35 418.842C1895.52 423.869 1894.48 431.277 1894.48 440.803C1894.48 450.063 1895.52 457.207 1897.61 462.234C1899.69 467.261 1902.56 470.436 1906.21 472.289C1909.86 474.141 1914.55 474.934 1920.03 474.934H1946.36V482.607C1943.75 483.137 1940.88 483.401 1937.76 483.93C1934.37 484.46 1930.98 484.724 1927.33 484.989C1923.68 484.989 1920.03 484.989 1916.12 484.989Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_85"}" d="${"M1980.77 484.989C1974.51 484.989 1969.3 483.137 1965.13 479.168C1960.96 475.464 1958.87 469.908 1958.87 463.028V456.678C1958.87 449.799 1961.22 444.243 1965.65 440.009C1970.08 435.776 1976.86 433.659 1985.98 433.659H2015.18V422.811C2015.18 419.107 2014.66 416.196 2013.36 413.55C2012.05 410.905 2009.97 409.052 2006.84 407.465C2003.71 406.142 1999.02 405.348 1993.02 405.348H1966.17V397.675C1969.82 397.146 1974.25 396.352 1979.47 395.823C1984.42 395.294 1990.42 395.029 1997.19 395.029C2004.23 395.029 2009.97 395.823 2014.66 397.675C2019.35 399.527 2022.74 402.438 2024.83 406.407C2026.91 410.375 2028.22 415.667 2028.22 422.017V484.195H2018.31L2015.96 474.141C2015.44 474.67 2014.14 475.464 2012.05 476.522C2009.97 477.581 2007.1 478.904 2003.71 480.226C2000.32 481.549 1996.67 482.872 1992.76 483.666C1988.33 484.46 1984.68 484.989 1980.77 484.989ZM1986.25 475.464C1988.07 475.464 1990.42 475.464 1992.76 474.935C1995.37 474.406 1997.72 473.876 2000.32 473.083C2002.93 472.289 2005.28 471.76 2007.62 470.966C2009.71 470.172 2011.53 469.643 2013.1 469.114C2014.4 468.585 2015.18 468.32 2015.44 468.32V440.803L1989.11 441.861C1982.86 442.126 1978.68 443.713 1975.82 446.359C1973.21 449.27 1971.91 452.974 1971.91 457.472V461.441C1971.91 464.88 1972.69 467.791 1973.99 469.908C1975.56 472.024 1977.38 473.612 1979.47 474.406C1981.55 475.199 1983.9 475.199 1986.25 475.464Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_86"}" d="${"M2052.2 484.195V396.616H2061.85L2064.98 411.963C2068.89 407.2 2073.32 403.496 2078.01 400.321C2082.7 397.146 2088.44 395.823 2094.69 395.823C2096.26 395.823 2097.56 395.823 2098.87 396.087C2100.17 396.087 2101.47 396.352 2102.78 396.616V409.846C2101.47 409.581 2099.91 409.317 2098.34 409.317C2096.78 409.052 2095.22 409.052 2093.39 409.052C2089.48 409.052 2085.83 409.581 2082.7 410.64C2079.57 411.698 2076.71 413.021 2073.84 415.138C2070.97 416.99 2068.1 419.636 2065.24 422.282V484.195H2052.2Z"}" fill="${"#4F5D89"}"></path><path id="${"Vector_87"}" d="${"M2151.79 484.989C2142.66 484.989 2135.62 483.666 2130.41 480.756C2125.2 478.11 2121.55 473.347 2119.2 466.732C2116.85 460.118 2115.81 451.122 2115.81 439.745C2115.81 428.103 2116.85 419.107 2119.2 412.492C2121.55 405.877 2125.2 401.379 2130.67 398.733C2136.15 396.088 2143.18 394.765 2152.05 394.765C2159.61 394.765 2165.86 395.558 2170.82 397.411C2175.51 399.263 2179.16 402.173 2181.51 406.407C2183.85 410.64 2184.9 416.461 2184.9 423.869C2184.9 428.896 2183.85 433.13 2182.03 436.305C2179.94 439.48 2177.07 441.597 2173.43 442.92C2169.78 444.243 2165.34 445.036 2160.13 445.036H2128.59C2128.59 452.18 2129.37 457.736 2130.93 462.234C2132.24 466.468 2134.84 469.643 2138.49 471.495C2142.14 473.347 2147.62 474.406 2154.92 474.406H2182.81V482.343C2177.86 482.872 2172.9 483.666 2168.21 483.931C2163.26 484.724 2157.78 484.989 2151.79 484.989ZM2128.32 437.099H2159.09C2164.04 437.099 2167.43 436.305 2169.78 434.453C2172.12 432.601 2173.16 429.426 2173.16 424.663C2173.16 419.636 2172.38 415.667 2171.08 413.021C2169.51 410.111 2167.43 408.259 2164.3 407.2C2161.17 406.142 2157 405.348 2152.05 405.348C2146.05 405.348 2141.36 406.142 2137.71 407.994C2134.32 409.846 2131.71 413.021 2130.41 417.519C2128.85 422.017 2128.32 428.632 2128.32 437.099Z"}" fill="${"#4F5D89"}"></path></g></g></g></svg>
-</div>`;
-});
-var css$d = {
-  code: 'h1.svelte-14omui3{margin-top:5rem;font-size:3em;color:var(--logo-grey)}h2.svelte-14omui3{color:var(--logo-grey);font-size:2.4em;text-align:center}.read.svelte-14omui3{line-height:2}.banner-all.svelte-14omui3{position:relative}.bg-banner.svelte-14omui3{background-color:var(--bg-banner);height:400px;padding-top:5rem}@media screen and (min-width: 1000px){.bg-overlay.svelte-14omui3{background-image:url("/shape-overly.png");background-position:center center;background-repeat:no-repeat;background-size:cover;opacity:0.15;height:100%;width:100%;top:0;left:0;position:absolute}#welcome.svelte-14omui3{font-size:8em}}@media screen and (max-width: 1000px){.bg-banner.svelte-14omui3{height:200px;padding-top:2rem}}#welcome.svelte-14omui3{margin-top:0}#countUser.svelte-14omui3{font-size:5em;color:var(--logo-grey);margin-top:1rem}.offer-img.svelte-14omui3{max-height:300px}.offer.svelte-14omui3{transition:all 0.5s}.offer.svelte-14omui3:hover{transform:scale(1.05);cursor:pointer}.btn-lg.svelte-14omui3{padding:2rem 1rem 1rem 1rem}.logo.svelte-14omui3{max-height:120px;width:auto;-webkit-filter:grayscale(100%);filter:grayscale(100%)}.logo-box.svelte-14omui3{border:var(--logo-gold) 3px solid;border-radius:2px}',
-  map: null
-};
-var API_URL$2 = "http://localhost:1337";
-var load$3 = async ({ fetch: fetch2 }) => {
-  const res = await fetch2(`${API_URL$2}/users/count`);
-  if (res.ok) {
-    const data = await res.json();
-    return { props: { userCount: data } };
-  }
-  return {
-    status: res.status,
-    error: new Error(`Could not load ${url}`)
-  };
-};
-var Routes = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let $firstTime, $$unsubscribe_firstTime;
-  let $name, $$unsubscribe_name;
-  let $$unsubscribe_travelScroll;
-  $$unsubscribe_firstTime = subscribe(firstTime, (value) => $firstTime = value);
-  $$unsubscribe_name = subscribe(name, (value) => $name = value);
-  $$unsubscribe_travelScroll = subscribe(travelScroll, (value) => value);
-  let intro = null;
-  let { userCount } = $$props;
-  setTimeout(function() {
-    intro = false;
-  }, 2250);
-  onDestroy(() => {
-    set_store_value(firstTime, $firstTime = false, $firstTime);
-  });
-  if ($$props.userCount === void 0 && $$bindings.userCount && userCount !== void 0)
-    $$bindings.userCount(userCount);
-  $$result.css.add(css$d);
-  $$unsubscribe_firstTime();
-  $$unsubscribe_name();
-  $$unsubscribe_travelScroll();
-  return `${$$result.head += `${$$result.title = `<title>Home</title>`, ""}`, ""}
-
-<div class="${"banner-all svelte-14omui3"}"><div class="${"bg-overlay svelte-14omui3"}"></div>
-    <div class="${"bg-banner text-center svelte-14omui3"}">${$firstTime ? `${intro ? `<h1 id="${"welcome"}" class="${"svelte-14omui3"}">Welcome to</h1>` : `${intro !== null && !intro ? `${validate_component(Logo, "Logo").$$render($$result, {}, {}, {})}` : ``}`}` : `${validate_component(Logo, "Logo").$$render($$result, {}, {}, {})}`}</div>
-
-    <svg xmlns="${"http://www.w3.org/2000/svg"}" viewBox="${"0 0 1000 100"}" preserveAspectRatio="${"none"}"><path class="${""}" fill="${"var(--bg-banner)"}" d="${"M421.9,6.5c22.6-2.5,51.5,0.4,75.5,5.3c23.6,4.9,70.9,23.5,100.5,35.7c75.8,32.2,133.7,44.5,192.6,49.7\r\n        c23.6,2.1,48.7,3.5,103.4-2.5c54.7-6,106.2-25.6,106.2-25.6V0H0v30.3c0,0,72,32.6,158.4,30.5c39.2-0.7,92.8-6.7,134-22.4\r\n        c21.2-8.1,52.2-18.2,79.7-24.2C399.3,7.9,411.6,7.5,421.9,6.5z"}"></path></svg></div>
-
-<div class="${"container mt-5 mb-5"}"><div class="${"row text-center grey-grad rounded justify-content-center big-gap"}"><div class="${"col-12 p-4"}"><h3 class="${"read svelte-14omui3"}">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
-                and nurturing networks. Think Teacher&#39;s vision is to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
-            </h3></div></div>
-
-    ${!$name ? `<div class="${"row mt-5"}"><div class="${"col-sm-12 col-lg-4"}"><h4 id="${"#hash"}" class="${"fs-1 mt-2 text-center"}">First 5 000 members get a <strong>FREE</strong> membership for a year</h4></div>
-            <div class="${"col-sm-12 col-lg-4 mt-sm-4 text-center"}"><button class="${"btn btn-lg bg-gold shadow-lg cta svelte-14omui3"}" style="${"width: 300px;"}"><h4 style="${"color: black;"}">Become a member!</h4></button></div>
-            <div class="${"col-sm-12 col-lg-4"}">
-                <h1 class="${"text-center svelte-14omui3"}" id="${"countUser"}"></h1>
-                <h3 class="${"text-center text-blue"}">Members and counting!</h3></div></div>` : ``}
-
-    <div class="${"row grey-grad text-center big-gap"}"><h2 class="${"mb-5 svelte-14omui3"}">Benefits</h2>
-        <div class="${"col-sm-12 col-md-6 col-lg-4 mb-5"}"><a href="${"/benefits"}"><img class="${"img-fluid offer offer-img svelte-14omui3"}" src="${"well-being.webp"}" alt="${"well being"}"></a>
-            <h3 class="${"mt-3"}">Wellbeing</h3></div>
-        <div class="${"col-sm-12 col-md-6 col-lg-4 mb-5"}"><a href="${"/benefits"}"><img class="${"img-fluid offer offer-img svelte-14omui3"}" src="${"travel.webp"}" alt="${"travel"}"></a>
-            <h3 class="${"mt-3"}">Travel</h3></div>        
-        <div class="${"col-sm-12 col-md-6 col-lg-4 mb-5"}"><a href="${"/benefits"}"><img class="${"img-fluid offer offer-img svelte-14omui3"}" src="${"health.webp"}" alt="${"medical aid"}"></a>
-            <h3 class="${"mt-3"}">Medical Aid</h3></div>
-        <div class="${"col-sm-12 col-md-6 col-lg-4 mb-5"}"><a href="${"/benefits"}"><img class="${"img-fluid offer offer-img svelte-14omui3"}" src="${"insurance.webp"}" alt="${"invest"}"></a>
-            <h3 class="${"mt-3"}">Insurance</h3>
-            <h5 class="${"text-logo-gold"}">coming soon</h5></div>
-        <div class="${"col-sm-12 col-md-6 col-lg-4 mb-5"}"><a href="${"/benefits"}"><img class="${"img-fluid offer offer-img svelte-14omui3"}" src="${"legal.webp"}" alt="${"legal"}"></a>
-            <h3 class="${"mt-3"}">Legal</h3>
-            <h5 class="${"text-logo-gold"}">coming soon</h5></div>
-        <div class="${"col-sm-12 col-md-6 col-lg-4 mb-5"}"><a href="${"/benefits"}"><img class="${"img-fluid offer offer-img svelte-14omui3"}" src="${"courses.webp"}" alt="${"courses"}"></a>
-            <h3 class="${"mt-3"}">Courses</h3>
-            <h5 class="${"text-logo-gold"}">coming soon</h5></div></div>
-
-    <div class="${"row mt-5 text-center justify-content-center p-3 logo-box svelte-14omui3"}"><div class="${"col-3"}"><img class="${"img-fluid logo svelte-14omui3"}" src="${"SAHB.webp"}" alt="${"partner"}"></div>
-        <div class="${"col-3 d-flex flex-wrap align-items-center"}"><img class="${"img-fluid logo svelte-14omui3"}" src="${"ROARRR.webp"}" alt="${"partner"}"></div>
-        <div class="${"col-3"}"><img class="${"img-fluid logo svelte-14omui3"}" src="${"Cirrus.webp"}" alt="${"partner"}"></div>
-        <div class="${"col-3"}"><img class="${"img-fluid logo svelte-14omui3"}" src="${"kim.webp"}" alt="${"partner"}"></div></div>
-</div>`;
-});
-var index$4 = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Routes,
-  load: load$3
-});
-var Forgot_password = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let email;
-  return `${$$result.head += `${$$result.title = `<title>Forgot Password</title>`, ""}`, ""}
-
-<section class="${"vh-50 gradient-custom container mt-4 mb-4"}"><div class="${"py-3 h-100"}"><div class="${"row d-flex justify-content-center align-items-center h-100"}"><div class="${"col-12 col-md-8 col-lg-6 col-xl-6"}"><div class="${"card bg-dark text-white"}" style="${"border-radius: 1rem;"}"><div class="${"card-body p-md-4 p-lg-5 text-center"}"><h2 class="${"fw-bold mb-2 text-uppercase"}">Forgot Password</h2>
-                    <p class="${"text-white-50 mb-3"}">Please enter your email, where you will receive your reset password link.</p>
-
-                    ${``}
-
-                    ${``}
-    
-                    <div class="${"form-outline form-white mb-4"}"><label class="${"form-label"}" for="${"Email"}">Email</label>
-                        <input type="${"email"}" id="${"Email"}" class="${"form-control form-control-lg"}" placeholder="${"Enter email"}" required${add_attribute("value", email, 0)}></div>
-    
-                    <button class="${"btn btn-outline-light btn-lg px-4"}" type="${"submit"}">Submit</button></div></div></div></div></div></section>`;
-});
-var forgotPassword = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Forgot_password
-});
-var Reset_password = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let s2;
-  let progress;
-  let password = "", passwordConfirmation;
-  let barCol = "";
-  s2 = (0, import_zxcvbn.default)(password).score > 2;
-  progress = (0, import_zxcvbn.default)(password).score / 4 * 100;
-  {
-    if (s2) {
-      barCol = "bg-success";
-    } else {
-      barCol = "bg-danger";
-    }
-  }
-  return `${$$result.head += `${$$result.title = `<title>Reset Password</title>`, ""}`, ""}
-
-<section class="${"vh-50 gradient-custom container mt-4 mb-4"}"><div class="${"py-3 h-100"}"><div class="${"row d-flex justify-content-center align-items-center h-100"}"><div class="${"col-12 col-md-8 col-lg-6 col-xl-6"}"><div class="${"card bg-dark text-white"}" style="${"border-radius: 1rem;"}"><div class="${"card-body p-md-4 p-lg-5 text-center"}"><h2 class="${"fw-bold mb-2 text-uppercase"}">Forgot Password</h2>
-                    <p class="${"text-white-50 mb-3"}">Please enter your new password below.</p>
-
-                    ${``}
-
-                    ${``}
-                    <form><div class="${"form-outline form-white mb-2 text-left"}"><label class="${"form-label"}" for="${"Password"}">Password</label>
-                            <input type="${"password"}" id="${"Password"}" class="${"form-control form-control-lg"}" placeholder="${"Password"}" required${add_attribute("value", password, 0)}></div>   
-                        <div class="${"progress mt-2"}"><div class="${"progress-bar " + escape$4(barCol)}" role="${"progressbar"}" style="${"width: " + escape$4(progress) + "%;"}" aria-valuenow="${"100"}" aria-valuemin="${"0"}" aria-valuemax="${"100"}"></div></div>   
-                        <p${add_attribute("style", s2 || "color:red", 0)}>${escape$4(s2 ? "Strong password" : "Password not strong enough. Try using a mix of capital letters, numbers and special characters with a length > 8.")}</p>
-                        <div class="${"form-outline form-white mb-4 mt-3 text-left"}"><label class="${"form-label"}" for="${"PasswordConfirm"}">Password Confirmation</label>
-                            <input type="${"password"}" id="${"PasswordConfirm"}" class="${"form-control form-control-lg"}" placeholder="${"Password (again)"}" required${add_attribute("value", passwordConfirmation, 0)}></div>
-        
-                        <button class="${"btn btn-outline-light btn-lg px-4"}" type="${"submit"}">Submit</button></form></div></div></div></div></div></section>`;
-});
-var resetPassword = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Reset_password
-});
-var Confirm_email = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let email;
-  return `<section class="${"vh-50 gradient-custom container mt-4 mb-4"}"><div class="${"py-3 h-100"}"><div class="${"row d-flex justify-content-center align-items-center h-100"}"><div class="${"col-12 col-md-8 col-lg-6 col-xl-6"}"><div class="${"card bg-dark text-white"}" style="${"border-radius: 1rem;"}"><div class="${"card-body p-md-4 p-lg-5 text-center"}"><h2 class="${"fw-bold mb-2 text-uppercase"}">Resend confirmation</h2>
-                    <p class="${"text-white-50 mb-3"}">Please enter your email you wish to confirm</p>
-
-                    ${``}
-
-                    ${``}
-    
-                    <div class="${"form-outline form-white mb-4"}"><label class="${"form-label"}" for="${"Email"}">Email</label>
-                        <input type="${"email"}" id="${"Email"}" class="${"form-control form-control-lg"}" placeholder="${"Enter email"}" required${add_attribute("value", email, 0)}></div>
-    
-                    <button class="${"btn btn-outline-light btn-lg px-4"}" type="${"submit"}">Submit</button>
-                    <p class="${"mb-0 mt-4"}">Want to login now? <a href="${"/login"}" class="${"text-white-50 fw-bold"}">Login</a></p></div></div></div></div></div></section>`;
-});
-var confirmEmail = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Confirm_email
-});
-var prerender$1 = true;
-var Contact_us = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `${$$result.head += `${$$result.title = `<title>Contact</title>`, ""}`, ""}
-
-<div class="${"container mt-5 mb-5"}"><section class="${"vh-50 gradient-custom"}"><div class="${"py-3 h-100"}"><div class="${"row d-flex justify-content-center align-items-center h-100"}"><div class="${"col-12 col-md-8 col-lg-6 col-xl-6"}"><div class="${"card bg-dark text-white"}" style="${"border-radius: 1rem;"}"><div class="${"card-body p-md-4 p-lg-5 text-center"}"><h2 class="${"fw-bold mb-2 text-uppercase"}">Contact</h2>
-                        <p class="${"text-white-50 mb-3"}">Please feel free to contact us.</p>
-
-                        <form name="${"contact"}" method="${"POST"}" netlify-honeypot="${"bot-field"}" data-netlify="${"true"}"><p class="${"hidden"}"><label>Don\u2019t fill this out if you\u2019re human: <input name="${"bot-field"}"></label></p>
-
-                            <input type="${"hidden"}" name="${"form-name"}" value="${"contact"}">
-
-                            <div class="${"form-outline form-white mb-2"}"><label class="${"form-label"}" for="${"Name"}">Name</label>
-                                <input type="${"text"}" name="${"Name"}" id="${"Name"}" class="${"form-control form-control-lg"}" placeholder="${"Enter your name"}" required></div>
-                            <div class="${"form-outline form-white mb-4"}"><label class="${"form-label"}" for="${"Email"}">Email</label>
-                                <input type="${"email"}" id="${"Email"}" class="${"form-control form-control-lg"}" placeholder="${"Enter your email"}" required></div>
-                            <div class="${"form-outline form-white mb-2"}"><label class="${"form-label"}" for="${"Subject"}">Subject</label>
-                                <input type="${"text"}" name="${"subject"}" id="${"Subject"}" class="${"form-control form-control-lg"}" placeholder="${"Enter your subject"}" required></div>
-                            <div class="${"form-outline form-white mb-4"}"><label class="${"form-label"}" for="${"Message"}">Message</label>
-                                <textarea id="${"Message"}" name="${"message"}" class="${"form-control"}" rows="${"8"}" placeholder="${"Enter your message"}" required></textarea></div>
-        
-                            <button class="${"btn btn-outline-light btn-lg px-4"}" type="${"submit"}">Submit</button></form></div></div></div></div></div></section>
-
-    <div class="${"row justify-content-center text-center grey-grad mt-5"}"><h2 class="${"mb-4"}">Contact Details:</h2>
-        
-        <div class="${"col-md-4 col-sm-12"}"><h4>Email: <span class="${"text-logo-gold"}"><a href="${"mailto:zani@thinkteacher.co.za"}">zani@thinkteacher.co.za</a></span></h4><i class="${"fas fa-paper-plane"}"></i>${validate_component(Icon, "Icon").$$render($$result, {
-    data: send,
-    scale: "3",
-    class: "text-blue"
-  }, {}, {})}</div></div></div>`;
-});
-var contactUs = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Contact_us,
-  prerender: prerender$1
-});
-var durationUnitRegex = /[a-zA-Z]/;
-var range = (size, startAt = 0) => [...Array(size).keys()].map((i) => i + startAt);
-var css$c = {
-  code: ".wrapper.svelte-1cy66mt{width:var(--size);height:var(--size)}.circle.svelte-1cy66mt{border-radius:100%;animation-fill-mode:both;position:absolute;opacity:0;width:var(--size);height:var(--size);background-color:var(--color);animation:svelte-1cy66mt-bounce var(--duration) linear infinite}@keyframes svelte-1cy66mt-bounce{0%{opacity:0;transform:scale(0)}5%{opacity:1}100%{opacity:0;transform:scale(1)}}",
-  map: null
-};
-var Jumper = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { color = "#FF3E00" } = $$props;
-  let { unit = "px" } = $$props;
-  let { duration = "1s" } = $$props;
-  let { size = "60" } = $$props;
-  let durationUnit = duration.match(durationUnitRegex)[0];
-  let durationNum = duration.replace(durationUnitRegex, "");
-  if ($$props.color === void 0 && $$bindings.color && color !== void 0)
-    $$bindings.color(color);
-  if ($$props.unit === void 0 && $$bindings.unit && unit !== void 0)
-    $$bindings.unit(unit);
-  if ($$props.duration === void 0 && $$bindings.duration && duration !== void 0)
-    $$bindings.duration(duration);
-  if ($$props.size === void 0 && $$bindings.size && size !== void 0)
-    $$bindings.size(size);
-  $$result.css.add(css$c);
-  return `<div class="${"wrapper svelte-1cy66mt"}" style="${"--size: " + escape$4(size) + escape$4(unit) + "; --color: " + escape$4(color) + "; --duration: " + escape$4(duration) + ";"}">${each(range(3, 1), (version) => `<div class="${"circle svelte-1cy66mt"}" style="${"animation-delay: " + escape$4(durationNum / 3 * (version - 1) + durationUnit) + ";"}"></div>`)}</div>`;
-});
-var Parser$1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let $$restProps = compute_rest_props($$props, ["type", "tokens", "ordered", "renderers"]);
-  let { type = void 0 } = $$props;
-  let { tokens = void 0 } = $$props;
-  let { ordered = false } = $$props;
-  let { renderers } = $$props;
-  if ($$props.type === void 0 && $$bindings.type && type !== void 0)
-    $$bindings.type(type);
-  if ($$props.tokens === void 0 && $$bindings.tokens && tokens !== void 0)
-    $$bindings.tokens(tokens);
-  if ($$props.ordered === void 0 && $$bindings.ordered && ordered !== void 0)
-    $$bindings.ordered(ordered);
-  if ($$props.renderers === void 0 && $$bindings.renderers && renderers !== void 0)
-    $$bindings.renderers(renderers);
-  return `${!type ? `${each(tokens, (token) => `${validate_component(Parser$1, "svelte:self").$$render($$result, Object.assign(token, { renderers }), {}, {})}`)}` : `${renderers[type] ? `${type === "table" ? `${validate_component(renderers.table || missing_component, "svelte:component").$$render($$result, {}, {}, {
-    default: () => `${validate_component(renderers.tablehead || missing_component, "svelte:component").$$render($$result, {}, {}, {
-      default: () => `${validate_component(renderers.tablerow || missing_component, "svelte:component").$$render($$result, {}, {}, {
-        default: () => `${each(tokens.header, (cells, i) => `${validate_component(renderers.tablecell || missing_component, "svelte:component").$$render($$result, {
-          header: true,
-          align: $$restProps.align[i] || "center"
-        }, {}, {
-          default: () => `${validate_component(Parser$1, "svelte:self").$$render($$result, { tokens: cells, renderers }, {}, {})}
-              `
-        })}`)}`
-      })}`
-    })}
-        ${validate_component(renderers.tablebody || missing_component, "svelte:component").$$render($$result, {}, {}, {
-      default: () => `${each(tokens.cells, (row) => `${validate_component(renderers.tablerow || missing_component, "svelte:component").$$render($$result, {}, {}, {
-        default: () => `${each(row, (cells, i) => `${validate_component(renderers.tablecell || missing_component, "svelte:component").$$render($$result, {
-          header: false,
-          align: $$restProps.align[i] || "center"
-        }, {}, {
-          default: () => `${validate_component(Parser$1, "svelte:self").$$render($$result, { tokens: cells, renderers }, {}, {})}
-                `
-        })}`)}
-            `
-      })}`)}`
-    })}`
-  })}` : `${type === "list" ? `${ordered ? `${validate_component(renderers.list || missing_component, "svelte:component").$$render($$result, Object.assign({ ordered }, $$restProps), {}, {
-    default: () => `${each($$restProps.items, (item) => `${validate_component(renderers.orderedlistitem || renderers.listitem || missing_component, "svelte:component").$$render($$result, Object.assign(item), {}, {
-      default: () => `${validate_component(Parser$1, "svelte:self").$$render($$result, { tokens: item.tokens, renderers }, {}, {})}
-            `
-    })}`)}`
-  })}` : `${validate_component(renderers.list || missing_component, "svelte:component").$$render($$result, Object.assign({ ordered }, $$restProps), {}, {
-    default: () => `${each($$restProps.items, (item) => `${validate_component(renderers.unorderedlistitem || renderers.listitem || missing_component, "svelte:component").$$render($$result, Object.assign(item), {}, {
-      default: () => `${validate_component(Parser$1, "svelte:self").$$render($$result, { tokens: item.tokens, renderers }, {}, {})}
-            `
-    })}`)}`
-  })}`}` : `${validate_component(renderers[type] || missing_component, "svelte:component").$$render($$result, Object.assign($$restProps), {}, {
-    default: () => `${tokens ? `${validate_component(Parser$1, "svelte:self").$$render($$result, { tokens, renderers }, {}, {})}` : `${escape$4($$restProps.raw)}`}`
-  })}`}`}` : ``}`}`;
-});
-var defaults$5 = { exports: {} };
-function getDefaults$1() {
-  return {
-    baseUrl: null,
-    breaks: false,
-    extensions: null,
-    gfm: true,
-    headerIds: true,
-    headerPrefix: "",
-    highlight: null,
-    langPrefix: "language-",
-    mangle: true,
-    pedantic: false,
-    renderer: null,
-    sanitize: false,
-    sanitizer: null,
-    silent: false,
-    smartLists: false,
-    smartypants: false,
-    tokenizer: null,
-    walkTokens: null,
-    xhtml: false
-  };
-}
-function changeDefaults$1(newDefaults) {
-  defaults$5.exports.defaults = newDefaults;
-}
-defaults$5.exports = {
-  defaults: getDefaults$1(),
-  getDefaults: getDefaults$1,
-  changeDefaults: changeDefaults$1
-};
-var escapeTest = /[&<>"']/;
-var escapeReplace = /[&<>"']/g;
-var escapeTestNoEncode = /[<>"']|&(?!#?\w+;)/;
-var escapeReplaceNoEncode = /[<>"']|&(?!#?\w+;)/g;
-var escapeReplacements = {
-  "&": "&amp;",
-  "<": "&lt;",
-  ">": "&gt;",
-  '"': "&quot;",
-  "'": "&#39;"
-};
-var getEscapeReplacement = (ch) => escapeReplacements[ch];
-function escape$3(html, encode) {
-  if (encode) {
-    if (escapeTest.test(html)) {
-      return html.replace(escapeReplace, getEscapeReplacement);
-    }
-  } else {
-    if (escapeTestNoEncode.test(html)) {
-      return html.replace(escapeReplaceNoEncode, getEscapeReplacement);
-    }
-  }
-  return html;
-}
-var unescapeTest = /&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/ig;
-function unescape$1(html) {
-  return html.replace(unescapeTest, (_, n) => {
-    n = n.toLowerCase();
-    if (n === "colon")
-      return ":";
-    if (n.charAt(0) === "#") {
-      return n.charAt(1) === "x" ? String.fromCharCode(parseInt(n.substring(2), 16)) : String.fromCharCode(+n.substring(1));
-    }
-    return "";
-  });
-}
-var caret = /(^|[^\[])\^/g;
-function edit$1(regex, opt) {
-  regex = regex.source || regex;
-  opt = opt || "";
-  const obj = {
-    replace: (name2, val) => {
-      val = val.source || val;
-      val = val.replace(caret, "$1");
-      regex = regex.replace(name2, val);
-      return obj;
-    },
-    getRegex: () => {
-      return new RegExp(regex, opt);
-    }
-  };
-  return obj;
-}
-var nonWordAndColonTest = /[^\w:]/g;
-var originIndependentUrl = /^$|^[a-z][a-z0-9+.-]*:|^[?#]/i;
-function cleanUrl$1(sanitize, base2, href) {
-  if (sanitize) {
-    let prot;
-    try {
-      prot = decodeURIComponent(unescape$1(href)).replace(nonWordAndColonTest, "").toLowerCase();
-    } catch (e) {
-      return null;
-    }
-    if (prot.indexOf("javascript:") === 0 || prot.indexOf("vbscript:") === 0 || prot.indexOf("data:") === 0) {
-      return null;
-    }
-  }
-  if (base2 && !originIndependentUrl.test(href)) {
-    href = resolveUrl(base2, href);
-  }
-  try {
-    href = encodeURI(href).replace(/%25/g, "%");
-  } catch (e) {
-    return null;
-  }
-  return href;
-}
-var baseUrls = {};
-var justDomain = /^[^:]+:\/*[^/]*$/;
-var protocol = /^([^:]+:)[\s\S]*$/;
-var domain = /^([^:]+:\/*[^/]*)[\s\S]*$/;
-function resolveUrl(base2, href) {
-  if (!baseUrls[" " + base2]) {
-    if (justDomain.test(base2)) {
-      baseUrls[" " + base2] = base2 + "/";
-    } else {
-      baseUrls[" " + base2] = rtrim$1(base2, "/", true);
-    }
-  }
-  base2 = baseUrls[" " + base2];
-  const relativeBase = base2.indexOf(":") === -1;
-  if (href.substring(0, 2) === "//") {
-    if (relativeBase) {
-      return href;
-    }
-    return base2.replace(protocol, "$1") + href;
-  } else if (href.charAt(0) === "/") {
-    if (relativeBase) {
-      return href;
-    }
-    return base2.replace(domain, "$1") + href;
-  } else {
-    return base2 + href;
-  }
-}
-var noopTest$1 = { exec: function noopTest() {
-} };
-function merge$2(obj) {
-  let i = 1, target, key;
-  for (; i < arguments.length; i++) {
-    target = arguments[i];
-    for (key in target) {
-      if (Object.prototype.hasOwnProperty.call(target, key)) {
-        obj[key] = target[key];
-      }
-    }
-  }
-  return obj;
-}
-function splitCells$1(tableRow, count) {
-  const row = tableRow.replace(/\|/g, (match, offset, str) => {
-    let escaped2 = false, curr = offset;
-    while (--curr >= 0 && str[curr] === "\\")
-      escaped2 = !escaped2;
-    if (escaped2) {
-      return "|";
-    } else {
-      return " |";
-    }
-  }), cells = row.split(/ \|/);
-  let i = 0;
-  if (cells.length > count) {
-    cells.splice(count);
-  } else {
-    while (cells.length < count)
-      cells.push("");
-  }
-  for (; i < cells.length; i++) {
-    cells[i] = cells[i].trim().replace(/\\\|/g, "|");
-  }
-  return cells;
-}
-function rtrim$1(str, c, invert) {
-  const l = str.length;
-  if (l === 0) {
-    return "";
-  }
-  let suffLen = 0;
-  while (suffLen < l) {
-    const currChar = str.charAt(l - suffLen - 1);
-    if (currChar === c && !invert) {
-      suffLen++;
-    } else if (currChar !== c && invert) {
-      suffLen++;
-    } else {
-      break;
-    }
-  }
-  return str.substr(0, l - suffLen);
-}
-function findClosingBracket$1(str, b) {
-  if (str.indexOf(b[1]) === -1) {
-    return -1;
-  }
-  const l = str.length;
-  let level = 0, i = 0;
-  for (; i < l; i++) {
-    if (str[i] === "\\") {
-      i++;
-    } else if (str[i] === b[0]) {
-      level++;
-    } else if (str[i] === b[1]) {
-      level--;
-      if (level < 0) {
-        return i;
-      }
-    }
-  }
-  return -1;
-}
-function checkSanitizeDeprecation$1(opt) {
-  if (opt && opt.sanitize && !opt.silent) {
-    console.warn("marked(): sanitize and sanitizer parameters are deprecated since version 0.7.0, should not be used and will be removed in the future. Read more here: https://marked.js.org/#/USING_ADVANCED.md#options");
-  }
-}
-function repeatString$1(pattern, count) {
-  if (count < 1) {
-    return "";
-  }
-  let result = "";
-  while (count > 1) {
-    if (count & 1) {
-      result += pattern;
-    }
-    count >>= 1;
-    pattern += pattern;
-  }
-  return result + pattern;
-}
-var helpers = {
-  escape: escape$3,
-  unescape: unescape$1,
-  edit: edit$1,
-  cleanUrl: cleanUrl$1,
-  resolveUrl,
-  noopTest: noopTest$1,
-  merge: merge$2,
-  splitCells: splitCells$1,
-  rtrim: rtrim$1,
-  findClosingBracket: findClosingBracket$1,
-  checkSanitizeDeprecation: checkSanitizeDeprecation$1,
-  repeatString: repeatString$1
-};
-var { defaults: defaults$4 } = defaults$5.exports;
-var {
-  rtrim,
-  splitCells,
-  escape: escape$2,
-  findClosingBracket
-} = helpers;
-function outputLink(cap, link, raw) {
-  const href = link.href;
-  const title = link.title ? escape$2(link.title) : null;
-  const text = cap[1].replace(/\\([\[\]])/g, "$1");
-  if (cap[0].charAt(0) !== "!") {
-    return {
-      type: "link",
-      raw,
-      href,
-      title,
-      text
-    };
-  } else {
-    return {
-      type: "image",
-      raw,
-      href,
-      title,
-      text: escape$2(text)
-    };
-  }
-}
-function indentCodeCompensation(raw, text) {
-  const matchIndentToCode = raw.match(/^(\s+)(?:```)/);
-  if (matchIndentToCode === null) {
-    return text;
-  }
-  const indentToCode = matchIndentToCode[1];
-  return text.split("\n").map((node) => {
-    const matchIndentInNode = node.match(/^\s+/);
-    if (matchIndentInNode === null) {
-      return node;
-    }
-    const [indentInNode] = matchIndentInNode;
-    if (indentInNode.length >= indentToCode.length) {
-      return node.slice(indentToCode.length);
-    }
-    return node;
-  }).join("\n");
-}
-var Tokenizer_1 = class Tokenizer {
-  constructor(options2) {
-    this.options = options2 || defaults$4;
-  }
-  space(src2) {
-    const cap = this.rules.block.newline.exec(src2);
-    if (cap) {
-      if (cap[0].length > 1) {
-        return {
-          type: "space",
-          raw: cap[0]
-        };
-      }
-      return { raw: "\n" };
-    }
-  }
-  code(src2) {
-    const cap = this.rules.block.code.exec(src2);
-    if (cap) {
-      const text = cap[0].replace(/^ {1,4}/gm, "");
-      return {
-        type: "code",
-        raw: cap[0],
-        codeBlockStyle: "indented",
-        text: !this.options.pedantic ? rtrim(text, "\n") : text
-      };
-    }
-  }
-  fences(src2) {
-    const cap = this.rules.block.fences.exec(src2);
-    if (cap) {
-      const raw = cap[0];
-      const text = indentCodeCompensation(raw, cap[3] || "");
-      return {
-        type: "code",
-        raw,
-        lang: cap[2] ? cap[2].trim() : cap[2],
-        text
-      };
-    }
-  }
-  heading(src2) {
-    const cap = this.rules.block.heading.exec(src2);
-    if (cap) {
-      let text = cap[2].trim();
-      if (/#$/.test(text)) {
-        const trimmed = rtrim(text, "#");
-        if (this.options.pedantic) {
-          text = trimmed.trim();
-        } else if (!trimmed || / $/.test(trimmed)) {
-          text = trimmed.trim();
-        }
-      }
-      return {
-        type: "heading",
-        raw: cap[0],
-        depth: cap[1].length,
-        text
-      };
-    }
-  }
-  nptable(src2) {
-    const cap = this.rules.block.nptable.exec(src2);
-    if (cap) {
-      const item = {
-        type: "table",
-        header: splitCells(cap[1].replace(/^ *| *\| *$/g, "")),
-        align: cap[2].replace(/^ *|\| *$/g, "").split(/ *\| */),
-        cells: cap[3] ? cap[3].replace(/\n$/, "").split("\n") : [],
-        raw: cap[0]
-      };
-      if (item.header.length === item.align.length) {
-        let l = item.align.length;
-        let i;
-        for (i = 0; i < l; i++) {
-          if (/^ *-+: *$/.test(item.align[i])) {
-            item.align[i] = "right";
-          } else if (/^ *:-+: *$/.test(item.align[i])) {
-            item.align[i] = "center";
-          } else if (/^ *:-+ *$/.test(item.align[i])) {
-            item.align[i] = "left";
-          } else {
-            item.align[i] = null;
-          }
-        }
-        l = item.cells.length;
-        for (i = 0; i < l; i++) {
-          item.cells[i] = splitCells(item.cells[i], item.header.length);
-        }
-        return item;
-      }
-    }
-  }
-  hr(src2) {
-    const cap = this.rules.block.hr.exec(src2);
-    if (cap) {
-      return {
-        type: "hr",
-        raw: cap[0]
-      };
-    }
-  }
-  blockquote(src2) {
-    const cap = this.rules.block.blockquote.exec(src2);
-    if (cap) {
-      const text = cap[0].replace(/^ *> ?/gm, "");
-      return {
-        type: "blockquote",
-        raw: cap[0],
-        text
-      };
-    }
-  }
-  list(src2) {
-    const cap = this.rules.block.list.exec(src2);
-    if (cap) {
-      let raw = cap[0];
-      const bull = cap[2];
-      const isordered = bull.length > 1;
-      const list = {
-        type: "list",
-        raw,
-        ordered: isordered,
-        start: isordered ? +bull.slice(0, -1) : "",
-        loose: false,
-        items: []
-      };
-      const itemMatch = cap[0].match(this.rules.block.item);
-      let next = false, item, space, bcurr, bnext, addBack, loose, istask, ischecked, endMatch;
-      let l = itemMatch.length;
-      bcurr = this.rules.block.listItemStart.exec(itemMatch[0]);
-      for (let i = 0; i < l; i++) {
-        item = itemMatch[i];
-        raw = item;
-        if (!this.options.pedantic) {
-          endMatch = item.match(new RegExp("\\n\\s*\\n {0," + (bcurr[0].length - 1) + "}\\S"));
-          if (endMatch) {
-            addBack = item.length - endMatch.index + itemMatch.slice(i + 1).join("\n").length;
-            list.raw = list.raw.substring(0, list.raw.length - addBack);
-            item = item.substring(0, endMatch.index);
-            raw = item;
-            l = i + 1;
-          }
-        }
-        if (i !== l - 1) {
-          bnext = this.rules.block.listItemStart.exec(itemMatch[i + 1]);
-          if (!this.options.pedantic ? bnext[1].length >= bcurr[0].length || bnext[1].length > 3 : bnext[1].length > bcurr[1].length) {
-            itemMatch.splice(i, 2, itemMatch[i] + (!this.options.pedantic && bnext[1].length < bcurr[0].length && !itemMatch[i].match(/\n$/) ? "" : "\n") + itemMatch[i + 1]);
-            i--;
-            l--;
-            continue;
-          } else if (!this.options.pedantic || this.options.smartLists ? bnext[2][bnext[2].length - 1] !== bull[bull.length - 1] : isordered === (bnext[2].length === 1)) {
-            addBack = itemMatch.slice(i + 1).join("\n").length;
-            list.raw = list.raw.substring(0, list.raw.length - addBack);
-            i = l - 1;
-          }
-          bcurr = bnext;
-        }
-        space = item.length;
-        item = item.replace(/^ *([*+-]|\d+[.)]) ?/, "");
-        if (~item.indexOf("\n ")) {
-          space -= item.length;
-          item = !this.options.pedantic ? item.replace(new RegExp("^ {1," + space + "}", "gm"), "") : item.replace(/^ {1,4}/gm, "");
-        }
-        item = rtrim(item, "\n");
-        if (i !== l - 1) {
-          raw = raw + "\n";
-        }
-        loose = next || /\n\n(?!\s*$)/.test(raw);
-        if (i !== l - 1) {
-          next = raw.slice(-2) === "\n\n";
-          if (!loose)
-            loose = next;
-        }
-        if (loose) {
-          list.loose = true;
-        }
-        if (this.options.gfm) {
-          istask = /^\[[ xX]\] /.test(item);
-          ischecked = void 0;
-          if (istask) {
-            ischecked = item[1] !== " ";
-            item = item.replace(/^\[[ xX]\] +/, "");
-          }
-        }
-        list.items.push({
-          type: "list_item",
-          raw,
-          task: istask,
-          checked: ischecked,
-          loose,
-          text: item
-        });
-      }
-      return list;
-    }
-  }
-  html(src2) {
-    const cap = this.rules.block.html.exec(src2);
-    if (cap) {
-      return {
-        type: this.options.sanitize ? "paragraph" : "html",
-        raw: cap[0],
-        pre: !this.options.sanitizer && (cap[1] === "pre" || cap[1] === "script" || cap[1] === "style"),
-        text: this.options.sanitize ? this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape$2(cap[0]) : cap[0]
-      };
-    }
-  }
-  def(src2) {
-    const cap = this.rules.block.def.exec(src2);
-    if (cap) {
-      if (cap[3])
-        cap[3] = cap[3].substring(1, cap[3].length - 1);
-      const tag = cap[1].toLowerCase().replace(/\s+/g, " ");
-      return {
-        type: "def",
-        tag,
-        raw: cap[0],
-        href: cap[2],
-        title: cap[3]
-      };
-    }
-  }
-  table(src2) {
-    const cap = this.rules.block.table.exec(src2);
-    if (cap) {
-      const item = {
-        type: "table",
-        header: splitCells(cap[1].replace(/^ *| *\| *$/g, "")),
-        align: cap[2].replace(/^ *|\| *$/g, "").split(/ *\| */),
-        cells: cap[3] ? cap[3].replace(/\n$/, "").split("\n") : []
-      };
-      if (item.header.length === item.align.length) {
-        item.raw = cap[0];
-        let l = item.align.length;
-        let i;
-        for (i = 0; i < l; i++) {
-          if (/^ *-+: *$/.test(item.align[i])) {
-            item.align[i] = "right";
-          } else if (/^ *:-+: *$/.test(item.align[i])) {
-            item.align[i] = "center";
-          } else if (/^ *:-+ *$/.test(item.align[i])) {
-            item.align[i] = "left";
-          } else {
-            item.align[i] = null;
-          }
-        }
-        l = item.cells.length;
-        for (i = 0; i < l; i++) {
-          item.cells[i] = splitCells(item.cells[i].replace(/^ *\| *| *\| *$/g, ""), item.header.length);
-        }
-        return item;
-      }
-    }
-  }
-  lheading(src2) {
-    const cap = this.rules.block.lheading.exec(src2);
-    if (cap) {
-      return {
-        type: "heading",
-        raw: cap[0],
-        depth: cap[2].charAt(0) === "=" ? 1 : 2,
-        text: cap[1]
-      };
-    }
-  }
-  paragraph(src2) {
-    const cap = this.rules.block.paragraph.exec(src2);
-    if (cap) {
-      return {
-        type: "paragraph",
-        raw: cap[0],
-        text: cap[1].charAt(cap[1].length - 1) === "\n" ? cap[1].slice(0, -1) : cap[1]
-      };
-    }
-  }
-  text(src2) {
-    const cap = this.rules.block.text.exec(src2);
-    if (cap) {
-      return {
-        type: "text",
-        raw: cap[0],
-        text: cap[0]
-      };
-    }
-  }
-  escape(src2) {
-    const cap = this.rules.inline.escape.exec(src2);
-    if (cap) {
-      return {
-        type: "escape",
-        raw: cap[0],
-        text: escape$2(cap[1])
-      };
-    }
-  }
-  tag(src2, inLink, inRawBlock) {
-    const cap = this.rules.inline.tag.exec(src2);
-    if (cap) {
-      if (!inLink && /^<a /i.test(cap[0])) {
-        inLink = true;
-      } else if (inLink && /^<\/a>/i.test(cap[0])) {
-        inLink = false;
-      }
-      if (!inRawBlock && /^<(pre|code|kbd|script)(\s|>)/i.test(cap[0])) {
-        inRawBlock = true;
-      } else if (inRawBlock && /^<\/(pre|code|kbd|script)(\s|>)/i.test(cap[0])) {
-        inRawBlock = false;
-      }
-      return {
-        type: this.options.sanitize ? "text" : "html",
-        raw: cap[0],
-        inLink,
-        inRawBlock,
-        text: this.options.sanitize ? this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape$2(cap[0]) : cap[0]
-      };
-    }
-  }
-  link(src2) {
-    const cap = this.rules.inline.link.exec(src2);
-    if (cap) {
-      const trimmedUrl = cap[2].trim();
-      if (!this.options.pedantic && /^</.test(trimmedUrl)) {
-        if (!/>$/.test(trimmedUrl)) {
-          return;
-        }
-        const rtrimSlash = rtrim(trimmedUrl.slice(0, -1), "\\");
-        if ((trimmedUrl.length - rtrimSlash.length) % 2 === 0) {
-          return;
-        }
-      } else {
-        const lastParenIndex = findClosingBracket(cap[2], "()");
-        if (lastParenIndex > -1) {
-          const start = cap[0].indexOf("!") === 0 ? 5 : 4;
-          const linkLen = start + cap[1].length + lastParenIndex;
-          cap[2] = cap[2].substring(0, lastParenIndex);
-          cap[0] = cap[0].substring(0, linkLen).trim();
-          cap[3] = "";
-        }
-      }
-      let href = cap[2];
-      let title = "";
-      if (this.options.pedantic) {
-        const link = /^([^'"]*[^\s])\s+(['"])(.*)\2/.exec(href);
-        if (link) {
-          href = link[1];
-          title = link[3];
-        }
-      } else {
-        title = cap[3] ? cap[3].slice(1, -1) : "";
-      }
-      href = href.trim();
-      if (/^</.test(href)) {
-        if (this.options.pedantic && !/>$/.test(trimmedUrl)) {
-          href = href.slice(1);
-        } else {
-          href = href.slice(1, -1);
-        }
-      }
-      return outputLink(cap, {
-        href: href ? href.replace(this.rules.inline._escapes, "$1") : href,
-        title: title ? title.replace(this.rules.inline._escapes, "$1") : title
-      }, cap[0]);
-    }
-  }
-  reflink(src2, links) {
-    let cap;
-    if ((cap = this.rules.inline.reflink.exec(src2)) || (cap = this.rules.inline.nolink.exec(src2))) {
-      let link = (cap[2] || cap[1]).replace(/\s+/g, " ");
-      link = links[link.toLowerCase()];
-      if (!link || !link.href) {
-        const text = cap[0].charAt(0);
-        return {
-          type: "text",
-          raw: text,
-          text
-        };
-      }
-      return outputLink(cap, link, cap[0]);
-    }
-  }
-  emStrong(src2, maskedSrc, prevChar = "") {
-    let match = this.rules.inline.emStrong.lDelim.exec(src2);
-    if (!match)
-      return;
-    if (match[3] && prevChar.match(/[\p{L}\p{N}]/u))
-      return;
-    const nextChar = match[1] || match[2] || "";
-    if (!nextChar || nextChar && (prevChar === "" || this.rules.inline.punctuation.exec(prevChar))) {
-      const lLength = match[0].length - 1;
-      let rDelim, rLength, delimTotal = lLength, midDelimTotal = 0;
-      const endReg = match[0][0] === "*" ? this.rules.inline.emStrong.rDelimAst : this.rules.inline.emStrong.rDelimUnd;
-      endReg.lastIndex = 0;
-      maskedSrc = maskedSrc.slice(-1 * src2.length + lLength);
-      while ((match = endReg.exec(maskedSrc)) != null) {
-        rDelim = match[1] || match[2] || match[3] || match[4] || match[5] || match[6];
-        if (!rDelim)
-          continue;
-        rLength = rDelim.length;
-        if (match[3] || match[4]) {
-          delimTotal += rLength;
-          continue;
-        } else if (match[5] || match[6]) {
-          if (lLength % 3 && !((lLength + rLength) % 3)) {
-            midDelimTotal += rLength;
-            continue;
-          }
-        }
-        delimTotal -= rLength;
-        if (delimTotal > 0)
-          continue;
-        rLength = Math.min(rLength, rLength + delimTotal + midDelimTotal);
-        if (Math.min(lLength, rLength) % 2) {
-          return {
-            type: "em",
-            raw: src2.slice(0, lLength + match.index + rLength + 1),
-            text: src2.slice(1, lLength + match.index + rLength)
-          };
-        }
-        return {
-          type: "strong",
-          raw: src2.slice(0, lLength + match.index + rLength + 1),
-          text: src2.slice(2, lLength + match.index + rLength - 1)
-        };
-      }
-    }
-  }
-  codespan(src2) {
-    const cap = this.rules.inline.code.exec(src2);
-    if (cap) {
-      let text = cap[2].replace(/\n/g, " ");
-      const hasNonSpaceChars = /[^ ]/.test(text);
-      const hasSpaceCharsOnBothEnds = /^ /.test(text) && / $/.test(text);
-      if (hasNonSpaceChars && hasSpaceCharsOnBothEnds) {
-        text = text.substring(1, text.length - 1);
-      }
-      text = escape$2(text, true);
-      return {
-        type: "codespan",
-        raw: cap[0],
-        text
-      };
-    }
-  }
-  br(src2) {
-    const cap = this.rules.inline.br.exec(src2);
-    if (cap) {
-      return {
-        type: "br",
-        raw: cap[0]
-      };
-    }
-  }
-  del(src2) {
-    const cap = this.rules.inline.del.exec(src2);
-    if (cap) {
-      return {
-        type: "del",
-        raw: cap[0],
-        text: cap[2]
-      };
-    }
-  }
-  autolink(src2, mangle2) {
-    const cap = this.rules.inline.autolink.exec(src2);
-    if (cap) {
-      let text, href;
-      if (cap[2] === "@") {
-        text = escape$2(this.options.mangle ? mangle2(cap[1]) : cap[1]);
-        href = "mailto:" + text;
-      } else {
-        text = escape$2(cap[1]);
-        href = text;
-      }
-      return {
-        type: "link",
-        raw: cap[0],
-        text,
-        href,
-        tokens: [
-          {
-            type: "text",
-            raw: text,
-            text
-          }
-        ]
-      };
-    }
-  }
-  url(src2, mangle2) {
-    let cap;
-    if (cap = this.rules.inline.url.exec(src2)) {
-      let text, href;
-      if (cap[2] === "@") {
-        text = escape$2(this.options.mangle ? mangle2(cap[0]) : cap[0]);
-        href = "mailto:" + text;
-      } else {
-        let prevCapZero;
-        do {
-          prevCapZero = cap[0];
-          cap[0] = this.rules.inline._backpedal.exec(cap[0])[0];
-        } while (prevCapZero !== cap[0]);
-        text = escape$2(cap[0]);
-        if (cap[1] === "www.") {
-          href = "http://" + text;
-        } else {
-          href = text;
-        }
-      }
-      return {
-        type: "link",
-        raw: cap[0],
-        text,
-        href,
-        tokens: [
-          {
-            type: "text",
-            raw: text,
-            text
-          }
-        ]
-      };
-    }
-  }
-  inlineText(src2, inRawBlock, smartypants2) {
-    const cap = this.rules.inline.text.exec(src2);
-    if (cap) {
-      let text;
-      if (inRawBlock) {
-        text = this.options.sanitize ? this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape$2(cap[0]) : cap[0];
-      } else {
-        text = escape$2(this.options.smartypants ? smartypants2(cap[0]) : cap[0]);
-      }
-      return {
-        type: "text",
-        raw: cap[0],
-        text
-      };
-    }
-  }
-};
-var {
-  noopTest: noopTest2,
-  edit,
-  merge: merge$1
-} = helpers;
-var block$1 = {
-  newline: /^(?: *(?:\n|$))+/,
-  code: /^( {4}[^\n]+(?:\n(?: *(?:\n|$))*)?)+/,
-  fences: /^ {0,3}(`{3,}(?=[^`\n]*\n)|~{3,})([^\n]*)\n(?:|([\s\S]*?)\n)(?: {0,3}\1[~`]* *(?:\n+|$)|$)/,
-  hr: /^ {0,3}((?:- *){3,}|(?:_ *){3,}|(?:\* *){3,})(?:\n+|$)/,
-  heading: /^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/,
-  blockquote: /^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/,
-  list: /^( {0,3})(bull) [\s\S]+?(?:hr|def|\n{2,}(?! )(?! {0,3}bull )\n*|\s*$)/,
-  html: "^ {0,3}(?:<(script|pre|style|textarea)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n+|$)|comment[^\\n]*(\\n+|$)|<\\?[\\s\\S]*?(?:\\?>\\n*|$)|<![A-Z][\\s\\S]*?(?:>\\n*|$)|<!\\[CDATA\\[[\\s\\S]*?(?:\\]\\]>\\n*|$)|</?(tag)(?: +|\\n|/?>)[\\s\\S]*?(?:(?:\\n *)+\\n|$)|<(?!script|pre|style|textarea)([a-z][\\w-]*)(?:attribute)*? */?>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n *)+\\n|$)|</(?!script|pre|style|textarea)[a-z][\\w-]*\\s*>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n *)+\\n|$))",
-  def: /^ {0,3}\[(label)\]: *\n? *<?([^\s>]+)>?(?:(?: +\n? *| *\n *)(title))? *(?:\n+|$)/,
-  nptable: noopTest2,
-  table: noopTest2,
-  lheading: /^([^\n]+)\n {0,3}(=+|-+) *(?:\n+|$)/,
-  _paragraph: /^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html| +\n)[^\n]+)*)/,
-  text: /^[^\n]+/
-};
-block$1._label = /(?!\s*\])(?:\\[\[\]]|[^\[\]])+/;
-block$1._title = /(?:"(?:\\"?|[^"\\])*"|'[^'\n]*(?:\n[^'\n]+)*\n?'|\([^()]*\))/;
-block$1.def = edit(block$1.def).replace("label", block$1._label).replace("title", block$1._title).getRegex();
-block$1.bullet = /(?:[*+-]|\d{1,9}[.)])/;
-block$1.item = /^( *)(bull) ?[^\n]*(?:\n(?! *bull ?)[^\n]*)*/;
-block$1.item = edit(block$1.item, "gm").replace(/bull/g, block$1.bullet).getRegex();
-block$1.listItemStart = edit(/^( *)(bull) */).replace("bull", block$1.bullet).getRegex();
-block$1.list = edit(block$1.list).replace(/bull/g, block$1.bullet).replace("hr", "\\n+(?=\\1?(?:(?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$))").replace("def", "\\n+(?=" + block$1.def.source + ")").getRegex();
-block$1._tag = "address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option|p|param|section|source|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul";
-block$1._comment = /<!--(?!-?>)[\s\S]*?(?:-->|$)/;
-block$1.html = edit(block$1.html, "i").replace("comment", block$1._comment).replace("tag", block$1._tag).replace("attribute", / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/).getRegex();
-block$1.paragraph = edit(block$1._paragraph).replace("hr", block$1.hr).replace("heading", " {0,3}#{1,6} ").replace("|lheading", "").replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", block$1._tag).getRegex();
-block$1.blockquote = edit(block$1.blockquote).replace("paragraph", block$1.paragraph).getRegex();
-block$1.normal = merge$1({}, block$1);
-block$1.gfm = merge$1({}, block$1.normal, {
-  nptable: "^ *([^|\\n ].*\\|.*)\\n {0,3}([-:]+ *\\|[-| :]*)(?:\\n((?:(?!\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)",
-  table: "^ *\\|(.+)\\n {0,3}\\|?( *[-:]+[-| :]*)(?:\\n *((?:(?!\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)"
-});
-block$1.gfm.nptable = edit(block$1.gfm.nptable).replace("hr", block$1.hr).replace("heading", " {0,3}#{1,6} ").replace("blockquote", " {0,3}>").replace("code", " {4}[^\\n]").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", block$1._tag).getRegex();
-block$1.gfm.table = edit(block$1.gfm.table).replace("hr", block$1.hr).replace("heading", " {0,3}#{1,6} ").replace("blockquote", " {0,3}>").replace("code", " {4}[^\\n]").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", block$1._tag).getRegex();
-block$1.pedantic = merge$1({}, block$1.normal, {
-  html: edit(`^ *(?:comment *(?:\\n|\\s*$)|<(tag)[\\s\\S]+?</\\1> *(?:\\n{2,}|\\s*$)|<tag(?:"[^"]*"|'[^']*'|\\s[^'"/>\\s]*)*?/?> *(?:\\n{2,}|\\s*$))`).replace("comment", block$1._comment).replace(/tag/g, "(?!(?:a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b").getRegex(),
-  def: /^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +(["(][^\n]+[")]))? *(?:\n+|$)/,
-  heading: /^(#{1,6})(.*)(?:\n+|$)/,
-  fences: noopTest2,
-  paragraph: edit(block$1.normal._paragraph).replace("hr", block$1.hr).replace("heading", " *#{1,6} *[^\n]").replace("lheading", block$1.lheading).replace("blockquote", " {0,3}>").replace("|fences", "").replace("|list", "").replace("|html", "").getRegex()
-});
-var inline$1 = {
-  escape: /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/,
-  autolink: /^<(scheme:[^\s\x00-\x1f<>]*|email)>/,
-  url: noopTest2,
-  tag: "^comment|^</[a-zA-Z][\\w:-]*\\s*>|^<[a-zA-Z][\\w-]*(?:attribute)*?\\s*/?>|^<\\?[\\s\\S]*?\\?>|^<![a-zA-Z]+\\s[\\s\\S]*?>|^<!\\[CDATA\\[[\\s\\S]*?\\]\\]>",
-  link: /^!?\[(label)\]\(\s*(href)(?:\s+(title))?\s*\)/,
-  reflink: /^!?\[(label)\]\[(?!\s*\])((?:\\[\[\]]?|[^\[\]\\])+)\]/,
-  nolink: /^!?\[(?!\s*\])((?:\[[^\[\]]*\]|\\[\[\]]|[^\[\]])*)\](?:\[\])?/,
-  reflinkSearch: "reflink|nolink(?!\\()",
-  emStrong: {
-    lDelim: /^(?:\*+(?:([punct_])|[^\s*]))|^_+(?:([punct*])|([^\s_]))/,
-    rDelimAst: /\_\_[^_*]*?\*[^_*]*?\_\_|[punct_](\*+)(?=[\s]|$)|[^punct*_\s](\*+)(?=[punct_\s]|$)|[punct_\s](\*+)(?=[^punct*_\s])|[\s](\*+)(?=[punct_])|[punct_](\*+)(?=[punct_])|[^punct*_\s](\*+)(?=[^punct*_\s])/,
-    rDelimUnd: /\*\*[^_*]*?\_[^_*]*?\*\*|[punct*](\_+)(?=[\s]|$)|[^punct*_\s](\_+)(?=[punct*\s]|$)|[punct*\s](\_+)(?=[^punct*_\s])|[\s](\_+)(?=[punct*])|[punct*](\_+)(?=[punct*])/
-  },
-  code: /^(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/,
-  br: /^( {2,}|\\)\n(?!\s*$)/,
-  del: noopTest2,
-  text: /^(`+|[^`])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*_]|\b_|$)|[^ ](?= {2,}\n)))/,
-  punctuation: /^([\spunctuation])/
-};
-inline$1._punctuation = "!\"#$%&'()+\\-.,/:;<=>?@\\[\\]`^{|}~";
-inline$1.punctuation = edit(inline$1.punctuation).replace(/punctuation/g, inline$1._punctuation).getRegex();
-inline$1.blockSkip = /\[[^\]]*?\]\([^\)]*?\)|`[^`]*?`|<[^>]*?>/g;
-inline$1.escapedEmSt = /\\\*|\\_/g;
-inline$1._comment = edit(block$1._comment).replace("(?:-->|$)", "-->").getRegex();
-inline$1.emStrong.lDelim = edit(inline$1.emStrong.lDelim).replace(/punct/g, inline$1._punctuation).getRegex();
-inline$1.emStrong.rDelimAst = edit(inline$1.emStrong.rDelimAst, "g").replace(/punct/g, inline$1._punctuation).getRegex();
-inline$1.emStrong.rDelimUnd = edit(inline$1.emStrong.rDelimUnd, "g").replace(/punct/g, inline$1._punctuation).getRegex();
-inline$1._escapes = /\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/g;
-inline$1._scheme = /[a-zA-Z][a-zA-Z0-9+.-]{1,31}/;
-inline$1._email = /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/;
-inline$1.autolink = edit(inline$1.autolink).replace("scheme", inline$1._scheme).replace("email", inline$1._email).getRegex();
-inline$1._attribute = /\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/;
-inline$1.tag = edit(inline$1.tag).replace("comment", inline$1._comment).replace("attribute", inline$1._attribute).getRegex();
-inline$1._label = /(?:\[(?:\\.|[^\[\]\\])*\]|\\.|`[^`]*`|[^\[\]\\`])*?/;
-inline$1._href = /<(?:\\.|[^\n<>\\])+>|[^\s\x00-\x1f]*/;
-inline$1._title = /"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/;
-inline$1.link = edit(inline$1.link).replace("label", inline$1._label).replace("href", inline$1._href).replace("title", inline$1._title).getRegex();
-inline$1.reflink = edit(inline$1.reflink).replace("label", inline$1._label).getRegex();
-inline$1.reflinkSearch = edit(inline$1.reflinkSearch, "g").replace("reflink", inline$1.reflink).replace("nolink", inline$1.nolink).getRegex();
-inline$1.normal = merge$1({}, inline$1);
-inline$1.pedantic = merge$1({}, inline$1.normal, {
-  strong: {
-    start: /^__|\*\*/,
-    middle: /^__(?=\S)([\s\S]*?\S)__(?!_)|^\*\*(?=\S)([\s\S]*?\S)\*\*(?!\*)/,
-    endAst: /\*\*(?!\*)/g,
-    endUnd: /__(?!_)/g
-  },
-  em: {
-    start: /^_|\*/,
-    middle: /^()\*(?=\S)([\s\S]*?\S)\*(?!\*)|^_(?=\S)([\s\S]*?\S)_(?!_)/,
-    endAst: /\*(?!\*)/g,
-    endUnd: /_(?!_)/g
-  },
-  link: edit(/^!?\[(label)\]\((.*?)\)/).replace("label", inline$1._label).getRegex(),
-  reflink: edit(/^!?\[(label)\]\s*\[([^\]]*)\]/).replace("label", inline$1._label).getRegex()
-});
-inline$1.gfm = merge$1({}, inline$1.normal, {
-  escape: edit(inline$1.escape).replace("])", "~|])").getRegex(),
-  _extended_email: /[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/,
-  url: /^((?:ftp|https?):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/,
-  _backpedal: /(?:[^?!.,:;*_~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_~)]+(?!$))+/,
-  del: /^(~~?)(?=[^\s~])([\s\S]*?[^\s~])\1(?=[^~]|$)/,
-  text: /^([`~]+|[^`~])(?:(?= {2,}\n)|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)|[\s\S]*?(?:(?=[\\<!\[`*~_]|\b_|https?:\/\/|ftp:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)))/
-});
-inline$1.gfm.url = edit(inline$1.gfm.url, "i").replace("email", inline$1.gfm._extended_email).getRegex();
-inline$1.breaks = merge$1({}, inline$1.gfm, {
-  br: edit(inline$1.br).replace("{2,}", "*").getRegex(),
-  text: edit(inline$1.gfm.text).replace("\\b_", "\\b_| {2,}\\n").replace(/\{2,\}/g, "*").getRegex()
-});
-var rules = {
-  block: block$1,
-  inline: inline$1
-};
-var Tokenizer$1 = Tokenizer_1;
-var { defaults: defaults$3 } = defaults$5.exports;
-var { block, inline } = rules;
-var { repeatString } = helpers;
-function smartypants(text) {
-  return text.replace(/---/g, "\u2014").replace(/--/g, "\u2013").replace(/(^|[-\u2014/(\[{"\s])'/g, "$1\u2018").replace(/'/g, "\u2019").replace(/(^|[-\u2014/(\[{\u2018\s])"/g, "$1\u201C").replace(/"/g, "\u201D").replace(/\.{3}/g, "\u2026");
-}
-function mangle(text) {
-  let out = "", i, ch;
-  const l = text.length;
-  for (i = 0; i < l; i++) {
-    ch = text.charCodeAt(i);
-    if (Math.random() > 0.5) {
-      ch = "x" + ch.toString(16);
-    }
-    out += "&#" + ch + ";";
-  }
-  return out;
-}
-var Lexer_1 = class Lexer {
-  constructor(options2) {
-    this.tokens = [];
-    this.tokens.links = Object.create(null);
-    this.options = options2 || defaults$3;
-    this.options.tokenizer = this.options.tokenizer || new Tokenizer$1();
-    this.tokenizer = this.options.tokenizer;
-    this.tokenizer.options = this.options;
-    const rules2 = {
-      block: block.normal,
-      inline: inline.normal
-    };
-    if (this.options.pedantic) {
-      rules2.block = block.pedantic;
-      rules2.inline = inline.pedantic;
-    } else if (this.options.gfm) {
-      rules2.block = block.gfm;
-      if (this.options.breaks) {
-        rules2.inline = inline.breaks;
-      } else {
-        rules2.inline = inline.gfm;
-      }
-    }
-    this.tokenizer.rules = rules2;
-  }
-  static get rules() {
-    return {
-      block,
-      inline
-    };
-  }
-  static lex(src2, options2) {
-    const lexer = new Lexer(options2);
-    return lexer.lex(src2);
-  }
-  static lexInline(src2, options2) {
-    const lexer = new Lexer(options2);
-    return lexer.inlineTokens(src2);
-  }
-  lex(src2) {
-    src2 = src2.replace(/\r\n|\r/g, "\n").replace(/\t/g, "    ");
-    this.blockTokens(src2, this.tokens, true);
-    this.inline(this.tokens);
-    return this.tokens;
-  }
-  blockTokens(src2, tokens = [], top = true) {
-    if (this.options.pedantic) {
-      src2 = src2.replace(/^ +$/gm, "");
-    }
-    let token, i, l, lastToken, cutSrc, lastParagraphClipped;
-    while (src2) {
-      if (this.options.extensions && this.options.extensions.block && this.options.extensions.block.some((extTokenizer) => {
-        if (token = extTokenizer.call(this, src2, tokens)) {
-          src2 = src2.substring(token.raw.length);
-          tokens.push(token);
-          return true;
-        }
-        return false;
-      })) {
-        continue;
-      }
-      if (token = this.tokenizer.space(src2)) {
-        src2 = src2.substring(token.raw.length);
-        if (token.type) {
-          tokens.push(token);
-        }
-        continue;
-      }
-      if (token = this.tokenizer.code(src2)) {
-        src2 = src2.substring(token.raw.length);
-        lastToken = tokens[tokens.length - 1];
-        if (lastToken && lastToken.type === "paragraph") {
-          lastToken.raw += "\n" + token.raw;
-          lastToken.text += "\n" + token.text;
-        } else {
-          tokens.push(token);
-        }
-        continue;
-      }
-      if (token = this.tokenizer.fences(src2)) {
-        src2 = src2.substring(token.raw.length);
-        tokens.push(token);
-        continue;
-      }
-      if (token = this.tokenizer.heading(src2)) {
-        src2 = src2.substring(token.raw.length);
-        tokens.push(token);
-        continue;
-      }
-      if (token = this.tokenizer.nptable(src2)) {
-        src2 = src2.substring(token.raw.length);
-        tokens.push(token);
-        continue;
-      }
-      if (token = this.tokenizer.hr(src2)) {
-        src2 = src2.substring(token.raw.length);
-        tokens.push(token);
-        continue;
-      }
-      if (token = this.tokenizer.blockquote(src2)) {
-        src2 = src2.substring(token.raw.length);
-        token.tokens = this.blockTokens(token.text, [], top);
-        tokens.push(token);
-        continue;
-      }
-      if (token = this.tokenizer.list(src2)) {
-        src2 = src2.substring(token.raw.length);
-        l = token.items.length;
-        for (i = 0; i < l; i++) {
-          token.items[i].tokens = this.blockTokens(token.items[i].text, [], false);
-        }
-        tokens.push(token);
-        continue;
-      }
-      if (token = this.tokenizer.html(src2)) {
-        src2 = src2.substring(token.raw.length);
-        tokens.push(token);
-        continue;
-      }
-      if (top && (token = this.tokenizer.def(src2))) {
-        src2 = src2.substring(token.raw.length);
-        if (!this.tokens.links[token.tag]) {
-          this.tokens.links[token.tag] = {
-            href: token.href,
-            title: token.title
-          };
-        }
-        continue;
-      }
-      if (token = this.tokenizer.table(src2)) {
-        src2 = src2.substring(token.raw.length);
-        tokens.push(token);
-        continue;
-      }
-      if (token = this.tokenizer.lheading(src2)) {
-        src2 = src2.substring(token.raw.length);
-        tokens.push(token);
-        continue;
-      }
-      cutSrc = src2;
-      if (this.options.extensions && this.options.extensions.startBlock) {
-        let startIndex = Infinity;
-        const tempSrc = src2.slice(1);
-        let tempStart;
-        this.options.extensions.startBlock.forEach(function(getStartIndex) {
-          tempStart = getStartIndex.call(this, tempSrc);
-          if (typeof tempStart === "number" && tempStart >= 0) {
-            startIndex = Math.min(startIndex, tempStart);
-          }
-        });
-        if (startIndex < Infinity && startIndex >= 0) {
-          cutSrc = src2.substring(0, startIndex + 1);
-        }
-      }
-      if (top && (token = this.tokenizer.paragraph(cutSrc))) {
-        lastToken = tokens[tokens.length - 1];
-        if (lastParagraphClipped && lastToken.type === "paragraph") {
-          lastToken.raw += "\n" + token.raw;
-          lastToken.text += "\n" + token.text;
-        } else {
-          tokens.push(token);
-        }
-        lastParagraphClipped = cutSrc.length !== src2.length;
-        src2 = src2.substring(token.raw.length);
-        continue;
-      }
-      if (token = this.tokenizer.text(src2)) {
-        src2 = src2.substring(token.raw.length);
-        lastToken = tokens[tokens.length - 1];
-        if (lastToken && lastToken.type === "text") {
-          lastToken.raw += "\n" + token.raw;
-          lastToken.text += "\n" + token.text;
-        } else {
-          tokens.push(token);
-        }
-        continue;
-      }
-      if (src2) {
-        const errMsg = "Infinite loop on byte: " + src2.charCodeAt(0);
-        if (this.options.silent) {
-          console.error(errMsg);
-          break;
-        } else {
-          throw new Error(errMsg);
-        }
-      }
-    }
-    return tokens;
-  }
-  inline(tokens) {
-    let i, j, k, l2, row, token;
-    const l = tokens.length;
-    for (i = 0; i < l; i++) {
-      token = tokens[i];
-      switch (token.type) {
-        case "paragraph":
-        case "text":
-        case "heading": {
-          token.tokens = [];
-          this.inlineTokens(token.text, token.tokens);
-          break;
-        }
-        case "table": {
-          token.tokens = {
-            header: [],
-            cells: []
-          };
-          l2 = token.header.length;
-          for (j = 0; j < l2; j++) {
-            token.tokens.header[j] = [];
-            this.inlineTokens(token.header[j], token.tokens.header[j]);
-          }
-          l2 = token.cells.length;
-          for (j = 0; j < l2; j++) {
-            row = token.cells[j];
-            token.tokens.cells[j] = [];
-            for (k = 0; k < row.length; k++) {
-              token.tokens.cells[j][k] = [];
-              this.inlineTokens(row[k], token.tokens.cells[j][k]);
-            }
-          }
-          break;
-        }
-        case "blockquote": {
-          this.inline(token.tokens);
-          break;
-        }
-        case "list": {
-          l2 = token.items.length;
-          for (j = 0; j < l2; j++) {
-            this.inline(token.items[j].tokens);
-          }
-          break;
-        }
-      }
-    }
-    return tokens;
-  }
-  inlineTokens(src2, tokens = [], inLink = false, inRawBlock = false) {
-    let token, lastToken, cutSrc;
-    let maskedSrc = src2;
-    let match;
-    let keepPrevChar, prevChar;
-    if (this.tokens.links) {
-      const links = Object.keys(this.tokens.links);
-      if (links.length > 0) {
-        while ((match = this.tokenizer.rules.inline.reflinkSearch.exec(maskedSrc)) != null) {
-          if (links.includes(match[0].slice(match[0].lastIndexOf("[") + 1, -1))) {
-            maskedSrc = maskedSrc.slice(0, match.index) + "[" + repeatString("a", match[0].length - 2) + "]" + maskedSrc.slice(this.tokenizer.rules.inline.reflinkSearch.lastIndex);
-          }
-        }
-      }
-    }
-    while ((match = this.tokenizer.rules.inline.blockSkip.exec(maskedSrc)) != null) {
-      maskedSrc = maskedSrc.slice(0, match.index) + "[" + repeatString("a", match[0].length - 2) + "]" + maskedSrc.slice(this.tokenizer.rules.inline.blockSkip.lastIndex);
-    }
-    while ((match = this.tokenizer.rules.inline.escapedEmSt.exec(maskedSrc)) != null) {
-      maskedSrc = maskedSrc.slice(0, match.index) + "++" + maskedSrc.slice(this.tokenizer.rules.inline.escapedEmSt.lastIndex);
-    }
-    while (src2) {
-      if (!keepPrevChar) {
-        prevChar = "";
-      }
-      keepPrevChar = false;
-      if (this.options.extensions && this.options.extensions.inline && this.options.extensions.inline.some((extTokenizer) => {
-        if (token = extTokenizer.call(this, src2, tokens)) {
-          src2 = src2.substring(token.raw.length);
-          tokens.push(token);
-          return true;
-        }
-        return false;
-      })) {
-        continue;
-      }
-      if (token = this.tokenizer.escape(src2)) {
-        src2 = src2.substring(token.raw.length);
-        tokens.push(token);
-        continue;
-      }
-      if (token = this.tokenizer.tag(src2, inLink, inRawBlock)) {
-        src2 = src2.substring(token.raw.length);
-        inLink = token.inLink;
-        inRawBlock = token.inRawBlock;
-        lastToken = tokens[tokens.length - 1];
-        if (lastToken && token.type === "text" && lastToken.type === "text") {
-          lastToken.raw += token.raw;
-          lastToken.text += token.text;
-        } else {
-          tokens.push(token);
-        }
-        continue;
-      }
-      if (token = this.tokenizer.link(src2)) {
-        src2 = src2.substring(token.raw.length);
-        if (token.type === "link") {
-          token.tokens = this.inlineTokens(token.text, [], true, inRawBlock);
-        }
-        tokens.push(token);
-        continue;
-      }
-      if (token = this.tokenizer.reflink(src2, this.tokens.links)) {
-        src2 = src2.substring(token.raw.length);
-        lastToken = tokens[tokens.length - 1];
-        if (token.type === "link") {
-          token.tokens = this.inlineTokens(token.text, [], true, inRawBlock);
-          tokens.push(token);
-        } else if (lastToken && token.type === "text" && lastToken.type === "text") {
-          lastToken.raw += token.raw;
-          lastToken.text += token.text;
-        } else {
-          tokens.push(token);
-        }
-        continue;
-      }
-      if (token = this.tokenizer.emStrong(src2, maskedSrc, prevChar)) {
-        src2 = src2.substring(token.raw.length);
-        token.tokens = this.inlineTokens(token.text, [], inLink, inRawBlock);
-        tokens.push(token);
-        continue;
-      }
-      if (token = this.tokenizer.codespan(src2)) {
-        src2 = src2.substring(token.raw.length);
-        tokens.push(token);
-        continue;
-      }
-      if (token = this.tokenizer.br(src2)) {
-        src2 = src2.substring(token.raw.length);
-        tokens.push(token);
-        continue;
-      }
-      if (token = this.tokenizer.del(src2)) {
-        src2 = src2.substring(token.raw.length);
-        token.tokens = this.inlineTokens(token.text, [], inLink, inRawBlock);
-        tokens.push(token);
-        continue;
-      }
-      if (token = this.tokenizer.autolink(src2, mangle)) {
-        src2 = src2.substring(token.raw.length);
-        tokens.push(token);
-        continue;
-      }
-      if (!inLink && (token = this.tokenizer.url(src2, mangle))) {
-        src2 = src2.substring(token.raw.length);
-        tokens.push(token);
-        continue;
-      }
-      cutSrc = src2;
-      if (this.options.extensions && this.options.extensions.startInline) {
-        let startIndex = Infinity;
-        const tempSrc = src2.slice(1);
-        let tempStart;
-        this.options.extensions.startInline.forEach(function(getStartIndex) {
-          tempStart = getStartIndex.call(this, tempSrc);
-          if (typeof tempStart === "number" && tempStart >= 0) {
-            startIndex = Math.min(startIndex, tempStart);
-          }
-        });
-        if (startIndex < Infinity && startIndex >= 0) {
-          cutSrc = src2.substring(0, startIndex + 1);
-        }
-      }
-      if (token = this.tokenizer.inlineText(cutSrc, inRawBlock, smartypants)) {
-        src2 = src2.substring(token.raw.length);
-        if (token.raw.slice(-1) !== "_") {
-          prevChar = token.raw.slice(-1);
-        }
-        keepPrevChar = true;
-        lastToken = tokens[tokens.length - 1];
-        if (lastToken && lastToken.type === "text") {
-          lastToken.raw += token.raw;
-          lastToken.text += token.text;
-        } else {
-          tokens.push(token);
-        }
-        continue;
-      }
-      if (src2) {
-        const errMsg = "Infinite loop on byte: " + src2.charCodeAt(0);
-        if (this.options.silent) {
-          console.error(errMsg);
-          break;
-        } else {
-          throw new Error(errMsg);
-        }
-      }
-    }
-    return tokens;
-  }
-};
-var { defaults: defaults$2 } = defaults$5.exports;
-var {
-  cleanUrl,
-  escape: escape$1
-} = helpers;
-var Renderer_1 = class Renderer {
-  constructor(options2) {
-    this.options = options2 || defaults$2;
-  }
-  code(code, infostring, escaped2) {
-    const lang = (infostring || "").match(/\S*/)[0];
-    if (this.options.highlight) {
-      const out = this.options.highlight(code, lang);
-      if (out != null && out !== code) {
-        escaped2 = true;
-        code = out;
-      }
-    }
-    code = code.replace(/\n$/, "") + "\n";
-    if (!lang) {
-      return "<pre><code>" + (escaped2 ? code : escape$1(code, true)) + "</code></pre>\n";
-    }
-    return '<pre><code class="' + this.options.langPrefix + escape$1(lang, true) + '">' + (escaped2 ? code : escape$1(code, true)) + "</code></pre>\n";
-  }
-  blockquote(quote) {
-    return "<blockquote>\n" + quote + "</blockquote>\n";
-  }
-  html(html) {
-    return html;
-  }
-  heading(text, level, raw, slugger) {
-    if (this.options.headerIds) {
-      return "<h" + level + ' id="' + this.options.headerPrefix + slugger.slug(raw) + '">' + text + "</h" + level + ">\n";
-    }
-    return "<h" + level + ">" + text + "</h" + level + ">\n";
-  }
-  hr() {
-    return this.options.xhtml ? "<hr/>\n" : "<hr>\n";
-  }
-  list(body, ordered, start) {
-    const type = ordered ? "ol" : "ul", startatt = ordered && start !== 1 ? ' start="' + start + '"' : "";
-    return "<" + type + startatt + ">\n" + body + "</" + type + ">\n";
-  }
-  listitem(text) {
-    return "<li>" + text + "</li>\n";
-  }
-  checkbox(checked) {
-    return "<input " + (checked ? 'checked="" ' : "") + 'disabled="" type="checkbox"' + (this.options.xhtml ? " /" : "") + "> ";
-  }
-  paragraph(text) {
-    return "<p>" + text + "</p>\n";
-  }
-  table(header, body) {
-    if (body)
-      body = "<tbody>" + body + "</tbody>";
-    return "<table>\n<thead>\n" + header + "</thead>\n" + body + "</table>\n";
-  }
-  tablerow(content) {
-    return "<tr>\n" + content + "</tr>\n";
-  }
-  tablecell(content, flags) {
-    const type = flags.header ? "th" : "td";
-    const tag = flags.align ? "<" + type + ' align="' + flags.align + '">' : "<" + type + ">";
-    return tag + content + "</" + type + ">\n";
-  }
-  strong(text) {
-    return "<strong>" + text + "</strong>";
-  }
-  em(text) {
-    return "<em>" + text + "</em>";
-  }
-  codespan(text) {
-    return "<code>" + text + "</code>";
-  }
-  br() {
-    return this.options.xhtml ? "<br/>" : "<br>";
-  }
-  del(text) {
-    return "<del>" + text + "</del>";
-  }
-  link(href, title, text) {
-    href = cleanUrl(this.options.sanitize, this.options.baseUrl, href);
-    if (href === null) {
-      return text;
-    }
-    let out = '<a href="' + escape$1(href) + '"';
-    if (title) {
-      out += ' title="' + title + '"';
-    }
-    out += ">" + text + "</a>";
-    return out;
-  }
-  image(href, title, text) {
-    href = cleanUrl(this.options.sanitize, this.options.baseUrl, href);
-    if (href === null) {
-      return text;
-    }
-    let out = '<img src="' + href + '" alt="' + text + '"';
-    if (title) {
-      out += ' title="' + title + '"';
-    }
-    out += this.options.xhtml ? "/>" : ">";
-    return out;
-  }
-  text(text) {
-    return text;
-  }
-};
-var TextRenderer_1 = class TextRenderer {
-  strong(text) {
-    return text;
-  }
-  em(text) {
-    return text;
-  }
-  codespan(text) {
-    return text;
-  }
-  del(text) {
-    return text;
-  }
-  html(text) {
-    return text;
-  }
-  text(text) {
-    return text;
-  }
-  link(href, title, text) {
-    return "" + text;
-  }
-  image(href, title, text) {
-    return "" + text;
-  }
-  br() {
-    return "";
-  }
-};
-var Slugger_1 = class Slugger {
-  constructor() {
-    this.seen = {};
-  }
-  serialize(value) {
-    return value.toLowerCase().trim().replace(/<[!\/a-z].*?>/ig, "").replace(/[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,./:;<=>?@[\]^`{|}~]/g, "").replace(/\s/g, "-");
-  }
-  getNextSafeSlug(originalSlug, isDryRun) {
-    let slug = originalSlug;
-    let occurenceAccumulator = 0;
-    if (this.seen.hasOwnProperty(slug)) {
-      occurenceAccumulator = this.seen[originalSlug];
-      do {
-        occurenceAccumulator++;
-        slug = originalSlug + "-" + occurenceAccumulator;
-      } while (this.seen.hasOwnProperty(slug));
-    }
-    if (!isDryRun) {
-      this.seen[originalSlug] = occurenceAccumulator;
-      this.seen[slug] = 0;
-    }
-    return slug;
-  }
-  slug(value, options2 = {}) {
-    const slug = this.serialize(value);
-    return this.getNextSafeSlug(slug, options2.dryrun);
-  }
-};
-var Renderer$1 = Renderer_1;
-var TextRenderer$1 = TextRenderer_1;
-var Slugger$1 = Slugger_1;
-var { defaults: defaults$1 } = defaults$5.exports;
-var {
-  unescape: unescape2
-} = helpers;
-var Parser_1 = class Parser {
-  constructor(options2) {
-    this.options = options2 || defaults$1;
-    this.options.renderer = this.options.renderer || new Renderer$1();
-    this.renderer = this.options.renderer;
-    this.renderer.options = this.options;
-    this.textRenderer = new TextRenderer$1();
-    this.slugger = new Slugger$1();
-  }
-  static parse(tokens, options2) {
-    const parser = new Parser(options2);
-    return parser.parse(tokens);
-  }
-  static parseInline(tokens, options2) {
-    const parser = new Parser(options2);
-    return parser.parseInline(tokens);
-  }
-  parse(tokens, top = true) {
-    let out = "", i, j, k, l2, l3, row, cell, header, body, token, ordered, start, loose, itemBody, item, checked, task, checkbox, ret;
-    const l = tokens.length;
-    for (i = 0; i < l; i++) {
-      token = tokens[i];
-      if (this.options.extensions && this.options.extensions.renderers && this.options.extensions.renderers[token.type]) {
-        ret = this.options.extensions.renderers[token.type].call(this, token);
-        if (ret !== false || !["space", "hr", "heading", "code", "table", "blockquote", "list", "html", "paragraph", "text"].includes(token.type)) {
-          out += ret || "";
-          continue;
-        }
-      }
-      switch (token.type) {
-        case "space": {
-          continue;
-        }
-        case "hr": {
-          out += this.renderer.hr();
-          continue;
-        }
-        case "heading": {
-          out += this.renderer.heading(this.parseInline(token.tokens), token.depth, unescape2(this.parseInline(token.tokens, this.textRenderer)), this.slugger);
-          continue;
-        }
-        case "code": {
-          out += this.renderer.code(token.text, token.lang, token.escaped);
-          continue;
-        }
-        case "table": {
-          header = "";
-          cell = "";
-          l2 = token.header.length;
-          for (j = 0; j < l2; j++) {
-            cell += this.renderer.tablecell(this.parseInline(token.tokens.header[j]), { header: true, align: token.align[j] });
-          }
-          header += this.renderer.tablerow(cell);
-          body = "";
-          l2 = token.cells.length;
-          for (j = 0; j < l2; j++) {
-            row = token.tokens.cells[j];
-            cell = "";
-            l3 = row.length;
-            for (k = 0; k < l3; k++) {
-              cell += this.renderer.tablecell(this.parseInline(row[k]), { header: false, align: token.align[k] });
-            }
-            body += this.renderer.tablerow(cell);
-          }
-          out += this.renderer.table(header, body);
-          continue;
-        }
-        case "blockquote": {
-          body = this.parse(token.tokens);
-          out += this.renderer.blockquote(body);
-          continue;
-        }
-        case "list": {
-          ordered = token.ordered;
-          start = token.start;
-          loose = token.loose;
-          l2 = token.items.length;
-          body = "";
-          for (j = 0; j < l2; j++) {
-            item = token.items[j];
-            checked = item.checked;
-            task = item.task;
-            itemBody = "";
-            if (item.task) {
-              checkbox = this.renderer.checkbox(checked);
-              if (loose) {
-                if (item.tokens.length > 0 && item.tokens[0].type === "text") {
-                  item.tokens[0].text = checkbox + " " + item.tokens[0].text;
-                  if (item.tokens[0].tokens && item.tokens[0].tokens.length > 0 && item.tokens[0].tokens[0].type === "text") {
-                    item.tokens[0].tokens[0].text = checkbox + " " + item.tokens[0].tokens[0].text;
-                  }
-                } else {
-                  item.tokens.unshift({
-                    type: "text",
-                    text: checkbox
-                  });
-                }
-              } else {
-                itemBody += checkbox;
-              }
-            }
-            itemBody += this.parse(item.tokens, loose);
-            body += this.renderer.listitem(itemBody, task, checked);
-          }
-          out += this.renderer.list(body, ordered, start);
-          continue;
-        }
-        case "html": {
-          out += this.renderer.html(token.text);
-          continue;
-        }
-        case "paragraph": {
-          out += this.renderer.paragraph(this.parseInline(token.tokens));
-          continue;
-        }
-        case "text": {
-          body = token.tokens ? this.parseInline(token.tokens) : token.text;
-          while (i + 1 < l && tokens[i + 1].type === "text") {
-            token = tokens[++i];
-            body += "\n" + (token.tokens ? this.parseInline(token.tokens) : token.text);
-          }
-          out += top ? this.renderer.paragraph(body) : body;
-          continue;
-        }
-        default: {
-          const errMsg = 'Token with "' + token.type + '" type was not found.';
-          if (this.options.silent) {
-            console.error(errMsg);
-            return;
-          } else {
-            throw new Error(errMsg);
-          }
-        }
-      }
-    }
-    return out;
-  }
-  parseInline(tokens, renderer) {
-    renderer = renderer || this.renderer;
-    let out = "", i, token, ret;
-    const l = tokens.length;
-    for (i = 0; i < l; i++) {
-      token = tokens[i];
-      if (this.options.extensions && this.options.extensions.renderers && this.options.extensions.renderers[token.type]) {
-        ret = this.options.extensions.renderers[token.type].call(this, token);
-        if (ret !== false || !["escape", "html", "link", "image", "strong", "em", "codespan", "br", "del", "text"].includes(token.type)) {
-          out += ret || "";
-          continue;
-        }
-      }
-      switch (token.type) {
-        case "escape": {
-          out += renderer.text(token.text);
-          break;
-        }
-        case "html": {
-          out += renderer.html(token.text);
-          break;
-        }
-        case "link": {
-          out += renderer.link(token.href, token.title, this.parseInline(token.tokens, renderer));
-          break;
-        }
-        case "image": {
-          out += renderer.image(token.href, token.title, token.text);
-          break;
-        }
-        case "strong": {
-          out += renderer.strong(this.parseInline(token.tokens, renderer));
-          break;
-        }
-        case "em": {
-          out += renderer.em(this.parseInline(token.tokens, renderer));
-          break;
-        }
-        case "codespan": {
-          out += renderer.codespan(token.text);
-          break;
-        }
-        case "br": {
-          out += renderer.br();
-          break;
-        }
-        case "del": {
-          out += renderer.del(this.parseInline(token.tokens, renderer));
-          break;
-        }
-        case "text": {
-          out += renderer.text(token.text);
-          break;
-        }
-        default: {
-          const errMsg = 'Token with "' + token.type + '" type was not found.';
-          if (this.options.silent) {
-            console.error(errMsg);
-            return;
-          } else {
-            throw new Error(errMsg);
-          }
-        }
-      }
-    }
-    return out;
-  }
-};
-var Lexer$1 = Lexer_1;
-var Parser2 = Parser_1;
-var Tokenizer2 = Tokenizer_1;
-var Renderer2 = Renderer_1;
-var TextRenderer2 = TextRenderer_1;
-var Slugger2 = Slugger_1;
-var {
-  merge,
-  checkSanitizeDeprecation,
-  escape
-} = helpers;
-var {
-  getDefaults,
-  changeDefaults,
-  defaults
-} = defaults$5.exports;
-function marked(src2, opt, callback) {
-  if (typeof src2 === "undefined" || src2 === null) {
-    throw new Error("marked(): input parameter is undefined or null");
-  }
-  if (typeof src2 !== "string") {
-    throw new Error("marked(): input parameter is of type " + Object.prototype.toString.call(src2) + ", string expected");
-  }
-  if (typeof opt === "function") {
-    callback = opt;
-    opt = null;
-  }
-  opt = merge({}, marked.defaults, opt || {});
-  checkSanitizeDeprecation(opt);
-  if (callback) {
-    const highlight = opt.highlight;
-    let tokens;
-    try {
-      tokens = Lexer$1.lex(src2, opt);
-    } catch (e) {
-      return callback(e);
-    }
-    const done = function(err) {
-      let out;
-      if (!err) {
-        try {
-          if (opt.walkTokens) {
-            marked.walkTokens(tokens, opt.walkTokens);
-          }
-          out = Parser2.parse(tokens, opt);
-        } catch (e) {
-          err = e;
-        }
-      }
-      opt.highlight = highlight;
-      return err ? callback(err) : callback(null, out);
-    };
-    if (!highlight || highlight.length < 3) {
-      return done();
-    }
-    delete opt.highlight;
-    if (!tokens.length)
-      return done();
-    let pending = 0;
-    marked.walkTokens(tokens, function(token) {
-      if (token.type === "code") {
-        pending++;
-        setTimeout(() => {
-          highlight(token.text, token.lang, function(err, code) {
-            if (err) {
-              return done(err);
-            }
-            if (code != null && code !== token.text) {
-              token.text = code;
-              token.escaped = true;
-            }
-            pending--;
-            if (pending === 0) {
-              done();
-            }
-          });
-        }, 0);
-      }
+${``}`;
     });
-    if (pending === 0) {
-      done();
-    }
-    return;
-  }
-  try {
-    const tokens = Lexer$1.lex(src2, opt);
-    if (opt.walkTokens) {
-      marked.walkTokens(tokens, opt.walkTokens);
-    }
-    return Parser2.parse(tokens, opt);
-  } catch (e) {
-    e.message += "\nPlease report this to https://github.com/markedjs/marked.";
-    if (opt.silent) {
-      return "<p>An error occurred:</p><pre>" + escape(e.message + "", true) + "</pre>";
-    }
-    throw e;
-  }
-}
-marked.options = marked.setOptions = function(opt) {
-  merge(marked.defaults, opt);
-  changeDefaults(marked.defaults);
-  return marked;
-};
-marked.getDefaults = getDefaults;
-marked.defaults = defaults;
-marked.use = function(...args) {
-  const opts = merge({}, ...args);
-  const extensions = marked.defaults.extensions || { renderers: {}, childTokens: {} };
-  let hasExtensions;
-  args.forEach((pack) => {
-    if (pack.extensions) {
-      hasExtensions = true;
-      pack.extensions.forEach((ext) => {
-        if (!ext.name) {
-          throw new Error("extension name required");
-        }
-        if (ext.renderer) {
-          const prevRenderer = extensions.renderers ? extensions.renderers[ext.name] : null;
-          if (prevRenderer) {
-            extensions.renderers[ext.name] = function(...args2) {
-              let ret = ext.renderer.apply(this, args2);
-              if (ret === false) {
-                ret = prevRenderer.apply(this, args2);
-              }
-              return ret;
-            };
-          } else {
-            extensions.renderers[ext.name] = ext.renderer;
-          }
-        }
-        if (ext.tokenizer) {
-          if (!ext.level || ext.level !== "block" && ext.level !== "inline") {
-            throw new Error("extension level must be 'block' or 'inline'");
-          }
-          if (extensions[ext.level]) {
-            extensions[ext.level].unshift(ext.tokenizer);
-          } else {
-            extensions[ext.level] = [ext.tokenizer];
-          }
-          if (ext.start) {
-            if (ext.level === "block") {
-              if (extensions.startBlock) {
-                extensions.startBlock.push(ext.start);
-              } else {
-                extensions.startBlock = [ext.start];
-              }
-            } else if (ext.level === "inline") {
-              if (extensions.startInline) {
-                extensions.startInline.push(ext.start);
-              } else {
-                extensions.startInline = [ext.start];
-              }
-            }
-          }
-        }
-        if (ext.childTokens) {
-          extensions.childTokens[ext.name] = ext.childTokens;
-        }
-      });
-    }
-    if (pack.renderer) {
-      const renderer = marked.defaults.renderer || new Renderer2();
-      for (const prop in pack.renderer) {
-        const prevRenderer = renderer[prop];
-        renderer[prop] = (...args2) => {
-          let ret = pack.renderer[prop].apply(renderer, args2);
-          if (ret === false) {
-            ret = prevRenderer.apply(renderer, args2);
-          }
-          return ret;
-        };
-      }
-      opts.renderer = renderer;
-    }
-    if (pack.tokenizer) {
-      const tokenizer = marked.defaults.tokenizer || new Tokenizer2();
-      for (const prop in pack.tokenizer) {
-        const prevTokenizer = tokenizer[prop];
-        tokenizer[prop] = (...args2) => {
-          let ret = pack.tokenizer[prop].apply(tokenizer, args2);
-          if (ret === false) {
-            ret = prevTokenizer.apply(tokenizer, args2);
-          }
-          return ret;
-        };
-      }
-      opts.tokenizer = tokenizer;
-    }
-    if (pack.walkTokens) {
-      const walkTokens = marked.defaults.walkTokens;
-      opts.walkTokens = (token) => {
-        pack.walkTokens.call(this, token);
-        if (walkTokens) {
-          walkTokens(token);
-        }
-      };
-    }
-    if (hasExtensions) {
-      opts.extensions = extensions;
-    }
-    marked.setOptions(opts);
-  });
-};
-marked.walkTokens = function(tokens, callback) {
-  for (const token of tokens) {
-    callback(token);
-    switch (token.type) {
-      case "table": {
-        for (const cell of token.tokens.header) {
-          marked.walkTokens(cell, callback);
-        }
-        for (const row of token.tokens.cells) {
-          for (const cell of row) {
-            marked.walkTokens(cell, callback);
-          }
-        }
-        break;
-      }
-      case "list": {
-        marked.walkTokens(token.items, callback);
-        break;
-      }
-      default: {
-        if (marked.defaults.extensions && marked.defaults.extensions.childTokens && marked.defaults.extensions.childTokens[token.type]) {
-          marked.defaults.extensions.childTokens[token.type].forEach(function(childTokens) {
-            marked.walkTokens(token[childTokens], callback);
-          });
-        } else if (token.tokens) {
-          marked.walkTokens(token.tokens, callback);
-        }
-      }
-    }
-  }
-};
-marked.parseInline = function(src2, opt) {
-  if (typeof src2 === "undefined" || src2 === null) {
-    throw new Error("marked.parseInline(): input parameter is undefined or null");
-  }
-  if (typeof src2 !== "string") {
-    throw new Error("marked.parseInline(): input parameter is of type " + Object.prototype.toString.call(src2) + ", string expected");
-  }
-  opt = merge({}, marked.defaults, opt || {});
-  checkSanitizeDeprecation(opt);
-  try {
-    const tokens = Lexer$1.lexInline(src2, opt);
-    if (opt.walkTokens) {
-      marked.walkTokens(tokens, opt.walkTokens);
-    }
-    return Parser2.parseInline(tokens, opt);
-  } catch (e) {
-    e.message += "\nPlease report this to https://github.com/markedjs/marked.";
-    if (opt.silent) {
-      return "<p>An error occurred:</p><pre>" + escape(e.message + "", true) + "</pre>";
-    }
-    throw e;
-  }
-};
-marked.Parser = Parser2;
-marked.parser = Parser2.parse;
-marked.Renderer = Renderer2;
-marked.TextRenderer = TextRenderer2;
-marked.Lexer = Lexer$1;
-marked.lexer = Lexer$1.lex;
-marked.Tokenizer = Tokenizer2;
-marked.Slugger = Slugger2;
-marked.parse = marked;
-var marked_1 = marked;
-var Heading = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { depth } = $$props;
-  let { raw } = $$props;
-  if ($$props.depth === void 0 && $$bindings.depth && depth !== void 0)
-    $$bindings.depth(depth);
-  if ($$props.raw === void 0 && $$bindings.raw && raw !== void 0)
-    $$bindings.raw(raw);
-  return `${depth === 1 ? `<h1>${slots.default ? slots.default({}) : ``}</h1>` : `${depth === 2 ? `<h2>${slots.default ? slots.default({}) : ``}</h2>` : `${depth === 3 ? `<h3>${slots.default ? slots.default({}) : ``}</h3>` : `${depth === 4 ? `<h4>${slots.default ? slots.default({}) : ``}</h4>` : `${depth === 5 ? `<h5>${slots.default ? slots.default({}) : ``}</h5>` : `${depth === 6 ? `<h6>${slots.default ? slots.default({}) : ``}</h6>` : `${escape$4(raw)}`}`}`}`}`}`}`;
-});
-var Paragraph = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<p>${slots.default ? slots.default({}) : ``}</p>`;
-});
-var Text = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { text } = $$props;
-  let { raw } = $$props;
-  if ($$props.text === void 0 && $$bindings.text && text !== void 0)
-    $$bindings.text(text);
-  if ($$props.raw === void 0 && $$bindings.raw && raw !== void 0)
-    $$bindings.raw(raw);
-  return `${slots.default ? slots.default({}) : ``}`;
-});
-var Image = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { href = "" } = $$props;
-  let { title = void 0 } = $$props;
-  let { text = "" } = $$props;
-  if ($$props.href === void 0 && $$bindings.href && href !== void 0)
-    $$bindings.href(href);
-  if ($$props.title === void 0 && $$bindings.title && title !== void 0)
-    $$bindings.title(title);
-  if ($$props.text === void 0 && $$bindings.text && text !== void 0)
-    $$bindings.text(text);
-  return `<img${add_attribute("src", href, 0)}${add_attribute("title", title, 0)}${add_attribute("alt", text, 0)}>`;
-});
-var Link = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { href = "" } = $$props;
-  let { title = void 0 } = $$props;
-  if ($$props.href === void 0 && $$bindings.href && href !== void 0)
-    $$bindings.href(href);
-  if ($$props.title === void 0 && $$bindings.title && title !== void 0)
-    $$bindings.title(title);
-  return `<a${add_attribute("href", href, 0)}${add_attribute("title", title, 0)}>${slots.default ? slots.default({}) : ``}</a>`;
-});
-var Em = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<em>${slots.default ? slots.default({}) : ``}</em>`;
-});
-var Del = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<del>${slots.default ? slots.default({}) : ``}</del>`;
-});
-var Codespan = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { raw } = $$props;
-  if ($$props.raw === void 0 && $$bindings.raw && raw !== void 0)
-    $$bindings.raw(raw);
-  return `<code>${escape$4(raw.replace(/`/g, ""))}</code>`;
-});
-var Strong = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<strong>${slots.default ? slots.default({}) : ``}</strong>`;
-});
-var Table = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<table>${slots.default ? slots.default({}) : ``}</table>`;
-});
-var TableHead = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<thead>${slots.default ? slots.default({}) : ``}</thead>`;
-});
-var TableBody = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<tbody>${slots.default ? slots.default({}) : ``}</tbody>`;
-});
-var TableRow = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<tr>${slots.default ? slots.default({}) : ``}</tr>`;
-});
-var TableCell = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { header } = $$props;
-  let { align } = $$props;
-  if ($$props.header === void 0 && $$bindings.header && header !== void 0)
-    $$bindings.header(header);
-  if ($$props.align === void 0 && $$bindings.align && align !== void 0)
-    $$bindings.align(align);
-  return `${header ? `<th${add_attribute("align", align, 0)}>${slots.default ? slots.default({}) : ``}</th>` : `<td${add_attribute("align", align, 0)}>${slots.default ? slots.default({}) : ``}</td>`}`;
-});
-var List = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { ordered } = $$props;
-  let { start } = $$props;
-  if ($$props.ordered === void 0 && $$bindings.ordered && ordered !== void 0)
-    $$bindings.ordered(ordered);
-  if ($$props.start === void 0 && $$bindings.start && start !== void 0)
-    $$bindings.start(start);
-  return `${ordered ? `<ol${add_attribute("start", start, 0)}>${slots.default ? slots.default({}) : ``}</ol>` : `<ul>${slots.default ? slots.default({}) : ``}</ul>`}`;
-});
-var ListItem = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<li>${slots.default ? slots.default({}) : ``}</li>`;
-});
-var Hr = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<hr>`;
-});
-var Html = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { text } = $$props;
-  if ($$props.text === void 0 && $$bindings.text && text !== void 0)
-    $$bindings.text(text);
-  return `<!-- HTML_TAG_START -->${text}<!-- HTML_TAG_END -->`;
-});
-var Blockquote = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<blockquote>${slots.default ? slots.default({}) : ``}</blockquote>`;
-});
-var Code = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { lang } = $$props;
-  let { text } = $$props;
-  if ($$props.lang === void 0 && $$bindings.lang && lang !== void 0)
-    $$bindings.lang(lang);
-  if ($$props.text === void 0 && $$bindings.text && text !== void 0)
-    $$bindings.text(text);
-  return `<pre${add_attribute("class", lang, 0)}><code>${escape$4(text)}</code></pre>`;
-});
-var Br = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<br>${slots.default ? slots.default({}) : ``}`;
-});
-var defaultRenderers = {
-  heading: Heading,
-  paragraph: Paragraph,
-  text: Text,
-  image: Image,
-  link: Link,
-  em: Em,
-  strong: Strong,
-  codespan: Codespan,
-  del: Del,
-  table: Table,
-  tablehead: TableHead,
-  tablebody: TableBody,
-  tablerow: TableRow,
-  tablecell: TableCell,
-  list: List,
-  orderedlistitem: null,
-  unorderedlistitem: null,
-  listitem: ListItem,
-  hr: Hr,
-  html: Html,
-  blockquote: Blockquote,
-  code: Code,
-  br: Br
-};
-var defaultOptions = {
-  baseUrl: null,
-  breaks: false,
-  gfm: true,
-  headerIds: true,
-  headerPrefix: "",
-  highlight: null,
-  langPrefix: "language-",
-  mangle: true,
-  pedantic: false,
-  renderer: null,
-  sanitize: false,
-  sanitizer: null,
-  silent: false,
-  smartLists: false,
-  smartypants: false,
-  tokenizer: null,
-  xhtml: false
-};
-var Lexer2 = marked_1.Lexer;
-var SvelteMarkdown = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let combinedRenderers;
-  let { source = "" } = $$props;
-  let { renderers = {} } = $$props;
-  let { options: options2 = {} } = $$props;
-  let { isInline = false } = $$props;
-  let lexer;
-  let tokens;
-  if ($$props.source === void 0 && $$bindings.source && source !== void 0)
-    $$bindings.source(source);
-  if ($$props.renderers === void 0 && $$bindings.renderers && renderers !== void 0)
-    $$bindings.renderers(renderers);
-  if ($$props.options === void 0 && $$bindings.options && options2 !== void 0)
-    $$bindings.options(options2);
-  if ($$props.isInline === void 0 && $$bindings.isInline && isInline !== void 0)
-    $$bindings.isInline(isInline);
-  {
-    {
-      lexer = new Lexer2({ ...defaultOptions, ...options2 });
-      tokens = isInline ? lexer.inlineTokens(source) : lexer.lex(source);
-    }
-  }
-  combinedRenderers = { ...defaultRenderers, ...renderers };
-  return `${validate_component(Parser$1, "Parser").$$render($$result, { tokens, renderers: combinedRenderers }, {}, {})}`;
-});
-var css$b = {
-  code: "ul.svelte-1qt994g li h4.svelte-1qt994g{transition:0.3s}ul.svelte-1qt994g li h4.svelte-1qt994g:hover{cursor:pointer;font-size:135%}.text-lighter-blue.svelte-1qt994g.svelte-1qt994g{color:rgb(243, 243, 243)}",
-  map: null
-};
-var Benefits = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let $$unsubscribe_travelType;
-  let $travelScroll, $$unsubscribe_travelScroll;
-  $$unsubscribe_travelType = subscribe(travelType, (value) => value);
-  $$unsubscribe_travelScroll = subscribe(travelScroll, (value) => $travelScroll = value);
-  let loading = true;
-  $$result.css.add(css$b);
-  {
-    if ($travelScroll && !loading) {
-      setTimeout(function() {
-        document.getElementById(`${$travelScroll}`).scrollIntoView({ behavior: "smooth", block: "center" });
-      }, 200);
-    }
-  }
-  $$unsubscribe_travelType();
-  $$unsubscribe_travelScroll();
-  return `${$$result.head += `${$$result.title = `<title>Benefits</title>`, ""}`, ""}
-
-<div class="${"container text-center"}"><h1>Exclusive benefits for <span class="${"text-logo-gold"}">Think</span>Teacher members</h1>
-
-    <div class="${"nav-wrapper mt-3"}"><ul class="${"list-inline svelte-1qt994g"}"><li class="${"list-inline-item"}"><h4 class="${"svelte-1qt994g"}">Travel <span class="${"text-logo-gold"}">-</span></h4></li>
-            <li class="${"list-inline-item"}"><h4 class="${"svelte-1qt994g"}">Wellbeing <span class="${"text-logo-gold"}">-</span></h4></li>
-            <li class="${"list-inline-item"}"><h4 class="${"svelte-1qt994g"}">Medical Aid <span class="${"text-logo-gold"}">-</span></h4></li>
-            <li class="${"list-inline-item"}"><h4 class="${"svelte-1qt994g"}">Legal <span class="${"text-logo-gold"}">-</span></h4></li>
-            <li class="${"list-inline-item"}"><h4 class="${"svelte-1qt994g"}">Courses <span class="${"text-logo-gold"}">-</span></h4></li>
-            <li class="${"list-inline-item"}"><h4 class="${"svelte-1qt994g"}">Insurance</h4></li></ul></div>
-    
-    <div class="${"row mt-4 mb-5 justify-content-center"}">${`<div class="${"d-flex justify-content-center mt-5"}">${validate_component(Jumper, "Jumper").$$render($$result, {
-    size: "150",
-    color: "#5C677D",
-    unit: "px",
-    duration: "1s"
-  }, {}, {})}</div>`}</div>
-</div>`;
-});
-var index$3 = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Benefits
-});
-var css$a = {
-  code: "span.svelte-uramva{font-size:0.85em}",
-  map: null
-};
-var Partners = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  $$result.css.add(css$a);
-  return `${$$result.head += `${$$result.title = `<title>Partners</title>`, ""}`, ""}
-
-<div class="${"container mb-5"}"><h1 class="${"text-center mb-4"}">Our Partners</h1>
-
-    ${`<div class="${"d-flex justify-content-center mt-5"}">${validate_component(Jumper, "Jumper").$$render($$result, {
-    size: "150",
-    color: "#5C677D",
-    unit: "px",
-    duration: "1s"
-  }, {}, {})}</div>`}
-</div>`;
-});
-var index$2 = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Partners
-});
-var css$9 = {
-  code: "img.svelte-veamth{max-height:295px;width:auto}.container.svelte-veamth{border-radius:20px}@media screen and (max-width: 1000px){.container.svelte-veamth{padding:1rem}}@media screen and (min-width: 999px){.container.svelte-veamth{padding:5rem}}.border-custom.svelte-veamth{border-top:3px solid var(--logo-gold);border-left:3px solid var(--logo-gold);border-bottom:3px solid var(--logo-grey);border-right:3px solid var(--logo-grey)}",
-  map: null
-};
-var load$2 = async ({ page: { params }, fetch: fetch2 }) => {
-  const { slug } = params;
-  const res = await fetch2("https://thinkteacher-strapi.glass.splyce.dev/partners?slug=" + slug);
-  if (res.status === 404) {
-    const error2 = new Error(`The partner with slug of ${slug} was not found`);
-    return { status: 404, error: error2 };
-  } else {
-    const data = await res.json();
-    return { props: { partner: data[0] } };
-  }
-};
-var U5Bslugu5D$1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { partner } = $$props;
-  let source;
-  if (partner)
-    source = partner.bio;
-  if ($$props.partner === void 0 && $$bindings.partner && partner !== void 0)
-    $$bindings.partner(partner);
-  $$result.css.add(css$9);
-  return `${$$result.head += `${partner ? `${$$result.title = `<title>${escape$4(partner.name)}</title>`, ""}` : `${$$result.title = `<title>404</title>`, ""}`}`, ""}
-
-
-
-${partner ? `<div class="${"container bg-dark mt-4 border-custom mt-5 mb-5 svelte-veamth"}"><a href="${"/partners"}">${validate_component(Icon, "Icon").$$render($$result, { data: arrowLeft, scale: "1.8" }, {}, {})}</a>
-        ${`<img class="${"img-fluid mx-auto d-block mt-2 svelte-veamth"}"${add_attribute("src", partner.image.url, 0)} alt="${"Partner"}">`}
-
-        <h2 class="${"text-center mt-3"}">${escape$4(partner.name)}</h2>
-        <h4 class="${"text-center text-white"}">${escape$4(partner.description)}</h4>
-
-        <div id="${"mark-down"}">${validate_component(SvelteMarkdown, "SvelteMarkdown").$$render($$result, { source }, {}, {})}</div></div>` : `<div class="${"p-5 text-center"}"><h2>Not found: 404</h2></div>`}`;
-});
-var _slug_$1 = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": U5Bslugu5D$1,
-  load: load$2
-});
-var css$8 = {
-  code: "i.svelte-137b9xh{cursor:pointer}input[type=number].svelte-137b9xh::-webkit-outer-spin-button,input[type=number].svelte-137b9xh::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}input[type=number].svelte-137b9xh{-moz-appearance:textfield}",
-  map: null
-};
-var Register = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let s2;
-  let progress;
-  let buttonNext = true;
-  let username, email, password = "";
-  let idNum;
-  let ttCode = "TT";
-  var dateObj = new Date();
-  var dateNow = dateObj.toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric"
-  });
-  ttCode += dateNow.replace(new RegExp("/", "g"), "");
-  ttCode += Math.floor(Math.random() * 899 + 100);
-  let barCol = "";
-  $$result.css.add(css$8);
-  s2 = (0, import_zxcvbn.default)(password).score > 2;
-  {
-    buttonNext = true;
-  }
-  import_south_african_id_parser.default.validate(idNum);
-  progress = (0, import_zxcvbn.default)(password).score / 4 * 100;
-  {
-    if (s2) {
-      barCol = "bg-success";
-    } else {
-      barCol = "bg-danger";
-    }
-  }
-  return `${$$result.head += `${$$result.title = `<title>Register</title>`, ""}`, ""}
-
-<section class="${"vh-50 gradient-custom container mt-4 mb-4"}"><div class="${"py-3 h-100"}"><div class="${"row d-flex justify-content-center align-items-center h-100"}"><div class="${"col-12 col-md-8 col-lg-6 col-xl-6"}"><div class="${"card bg-dark text-white"}" style="${"border-radius: 1rem;"}">${``}
-                <div class="${"card-body p-md-3 p-lg-4 text-center"}"><div class="${"mb-md-3 mt-md-2"}"><h2 class="${"fw-bold mb-2 text-uppercase"}">Register</h2>
-                    ${`${``}`}
-
-                    ${``}
-                    
-                    <form id="${"register"}">${`<p class="${"text-white-50 mb-3"}">Please enter your email and password</p>
-                            <div class="${"form-outline form-white mb-2"}"><label class="${"form-label"}" for="${"Username"}">Username</label>
-                                <input type="${"text"}" name="${"username"}" id="${"username"}" class="${"form-control form-control-lg"}" placeholder="${"username"}" required${add_attribute("value", username, 0)}></div>
-                            <div class="${"form-outline form-white mb-2"}"><label class="${"form-label"}" for="${"Email"}">Email</label>
-                                <input type="${"email"}" id="${"Email"}" class="${"form-control form-control-lg"}" placeholder="${"email"}" required${add_attribute("value", email, 0)}></div>
-                            <div class="${"form-outline form-white mb-4 text-left"}"><label class="${"form-label"}" for="${"Password"}">Password</label>
-                                <input type="${"password"}" id="${"Password"}" class="${"form-control form-control-lg"}" placeholder="${"password"}" required${add_attribute("value", password, 0)}>
-                                ${password.length > 0 ? `<div class="${"progress mt-2"}"><div class="${"progress-bar " + escape$4(barCol)}" role="${"progressbar"}" style="${"width: " + escape$4(progress) + "%;"}" aria-valuenow="${"100"}" aria-valuemin="${"0"}" aria-valuemax="${"100"}"></div></div>
-                                    <p${add_attribute("style", s2 || "color:red", 0)}>${escape$4(s2 ? "Strong password" : "Password not strong enough. Try using a mix of capital letters, numbers and special characters with a length > 8.")}</p>` : ``}</div>
-
-                            <button class="${"btn btn-outline-light btn-lg px-4"}" ${buttonNext ? "disabled" : ""}>Next</button>`}</form></div>
-    
-                <div><p class="${"mb-0 mt-3"}">Already have an account? <a href="${"/login"}" class="${"text-white-50 fw-bold"}">Login</a></p></div></div></div></div></div></div>
-</section>`;
-});
-var register = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Register
-});
-var css$7 = {
-  code: "iframe.svelte-1ju275c{max-width:800px;top:0;left:0;width:100%;height:320px}p.svelte-1ju275c{text-align:justify}.frame-wrapper.svelte-1ju275c{background-color:var(--logo-grey);width:100%;height:auto;padding:3%;border-radius:5px;border:3px solid var(--logo-gold)}",
-  map: null
-};
-var Webinars = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  $$result.css.add(css$7);
-  return `${$$result.head += `${$$result.title = `<title>Webinars</title>`, ""}`, ""}
-
-<div class="${"container mt-5 mb-5"}"><div class="${"row text-center justify-content-center"}"><h1 class="${"mb-4"}">Webinars</h1>
-
-        ${`<div class="${"d-flex justify-content-center mt-5"}">${validate_component(Jumper, "Jumper").$$render($$result, {
-    size: "150",
-    color: "#5C677D",
-    unit: "px",
-    duration: "1s"
-  }, {}, {})}</div>`}</div>
-</div>`;
-});
-var webinars = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Webinars
-});
-var Events = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `${$$result.head += `${$$result.title = `<title>Events</title>`, ""}`, ""}
-
-<div class="${"container p-5"}"><div class="${"row text-center"}"><h1>Events</h1>
-        <h3>Coming Soon!</h3></div>
-</div>`;
-});
-var events = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Events
-});
-var css$6 = {
-  code: "img.svelte-1epr9a7{max-width:300px;height:auto;align-self:center}.think.svelte-1epr9a7{color:var(--logo-gold);font-weight:900}.card-text.svelte-1epr9a7{text-align:justify}iframe.svelte-1epr9a7{max-width:800px;top:0;left:0;width:100%;height:320px}.frame-wrapper.svelte-1epr9a7{background-color:var(--logo-grey);width:100%;height:auto;padding:3%;border-radius:5px;border:3px solid var(--logo-gold)}",
-  map: null
-};
-var prerender = true;
-var About = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  $$result.css.add(css$6);
-  return `${$$result.head += `${$$result.title = `<title>About</title>`, ""}`, ""}
-
-<h1 class="${"mb-4 text-center"}">The <span class="${"think svelte-1epr9a7"}">ThinkTeacher</span> Team</h1>
-
-<div class="${"container"}"><div class="${"row text-center mt-5 mb-5 justify-content-center"}"><h3 class="${"read"}">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
-            and nurturing networks. Think Teacher&#39;s vision is to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
-        </h3>
-        <h2 class="${"mt-3"}">Message from our Founder</h2>
-        <div class="${"col-lg-6 col-md-12"}"><div class="${"frame-wrapper svelte-1epr9a7"}"><iframe src="${"https://www.youtube.com/embed/JcCvutWW_QM"}" title="${"YouTube video player"}" frameborder="${"0"}" allow="${"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"}" allowfullscreen class="${"svelte-1epr9a7"}"></iframe></div></div></div>
-
-    <div class="${"row"}"><div class="${"col-sm-12 col-md-12 col-lg-7"}"><div class="${"card bg-dark mb-3"}"><h3 class="${"card-header"}">Bridget Fleming</h3>
-                    <div class="${"card-body"}"><h5 class="${"card-title"}">Founder</h5>
-                        <h6 class="${"card-subtitle text-muted"}">MSc | HDE (Wits)</h6></div>
-                    <img class="${"d-block user-select-none img-fluid svelte-1epr9a7"}" src="${"https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/Bio/Bridget_New.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL0JyaWRnZXRfTmV3LmpwZyIsImlhdCI6MTYzMjg0NjYwNiwiZXhwIjoxOTQ4MjA2NjA2fQ.HwyEWrK_IWIfX3zfIG4gKQMgP858eAP90cxaAAkob9k"}" alt="${"profile img"}">
-                    <div class="${"card-body"}"><p class="${"card-text svelte-1epr9a7"}">Bridget Fleming is a passionate advocate for teacher wellbeing. <br><br>
-                            Having taught secondary school Geography for the past 30 years, primarily in the private sector, Bridget is the IEB NSC Geography Internal Moderator and the founder of the Southern 
-                            African Geography Teachers\u2019 Association (SAGTA). <br><br>
-                            She has authored many textbooks and digital classroom resources. She left the classroom recently (where she was HOD Geography, St John\u2019s College) to start <span class="${"think svelte-1epr9a7"}">ThinkTeacher</span>, 
-                            an organisation to support, care for and arrange benefits for teachers. This has been her dream and passion for many years, and she is currently gathering her team of change-agents 
-                            to grow human capital. In addition, she is involved with online teacher training and content creation for Curro Online and DigiEd and GIS teacher training for Kartoza.
-
-                        </p></div>
-                <div class="${"card-footer text-muted"}"><a href="${"https://www.linkedin.com/in/bridget-fleming-a1b33551/"}" class="${"card-link"}">${validate_component(Icon, "Icon").$$render($$result, { data: linkedinSquare, scale: "1.8" }, {}, {})}</a></div></div></div>
-
-        <div class="${"col-sm-12 col-md-12 col-lg-5"}"><div class="${"card bg-dark mb-3"}"><h3 class="${"card-header"}">Rebecca Maluka</h3>
-                    <div class="${"card-body"}"><h5 class="${"card-title"}">Head of Membership</h5>
-                        <h6 class="${"card-subtitle text-muted"}">Bachelor of Public Administration | 
-                            PG Dip. in Education Management | 
-                            Cert. in Customer Management | 
-                            Cert. in Project Management
-                        </h6></div>
-                    <img class="${"d-block user-select-none img-fluid svelte-1epr9a7"}" src="${"https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Rebecca.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL1JlYmVjY2EuanBnIiwiaWF0IjoxNjI1NzY1NDA5LCJleHAiOjE5NDExMjU0MDl9.R3if5ZEbhRmE9mV-2eFpP-QATKO6uCZ88jK4P3SoiQQ"}" alt="${"profile img"}">
-                    <div class="${"card-body"}"><p class="${"card-text svelte-1epr9a7"}">Rebecca Maluka is a School Operations Manager at Spark Schools and has been in the education field for 14 years. She also has experience in student enrollment within the sales and marketing environment. <br><br>
-                            She is passionate about education and leadership. Rebecca was part of the future leaders\u2019 programme at one the schools at which she worked. She has been involved in numerous non-profit organisations in the community of Alexandra. 
-                            She is driven by her desire for all South African children to have access to quality education and strives to assist young people both to achieve success and to overcome generational barriers.
-                        </p></div>
-                <div class="${"card-footer text-muted"}"><a href="${"https://www.linkedin.com/in/rebecca-maluka-1997a119/"}" class="${"card-link"}">${validate_component(Icon, "Icon").$$render($$result, { data: linkedinSquare, scale: "1.8" }, {}, {})}</a></div></div></div>
-
-        <div class="${"col-sm-12 col-md-12 col-lg-5"}"><div class="${"card bg-dark mb-3"}"><h3 class="${"card-header"}">Paul Edey</h3>
-                    <div class="${"card-body"}"><h5 class="${"card-title"}">Liaison to Head of Schools &amp; Webinars</h5>
-                        <h6 class="${"card-subtitle text-muted"}">BEd | BA | HDE (Wits) | Hons (SA) | FDE (RAU) | PMD (GIBS)</h6></div>
-                    <img class="${"d-block user-select-none img-fluid svelte-1epr9a7"}" src="${"https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Paul.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL1BhdWwuanBnIiwiaWF0IjoxNjI1NzY1NzkyLCJleHAiOjE5NDExMjU3OTJ9.oFg1MQ2D_59BaN7tze_IOUPTb26-1upr-bnvnIcVV30"}" alt="${"profile img"}">
-                    <div class="${"card-body"}"><p class="${"card-text svelte-1epr9a7"}">In 2020 Paul was appointed as the SAHISA Stakeholder Manager at ISASA. His primary role is to act as a support for school leaders in ISASA schools and as a link between the ISASA office and the SAHISA executive. <br><br>
-                            With over 40 years in secondary and tertiary level education, Paul has been Headmaster of St David\u2019s Marist Inanda, St Andrew\u2019s College and St John\u2019s College. He is a past chairman of JOCASCO and SAHISA. <br><br>
-                            As Director of Executive Education at GIBS, Paul led Global Executive Education programmes; this experience exposed him to adult education, issues of leadership, the political economy and strategy. <br><br>
-                            Paul is <span class="${"think svelte-1epr9a7"}">ThinkTeacher\u2019s</span> mentor to school principals and Head of Leadership programmes. He believes with a committed, motivated teaching corps, South Africa is more likely to become a prosperous and more equitable society.
-                        </p></div>
-                <div class="${"card-footer text-muted"}"><a href="${"https://www.linkedin.com/in/paul-edey-86952814a/"}" class="${"card-link"}">${validate_component(Icon, "Icon").$$render($$result, { data: linkedinSquare, scale: "1.8" }, {}, {})}</a></div></div></div>
-
-        <div class="${"col-sm-12 col-md-12 col-lg-7"}"><div class="${"card bg-dark mb-3"}"><h3 class="${"card-header"}">Kim Forbes</h3>
-                    <div class="${"card-body"}"><h5 class="${"card-title"}">Head of Wellbeing</h5>
-                        <h6 class="${"card-subtitle text-muted"}">BA Hons | 
-                            H Dip.Ed. | 
-                            PMD (GIBS) | 
-                            Higher Cert. in Financial Planning | 
-                            Cert. in Digital Marketing
-                        </h6></div>
-                    <img class="${"d-block user-select-none img-fluid svelte-1epr9a7"}" src="${"https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Kim.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL0tpbS5qcGciLCJpYXQiOjE2MjU3NjY4MzEsImV4cCI6MTk0MTEyNjgzMX0.8P2A7c2pt0ptsvFGcIyGUiHHJ-juJ3ylvdt6N4U4qxY"}" alt="${"profile img"}">
-                    <div class="${"card-body"}"><p class="${"card-text svelte-1epr9a7"}">Kim\u2019s commitment to helping people achieve their potential found its expression in her English teaching career. Her love of the power of words transitioned her to a financial publication editor role and writer for a financial planning company. <br><br>
-                            A combination of these two interests has culminated in Kim\u2019s current Transition Coaching and Writing business. A member of COMENSA, she has a Master Coach qualification.  It is her coaching skills that she will use as she heads up the Wellbeing component of <span class="${"think svelte-1epr9a7"}">ThinkTeacher</span>, to equip teachers to create a successful and purposeful future. <br><br>
-                            To expand her business savvy, Kim studied for her PMD through GIBS, and a Higher Certificate in Financial Planning from Milpark Business School. <br><br>
-                            Kim is a founding member of Third Thursday, uplifting SA communities through raising funds and hosting events; Gill Marcus, Debra Patta, Jonathan Jansen, Ruda Landman, Helen Zille, Michael Mol, Graeme Codrington, Ian von Memerty have featured as speakers. Projects include building Habitat for Humanity houses in Soweto, creating an Iphutheng Primary School library in Alexandra, funding an equipped bus for Mthimkhulu Centre for handicapped children and contributing to the funding of LEAP School, Alexandra, and Lawyers Against Abuse, Diepsloot. <br><br>
-                            Kim loves South Africa and is committed to working towards a more hopeful and equitable future. 
-                        </p></div>
-                <div class="${"card-footer text-muted"}"><a href="${"https://www.linkedin.com/in/kim-forbes-transition-coach-36608750/"}" class="${"card-link"}">${validate_component(Icon, "Icon").$$render($$result, { data: linkedinSquare, scale: "1.8" }, {}, {})}</a></div></div></div>
-
-        <div class="${"col-sm-12 col-md-12 col-lg-7"}"><div class="${"card bg-dark mb-3"}"><h3 class="${"card-header"}">Zanele Masuku</h3>
-                    <div class="${"card-body"}"><h5 class="${"card-title"}">Administration</h5>
-                        <h6 class="${"card-subtitle text-muted"}">Professional Dip in Business Management and Marketing |
-                            SAIM Programme in Business Management |
-                            Higher Dip in Business Management and Marketing |
-                            Dip in Business Management and Marketing                   
-                        </h6></div>
-                    <img class="${"d-block user-select-none img-fluid svelte-1epr9a7"}" src="${"https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Zanele.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL1phbmVsZS5wbmciLCJpYXQiOjE2MjU3NjczNDMsImV4cCI6MTk0MTEyNzM0M30.q1H3Q_VB5zcZqso_43xwbrzEEgPTetTXKShBiPHB0kI"}" alt="${"profile img"}">
-                    <div class="${"card-body"}"><p class="${"card-text svelte-1epr9a7"}">Zanele Masuku started her career in the banking sector before becoming a school librarian for four years. <br><br>
-                            Zanele\u2019s love for accounting inspired her shift to being a bursar in\xA0various schools. She established and ran a Homework Centre, in Manzini, Eswatini, where students aged between 8 and 18 were assisted with their homework across different subjects. <br><br>
-                            In addition, Zanele founded and managed a consultancy, collecting school fees on behalf of schools and ensuring the financial sustainability of each institution involved. <br><br>
-                            Zanele manages the administrative tasks for <span class="${"think svelte-1epr9a7"}">ThinkTeacher</span>, ensuring that each team member can operate optimally in their sector of expertise. 
-                        </p></div>
-                <div class="${"card-footer text-muted"}"><a href="${"https://www.linkedin.com/in/zanele-portia-masuku/"}" class="${"card-link"}">${validate_component(Icon, "Icon").$$render($$result, { data: linkedinSquare, scale: "1.8" }, {}, {})}</a></div></div></div>
-        
-        <div class="${"col-sm-12 col-md-5 col-lg-5"}"><div class="${"card bg-dark mb-3"}"><h3 class="${"card-header"}">Ferdie Heunis</h3>
-                    <div class="${"card-body"}"><h5 class="${"card-title"}">Head of Marketing</h5>
-                        <h6 class="${"card-subtitle text-muted"}">BCom (Marketing Management) | BCom Hons (Communication Management) | Gallup Strengths Coaching
-                        </h6></div>
-                    <img class="${"d-block user-select-none img-fluid svelte-1epr9a7"}" src="${"https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Ferdie.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL0ZlcmRpZS5wbmciLCJpYXQiOjE2MjU3Njc0NjQsImV4cCI6MTk0MTEyNzQ2NH0.YQqrWDsYD_OfVHdLElaR1aVw9wWL0VoTlYxj8K8lQKQ"}" alt="${"profile img"}">
-                    <div class="${"card-body"}"><p class="${"card-text svelte-1epr9a7"}">Ferdie thrives on seeing individuals, teams and organisations develop into authentic entities. He sees himself as an activator: activating people and entities in their uniqueness and empowering them to become leaders, wherever they find themselves. <br><br>
-                            The future plays a significant role in how he approaches development. That is why, over the past 12 years, he has equipped himself with key personal and leadership development skills that will assist individuals, teams and organisations in seeing a better future, and then working with them to co-create it. <br><br>
-                            Ferdie\u2019s experience as Marketing Co-ordinator for Chameleon Adventures will stand him in good stead as he heads up the <span class="${"think svelte-1epr9a7"}">ThinkTeacher</span> marketing initiatives which are geared towards making teachers aware that there is an organisation dedicated to supporting, caring for and growing them.
-                        </p></div>
-                <div class="${"card-footer text-muted"}"><a href="${"https://www.linkedin.com/in/ferdie-heunis-8bb3943a/"}" class="${"card-link"}">${validate_component(Icon, "Icon").$$render($$result, { data: linkedinSquare, scale: "1.8" }, {}, {})}</a></div></div></div>
-
-        <div class="${"col-sm-12 col-md-5 col-lg-5"}"><div class="${"card bg-dark mb-3"}"><h3 class="${"card-header"}">Frances Kerr-Phillips</h3>
-                    <div class="${"card-body"}"><h5 class="${"card-title"}">Head of Operations, Content &amp; Internships</h5>
-                        <h6 class="${"card-subtitle text-muted"}">MA (Hons) | PGCE | MEd
-                        </h6></div>
-                    <img class="${"d-block user-select-none img-fluid svelte-1epr9a7"}" src="${"https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Frances Kerr-Phillips photograph 2.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL0ZyYW5jZXMgS2Vyci1QaGlsbGlwcyBwaG90b2dyYXBoIDIuanBnIiwiaWF0IjoxNjI1NzY3NzE2LCJleHAiOjE5NDExMjc3MTZ9.KsHs9cILZIksJjgleeb-U3427yh-Afg-1DuhCG6LPnM"}" alt="${"profile img"}">
-                    <div class="${"card-body"}"><p class="${"card-text svelte-1epr9a7"}">Frances\u2019 passion for growing top quality South African teachers, and keeping them in the system, is what has led to her involvement with <span class="${"think svelte-1epr9a7"}">ThinkTeacher</span>. <br><br>
-                            This interest in teacher training and mentoring continues in her current role as the intern mentor at St John\u2019s College. <br><br>
-                            Frances has 35 years of experience in a diverse range of educational institutions in Southern Africa. During her 8 years as an Assessment Specialist with the Independent Examinations Board (IEB) she visited over 100 schools in the region, and has worked with teachers, examiners, moderators and consultants in a variety of training and mentoring roles. <br><br>
-                            Frances is currently the Managing Editor for <span class="${"think svelte-1epr9a7"}">ThinkTeacher</span> and will then drive the <span class="${"think svelte-1epr9a7"}">ThinkTeacher</span> internship initiative.
-                        </p></div>
-                <div class="${"card-footer text-muted"}"><a href="${"https://www.linkedin.com/in/frances-kerr-phillips-768a34216/"}" class="${"card-link"}">${validate_component(Icon, "Icon").$$render($$result, { data: linkedinSquare, scale: "1.8" }, {}, {})}</a></div></div></div>
-
-        <div class="${"col-sm-12 col-md-12 col-lg-7"}"><div class="${"card bg-dark mb-3"}"><h3 class="${"card-header"}">Malcolm Williams</h3>
-                    <div class="${"card-body"}"><h5 class="${"card-title"}">Head of Operations</h5>
-                        <h6 class="${"card-subtitle text-muted"}">BA (Wits) | HDE (Wits) | BA Hons (SA) | MEd(Wits)  
-                        </h6></div>
-                    <img class="${"d-block user-select-none img-fluid svelte-1epr9a7"}" src="${"https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Malcolm.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL01hbGNvbG0ucG5nIiwiaWF0IjoxNjI1NzY3OTcxLCJleHAiOjE5NDExMjc5NzF9.M1B3cACdVsZkHKoY8nI7FzgzhUx_0k4_i0vBVrv5CSE"}" alt="${"profile img"}">
-                    <div class="${"card-body"}"><p class="${"card-text svelte-1epr9a7"}">Teachers, more than any others, have the capacity to change the lives of individuals and, indeed, the future of a nation. <br><br>
-                            This belief has driven Malcolm Williams\u2019 career in education, with 18 years as a Head of top schools across the Independent, Public and Cambridge school sectors. <br><br>
-                            Malcolm thrives on coaching, developing and growing others, and celebrating the success which follows the pursuit of excellence.  As a teacher and family man, Malcolm enjoys building relationships and engaging with others; he believes that positive relationships are the core of the learning experience and of attaining fulfilment. <br><br>
-                            <span class="${"think svelte-1epr9a7"}">ThinkTeacher\u2019s</span> goal is to ensure that each teacher receives the specific support they may require to be the best they can be as people, and as teachers. As Head of Operations, Malcolm is excited by the opportunity to oversee the range of inputs and support options which <span class="${"think svelte-1epr9a7"}">ThinkTeacher</span> will be offering its members. <br><br>
-                            Malcolm seeks to live life to the full, savour each moment and experience, and get the job done, properly ... with large dollops of fun thrown in for good measure!
-                        </p></div>
-                <div class="${"card-footer text-muted"}"><a href="${"https://www.linkedin.com/in/malcolm-williams-7939a7b5/"}" class="${"card-link"}">${validate_component(Icon, "Icon").$$render($$result, { data: linkedinSquare, scale: "1.8" }, {}, {})}</a></div></div></div></div>
-</div>`;
-});
-var about = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": About,
-  prerender
-});
-var Login = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let $$unsubscribe_user;
-  let $$unsubscribe_id;
-  let $name, $$unsubscribe_name;
-  $$unsubscribe_user = subscribe(user, (value) => value);
-  $$unsubscribe_id = subscribe(id, (value) => value);
-  $$unsubscribe_name = subscribe(name, (value) => $name = value);
-  let usernameEmail, password;
-  $$unsubscribe_user();
-  $$unsubscribe_id();
-  $$unsubscribe_name();
-  return `${$$result.head += `${$$result.title = `<title>Login</title>`, ""}`, ""}
-
-${$name ? `<div class="${"container mt-5 mb-5 text-center"}"><button class="${"btn btn-dark btn-group-lg"}">Please logout first</button></div>` : `<section class="${"vh-50 gradient-custom container mt-4 mb-4"}"><div class="${"py-3 h-100"}"><div class="${"row d-flex justify-content-center align-items-center h-100"}"><div class="${"col-12 col-md-8 col-lg-6 col-xl-6"}"><div class="${"card bg-dark text-white"}" style="${"border-radius: 1rem;"}"><div class="${"card-body p-md-4 p-lg-5 text-center"}"><div class="${"mb-md-3 mt-md-2"}"><h2 class="${"fw-bold mb-2 text-uppercase"}">Login</h2>
-                        <p class="${"text-white-50 mb-3"}">Please enter your email and password</p>
-    
-                        ${``}
-                        
-                        <form name="${"login"}"><div class="${"form-outline form-white mb-2"}"><label class="${"form-label"}" for="${"Email"}">Email</label>
-                                <input type="${"email"}" id="${"Email"}" class="${"form-control form-control-lg"}" placeholder="${"Enter email or username"}" required${add_attribute("value", usernameEmail, 0)}></div>
-                            <div class="${"form-outline form-white mb-2 text-left"}"><label class="${"form-label"}" for="${"Password"}">Password</label>
-                                <input type="${"password"}" id="${"Password"}" class="${"form-control form-control-lg"}" placeholder="${"Password"}" required${add_attribute("value", password, 0)}></div>
-                            <p class="${"small mb-3 pb-lg-2"}"><a class="${"text-white-50"}" href="${"/forgot-password"}">Forgot password?</a></p>
-            
-                            <button class="${"btn btn-outline-light btn-lg px-4"}" type="${"submit"}">Login</button></form>
-                    
-                        <div class="${"mt-2 pt-1"}"><a href="${"https://www.facebook.com/thinkteacher"}" class="${"text-white px-2"}">${validate_component(Icon, "Icon").$$render($$result, { data: facebook, scale: "1.4" }, {}, {})}</a>
-                            <a href="${"https://twitter.com/thinkteacher_sa"}" class="${"text-white px-2"}">${validate_component(Icon, "Icon").$$render($$result, { data: twitter, scale: "1.4" }, {}, {})}</a>
-                            <a href="${"https://www.instagram.com/thinkteacher_rsa"}" class="${"text-white px-2"}">${validate_component(Icon, "Icon").$$render($$result, { data: instagram, scale: "1.4" }, {}, {})}</a></div></div>
-        
-                    <div><p class="${"mb-0"}">Don&#39;t have an account? <a href="${"/register"}" class="${"text-white-50 fw-bold"}">Register</a></p></div></div></div></div></div></div></section>`}`;
-});
-var login = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Login
-});
-var css$5 = {
-  code: "nav.svelte-aiuavh a.svelte-aiuavh{padding:1rem;font-size:1.2em}",
-  map: null
-};
-var _layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  $$result.css.add(css$5);
-  return `${`<div class="${"d-flex justify-content-center mt-5"}">${validate_component(Jumper, "Jumper").$$render($$result, {
-    size: "150",
-    color: "#5C677D",
-    unit: "px",
-    duration: "1s"
-  }, {}, {})}</div>
-    <div class="${"text-center mt-2"}"><h3>Checking if you are a valid member...</h3></div>`}`;
-});
-var __layout = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": _layout
-});
-var Auth = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<div class="${"container"}"><h1>Main</h1>
-    <h3>Coming Soon</h3></div>`;
-});
-var index$1 = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Auth
-});
-var css$4 = {
-  code: ".form-check-input.svelte-1fkefwm{margin:0 auto !important}.form-check-input.svelte-1fkefwm:checked{background-color:var(--logo-gold);border-color:var(--logo-gold)}.form-check-input.svelte-1fkefwm:focus{border-color:rgba(255, 255, 255, 0.4);outline:0;box-shadow:0 0 0 0.25rem rgba(217, 183, 61, 0.055)}",
-  map: null
-};
-var Form_medical_aid = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  $$result.css.add(css$4);
-  return `${$$result.head += `${$$result.title = `<title>Contact Partner</title>`, ""}`, ""}
-
-${`<div class="${"d-flex justify-content-center mt-5"}">${validate_component(Jumper, "Jumper").$$render($$result, {
-    size: "150",
-    color: "#5C677D",
-    unit: "px",
-    duration: "1s"
-  }, {}, {})}</div>`}`;
-});
-var formMedicalAid = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Form_medical_aid
-});
-var css$3 = {
-  code: ".form-check-input.svelte-1fkefwm{margin:0 auto !important}.form-check-input.svelte-1fkefwm:checked{background-color:var(--logo-gold);border-color:var(--logo-gold)}.form-check-input.svelte-1fkefwm:focus{border-color:rgba(255, 255, 255, 0.4);outline:0;box-shadow:0 0 0 0.25rem rgba(217, 183, 61, 0.055)}",
-  map: null
-};
-var Form_wellbeing = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  $$result.css.add(css$3);
-  return `${$$result.head += `${$$result.title = `<title>Contact Partner</title>`, ""}`, ""}
-
-${`<div class="${"d-flex justify-content-center mt-5"}">${validate_component(Jumper, "Jumper").$$render($$result, {
-    size: "150",
-    color: "#5C677D",
-    unit: "px",
-    duration: "1s"
-  }, {}, {})}</div>`}`;
-});
-var formWellbeing = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Form_wellbeing
-});
-var css$2 = {
-  code: ".form-check-input.svelte-1fkefwm{margin:0 auto !important}.form-check-input.svelte-1fkefwm:checked{background-color:var(--logo-gold);border-color:var(--logo-gold)}.form-check-input.svelte-1fkefwm:focus{border-color:rgba(255, 255, 255, 0.4);outline:0;box-shadow:0 0 0 0.25rem rgba(217, 183, 61, 0.055)}",
-  map: null
-};
-var Form_travel = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let $$unsubscribe_travelType;
-  $$unsubscribe_travelType = subscribe(travelType, (value) => value);
-  $$result.css.add(css$2);
-  $$unsubscribe_travelType();
-  return `${$$result.head += `${$$result.title = `<title>Contact Partner</title>`, ""}`, ""}
-
-${`<div class="${"d-flex justify-content-center mt-5"}">${validate_component(Jumper, "Jumper").$$render($$result, {
-    size: "150",
-    color: "#5C677D",
-    unit: "px",
-    duration: "1s"
-  }, {}, {})}</div>`}`;
-});
-var formTravel = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Form_travel
-});
-var Selections = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let id2 = localStorage.getItem("id");
-  console.log(id2);
-  let travel = [];
-  {
-    console.log(travel);
-  }
-  return `<h1 class="${"mb-4"}">Selection history:</h1>
-
-${`<div class="${"d-flex justify-content-center mt-5"}">${validate_component(Jumper, "Jumper").$$render($$result, {
-    size: "150",
-    color: "#5C677D",
-    unit: "px",
-    duration: "1s"
-  }, {}, {})}</div>`}`;
-});
-var selections = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Selections
-});
-var Profile = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let $$unsubscribe_name;
-  $$unsubscribe_name = subscribe(name, (value) => value);
-  $$unsubscribe_name();
-  return `${$$result.head += `${$$result.title = `<title>ThinkTeacher Profile</title>`, ""}`, ""}
-
-
-${`<div class="${"d-flex justify-content-center mt-5"}">${validate_component(Jumper, "Jumper").$$render($$result, {
-    size: "150",
-    color: "#5C677D",
-    unit: "px",
-    duration: "1s"
-  }, {}, {})}</div>`}`;
-});
-var profile = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Profile
-});
-var css$1 = {
-  code: "h4.svelte-e8chb9{color:#fff}.blog-block.svelte-e8chb9{border-radius:20px;border:3px solid var(--logo-gold)}.blog-block.svelte-e8chb9:hover{cursor:pointer;border:3px solid var(--logo-grey)}",
-  map: null
-};
-var API_URL$1 = "http://localhost:1337";
-var load$1 = async ({ fetch: fetch2 }) => {
-  const res = await fetch2(`${API_URL$1}/posts`);
-  if (res.ok) {
-    const data = await res.json();
-    return { props: { posts: data } };
-  }
-  return {
-    status: res.status,
-    error: new Error(`Could not load ${url}`)
-  };
-};
-var Blog = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { posts } = $$props;
-  if ($$props.posts === void 0 && $$bindings.posts && posts !== void 0)
-    $$bindings.posts(posts);
-  $$result.css.add(css$1);
-  return `${$$result.head += `${$$result.title = `<title>Blog</title>`, ""}`, ""}
-
-<div class="${"my-4"}"><h1 class="${"text-center text-3xl font-bold"}">ThinkTeacher Blog</h1></div>
-
-<div class="${"container mx-auto mt-4 mb-5"}">${posts.length <= 0 ? `<h3 class="${"text-center"}">No posts are on the blog yet, check back another time.</h3>` : `<div class="${"row justify-content-center"}">${each(posts, (post) => `<div class="${"col-sm-12 col-md-6 col-lg-4 text-center mt-3"}"><div class="${"blog-block bg-dark p-3 svelte-e8chb9"}"><h4 class="${"font-bold svelte-e8chb9"}">${escape$4(post.title)}</h4>
-                        <p class="${"mt-2 text-white"}">${escape$4(post.description)}</p>
-                        <p class="${"text-logo-gold"}">By: ${escape$4(post.Author)}</p>
-                        <button class="${"btn btn-sm bg-gold shadow cta text-black"}">Read More</button></div>
-                </div>`)}</div>`}
-</div>`;
-});
-var index = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Blog,
-  load: load$1
-});
-var css = {
-  code: "img.svelte-1wkd7gu{max-height:400px;width:auto}h1.svelte-1wkd7gu{color:var(--logo-gold)}h5.svelte-1wkd7gu{color:var(--bg-banner);line-height:0}time.svelte-1wkd7gu{color:#fff}.container.svelte-1wkd7gu{border-radius:20px}@media screen and (max-width: 1000px){.container.svelte-1wkd7gu{padding:1rem}}@media screen and (min-width: 999px){.container.svelte-1wkd7gu{padding:5rem}}.border-custom.svelte-1wkd7gu{border-top:3px solid var(--logo-gold);border-left:3px solid var(--logo-gold);border-bottom:3px solid var(--logo-grey);border-right:3px solid var(--logo-grey)}",
-  map: null
-};
-var API_URL = "http://localhost:1337";
-var load = async ({ page: { params }, fetch: fetch2 }) => {
-  const { slug } = params;
-  const res = await fetch2(`${API_URL}/posts?slug=` + slug);
-  if (res.ok) {
-    const data = await res.json();
-    return { props: { post: data[0] } };
-  }
-  return {
-    status: res.status,
-    error: new Error(`Could not load ${url}`)
-  };
-};
-var U5Bslugu5D = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { post } = $$props;
-  let date;
-  let publish;
-  let source;
-  if (post) {
-    date = new Date(post.published_at);
-    publish = date.toLocaleString("en-ZA", {
-      month: "long",
-      day: "2-digit",
-      year: "numeric"
+    base = "";
+    assets = "";
+    user_hooks = /* @__PURE__ */ Object.freeze({
+      __proto__: null,
+      [Symbol.toStringTag]: "Module"
     });
-    source = post.content;
+    template = ({ head, body }) => `<!DOCTYPE html>\r
+<html lang="en">\r
+	<head>\r
+		<meta charset="utf-8" />\r
+		<link rel="icon" href="/favicon.png" />\r
+		<meta name="viewport" content="width=device-width, initial-scale=1" />\r
+        <meta name="description" \r
+                content="Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities \r
+                and nurturing networks. Think Teacher's vision is to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.">\r
+\r
+        <!-- Global site tag (gtag.js) - Google Analytics -->\r
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WDY2MMJWR"><\/script>\r
+        <script>\r
+            window.dataLayer = window.dataLayer || [];\r
+            function gtag(){dataLayer.push(arguments);}\r
+            gtag('js', new Date());\r
+\r
+            gtag('config', 'G-4WDY2MMJWR');\r
+        <\/script>\r
+\r
+		` + head + '\r\n	</head>\r\n	<body>\r\n\r\n		<div id="svelte">' + body + '</div>\r\n\r\n        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"><\/script>\r\n	</body>\r\n</html>\r\n';
+    options = null;
+    default_settings = { paths: { "base": "", "assets": "" } };
+    d = (s2) => s2.replace(/%23/g, "#").replace(/%3[Bb]/g, ";").replace(/%2[Cc]/g, ",").replace(/%2[Ff]/g, "/").replace(/%3[Ff]/g, "?").replace(/%3[Aa]/g, ":").replace(/%40/g, "@").replace(/%26/g, "&").replace(/%3[Dd]/g, "=").replace(/%2[Bb]/g, "+").replace(/%24/g, "$");
+    empty = () => ({});
+    manifest = {
+      assets: [{ "file": "favicon.png", "size": 34087, "type": "image/png" }, { "file": "final-logo-edited-for-site.svg", "size": 42260, "type": "image/svg+xml" }, { "file": "Mulish-SemiBold.ttf", "size": 105860, "type": "font/ttf" }, { "file": "robots.txt", "size": 24, "type": "text/plain" }, { "file": "shape-overly.png", "size": 40083, "type": "image/png" }, { "file": "thinkteacherlogo-final-no-dots.png", "size": 79531, "type": "image/png" }, { "file": "thinkteacherlogo-final.png", "size": 80103, "type": "image/png" }, { "file": "Vector.svg", "size": 1168, "type": "image/svg+xml" }],
+      layout: "src/routes/__layout.svelte",
+      error: "src/routes/__error.svelte",
+      routes: [
+        {
+          type: "page",
+          pattern: /^\/$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/index.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/forgot-password\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/forgot-password.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/reset-password\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/reset-password.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/confirm-email\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/confirm-email.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/contact-us\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/contact-us.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/benefits\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/benefits/index.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/partners\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/partners/index.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/partners\/([^/]+?)\/?$/,
+          params: (m) => ({ slug: d(m[1]) }),
+          a: ["src/routes/__layout.svelte", "src/routes/partners/[slug].svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/register\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/register.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/webinars\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/webinars.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/events\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/events.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/about\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/about.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/login\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/login.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/auth\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/auth/__layout.svelte", "src/routes/auth/index.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/auth\/form-medical-aid\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/auth/__layout.svelte", "src/routes/auth/form-medical-aid.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/auth\/form-wellbeing\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/auth/__layout.svelte", "src/routes/auth/form-wellbeing.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/auth\/form-courses\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/auth/__layout.svelte", "src/routes/auth/form-courses.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/auth\/form-finance\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/auth/__layout.svelte", "src/routes/auth/form-finance.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/auth\/form-travel\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/auth/__layout.svelte", "src/routes/auth/form-travel.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/auth\/form-legal\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/auth/__layout.svelte", "src/routes/auth/form-legal.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/auth\/selections\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/auth/__layout.svelte", "src/routes/auth/selections.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/auth\/profile\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/auth/__layout.svelte", "src/routes/auth/profile.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/blog\/?$/,
+          params: empty,
+          a: ["src/routes/__layout.svelte", "src/routes/blog/index.svelte"],
+          b: ["src/routes/__error.svelte"]
+        },
+        {
+          type: "page",
+          pattern: /^\/blog\/([^/]+?)\/?$/,
+          params: (m) => ({ slug: d(m[1]) }),
+          a: ["src/routes/__layout.svelte", "src/routes/blog/[slug].svelte"],
+          b: ["src/routes/__error.svelte"]
+        }
+      ]
+    };
+    get_hooks = (hooks) => ({
+      getSession: hooks.getSession || (() => ({})),
+      handle: hooks.handle || (({ request, resolve: resolve2 }) => resolve2(request)),
+      handleError: hooks.handleError || (({ error: error2 }) => console.error(error2.stack)),
+      externalFetch: hooks.externalFetch || fetch
+    });
+    module_lookup = {
+      "src/routes/__layout.svelte": () => Promise.resolve().then(() => (init_layout_87badfe1(), layout_87badfe1_exports)),
+      "src/routes/__error.svelte": () => Promise.resolve().then(() => (init_error_929eb6d4(), error_929eb6d4_exports)),
+      "src/routes/index.svelte": () => Promise.resolve().then(() => (init_index_34b10bf3(), index_34b10bf3_exports)),
+      "src/routes/forgot-password.svelte": () => Promise.resolve().then(() => (init_forgot_password_94a9d219(), forgot_password_94a9d219_exports)),
+      "src/routes/reset-password.svelte": () => Promise.resolve().then(() => (init_reset_password_f7b69d36(), reset_password_f7b69d36_exports)),
+      "src/routes/confirm-email.svelte": () => Promise.resolve().then(() => (init_confirm_email_2c5bfc23(), confirm_email_2c5bfc23_exports)),
+      "src/routes/contact-us.svelte": () => Promise.resolve().then(() => (init_contact_us_3803aa09(), contact_us_3803aa09_exports)),
+      "src/routes/benefits/index.svelte": () => Promise.resolve().then(() => (init_index_7dbefb41(), index_7dbefb41_exports)),
+      "src/routes/partners/index.svelte": () => Promise.resolve().then(() => (init_index_3afefee0(), index_3afefee0_exports)),
+      "src/routes/partners/[slug].svelte": () => Promise.resolve().then(() => (init_slug_e9d98ea3(), slug_e9d98ea3_exports)),
+      "src/routes/register.svelte": () => Promise.resolve().then(() => (init_register_e132d3cb(), register_e132d3cb_exports)),
+      "src/routes/webinars.svelte": () => Promise.resolve().then(() => (init_webinars_ab005991(), webinars_ab005991_exports)),
+      "src/routes/events.svelte": () => Promise.resolve().then(() => (init_events_0a284b8f(), events_0a284b8f_exports)),
+      "src/routes/about.svelte": () => Promise.resolve().then(() => (init_about_56eea26e(), about_56eea26e_exports)),
+      "src/routes/login.svelte": () => Promise.resolve().then(() => (init_login_f62a7f3c(), login_f62a7f3c_exports)),
+      "src/routes/auth/__layout.svelte": () => Promise.resolve().then(() => (init_layout_a6e50c53(), layout_a6e50c53_exports)),
+      "src/routes/auth/index.svelte": () => Promise.resolve().then(() => (init_index_046ea3d5(), index_046ea3d5_exports)),
+      "src/routes/auth/form-medical-aid.svelte": () => Promise.resolve().then(() => (init_form_medical_aid_61b78d7a(), form_medical_aid_61b78d7a_exports)),
+      "src/routes/auth/form-wellbeing.svelte": () => Promise.resolve().then(() => (init_form_wellbeing_019dbcf3(), form_wellbeing_019dbcf3_exports)),
+      "src/routes/auth/form-courses.svelte": () => Promise.resolve().then(() => (init_form_courses_5aa81170(), form_courses_5aa81170_exports)),
+      "src/routes/auth/form-finance.svelte": () => Promise.resolve().then(() => (init_form_finance_ef643a9e(), form_finance_ef643a9e_exports)),
+      "src/routes/auth/form-travel.svelte": () => Promise.resolve().then(() => (init_form_travel_39aacc1b(), form_travel_39aacc1b_exports)),
+      "src/routes/auth/form-legal.svelte": () => Promise.resolve().then(() => (init_form_legal_cd0927e2(), form_legal_cd0927e2_exports)),
+      "src/routes/auth/selections.svelte": () => Promise.resolve().then(() => (init_selections_964c9a19(), selections_964c9a19_exports)),
+      "src/routes/auth/profile.svelte": () => Promise.resolve().then(() => (init_profile_e791d98e(), profile_e791d98e_exports)),
+      "src/routes/blog/index.svelte": () => Promise.resolve().then(() => (init_index_eb6dbc82(), index_eb6dbc82_exports)),
+      "src/routes/blog/[slug].svelte": () => Promise.resolve().then(() => (init_slug_c0721700(), slug_c0721700_exports))
+    };
+    metadata_lookup = { "src/routes/__layout.svelte": { "entry": "pages/__layout.svelte-8f02883b.js", "css": ["assets/pages/__layout.svelte-0d76eeb0.css", "assets/vendor-2450db17.css"], "js": ["pages/__layout.svelte-8f02883b.js", "chunks/vendor-bedbfd59.js", "chunks/stores-a9a371f1.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js"], "styles": [] }, "src/routes/__error.svelte": { "entry": "pages/__error.svelte-eec8d831.js", "css": ["assets/vendor-2450db17.css"], "js": ["pages/__error.svelte-eec8d831.js", "chunks/vendor-bedbfd59.js"], "styles": [] }, "src/routes/index.svelte": { "entry": "pages/index.svelte-28c6a408.js", "css": ["assets/pages/index.svelte-f66155c0.css", "assets/vendor-2450db17.css"], "js": ["pages/index.svelte-28c6a408.js", "chunks/vendor-bedbfd59.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js", "chunks/stores-a9a371f1.js"], "styles": [] }, "src/routes/forgot-password.svelte": { "entry": "pages/forgot-password.svelte-49be68b2.js", "css": ["assets/vendor-2450db17.css"], "js": ["pages/forgot-password.svelte-49be68b2.js", "chunks/vendor-bedbfd59.js"], "styles": [] }, "src/routes/reset-password.svelte": { "entry": "pages/reset-password.svelte-1096d1b0.js", "css": ["assets/vendor-2450db17.css"], "js": ["pages/reset-password.svelte-1096d1b0.js", "chunks/vendor-bedbfd59.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js"], "styles": [] }, "src/routes/confirm-email.svelte": { "entry": "pages/confirm-email.svelte-7a13ebef.js", "css": ["assets/vendor-2450db17.css"], "js": ["pages/confirm-email.svelte-7a13ebef.js", "chunks/vendor-bedbfd59.js"], "styles": [] }, "src/routes/contact-us.svelte": { "entry": "pages/contact-us.svelte-4871178f.js", "css": ["assets/vendor-2450db17.css"], "js": ["pages/contact-us.svelte-4871178f.js", "chunks/vendor-bedbfd59.js"], "styles": [] }, "src/routes/benefits/index.svelte": { "entry": "pages/benefits/index.svelte-a3e79c29.js", "css": ["assets/pages/benefits/index.svelte-eb845986.css", "assets/vendor-2450db17.css"], "js": ["pages/benefits/index.svelte-a3e79c29.js", "chunks/vendor-bedbfd59.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js", "chunks/stores-a9a371f1.js"], "styles": [] }, "src/routes/partners/index.svelte": { "entry": "pages/partners/index.svelte-4233e686.js", "css": ["assets/vendor-2450db17.css"], "js": ["pages/partners/index.svelte-4233e686.js", "chunks/vendor-bedbfd59.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js", "chunks/stores-a9a371f1.js"], "styles": [] }, "src/routes/partners/[slug].svelte": { "entry": "pages/partners/_slug_.svelte-62d756ae.js", "css": ["assets/pages/partners/_slug_.svelte-63b8b971.css", "assets/vendor-2450db17.css"], "js": ["pages/partners/_slug_.svelte-62d756ae.js", "chunks/vendor-bedbfd59.js"], "styles": [] }, "src/routes/register.svelte": { "entry": "pages/register.svelte-21d60104.js", "css": ["assets/pages/register.svelte-0d2cec04.css", "assets/vendor-2450db17.css"], "js": ["pages/register.svelte-21d60104.js", "chunks/vendor-bedbfd59.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js"], "styles": [] }, "src/routes/webinars.svelte": { "entry": "pages/webinars.svelte-ecb5a082.js", "css": ["assets/pages/webinars.svelte-2df57af5.css", "assets/vendor-2450db17.css"], "js": ["pages/webinars.svelte-ecb5a082.js", "chunks/vendor-bedbfd59.js"], "styles": [] }, "src/routes/events.svelte": { "entry": "pages/events.svelte-c7cd28be.js", "css": ["assets/vendor-2450db17.css"], "js": ["pages/events.svelte-c7cd28be.js", "chunks/vendor-bedbfd59.js"], "styles": [] }, "src/routes/about.svelte": { "entry": "pages/about.svelte-45a44a0e.js", "css": ["assets/pages/about.svelte-41b75d1b.css", "assets/vendor-2450db17.css"], "js": ["pages/about.svelte-45a44a0e.js", "chunks/vendor-bedbfd59.js"], "styles": [] }, "src/routes/login.svelte": { "entry": "pages/login.svelte-e938e70c.js", "css": ["assets/vendor-2450db17.css"], "js": ["pages/login.svelte-e938e70c.js", "chunks/vendor-bedbfd59.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js", "chunks/stores-a9a371f1.js", "chunks/re_utils-37172e43.js"], "styles": [] }, "src/routes/auth/__layout.svelte": { "entry": "pages/auth/__layout.svelte-8ab919b2.js", "css": ["assets/pages/auth/__layout.svelte-947cf4eb.css", "assets/vendor-2450db17.css"], "js": ["pages/auth/__layout.svelte-8ab919b2.js", "chunks/vendor-bedbfd59.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js", "chunks/stores-a9a371f1.js"], "styles": [] }, "src/routes/auth/index.svelte": { "entry": "pages/auth/index.svelte-52850fee.js", "css": ["assets/vendor-2450db17.css"], "js": ["pages/auth/index.svelte-52850fee.js", "chunks/vendor-bedbfd59.js"], "styles": [] }, "src/routes/auth/form-medical-aid.svelte": { "entry": "pages/auth/form-medical-aid.svelte-0f718013.js", "css": ["assets/pages/auth/form-medical-aid.svelte-3e792700.css", "assets/vendor-2450db17.css"], "js": ["pages/auth/form-medical-aid.svelte-0f718013.js", "chunks/vendor-bedbfd59.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js"], "styles": [] }, "src/routes/auth/form-wellbeing.svelte": { "entry": "pages/auth/form-wellbeing.svelte-3251fb82.js", "css": ["assets/pages/auth/form-medical-aid.svelte-3e792700.css", "assets/vendor-2450db17.css"], "js": ["pages/auth/form-wellbeing.svelte-3251fb82.js", "chunks/vendor-bedbfd59.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js"], "styles": [] }, "src/routes/auth/form-courses.svelte": { "entry": "pages/auth/form-courses.svelte-27aa77bb.js", "css": ["assets/pages/auth/form-medical-aid.svelte-3e792700.css", "assets/vendor-2450db17.css"], "js": ["pages/auth/form-courses.svelte-27aa77bb.js", "chunks/vendor-bedbfd59.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js", "chunks/stores-a9a371f1.js"], "styles": [] }, "src/routes/auth/form-finance.svelte": { "entry": "pages/auth/form-finance.svelte-db7eff5c.js", "css": ["assets/vendor-2450db17.css"], "js": ["pages/auth/form-finance.svelte-db7eff5c.js", "chunks/vendor-bedbfd59.js"], "styles": [] }, "src/routes/auth/form-travel.svelte": { "entry": "pages/auth/form-travel.svelte-bf500830.js", "css": ["assets/pages/auth/form-medical-aid.svelte-3e792700.css", "assets/vendor-2450db17.css"], "js": ["pages/auth/form-travel.svelte-bf500830.js", "chunks/vendor-bedbfd59.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js", "chunks/stores-a9a371f1.js"], "styles": [] }, "src/routes/auth/form-legal.svelte": { "entry": "pages/auth/form-legal.svelte-52a8cd20.js", "css": ["assets/vendor-2450db17.css"], "js": ["pages/auth/form-legal.svelte-52a8cd20.js", "chunks/vendor-bedbfd59.js"], "styles": [] }, "src/routes/auth/selections.svelte": { "entry": "pages/auth/selections.svelte-988dafa6.js", "css": ["assets/vendor-2450db17.css"], "js": ["pages/auth/selections.svelte-988dafa6.js", "chunks/vendor-bedbfd59.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js"], "styles": [] }, "src/routes/auth/profile.svelte": { "entry": "pages/auth/profile.svelte-7874a9d9.js", "css": ["assets/vendor-2450db17.css"], "js": ["pages/auth/profile.svelte-7874a9d9.js", "chunks/vendor-bedbfd59.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js", "chunks/stores-a9a371f1.js", "chunks/re_utils-37172e43.js"], "styles": [] }, "src/routes/blog/index.svelte": { "entry": "pages/blog/index.svelte-0df9a53d.js", "css": ["assets/pages/blog/index.svelte-18ab40a2.css", "assets/vendor-2450db17.css"], "js": ["pages/blog/index.svelte-0df9a53d.js", "chunks/vendor-bedbfd59.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js"], "styles": [] }, "src/routes/blog/[slug].svelte": { "entry": "pages/blog/_slug_.svelte-6a0ee37d.js", "css": ["assets/pages/blog/_slug_.svelte-6dca84df.css", "assets/vendor-2450db17.css"], "js": ["pages/blog/_slug_.svelte-6a0ee37d.js", "chunks/vendor-bedbfd59.js"], "styles": [] } };
   }
-  if ($$props.post === void 0 && $$bindings.post && post !== void 0)
-    $$bindings.post(post);
-  $$result.css.add(css);
-  return `${$$result.head += `${post ? `${$$result.title = `<title>${escape$4(post.title)}</title>`, ""}` : `${$$result.title = `<title>404</title>`, ""}`}`, ""}
-
-
-
-${post ? `<div class="${"container bg-dark mt-4 border-custom mb-5 svelte-1wkd7gu"}"><a href="${"/blog"}">${validate_component(Icon, "Icon").$$render($$result, { data: arrowLeft, scale: "1.8" }, {}, {})}</a>
-        <img class="${"img-fluid mx-auto d-block mt-2 svelte-1wkd7gu"}"${add_attribute("src", post.image.url, 0)} alt="${"Blog banner"}">
-
-        <h1 class="${"text-center svelte-1wkd7gu"}">${escape$4(post.title)}</h1>
-        <h4 class="${"text-center text-white"}">${escape$4(post.description)}</h4>
-
-        <h5 class="${"mt-5 svelte-1wkd7gu"}">Author: ${escape$4(post.Author)}</h5>
-        ${post.source_url ? `<a sveltekit:prefetch${add_attribute("href", post.source_url, 0)} target="${"_blank"}">${escape$4(post.source_url)}</a><br>` : ``}
-        <time${add_attribute("datetime", publish, 0)} class="${"svelte-1wkd7gu"}">${escape$4(publish)}</time>  
-        
-        <div id="${"mark-down"}">${validate_component(SvelteMarkdown, "SvelteMarkdown").$$render($$result, { source }, {}, {})}</div></div>` : `<div class="${"p-5 text-center"}"><h2>Not found: 404</h2></div>`}`;
 });
-var _slug_ = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": U5Bslugu5D,
-  load
+
+// .svelte-kit/netlify/entry.js
+__export(exports, {
+  handler: () => handler
 });
+init_shims();
+
+// .svelte-kit/output/server/app.js
+init_shims();
+init_app_f93ccc42();
 
 // .svelte-kit/netlify/entry.js
 init();
@@ -14668,10 +15679,10 @@ async function handler(event) {
 function split_headers(headers) {
   const h = {};
   const m = {};
-  for (const key in headers) {
-    const value = headers[key];
+  for (const key2 in headers) {
+    const value = headers[key2];
     const target = Array.isArray(value) ? m : h;
-    target[key] = value;
+    target[key2] = value;
   }
   return {
     headers: h,
@@ -14682,3 +15693,4 @@ function split_headers(headers) {
 0 && (module.exports = {
   handler
 });
+/*! fetch-blob. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */

@@ -41,11 +41,11 @@
         <div class="row justify-content-center">
             {#each posts as post}
                 <div class="col-sm-12 col-md-6 col-lg-4 text-center mt-3">
-                    <div class="blog-block bg-dark p-3" on:click={() => goto('/blog/' + post.slug)}>
+                    <div class="blog-block bg-dark p-3" on:click={() => goto(`/blog/${post.slug}`)}>
                         <h4 class="font-bold">{post.title}</h4>
                         <p class="mt-2 text-white">{post.description}</p>
                         <p class="text-logo-gold">By: {post.Author}</p>
-                        <button class="btn btn-sm bg-gold  shadow cta text-black" on:click={() => goto('/blog/' + post.slug)}>Read More</button>
+                        <button class="btn btn-sm bg-gold  shadow cta text-black" on:click={() => goto(`/blog/${post.slug}`)}>Read More</button>
                     </div>
                 </div>
             {/each}

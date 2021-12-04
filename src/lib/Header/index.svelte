@@ -55,12 +55,12 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link from-left dropdown-toggle" data-bs-toggle="dropdown" href="/" role="button" aria-expanded="false">Webinars</a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="/events" on:click={mustClick}>Events</a></li>
-                      <li><a class="dropdown-item" href="/webinars" on:click={mustClick}>Webinars</a></li>
+                      <li><a class="dropdown-item" sveltekit:prefetch href="/events" on:click={mustClick}>Events</a></li>
+                      <li><a class="dropdown-item" sveltekit:prefetch href="/webinars" on:click={mustClick}>Webinars</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fromLeft" href="/contact-us" on:click={mustClick}>Contact</a>
+                    <a class="nav-link fromLeft" sveltekit:prefetch href="/contact-us" on:click={mustClick}>Contact</a>
                 </li>
             </ul>
         </div>
