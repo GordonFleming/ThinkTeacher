@@ -21,7 +21,8 @@ body {
 }
 @font-face {
     font-family: 'Mulish';
-    src: url('/Mulish-SemiBold.ttf') format('truetype');
+    src: local('Pacifico Regular'), url('/Mulish-SemiBold.ttf') format('truetype');
+    font-display: swap;
     font-weight: normal;
     font-style: normal;
 }

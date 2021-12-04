@@ -92,8 +92,7 @@
 
     <!-- Copyright -->
     <div class="text-center p-2" style="background-color: var(--logo-gold);">
-    © 2021 Copyright:
-    <a class="text-white" href="https://thinkteacher.co.za">Think Teacher</a>
+    © 2021 Copyright: Think Teacher
     <!-- <a class="text-white" href="https://splyce.dev">Designed: Splyce</a> -->
     </div>
 </footer>
