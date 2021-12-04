@@ -228,7 +228,7 @@
                 <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_AF_Logo_7049c50238.webp" alt="partner"/>
             </div>
             <div class="slide-content">
-                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_kim_forbes_6ee77e52f4.png" alt="partner"/>
+                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_kim_c21bab4e72.png" alt="partner"/>
             </div>
             <div class="slide-content">
                 <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_SGM_Logo_b251d32022.webp" alt="partner"/>
