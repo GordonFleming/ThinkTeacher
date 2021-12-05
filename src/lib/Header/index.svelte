@@ -15,6 +15,7 @@
     afterUpdate(() =>{
         $name = localStorage.getItem("name");
         $surname = localStorage.getItem("surname");
+        avatar = `https://avatars.dicebear.com/api/initials/${$name+'-'+$surname}.svg?background=%234F5D89&size=40`;
 	})
 
     function logoutUser(){
