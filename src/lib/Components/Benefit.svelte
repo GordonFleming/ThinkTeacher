@@ -33,7 +33,7 @@
     {#each benefitData as benData}
         <div class="col-sm-12 col-md-10 col-lg-6">
             <div class="card bg-dark m-2 shadow-lg">
-                <img class="img-fluid rounded cta"  src="{benData.banner.url}" alt="cover" on:click={()=> redirectPlusDataCompute(benData.name)}>
+                <img class="img-fluid rounded cta"  src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/{benData.banner.hash}{benData.banner.ext}" alt="cover" on:click={()=> redirectPlusDataCompute(benData.name)}>
                 <div class="card-body">
                     <h3 class="card-title text-logo-gold">Think <span class="text-lighter-blue">{benData.name}</span></h3>
                     <p class="card-text">

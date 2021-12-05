@@ -32,7 +32,8 @@
                     },
                     details,
                     banner{
-                        url
+                        hash,
+                        ext
                     }
                 } 
             }`,
