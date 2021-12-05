@@ -154,7 +154,7 @@
                 {#each wellness as well}
                     <div class="col-sm-12 col-md-10 col-lg-6">
                         <div class="card bg-dark m-2 shadow-lg">
-                            <img class="img-fluid rounded cta"  src="{well.banner.url}" alt="cover" on:click={() => goto('/auth/form-wellbeing')}>
+                            <img class="img-fluid rounded cta"  src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/{well.banner.hash}{well.banner.ext}" alt="cover" on:click={() => goto('/auth/form-wellbeing')}>
 
                             <!-- <small class="text-white">Image by: David Travis, Unsplash.</small> -->
                             <div class="card-body">
