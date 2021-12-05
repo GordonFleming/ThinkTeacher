@@ -33,7 +33,6 @@
     })
 
     let residence, chronic, medicalAid, gapcover, dependants, scheme
-    const partnerEmail="thinkteacher@sahealth.co.za"
 
     async function submitForm(){
         await axios
@@ -50,7 +49,6 @@
                     dependants: dependants,
                     scheme: scheme,
                 }],
-                partnerEmail: partnerEmail,
                 users_permissions_user: user,
             })
             .then(response => {
@@ -133,7 +131,7 @@
                             <div class="col-12 mt-2">
                                 <label class="form-label" for="scheme">What plan would you be interested in?</label>
                                 <select class="form-select" id="scheme" bind:value={scheme} required>
-                                    <option value="" selected>choose a plan</option>
+                                    <option value="" selected>choose</option>
                                     <option value="students">Students</option>
                                     <option value="entry_level_options">Entry Level Options</option>
                                     <option value="basic_hospital_plans">Basic Hospital Plans</option>
@@ -141,6 +139,7 @@
                                     <option value="hospital_plan_plus_savings">Hospital Plan Plus Savings</option>
                                     <option value="comprehensive">Comprehensive</option>
                                     <option value="smart_plans">Smart Plans</option>
+                                    <option value="gapcover">Gapcover</option>
                                 </select>
                             </div>
                             <button class="btn btn-outline-light btn-lg px-4 mt-4" type="submit" on:click|preventDefault={submitForm} disabled={buttonSubmit}>Submit</button>

@@ -1,8 +1,15 @@
+<script context="module">
+	export const prerender = true;
+</script>
+
 <script>
     import { onMount } from 'svelte'
+    import { goto } from '$app/navigation'
     import axios from 'axios'
     import { prod } from '$lib/env.js'
     import z from 'zxcvbn'
+    import Icon from 'svelte-awesome'
+    import { eye, eyeSlash } from 'svelte-awesome/icons'
 
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
@@ -50,6 +57,22 @@
             errorMsg = "Password not strong enough"
         }
     }
+
+    let seePlz = true
+    function seePassword() {
+        var x = document.getElementById("Password");
+        var xx = document.getElementById("PasswordConfirm");
+
+        if (x.type === "password") {
+            x.type = "text";
+            xx.type = "text";
+            seePlz = false
+        } else {
+            seePlz = true
+            x.type = "password";
+            xx.type = "password";
+        }
+    }
 </script>
 
 <svelte:head>
@@ -72,11 +95,13 @@
 
                     {#if res}
                         <h4 class="success-col">Password Reset</h4>
+                        <button class="btn btn-secondary mx-auto mt-3 mb-3 fw-bold fs-5" style="width: 300px;" on:click={() => goto("/login")}>Login</button>
                     {/if}
                     <form>
                         <div class="form-outline form-white mb-2 text-left">
                             <label class="form-label" for="Password">Password</label>
-                            <input type="password" id="Password" class="form-control form-control-lg" placeholder="Password" bind:value={password} required />
+                            <input type="password" id="Password" class="form-control form-control-lg" placeholder="Password" bind:value={password} style="margin-right: -2.2rem; display:inline-block;" required />
+                            <i on:click={seePassword}><Icon data={ (seePlz) ? eye : eyeSlash } scale="1.5" style="cursor: pointer; display:inline-block; z-index: 99;"/></i>
                         </div>   
                         <div class="progress mt-2">
                             <div class="progress-bar {barCol}" role="progressbar" style="width: {progress}%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
@@ -86,7 +111,8 @@
                         </p>
                         <div class="form-outline form-white mb-4 mt-3 text-left">
                             <label class="form-label" for="PasswordConfirm">Password Confirmation</label>
-                            <input type="password" id="PasswordConfirm" class="form-control form-control-lg" placeholder="Password (again)" bind:value={passwordConfirmation} required />
+                            <input type="password" id="PasswordConfirm" class="form-control form-control-lg" placeholder="Password (again)" bind:value={passwordConfirmation} style="margin-right: -2.2rem; display:inline-block;" required />
+                            <i on:click={seePassword}><Icon data={ (seePlz) ? eye : eyeSlash } scale="1.5" style="cursor: pointer; display:inline-block; z-index: 99;"/></i>
                         </div>
         
                         <button class="btn btn-outline-light btn-lg px-4" type="submit" on:click|preventDefault={resetPassword}>Submit</button>

@@ -1,5 +1,7 @@
 <script  context="module">
     import { prod } from '$lib/env.js'
+    import Carousel from '@beyonk/svelte-carousel'
+
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
         API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
@@ -40,7 +42,7 @@
     onMount(async () =>{
         // To stop case where user reloads with the counter in view so therefore nothing is triggered...
         document.body.scrollTop = 0
-        userCount += 100
+        document.documentElement.scrollTop = 0
         countUp = new CountUp('countUser', userCount);
         intro = true
 	})
@@ -52,6 +54,8 @@
     onDestroy(() => {
 		$firstTime = false
 	})
+
+    let ben1, ben2, ben3, ben4, ben5, ben6, ben7, ben8, ben9
 </script>
 
 <svelte:head>
@@ -79,7 +83,13 @@
     </svg>
 </div>
 
-<div class="container mt-5 mb-5">
+<div class="container text-center mt-4">
+    <video controls autoplay muted>
+        <source src="https://strapi-upload-s3.glass.splyce.dev/media/TT_INTRO_2_f25c014007.webm" type="video/webm">
+    </video>
+</div>
+
+<div class="container mt-4 mb-5">
     <div class="row text-center grey-grad rounded justify-content-center big-gap">
         <div class="col-12 p-4">
             <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
@@ -91,7 +101,7 @@
     {#if !$name}
         <div class="row mt-5">
             <div class="col-sm-12 col-lg-4">
-                <h4 id="#hash" class="fs-1 mt-2 text-center">First 5 000 members get a <strong>FREE</strong> membership for a year</h4>
+                <h4 id="#hash" class="fs-1 mt-2 text-center">First 1 000 members get a <strong>FREE</strong> membership for a year</h4>
             </div>
             <div class="col-sm-12 col-lg-4 mt-sm-4 text-center">
                 <button class="btn btn-lg bg-gold shadow-lg cta" style="width: 300px;" on:click={() => goto("/register")}><h4 style="color: black;">Become a member!</h4></button>
@@ -106,50 +116,129 @@
     {/if}
 
     <div class="row grey-grad text-center big-gap">
-        <h2 class="mb-5">Benefits</h2>
+        <h2>Benefits</h2>
+        <h5 class="mb-5">Click on a benefit!</h5>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="well-being.webp" alt="well being" on:click={() => $travelScroll='wellness'}></a>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben1 = true}>
+                <div class="placeholder">
+                {#if ben1}
+                    <img transition:fly="{{ y: 200, duration: 600 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/well_being_7d5c5b6063.webp" alt="well being" on:click={() => $travelScroll='wellbeing'}>
+                {/if}
+                </div>
+            </a>
             <h3 class="mt-3">Wellbeing</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="travel.webp" alt="travel" on:click={() => $travelScroll='travel'}></a>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben2 = true}>
+               <div class="placeholder">
+                {#if ben2}
+                    <img transition:fly="{{ y: 200, duration: 800 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/travel_65e3eb2228.webp" alt="travel" on:click={() => $travelScroll='travel'}>
+                {/if}    
+                </div>
+            </a>
             <h3 class="mt-3">Travel</h3>
         </div>        
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="health.webp" alt="medical aid" on:click={() => $travelScroll='MedicalAid'}></a>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben3 = true}>
+               <div class="placeholder">
+                {#if ben3}
+                    <img transition:fly="{{ y: 200, duration: 1000 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/health_1d4102b3e6.webp" alt="medical aid" on:click={() => $travelScroll='medical_aid'}>
+                {/if}
+                </div>
+            </a>
             <h3 class="mt-3">Medical Aid</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="insurance.webp" alt="invest" on:click={() => $travelScroll='insurance'}></a>
-            <h3 class="mt-3">Insurance</h3>
-            <h5 class="text-logo-gold">coming soon</h5>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben4 = true}>
+               <div class="placeholder">
+                {#if ben4}    
+                    <img transition:fly="{{ y: 200, duration: 600 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/insurance_f6fd972123.webp" alt="invest" on:click={() => $travelScroll='finance'}>
+                {/if}
+                </div>
+            </a>
+            <h3 class="mt-3">Finance</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="legal.webp" alt="legal" on:click={() => $travelScroll='legal'}></a>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben5 = true}>
+               <div class="placeholder">
+                {#if ben5}
+                    <img transition:fly="{{ y: 200, duration: 800 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/legal_ef185539e1.webp" alt="legal" on:click={() => $travelScroll='legal'}>
+                {/if}
+                </div>
+            </a>
             <h3 class="mt-3">Legal</h3>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
+            <a href="/benefits" use:viewport on:enterViewport={() => ben6 = true}>
+               <div class="placeholder">
+                {#if ben6}
+                    <img transition:fly="{{ y: 200, duration: 1000 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/courses_394e2373ce.webp" alt="courses" on:click={() => $travelScroll='courses'}>  
+                {/if}
+                </div>
+            </a>
+            <h3 class="mt-3">Courses</h3>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
+            <a href="/benefits" use:viewport on:enterViewport={() => ben7 = true}>
+               <div class="placeholder">
+                {#if ben7}
+                    <img transition:fly="{{ y: 200, duration: 600 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/photography_68b64fd52e.webp" alt="photography" on:click={() => $travelScroll='photography'}>
+                {/if}
+                </div>
+            </a>
+            <h3 class="mt-3">Photography</h3>
             <h5 class="text-logo-gold">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="courses.webp" alt="courses" on:click={() => $travelScroll='courses'}></a>
-            <h3 class="mt-3">Courses</h3>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben8 = true}>
+               <div class="placeholder">
+                {#if ben8}    
+                    <img transition:fly="{{ y: 200, duration: 800 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/tech_1c4a22ee51.webp" alt="IT" on:click={() => $travelScroll='IT'}>
+                {/if}
+                </div>
+            </a>
+            <h3 class="mt-3">IT</h3>
+            <h5 class="text-logo-gold">coming soon</h5>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
+                <a href="/benefits" use:viewport on:enterViewport={() => ben9 = true}>
+                   <div class="placeholder">
+                    {#if ben9}
+                        <img transition:fly="{{ y: 200, duration: 1000 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/spa_b785512c3b.webp" alt="spa" on:click={() => $travelScroll='spa'}>
+                    {/if}
+                    </div>
+                </a>
+            <h3 class="mt-3">Spa</h3>
             <h5 class="text-logo-gold">coming soon</h5>
         </div>
     </div>
 
     <div class="row mt-5 text-center justify-content-center p-3 logo-box">
-        <div class="col-3">
-            <img class="img-fluid logo" src="SAHB.webp" alt="partner">
-        </div>
-        <div class="col-3 d-flex flex-wrap align-items-center">
-            <img class="img-fluid logo" src="ROARRR.webp" alt="partner">
-        </div>
-        <div class="col-3">
-            <img class="img-fluid logo" src="Cirrus.webp" alt="partner">
-        </div>
-        <div class="col-3">
-            <img class="img-fluid logo" src="kim.webp" alt="partner">
-        </div>
+        <Carousel autoplay={2750} perPage={{1300:4, 1000: 3, 500: 2 }}>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_SAHB_LOGO_HIGH_RES_ec14dd3c1d.webp" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid mt-3" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_ROARRR_d380578528.webp" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_Cirrus_Image_2_70004a2daf.webp" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_AF_Logo_7049c50238.webp" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_kim_c21bab4e72.png" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_SGM_Logo_b251d32022.webp" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/small_MTC_New_Logo_large_7ae60c9ecf.webp" alt="partner"/>
+            </div>
+        </Carousel>
     </div>
+
 </div>
 
 <style>
@@ -173,6 +262,9 @@
         background-color: var(--bg-banner);
         height: 400px;
         padding-top: 5rem;
+    }
+    .placeholder{
+        height: 310px;
     }
     @media screen and (min-width: 1000px) {
         .bg-overlay{
@@ -232,5 +324,10 @@
     .logo-box{
         border: var(--logo-gold) 3px solid;
         border-radius: 2px;
+    }
+    video {
+        max-width: 750px;
+        width: 100%;
+        height: auto;
     }
 </style>

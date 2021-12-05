@@ -3,6 +3,7 @@
     import Footer from '$lib/Footer/index.svelte'
     import '../bootstrap.css'
     import '../app.css'
+
 </script>
 
 <Header />

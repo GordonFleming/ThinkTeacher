@@ -33,7 +33,7 @@
 
 <div class="container mt-5 mb-5">
     <div class="row text-center justify-content-center">
-        <h1 class="mb-4">Webinars</h1>
+        <h1 class="mb-4"><span class="think">Think</span>Teacher Webinars</h1>
 
         {#if loading}
             <div class="d-flex justify-content-center mt-5">
@@ -44,7 +44,7 @@
                 <div class="col-lg-6 col-md-12 mt-2">
                     <div class="frame-wrapper">
                         <iframe src="{webinar.link}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        <p class="text-white">{webinar.description}</p>
+                        <p class="text-white mt-2">{webinar.description}</p>
                     </div>
                 </div>
             {/each}
@@ -67,7 +67,7 @@
     .frame-wrapper{
         background-color: var(--logo-grey);
         width: 100%;
-        height: auto;
+        height: 100%;
         padding: 3%;
         border-radius: 5px;
         border: 3px solid var(--logo-gold);

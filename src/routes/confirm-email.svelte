@@ -50,7 +50,8 @@
                     </div>
     
                     <button class="btn btn-outline-light btn-lg px-4" type="submit" on:click|preventDefault={resendMail}>Submit</button>
-                    <p class="mb-0 mt-4">Want to login now? <a href="/login" class="text-white-50 fw-bold">Login</a></p>
+                    <p class="mt-4 fs-5">If you are still not receiving your confirmation email, please contact: <strong><a href="/contact-us">Zani</a></strong></p>
+                    <p class="mb-0">Want to login now? <a href="/login" class="text-white-50 fw-bold">Login</a></p>
                 </div>
             </div>
             </div>

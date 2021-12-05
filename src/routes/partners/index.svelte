@@ -14,7 +14,7 @@
         const graphqlQuery = {
             "operationName": "fetchPartners",
             "query": `query fetchPartners {     
-                partners {
+                partners (sort: "id") {
                     id,
                     name,
                     description,
@@ -49,6 +49,7 @@
 
 <script>
     import { goto } from '$app/navigation'
+    import { travelScroll } from '$lib/stores'
 
     export let partners
 </script>
@@ -58,7 +59,7 @@
 </svelte:head>
 
 <div class="container mb-5">
-    <h1 class="text-center mb-4">Our Partners</h1>
+    <h1 class="text-center mb-4"><span class="think">Think</span>Teacher Partners</h1>
 
     <div class="row justify-content-center">
         {#each partners as partner}
@@ -74,7 +75,7 @@
                         <button class="btn-sm btn bg-gold mx-auto shadow cta" on:click={() => goto('/partners/' + partner.slug)}>Read More</button>
                     </div>
                     <div class="card-footer">
-                        <span class="badge bg-light">{partner.category.name}</span>
+                        <a href="/benefits"><span class="badge bg-light" on:click={() => $travelScroll=partner.category.name.toLowerCase()}>{partner.category.name.replace("_"," ")}</span></a>
                     </div>
                 </div>
             </div>
@@ -89,7 +90,5 @@
 </div>
 
 <style>
-    span{
-        font-size: 0.85em;
-    }
+
 </style>

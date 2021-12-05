@@ -1,11 +1,15 @@
 <script>
     import Icon from 'svelte-awesome'
-    import { facebook, twitter, instagram, linkedin, youtubePlay, youtubeSquare } from 'svelte-awesome/icons'
+    import { facebook, twitter, instagram, linkedin, youtubePlay, youtubeSquare } from 'svelte-awesome/icons' 
+
+    function scrollTop(){
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
 </script>
 
 <footer style="background-color: var(--default-text);" class="text-center text-black mt-5">
-    <div class="container-fluid p-4">
-      <section class="mb-2">
+    <section class="mb-2 mt-3">
         <!-- Facebook -->
         <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/thinkteacher" target="_blank" role="button"><Icon data={facebook} scale="1.8"/></a>  
         <!-- Twitter -->
@@ -17,85 +21,82 @@
         <!-- Youtube -->
         <a class="btn btn-outline-light btn-floating m-1" href="https://www.youtube.com/channel/UCN-byMa-sTVbwKWNkbMM9bQ" target="_blank" role="button"><Icon data={youtubeSquare} scale="1.8" /></a>
         <i class="fab fa-youtube"></i>
-      </section>
-  
-      <!-- Section: Text -->
-      <section class="mb-4">
+    </section>
+
+    <!-- Section: Text -->
+    <section class="mb-4">
         <p>
-            ________________________________________________________
+            ________________
         </p>
-      </section>
-  
-      <!-- Section: Links -->
-      <section class="">
-        <!--Grid row-->
-        <div class="row">
-          <!--Grid column-->
-            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                <h5 class="text-uppercase">Socials</h5>
+    </section>
     
-                <ul class="list-unstyled mb-0">
-                    <li>
-                        <a href="https://www.facebook.com/thinkteacher" target="_blank" class="text-white">Facebook</a>
-                    </li>
-                    <li>
-                        <a href="https://twitter.com/thinkteacher_sa" target="_blank" class="text-white">Twitter</a>
-                    </li>
-                    <li>
-                        <a href="https://www.instagram.com/thinkteacher_rsa" target="_blank" class="text-white">Instagram</a>
-                    </li>
-                    <li>
-                        <a href="https://www.linkedin.com/company/think-teacher" target="_blank" class="text-white">Linkedin</a>
-                    </li>
-                    <li>
-                        <a href="https://www.youtube.com/channel/UCN-byMa-sTVbwKWNkbMM9bQ" target="_blank" class="text-white">YouTube</a>
-                    </li>
-                </ul>
-            </div>
 
-            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                <h5 class="text-uppercase">Useful Links</h5>
-    
-                <ul class="list-unstyled mb-0">
-                    <li>
-                        <a href="/login" class="text-white">Login</a>
-                    </li>
-                    <li>
-                        <a href="/forgot-password" class="text-white">Forgot Password</a>
-                    </li>
-                    <li>
-                        <a href="/register" class="text-white">Register</a>
-                    </li>
-                    <li>
-                        <a href="/contact-us" class="text-white">Contact</a>
-                    </li>
-                </ul>
-            </div>
+    <!--Grid row-->
+    <div class="row g-0">
+        <!--Grid column-->
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Socials</h5>
 
-            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                <h5 class="text-uppercase">Contact</h5>
-    
-                <ul class="list-unstyled mb-0">
-                    <li>
-                        <a href="mailto:zani@thinkteacher.co.za" class="text-white">zani@thinkteacher.co.za</a>
-                    </li>
-                </ul>
-            </div>
+            <ul class="list-unstyled mb-3">
+                <li>
+                    <a href="https://www.facebook.com/thinkteacher" target="_blank" class="text-white">Facebook</a>
+                </li>
+                <li>
+                    <a href="https://twitter.com/thinkteacher_sa" target="_blank" class="text-white">Twitter</a>
+                </li>
+                <li>
+                    <a href="https://www.instagram.com/thinkteacher_rsa" target="_blank" class="text-white">Instagram</a>
+                </li>
+                <li>
+                    <a href="https://www.linkedin.com/company/think-teacher" target="_blank" class="text-white">Linkedin</a>
+                </li>
+                <li>
+                    <a href="https://www.youtube.com/channel/UCN-byMa-sTVbwKWNkbMM9bQ" target="_blank" class="text-white">YouTube</a>
+                </li>
+            </ul>
+        </div>
 
-            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                <button class="mt-3 btn btn-outline-light px-2" on:click={() => document.body.scrollTop = 0}>Scroll to top</button>
-            </div>
-            </div>
-        </section>
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Useful Links</h5>
+
+            <ul class="list-unstyled mb-0">
+                <li>
+                    <a href="/login" class="text-white">Login</a>
+                </li>
+                <li>
+                    <a href="/forgot-password" class="text-white">Forgot Password</a>
+                </li>
+                <li>
+                    <a href="/register" class="text-white">Register</a>
+                </li>
+                <li>
+                    <a href="/contact-us" class="text-white">Contact</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Contact</h5>
+
+            <ul class="list-unstyled mb-0">
+                <li>
+                    <a href="mailto:zani@thinkteacher.co.za" class="text-white">zani@thinkteacher.co.za</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+            <button class="mt-3 mb-3 btn btn-outline-light px-2" on:click={scrollTop}>Scroll to top</button>
+        </div>
     </div>
-  
+
     <!-- Copyright -->
     <div class="text-center p-2" style="background-color: var(--logo-gold);">
-      © 2021 Copyright:
-      <a class="text-white" href="https://thinkteacher.co.za">Think Teacher</a>
-      <!-- <a class="text-white" href="https://splyce.dev">Designed: Splyce</a> -->
+    © 2021 Copyright: Think Teacher
+    <!-- <a class="text-white" href="https://splyce.dev">Designed: Splyce</a> -->
     </div>
 </footer>
+
 
 <style>
     footer{

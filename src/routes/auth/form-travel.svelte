@@ -12,7 +12,7 @@
     }
 
     let loading = true, buttonSubmit = true
-    $: if(typeHoliday !== ''){ buttonSubmit = false }
+    $: if(typeHoliday !== '' && reason !== '' && where !== '' && budget !== ''){ buttonSubmit = false }
 
     let fullname, email, ttNum, user
 
@@ -34,7 +34,6 @@
     })
 
     let startDate, endDate, typeHoliday = $travelType, reason, where, nationality=true, numChild, numAdult, budget
-    const partnerEmail="gordon@splyce.dev"
 
     async function submitForm(){
         await axios
@@ -54,10 +53,9 @@
                     nationality: nationality,
                     budget: budget,
                 }],
-                partnerEmail: partnerEmail,
+                users_permissions_user: user,
             })
             .then(response => {
-                console.log('Form values: ', response.data)
                 msg = fullname + ", you have successfully made contact with ThinkTeacher's partner. The partner will be in touch with you soon."
                 document.getElementById("contactPartner").reset()
             })
@@ -118,17 +116,22 @@
                                 <div class="col-sm-12 col-md-6 mt-2">
                                     <label class="form-label" for="typeHoliday">Type of Holiday</label>
                                     <select class="form-select" id="typeHoliday" bind:value={typeHoliday} required>
-                                        <option value="" selected>choose type</option>
+                                        <option value="" selected>choose</option>
                                         <option value="beach">Beach</option>
                                         <option value="bush">Bush</option>
                                         <option value="ski">Ski</option>
+                                        <option value="mountains">Mountains</option>
+                                        <option value="city">City</option>
+                                        <option value="adventure">Adventure</option>
+                                        <option value="conference">Conference</option>
+                                        <option value="sports_tours">Sports Tours</option>
                                         <option value="other">Other</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-12 col-md-6 mt-2">
                                     <label class="form-label" for="reason">Reason for Travel</label>
                                     <select class="form-select" id="reason" bind:value={reason} required>
-                                        <option value="" selected>choose reason</option>
+                                        <option value="" selected>choose</option>
                                         <option value="leisure">Leisure</option>
                                         <option value="business">Business</option>
                                         <option value="sport">Sport</option>
@@ -137,7 +140,7 @@
                                 <div class="col-sm-12 col-md-6 mt-2">
                                     <label class="form-label" for="destination">Destination</label>
                                     <select class="form-select" id="destination" bind:value={where} required>
-                                        <option value="" selected>choose destination</option>
+                                        <option value="" selected>choose</option>
                                         <option value="domestic">Domestic</option>
                                         <option value="international">International</option>
                                         <option value="africa">Africa</option>
@@ -160,7 +163,7 @@
                                 <div class="col-12 mt-2">
                                     <label class="form-label" for="budget">Budget</label>
                                     <select class="form-select" id="budget" bind:value={budget} required>
-                                        <option value="" selected>choose budget</option>
+                                        <option value="" selected>choose</option>
                                         <option value="budget">Budget</option>
                                         <option value="standard">Standard</option>
                                         <option value="luxury">Luxury</option>
@@ -170,9 +173,6 @@
                             <button class="btn btn-outline-light btn-lg px-4 mt-4" type="submit" on:click|preventDefault={submitForm} disabled={buttonSubmit}>Submit</button>
                         </form>
                     </div>
-                    <!-- <div>
-                        <p class="mb-0">Partner's email <a href="mailto:gdoig@mweb.co.za" class="text-white-50 fw-bold">gdoig@mweb.co.za</a></p>
-                    </div> -->
                     </div>
                 </div>
                 </div>
