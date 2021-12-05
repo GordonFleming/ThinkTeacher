@@ -85,7 +85,7 @@
 
 <div class="container text-center mt-4">
     <video controls autoplay muted>
-        <source src="https://strapi-upload-s3.glass.splyce.dev/media/TT_INTRO_2_f25c014007.webm" type="video/webm">
+        <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/TT INTRO_2.webm?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVFQgSU5UUk9fMi53ZWJtIiwiaWF0IjoxNjM4NzIyMzU3LCJleHAiOjE5NTQwODIzNTd9.3k8JW9EsOF2s5FLNYdkvBZP4E7RKF6ElKp0Efa6dgXE" type="video/webm">
     </video>
 </div>
 
