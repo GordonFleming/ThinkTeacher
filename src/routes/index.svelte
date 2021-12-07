@@ -84,10 +84,14 @@
 </div>
 
 <div class="container text-center mt-4">
-    <video controls autoplay muted>
+    <video autoplay muted>
         <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/TT INTRO_2.webm?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVFQgSU5UUk9fMi53ZWJtIiwiaWF0IjoxNjM4NzIyMzU3LCJleHAiOjE5NTQwODIzNTd9.3k8JW9EsOF2s5FLNYdkvBZP4E7RKF6ElKp0Efa6dgXE" type="video/webm">
     </video>
 </div>
+
+<!-- Carousel of Webinars -->
+
+<!-- TODO -->
 
 <div class="container mt-4 mb-5">
     <div class="row text-center grey-grad rounded justify-content-center big-gap">
