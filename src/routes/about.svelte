@@ -14,7 +14,13 @@
 <h1 class="mb-4 text-center">The <span class="think">Think</span>Teacher Team</h1>
 
 <div class="container">
-    <div class="row text-center mt-5 mb-5 justify-content-center">
+    <div class="row text-center mt-5 mb-3 justify-content-center">
+        <div class="container text-center mb-4">
+            <!-- svelte-ignore a11y-media-has-caption -->
+            <video controls>
+                <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/THINK TEACHER_ WHO we are and WHAT we do!.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVEhJTksgVEVBQ0hFUl8gV0hPIHdlIGFyZSBhbmQgV0hBVCB3ZSBkbyEubXA0IiwiaWF0IjoxNjM4OTE2NTY4LCJleHAiOjE5NTQyNzY1Njh9.LOYLcBhdqahMHksy4jpk9cQgrOhkdZNEkqgsmsXxhuo#t=3" type="video/webm">
+            </video>
+        </div>
         <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
             and nurturing networks. Think Teacher's vision is to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
         </h3>

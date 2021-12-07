@@ -330,9 +330,4 @@
         border: var(--logo-gold) 3px solid;
         border-radius: 2px;
     }
-    video {
-        max-width: 750px;
-        width: 100%;
-        height: auto;
-    }
 </style>

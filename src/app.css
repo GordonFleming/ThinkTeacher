@@ -118,7 +118,11 @@ h3{
 h4, h6 {
     color: var(--logo-grey);
 }
-
+video {
+    max-width: 750px;
+    width: 100%;
+    height: auto;
+}
 footer {
     margin-top: auto;
     border-top: var(--logo-gold) 5px solid;
