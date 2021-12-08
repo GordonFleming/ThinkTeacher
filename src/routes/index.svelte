@@ -9,10 +9,12 @@
 
 	export const load = async ({ fetch }) => {
         const res = await fetch(`${API_URL}/users/count`)
+        const resWebinars = await fetch(`${API_URL}/webinars`)
 
-        if (res.ok) {
+        if (res.ok && resWebinars.ok) {
 			const data = await res.json()
-            return { props: { userCount: data } }
+            const dataWebinar = await resWebinars.json()
+            return { props: { userCount: data, webinarData: dataWebinar } }
 		}
 
         return {
@@ -24,6 +26,7 @@
 
 <script>
     import Logo from '$lib/Components/logo.svelte'
+    import WebinarsBar from '$lib/Components/WebinarsBar.svelte'
     import { goto } from '$app/navigation'
     import { CountUp } from 'countup.js'
     import { onMount, afterUpdate, onDestroy } from 'svelte'
@@ -33,7 +36,7 @@
 
     let intro = null
     let countUp
-    export let userCount
+    export let userCount, webinarData
 
     setTimeout(function(){
         intro = false
@@ -92,7 +95,7 @@
 
 <!-- Carousel of Webinars -->
 
-<!-- TODO -->
+<WebinarsBar {webinarData} />
 
 <div class="container mt-4 mb-5">
     <div class="row text-center grey-grad rounded justify-content-center big-gap">

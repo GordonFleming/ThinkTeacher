@@ -1,8 +1,10 @@
-import adapter from '@sveltejs/adapter-netlify';
+import cloudflare from '@sveltejs/adapter-cloudflare';
 
 export default {
 	kit: {
-		adapter: adapter(), // currently the adapter does not take any options
-		target: '#svelte'
+		target: '#svelte',
+		adapter: cloudflare({
+			// any esbuild options
+		})
 	}
 };
