@@ -113,8 +113,7 @@
             </div>
             <div class="col-sm-12 col-lg-4">
                 <!-- svelte-ignore a11y-missing-content -->
-                <h1 class="text-center" id="countUser" use:viewport
-                    on:enterViewport={() => countUp.start()}></h1>
+                <h1 class="text-center" id="countUser" use:viewport on:enterViewport={() => countUp.start()} />
                 <h3 class="text-center text-blue">Members and counting!</h3>
             </div>
         </div>
