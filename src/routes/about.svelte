@@ -14,7 +14,13 @@
 <h1 class="mb-4 text-center">The <span class="think">Think</span>Teacher Team</h1>
 
 <div class="container">
-    <div class="row text-center mt-5 mb-5 justify-content-center">
+    <div class="row text-center mt-5 mb-3 justify-content-center">
+        <div class="container text-center mb-4">
+            <!-- svelte-ignore a11y-media-has-caption -->
+            <video controls>
+                <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/THINK TEACHER_ WHO we are and WHAT we do!.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVEhJTksgVEVBQ0hFUl8gV0hPIHdlIGFyZSBhbmQgV0hBVCB3ZSBkbyEubXA0IiwiaWF0IjoxNjM4OTE2NTY4LCJleHAiOjE5NTQyNzY1Njh9.LOYLcBhdqahMHksy4jpk9cQgrOhkdZNEkqgsmsXxhuo#t=3" type="video/webm">
+            </video>
+        </div>
         <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
             and nurturing networks. Think Teacher's vision is to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
         </h3>
@@ -34,7 +40,7 @@
                         <h5 class="card-title">Founder</h5>
                         <h6 class="card-subtitle text-muted">MSc | HDE (Wits)</h6>
                     </div>
-                    <img class="d-block user-select-none img-fluid" src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/Bio/Bridget_New.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL0JyaWRnZXRfTmV3LmpwZyIsImlhdCI6MTYzMjg0NjYwNiwiZXhwIjoxOTQ4MjA2NjA2fQ.HwyEWrK_IWIfX3zfIG4gKQMgP858eAP90cxaAAkob9k" alt="profile img">
+                    <img class="d-block user-select-none img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/Bridget_New_01cd375526.webp" alt="profile img">
                     <div class="card-body">
                         <p class="card-text">
                             Bridget Fleming is a passionate advocate for teacher wellbeing. <br><br>
@@ -64,7 +70,7 @@
                             Cert. in Project Management
                         </h6>
                     </div>
-                    <img class="d-block user-select-none img-fluid" src="https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Rebecca.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL1JlYmVjY2EuanBnIiwiaWF0IjoxNjI1NzY1NDA5LCJleHAiOjE5NDExMjU0MDl9.R3if5ZEbhRmE9mV-2eFpP-QATKO6uCZ88jK4P3SoiQQ" alt="profile img">
+                    <img class="d-block user-select-none img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/Rebecca_deb1c7e162.webp" alt="profile img">
                     <div class="card-body">
                         <p class="card-text">
                             Rebecca Maluka is a School Operations Manager at Spark Schools and has been in the education field for 14 years. She also has experience in student enrollment within the sales and marketing environment. <br><br>
@@ -85,7 +91,7 @@
                         <h5 class="card-title">Liaison to Head of Schools & Webinars</h5>
                         <h6 class="card-subtitle text-muted">BA (Hons) | PGCE | FDE | PMD</h6>
                     </div>
-                    <img class="d-block user-select-none img-fluid" src="https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Paul.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL1BhdWwuanBnIiwiaWF0IjoxNjI1NzY1NzkyLCJleHAiOjE5NDExMjU3OTJ9.oFg1MQ2D_59BaN7tze_IOUPTb26-1upr-bnvnIcVV30" alt="profile img">
+                    <img class="d-block user-select-none img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/Paul_0063106902.webp" alt="profile img">
                     <div class="card-body">
                         <p class="card-text">
                             In 2020 Paul was appointed as the SAHISA Stakeholder Manager at ISASA. His primary role is to act as a support for school leaders in ISASA schools and as a link between the ISASA office and the SAHISA executive. <br><br>
@@ -113,7 +119,7 @@
                             Cert. in Digital Marketing
                         </h6>
                     </div>
-                    <img class="d-block user-select-none img-fluid" src="https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Kim.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL0tpbS5qcGciLCJpYXQiOjE2MjU3NjY4MzEsImV4cCI6MTk0MTEyNjgzMX0.8P2A7c2pt0ptsvFGcIyGUiHHJ-juJ3ylvdt6N4U4qxY" alt="profile img">
+                    <img class="d-block user-select-none img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/Kim_d1ff101083.webp" alt="profile img">
                     <div class="card-body">
                         <p class="card-text">
                             Kim’s commitment to helping people achieve their potential found its expression in her English teaching career. Her love of the power of words transitioned her to a financial publication editor role and writer for a financial planning company. <br><br>
@@ -141,7 +147,7 @@
                             Dip in Business Management and Marketing                   
                         </h6>
                     </div>
-                    <img class="d-block user-select-none img-fluid" src="https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Zanele.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL1phbmVsZS5wbmciLCJpYXQiOjE2MjU3NjczNDMsImV4cCI6MTk0MTEyNzM0M30.q1H3Q_VB5zcZqso_43xwbrzEEgPTetTXKShBiPHB0kI" alt="profile img">
+                    <img class="d-block user-select-none img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/Zanele_27f47429d3.webp" alt="profile img">
                     <div class="card-body">
                         <p class="card-text">
                             Zanele Masuku started her career in the banking sector before becoming a school librarian for four years. <br><br>
@@ -165,7 +171,7 @@
                             BCom (Marketing Management) | BCom Hons (Communication Management) | Gallup Strengths Coaching
                         </h6>
                     </div>
-                    <img class="d-block user-select-none img-fluid" src="https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Ferdie.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL0ZlcmRpZS5wbmciLCJpYXQiOjE2MjU3Njc0NjQsImV4cCI6MTk0MTEyNzQ2NH0.YQqrWDsYD_OfVHdLElaR1aVw9wWL0VoTlYxj8K8lQKQ" alt="profile img">
+                    <img class="d-block user-select-none img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/Ferdie_cf633ad891.webp" alt="profile img">
                     <div class="card-body">
                         <p class="card-text">
                             Ferdie thrives on seeing individuals, teams and organisations develop into authentic entities. He sees himself as an activator: activating people and entities in their uniqueness and empowering them to become leaders, wherever they find themselves. <br><br>
@@ -188,7 +194,7 @@
                             MA (Hons) | PGCE | MEd
                         </h6>
                     </div>
-                    <img class="d-block user-select-none img-fluid" src="https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Frances Kerr-Phillips photograph 2.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL0ZyYW5jZXMgS2Vyci1QaGlsbGlwcyBwaG90b2dyYXBoIDIuanBnIiwiaWF0IjoxNjI1NzY3NzE2LCJleHAiOjE5NDExMjc3MTZ9.KsHs9cILZIksJjgleeb-U3427yh-Afg-1DuhCG6LPnM" alt="profile img">
+                    <img class="d-block user-select-none img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/Frances_Kerr_Phillips_photograph_2_704236ece6.webp" alt="profile img">
                     <div class="card-body">
                         <p class="card-text">
                             Frances’ passion for growing top quality South African teachers, and keeping them in the system, is what has led to her involvement with <span class="think">ThinkTeacher</span>. <br><br>
@@ -212,7 +218,7 @@
                             BA (Wits) | HDE (Wits) | BA Hons (SA) | MEd(Wits)  
                         </h6>
                     </div>
-                    <img class="d-block user-select-none img-fluid" src="https://tirqswyaxhrjnlhdstky.supabase.co/storage/v1/object/sign/thinkteacher/Bio/Malcolm.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvQmlvL01hbGNvbG0ucG5nIiwiaWF0IjoxNjI1NzY3OTcxLCJleHAiOjE5NDExMjc5NzF9.M1B3cACdVsZkHKoY8nI7FzgzhUx_0k4_i0vBVrv5CSE" alt="profile img">
+                    <img class="d-block user-select-none img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/Malcolm_838637bdf3.webp" alt="profile img">
                     <div class="card-body">
                         <p class="card-text">
                             Teachers, more than any others, have the capacity to change the lives of individuals and, indeed, the future of a nation. <br><br>

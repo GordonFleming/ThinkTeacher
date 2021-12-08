@@ -1,5 +1,6 @@
 <script context="module">
     import { prod } from '$lib/env.js'
+    import { travelScroll } from '$lib/stores'
 
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
@@ -50,14 +51,14 @@
         {#if extraImage}
             <div class="row">
                 <div class="col-sm-12 col-md-6" style="text-align: right;">
-                    <img class="img-fluid mt-2" src='{partner.image.url}' alt="Partner">
+                    <img class="img-fluid mt-2" src='https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/{partner.logo.hash}{partner.logo.ext}' alt="Partner">
                 </div>
                 <div class="col-sm-12 col-md-6">
-                    <img class="img-fluid justify-content-start mt-2" src='{partner.custom[0].extraImage.formats.small.url}' alt="Partner">
+                    <img class="img-fluid justify-content-start mt-2" src='https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/{partner.custom[0].extraImage.formats.small.hash}{partner.custom[0].extraImage.formats.small.ext}' alt="Partner">
                 </div>
             </div>
         {:else}
-            <img class="img-fluid mx-auto d-block mt-2" src='{partner.image.url}' alt="Partner">
+            <img class="img-fluid mx-auto d-block mt-2" src='https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/{partner.logo.hash}{partner.logo.ext}' alt="Partner">
         {/if}
 
         <h2 class="text-center mt-3">{partner.name}</h2>
@@ -65,6 +66,10 @@
 
         <div id="mark-down">
             <SvelteMarkdown {source} />
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="/benefits"><button class="btn bg-gold shadow cta text-black fs-5 p-1" on:click={() => $travelScroll=partner.category.name}>Enquire</button></a>
         </div>
     </div>
 {:else}

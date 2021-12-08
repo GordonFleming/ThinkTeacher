@@ -45,6 +45,7 @@
         document.documentElement.scrollTop = 0
         countUp = new CountUp('countUser', userCount);
         intro = true
+        document.getElementById('vid').play();
 	})
 
     afterUpdate(() =>{
@@ -84,10 +85,14 @@
 </div>
 
 <div class="container text-center mt-4">
-    <video controls autoplay muted>
-        <source src="https://strapi-upload-s3.glass.splyce.dev/media/TT_INTRO_2_f25c014007.webm" type="video/webm">
+    <video id="vid" preload="metadata" muted autoplay>
+        <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/TT INTRO_2.webm?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVFQgSU5UUk9fMi53ZWJtIiwiaWF0IjoxNjM4NzIyMzU3LCJleHAiOjE5NTQwODIzNTd9.3k8JW9EsOF2s5FLNYdkvBZP4E7RKF6ElKp0Efa6dgXE#t=0.1" type="video/webm">
     </video>
 </div>
+
+<!-- Carousel of Webinars -->
+
+<!-- TODO -->
 
 <div class="container mt-4 mb-5">
     <div class="row text-center grey-grad rounded justify-content-center big-gap">
@@ -122,7 +127,7 @@
             <a href="/benefits" use:viewport on:enterViewport={() => ben1 = true}>
                 <div class="placeholder">
                 {#if ben1}
-                    <img transition:fly="{{ y: 200, duration: 600 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/well_being_7d5c5b6063.webp" alt="well being" on:click={() => $travelScroll='wellbeing'}>
+                    <img transition:fly="{{ y: 200, duration: 600 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/well_being_7d5c5b6063.webp" alt="well being" on:click={() => $travelScroll='wellbeing'}>
                 {/if}
                 </div>
             </a>
@@ -132,7 +137,7 @@
             <a href="/benefits" use:viewport on:enterViewport={() => ben2 = true}>
                <div class="placeholder">
                 {#if ben2}
-                    <img transition:fly="{{ y: 200, duration: 800 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/travel_65e3eb2228.webp" alt="travel" on:click={() => $travelScroll='travel'}>
+                    <img transition:fly="{{ y: 200, duration: 800 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/travel_65e3eb2228.webp" alt="travel" on:click={() => $travelScroll='travel'}>
                 {/if}    
                 </div>
             </a>
@@ -142,7 +147,7 @@
             <a href="/benefits" use:viewport on:enterViewport={() => ben3 = true}>
                <div class="placeholder">
                 {#if ben3}
-                    <img transition:fly="{{ y: 200, duration: 1000 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/health_1d4102b3e6.webp" alt="medical aid" on:click={() => $travelScroll='medical_aid'}>
+                    <img transition:fly="{{ y: 200, duration: 1000 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/health_1d4102b3e6.webp" alt="medical aid" on:click={() => $travelScroll='medical_aid'}>
                 {/if}
                 </div>
             </a>
@@ -152,7 +157,7 @@
             <a href="/benefits" use:viewport on:enterViewport={() => ben4 = true}>
                <div class="placeholder">
                 {#if ben4}    
-                    <img transition:fly="{{ y: 200, duration: 600 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/insurance_f6fd972123.webp" alt="invest" on:click={() => $travelScroll='finance'}>
+                    <img transition:fly="{{ y: 200, duration: 600 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/insurance_f6fd972123.webp" alt="invest" on:click={() => $travelScroll='finance'}>
                 {/if}
                 </div>
             </a>
@@ -162,7 +167,7 @@
             <a href="/benefits" use:viewport on:enterViewport={() => ben5 = true}>
                <div class="placeholder">
                 {#if ben5}
-                    <img transition:fly="{{ y: 200, duration: 800 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/legal_ef185539e1.webp" alt="legal" on:click={() => $travelScroll='legal'}>
+                    <img transition:fly="{{ y: 200, duration: 800 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/legal_ef185539e1.webp" alt="legal" on:click={() => $travelScroll='legal'}>
                 {/if}
                 </div>
             </a>
@@ -172,7 +177,7 @@
             <a href="/benefits" use:viewport on:enterViewport={() => ben6 = true}>
                <div class="placeholder">
                 {#if ben6}
-                    <img transition:fly="{{ y: 200, duration: 1000 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/courses_394e2373ce.webp" alt="courses" on:click={() => $travelScroll='courses'}>  
+                    <img transition:fly="{{ y: 200, duration: 1000 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/courses_394e2373ce.webp" alt="courses" on:click={() => $travelScroll='courses'}>  
                 {/if}
                 </div>
             </a>
@@ -182,7 +187,7 @@
             <a href="/benefits" use:viewport on:enterViewport={() => ben7 = true}>
                <div class="placeholder">
                 {#if ben7}
-                    <img transition:fly="{{ y: 200, duration: 600 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/photography_68b64fd52e.webp" alt="photography" on:click={() => $travelScroll='photography'}>
+                    <img transition:fly="{{ y: 200, duration: 600 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/photography_68b64fd52e.webp" alt="photography" on:click={() => $travelScroll='photography'}>
                 {/if}
                 </div>
             </a>
@@ -193,7 +198,7 @@
             <a href="/benefits" use:viewport on:enterViewport={() => ben8 = true}>
                <div class="placeholder">
                 {#if ben8}    
-                    <img transition:fly="{{ y: 200, duration: 800 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/tech_1c4a22ee51.webp" alt="IT" on:click={() => $travelScroll='IT'}>
+                    <img transition:fly="{{ y: 200, duration: 800 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/tech_1c4a22ee51.webp" alt="IT" on:click={() => $travelScroll='IT'}>
                 {/if}
                 </div>
             </a>
@@ -204,7 +209,7 @@
                 <a href="/benefits" use:viewport on:enterViewport={() => ben9 = true}>
                    <div class="placeholder">
                     {#if ben9}
-                        <img transition:fly="{{ y: 200, duration: 1000 }}" class="img-fluid offer offer-img" src="https://strapi-upload-s3.glass.splyce.dev/media/spa_b785512c3b.webp" alt="spa" on:click={() => $travelScroll='spa'}>
+                        <img transition:fly="{{ y: 200, duration: 1000 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/spa_b785512c3b.webp" alt="spa" on:click={() => $travelScroll='spa'}>
                     {/if}
                     </div>
                 </a>
@@ -216,25 +221,25 @@
     <div class="row mt-5 text-center justify-content-center p-3 logo-box">
         <Carousel autoplay={2750} perPage={{1300:4, 1000: 3, 500: 2 }}>
             <div class="slide-content">
-                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_SAHB_LOGO_HIGH_RES_ec14dd3c1d.webp" alt="partner"/>
+                <img class="logo img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/thumbnail_SAHB_LOGO_HIGH_RES_ec14dd3c1d.webp" alt="partner"/>
             </div>
             <div class="slide-content">
-                <img class="logo img-fluid mt-3" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_ROARRR_d380578528.webp" alt="partner"/>
+                <img class="logo img-fluid mt-3" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/thumbnail_ROARRR_d380578528.webp" alt="partner"/>
             </div>
             <div class="slide-content">
-                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_Cirrus_Image_2_70004a2daf.webp" alt="partner"/>
+                <img class="logo img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/thumbnail_Cirrus_Image_2_70004a2daf.webp" alt="partner"/>
             </div>
             <div class="slide-content">
-                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_AF_Logo_7049c50238.webp" alt="partner"/>
+                <img class="logo img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/thumbnail_AF_Logo_7049c50238.webp" alt="partner"/>
             </div>
             <div class="slide-content">
-                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_kim_c21bab4e72.png" alt="partner"/>
+                <img class="logo img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/thumbnail_kim_c21bab4e72.png" alt="partner"/>
             </div>
             <div class="slide-content">
-                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/thumbnail_SGM_Logo_b251d32022.webp" alt="partner"/>
+                <img class="logo img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/thumbnail_SGM_Logo_b251d32022.webp" alt="partner"/>
             </div>
             <div class="slide-content">
-                <img class="logo img-fluid" src="https://strapi-upload-s3.glass.splyce.dev/media/small_MTC_New_Logo_large_7ae60c9ecf.webp" alt="partner"/>
+                <img class="logo img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/small_MTC_New_Logo_large_7ae60c9ecf.webp" alt="partner"/>
             </div>
         </Carousel>
     </div>
@@ -324,10 +329,5 @@
     .logo-box{
         border: var(--logo-gold) 3px solid;
         border-radius: 2px;
-    }
-    video {
-        max-width: 750px;
-        width: 100%;
-        height: auto;
     }
 </style>

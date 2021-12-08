@@ -18,7 +18,7 @@
                     id,
                     name,
                     description,
-                    logo{url},
+                    logo{hash,ext},
                     company_name,
                     category{name},
                     slug
@@ -65,7 +65,7 @@
         {#each partners as partner}
             <div class="col-sm-12 col-md-6 col-lg-4">
                 <div class="card bg-dark m-2 shadow-lg">
-                    <img class="img-fluid rounded cta"  src="{partner.logo.url}" alt="cover" on:click={() => goto('/partners/' + partner.slug)}>
+                    <img class="img-fluid rounded cta"  src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/{partner.logo.hash}{partner.logo.ext}" alt="cover" on:click={() => goto('/partners/' + partner.slug)}>
                     
                     <div class="card-body">
                         <h5 class="card-title">{partner.company_name}</h5>
