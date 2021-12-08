@@ -2,10 +2,10 @@
     import { prod } from '$lib/env.js'
     
     let API_URL = 'http://localhost:1337'
-    let health_cat = 3, travel_cat = 2, course_cat = 5, wellbeing_cat = 4, finance_cat = 6
+    let health_cat = 3, travel_cat = 2, course_cat = 5, wellbeing_cat = 4, finance_cat = 6, legal_cat = 1
     if(prod === "true"){
         API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
-        health_cat = 2, travel_cat = 1, course_cat = 6, wellbeing_cat = 3, finance_cat = 5
+        health_cat = 2, travel_cat = 1, course_cat = 6, wellbeing_cat = 3, finance_cat = 5, legal_cat = 4
     }
 
 	export const load = async ({ fetch }) => {
@@ -48,7 +48,7 @@
 
         const res = await fetch(endpoint, options);
 
-        let packages = [], travel = [], health = [], wellness = [], courses = [], finance = [], source
+        let packages = [], travel = [], health = [], wellness = [], courses = [], finance = [], legal = [], source
 
         if (res.ok) {
 			const data = await res.json()
@@ -65,12 +65,14 @@
                     courses.push(item)
                 }else if(item.partner.category.id == finance_cat){
                     finance.push(item)
+                }else if(item.partner.category.id == legal_cat){
+                    legal.push(item)
                 }
             } 
 
             packages.forEach(seperatePackages)
 
-            return { props: { travel, health, wellness, courses, finance, source} }
+            return { props: { travel, health, wellness, courses, finance, legal, source} }
 		}
 
         return {
@@ -99,7 +101,7 @@
         sticky = navbar.offsetTop;
 	});
 
-    export let travel, wellness, health, courses, finance
+    export let travel, wellness, health, courses, finance, legal
 
     export let source, readMore = false
 
@@ -194,7 +196,10 @@
         <!-- Legal -->
         <div class="grey-grad row justify-content-center big-gap" id="legal">
             <h2 class="display-3">Legal</h2>
-            <h4>Nearly there...</h4>
+
+            <Benefit benefitData={legal} />
+
+            <PartnerBenefit partnerData={legal} />
         </div>
 
         <!-- Courses -->
@@ -247,5 +252,9 @@
     ul li h4:hover{
         cursor: pointer;
         font-size: 135%;
+    }
+    .card{
+        height: 92%;
+        padding: 3%;
     }
 </style>

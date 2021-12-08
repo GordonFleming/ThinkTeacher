@@ -9,7 +9,7 @@
 
 	export const load = async ({ fetch }) => {
         const res = await fetch(`${API_URL}/users/count`)
-        const resWebinars = await fetch(`${API_URL}/webinars`)
+        const resWebinars = await fetch(`${API_URL}/webinars?_limit=3&_sort=id:DESC`)
 
         if (res.ok && resWebinars.ok) {
 			const data = await res.json()
