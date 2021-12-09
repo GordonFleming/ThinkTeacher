@@ -88,9 +88,8 @@
 </div>
 
 <div class="container text-center mt-4">
-    <!-- svelte-ignore a11y-media-has-caption -->
-    <video id="vid" controls playsinline>
-        <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/TT INTRO_2.webm?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVFQgSU5UUk9fMi53ZWJtIiwiaWF0IjoxNjM4NzIyMzU3LCJleHAiOjE5NTQwODIzNTd9.3k8JW9EsOF2s5FLNYdkvBZP4E7RKF6ElKp0Efa6dgXE#t=1" type='video/mp4'>
+    <video id="vid" muted autoplay playsinline>
+        <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/TT INTRO_2.webm?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVFQgSU5UUk9fMi53ZWJtIiwiaWF0IjoxNjM4NzIyMzU3LCJleHAiOjE5NTQwODIzNTd9.3k8JW9EsOF2s5FLNYdkvBZP4E7RKF6ElKp0Efa6dgXE#t=1" type='video/webm'>
         <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/TT INTRO.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVFQgSU5UUk8ubXA0IiwiaWF0IjoxNjM5MDUwODEyLCJleHAiOjE5NTQ0MTA4MTJ9.Lw85vz6hFv94I_tEIcjddWzmOT6uwmiPD3Z1NnLx3SY" type='video/mp4'>     
     </video>
 </div>
