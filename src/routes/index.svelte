@@ -1,5 +1,6 @@
 <script  context="module">
     import { prod } from '$lib/env.js'
+    import WebinarsBar from '$lib/Components/WebinarsBar.svelte'
     import Carousel from '@beyonk/svelte-carousel'
 
     let API_URL = 'http://localhost:1337'
@@ -9,7 +10,7 @@
 
 	export const load = async ({ fetch }) => {
         const res = await fetch(`${API_URL}/users/count`)
-        const resWebinars = await fetch(`${API_URL}/webinars?_limit=3&_sort=id:DESC`)
+        const resWebinars = await fetch(`${API_URL}/webinars?_limit=4&_sort=id:DESC`)
 
         if (res.ok && resWebinars.ok) {
 			const data = await res.json()
@@ -26,7 +27,6 @@
 
 <script>
     import Logo from '$lib/Components/logo.svelte'
-    import WebinarsBar from '$lib/Components/WebinarsBar.svelte'
     import { goto } from '$app/navigation'
     import { CountUp } from 'countup.js'
     import { onMount, afterUpdate, onDestroy } from 'svelte'
@@ -222,7 +222,7 @@
     </div>
 
     <div class="row mt-5 text-center justify-content-center p-3 logo-box">
-        <Carousel autoplay={2750} perPage={{1300:4, 1000: 3, 500: 2 }}>
+        <Carousel autoplay={2750} perPage={{1300:4, 1000: 3, 500: 2 }} dots={false}>
             <div class="slide-content">
                 <img class="logo img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/thumbnail_SAHB_LOGO_HIGH_RES_ec14dd3c1d.webp" alt="partner"/>
             </div>
