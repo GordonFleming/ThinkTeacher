@@ -18,8 +18,8 @@
     <div class="row text-center mt-5 mb-3 justify-content-center">
         <div class="container text-center mb-4">
             <!-- svelte-ignore a11y-media-has-caption -->
-            <video controls>
-                <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/THINK TEACHER_ WHO we are and WHAT we do!.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVEhJTksgVEVBQ0hFUl8gV0hPIHdlIGFyZSBhbmQgV0hBVCB3ZSBkbyEubXA0IiwiaWF0IjoxNjM4OTE2NTY4LCJleHAiOjE5NTQyNzY1Njh9.LOYLcBhdqahMHksy4jpk9cQgrOhkdZNEkqgsmsXxhuo#t=3" type="video/webm">
+            <video controls playsinline>
+                <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/THINK TEACHER_ WHO we are and WHAT we do!.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVEhJTksgVEVBQ0hFUl8gV0hPIHdlIGFyZSBhbmQgV0hBVCB3ZSBkbyEubXA0IiwiaWF0IjoxNjM4OTE2NTY4LCJleHAiOjE5NTQyNzY1Njh9.LOYLcBhdqahMHksy4jpk9cQgrOhkdZNEkqgsmsXxhuo#t=3" type='video/mp4>
             </video>
         </div>
         <h3 class="read">ThinkTeacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
