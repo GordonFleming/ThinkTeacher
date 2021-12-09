@@ -100,7 +100,7 @@
 <div class="container mt-4 mb-5">
     <div class="row text-center grey-grad rounded justify-content-center big-gap">
         <div class="col-12 p-4">
-            <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
+            <h3 class="read">ThinkTeacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
                 and nurturing networks. Think Teacher's vision is to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
             </h3>
         </div>

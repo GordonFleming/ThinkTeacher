@@ -14,7 +14,7 @@
 
     onMount(async () => {
         try {
-            const res = await axios.get(`${API_URL}/webinars`)
+            const res = await axios.get(`${API_URL}/webinars?_sort=id:DESC`)
             webinars = res.data
             loading = false
             console.log(webinars)

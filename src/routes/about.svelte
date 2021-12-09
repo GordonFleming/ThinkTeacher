@@ -12,6 +12,7 @@
 </svelte:head>
 
 <h1 class="mb-4 text-center">The <span class="think">Think</span>Teacher Team</h1>
+<h2 class="text-logo-gold text-center">Why you should become a Think<span class="text-blue">Teacher</span> member</h2>
 
 <div class="container">
     <div class="row text-center mt-5 mb-3 justify-content-center">
@@ -21,11 +22,10 @@
                 <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/THINK TEACHER_ WHO we are and WHAT we do!.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVEhJTksgVEVBQ0hFUl8gV0hPIHdlIGFyZSBhbmQgV0hBVCB3ZSBkbyEubXA0IiwiaWF0IjoxNjM4OTE2NTY4LCJleHAiOjE5NTQyNzY1Njh9.LOYLcBhdqahMHksy4jpk9cQgrOhkdZNEkqgsmsXxhuo#t=3" type="video/webm">
             </video>
         </div>
-        <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
+        <h3 class="read">ThinkTeacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
             and nurturing networks. Think Teacher's vision is to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
         </h3>
-        <h2 class="mt-3">Message from our Founder</h2>
-        <div class="col-lg-6 col-md-12">
+        <div class="col-lg-6 col-md-12 mt-4">
             <div class="frame-wrapper">
                 <iframe src="https://www.youtube.com/embed/JcCvutWW_QM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
