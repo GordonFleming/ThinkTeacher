@@ -51,14 +51,14 @@
         {#if extraImage}
             <div class="row">
                 <div class="col-sm-12 col-md-6" style="text-align: right;">
-                    <img class="img-fluid mt-2" src='https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/{partner.logo.hash}{partner.logo.ext}' alt="Partner">
+                    <img class="img-fluid mt-2" src='https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/{partner.image.hash}{partner.image.ext}' alt="Partner">
                 </div>
                 <div class="col-sm-12 col-md-6">
                     <img class="img-fluid justify-content-start mt-2" src='https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/{partner.custom[0].extraImage.formats.small.hash}{partner.custom[0].extraImage.formats.small.ext}' alt="Partner">
                 </div>
             </div>
         {:else}
-            <img class="img-fluid mx-auto d-block mt-2" src='https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/{partner.logo.hash}{partner.logo.ext}' alt="Partner">
+            <img class="img-fluid mx-auto d-block mt-2" src='https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/{partner.image.hash}{partner.image.ext}' alt="Partner">
         {/if}
 
         <h2 class="text-center mt-3">{partner.name}</h2>
