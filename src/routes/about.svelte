@@ -26,9 +26,11 @@
             and nurturing networks. Think Teacher's vision is to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
         </h3>
         <div class="col-lg-6 col-md-12 mt-4">
-            <div class="frame-wrapper">
-                <iframe src="https://www.youtube.com/embed/JcCvutWW_QM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
+            <!-- svelte-ignore a11y-media-has-caption -->
+            <video controls playsinline>
+                <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/TT - Bridget Fleming SITE.webm?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVFQgLSBCcmlkZ2V0IEZsZW1pbmcgU0lURS53ZWJtIiwiaWF0IjoxNjM5MTU0NjE4LCJleHAiOjE5NTQ1MTQ2MTh9.0P47I-dQj6BNH5ERlxcECsEuA4O-rSDSYJgka3buqws#t=6.88" type='video/webm'>
+                <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/TT - Bridget Fleming SITE_Compressed.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVFQgLSBCcmlkZ2V0IEZsZW1pbmcgU0lURV9Db21wcmVzc2VkLm1wNCIsImlhdCI6MTYzOTE1NTAwMywiZXhwIjoxOTU0NTE1MDAzfQ.l51UqhKQA-YkWoZbzWtSDX7Ko7mCwPQfP-FTkm8Tf5c#t=6.88" type='video/mp4'>
+            </video>
         </div>
     </div>
 
@@ -248,21 +250,5 @@
     }
     .card{
         height: 100%;
-    }
-
-    iframe{
-        max-width: 800px;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 320px;
-    }
-    .frame-wrapper{
-        background-color: var(--logo-grey);
-        width: 100%;
-        height: auto;
-        padding: 3%;
-        border-radius: 5px;
-        border: 3px solid var(--logo-gold);
     }
 </style>
