@@ -89,14 +89,10 @@
 
 <div class="container text-center mt-4">
     <video id="vid" muted autoplay playsinline>
-        <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/TT INTRO_2.webm?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVFQgSU5UUk9fMi53ZWJtIiwiaWF0IjoxNjM4NzIyMzU3LCJleHAiOjE5NTQwODIzNTd9.3k8JW9EsOF2s5FLNYdkvBZP4E7RKF6ElKp0Efa6dgXE#t=1" type='video/webm'>
-        <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/TT INTRO.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVFQgSU5UUk8ubXA0IiwiaWF0IjoxNjM5MDUwODEyLCJleHAiOjE5NTQ0MTA4MTJ9.Lw85vz6hFv94I_tEIcjddWzmOT6uwmiPD3Z1NnLx3SY" type='video/mp4'>     
+        <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/New intro/TT INTRO Burder Blur.webm?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvTmV3IGludHJvL1RUIElOVFJPIEJ1cmRlciBCbHVyLndlYm0iLCJpYXQiOjE2MzkxNDIwNDYsImV4cCI6MTk1NDUwMjA0Nn0.-j3wvTls5rGe8cUnEuNmmaA9R4x_rfbK1dN4pbbDjCM#t=1" type='video/webm'>
+        <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/New intro/TT INTRO Burder Blur.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvTmV3IGludHJvL1RUIElOVFJPIEJ1cmRlciBCbHVyLm1wNCIsImlhdCI6MTYzOTE0MjAzNiwiZXhwIjoxOTU0NTAyMDM2fQ.pv9ZZkDoUVLZI_Ky_eDdUp5r5rkyIin-V092tcWnamE#t=1" type='video/mp4'>     
     </video>
 </div>
-
-<!-- Carousel of Webinars -->
-
-<WebinarsBar {webinarData} />
 
 <div class="container mt-4 mb-5">
     <div class="row text-center grey-grad rounded justify-content-center big-gap">
@@ -122,6 +118,10 @@
             </div>
         </div>
     {/if}
+
+    <!-- Carousel of Webinars -->
+
+    <WebinarsBar {webinarData} />
 
     <div class="row grey-grad text-center big-gap">
         <h2>Benefits</h2>
@@ -219,6 +219,15 @@
             <h3 class="mt-3">Spa</h3>
             <h5 class="text-logo-gold">coming soon</h5>
         </div>
+    </div>
+
+    <div class="container text-center mb-4 grey-grad">
+        <h2 class="mb-4">Why you should become a <span class="text-logo-gold">Think</span>Teacher member</h2>
+
+        <!-- svelte-ignore a11y-media-has-caption -->
+        <video controls playsinline>
+            <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/THINK TEACHER_ WHO we are and WHAT we do!.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVEhJTksgVEVBQ0hFUl8gV0hPIHdlIGFyZSBhbmQgV0hBVCB3ZSBkbyEubXA0IiwiaWF0IjoxNjM4OTE2NTY4LCJleHAiOjE5NTQyNzY1Njh9.LOYLcBhdqahMHksy4jpk9cQgrOhkdZNEkqgsmsXxhuo#t=3" type='video/mp4'>
+        </video>
     </div>
 
     <div class="row mt-5 text-center justify-content-center p-3 logo-box">
