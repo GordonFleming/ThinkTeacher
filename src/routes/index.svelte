@@ -89,8 +89,8 @@
 
 <div class="container text-center mt-4">
     <video id="vid" muted autoplay playsinline>
-        <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/New intro/TT INTRO Burder Blur.webm?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvTmV3IGludHJvL1RUIElOVFJPIEJ1cmRlciBCbHVyLndlYm0iLCJpYXQiOjE2MzkxNDIwNDYsImV4cCI6MTk1NDUwMjA0Nn0.-j3wvTls5rGe8cUnEuNmmaA9R4x_rfbK1dN4pbbDjCM#t=1" type='video/webm'>
-        <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/New intro/TT INTRO Burder Blur.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvTmV3IGludHJvL1RUIElOVFJPIEJ1cmRlciBCbHVyLm1wNCIsImlhdCI6MTYzOTE0MjAzNiwiZXhwIjoxOTU0NTAyMDM2fQ.pv9ZZkDoUVLZI_Ky_eDdUp5r5rkyIin-V092tcWnamE#t=1" type='video/mp4'>     
+        <source src="https://strapi-upload-s3.glass.splyce.dev/media/TT_INTRO_Burder_Blur_ba9d32550c.webm#t=1" type='video/webm'>
+        <source src="https://strapi-upload-s3.glass.splyce.dev/media/TT_INTRO_Burder_Blur_4f66cfbe94.mp4#t=1" type='video/mp4'>     
     </video>
 </div>
 
@@ -226,7 +226,7 @@
 
         <!-- svelte-ignore a11y-media-has-caption -->
         <video controls playsinline>
-            <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/THINK TEACHER_ WHO we are and WHAT we do!.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVEhJTksgVEVBQ0hFUl8gV0hPIHdlIGFyZSBhbmQgV0hBVCB3ZSBkbyEubXA0IiwiaWF0IjoxNjM4OTE2NTY4LCJleHAiOjE5NTQyNzY1Njh9.LOYLcBhdqahMHksy4jpk9cQgrOhkdZNEkqgsmsXxhuo#t=3" type='video/mp4'>
+            <source src="https://dmtrzpwsgsztkyucmxbx.supabase.in/storage/v1/object/public/temp/THINK TEACHER_ WHO we are and WHAT we do!.mp4#t=3" type='video/mp4'>
         </video>
     </div>
 

@@ -19,7 +19,7 @@
         <div class="container text-center mb-4">
             <!-- svelte-ignore a11y-media-has-caption -->
             <video controls playsinline>
-                <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/THINK TEACHER_ WHO we are and WHAT we do!.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVEhJTksgVEVBQ0hFUl8gV0hPIHdlIGFyZSBhbmQgV0hBVCB3ZSBkbyEubXA0IiwiaWF0IjoxNjM4OTE2NTY4LCJleHAiOjE5NTQyNzY1Njh9.LOYLcBhdqahMHksy4jpk9cQgrOhkdZNEkqgsmsXxhuo#t=3" type='video/mp4'>
+                <source src="https://dmtrzpwsgsztkyucmxbx.supabase.in/storage/v1/object/public/temp/THINK TEACHER_ WHO we are and WHAT we do!.mp4#t=3" type='video/mp4'>
             </video>
         </div>
         <h3 class="read">ThinkTeacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
@@ -28,8 +28,8 @@
         <div class="col-lg-6 col-md-12 mt-4">
             <!-- svelte-ignore a11y-media-has-caption -->
             <video controls playsinline>
-                <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/TT - Bridget Fleming SITE.webm?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVFQgLSBCcmlkZ2V0IEZsZW1pbmcgU0lURS53ZWJtIiwiaWF0IjoxNjM5MTU0NjE4LCJleHAiOjE5NTQ1MTQ2MTh9.0P47I-dQj6BNH5ERlxcECsEuA4O-rSDSYJgka3buqws#t=6.88" type='video/webm'>
-                <source src="https://tirqswyaxhrjnlhdstky.supabase.in/storage/v1/object/sign/thinkteacher/TT - Bridget Fleming SITE_Compressed.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aGlua3RlYWNoZXIvVFQgLSBCcmlkZ2V0IEZsZW1pbmcgU0lURV9Db21wcmVzc2VkLm1wNCIsImlhdCI6MTYzOTE1NTAwMywiZXhwIjoxOTU0NTE1MDAzfQ.l51UqhKQA-YkWoZbzWtSDX7Ko7mCwPQfP-FTkm8Tf5c#t=6.88" type='video/mp4'>
+                <source src="https://dmtrzpwsgsztkyucmxbx.supabase.in/storage/v1/object/public/temp/TT - Bridget Fleming SITE.webm#t=6.88" type='video/webm'>
+                <source src="https://dmtrzpwsgsztkyucmxbx.supabase.in/storage/v1/object/public/temp/TT - Bridget Fleming SITE_Compressed.mp4#t=6.88" type='video/mp4'>
             </video>
         </div>
     </div>
