@@ -3,7 +3,7 @@
     
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+        API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
     }
 
 	export const load = async ({ fetch }) => {
@@ -65,7 +65,7 @@
         {#each partners as partner}
             <div class="col-sm-12 col-md-6 col-lg-4">
                 <div class="card bg-dark m-2 shadow-lg">
-                    <img class="img-fluid rounded cta"  src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/{partner.logo.hash}{partner.logo.ext}" alt="cover" on:click={() => goto('/partners/' + partner.slug)}>
+                    <img class="img-fluid rounded cta"  src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/{partner.logo.hash}{partner.logo.ext}" alt="cover" on:click={() => goto('/partners/' + partner.slug)}>
                     
                     <div class="card-body">
                         <h5 class="card-title">{partner.company_name}</h5>

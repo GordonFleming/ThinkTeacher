@@ -4,7 +4,7 @@
     let API_URL = 'http://localhost:1337'
     let health_cat = 3, travel_cat = 2, course_cat = 5, wellbeing_cat = 4, finance_cat = 6, legal_cat = 1
     if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+        API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
         health_cat = 2, travel_cat = 1, course_cat = 6, wellbeing_cat = 3, finance_cat = 5, legal_cat = 4
     }
 
@@ -156,7 +156,7 @@
                 {#each wellness as well}
                     <div class="col-sm-12 col-md-10 col-lg-6">
                         <div class="card bg-dark m-2 shadow-lg">
-                            <img class="img-fluid rounded cta"  src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/{well.banner.hash}{well.banner.ext}" alt="cover" on:click={() => goto('/auth/form-wellbeing')}>
+                            <img class="img-fluid rounded cta"  src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/{well.banner.hash}{well.banner.ext}" alt="cover" on:click={() => goto('/auth/form-wellbeing')}>
 
                             <!-- <small class="text-white">Image by: David Travis, Unsplash.</small> -->
                             <div class="card-body">

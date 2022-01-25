@@ -2,7 +2,7 @@
     import { prod } from '$lib/env.js'
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+        API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
     }
 
 	export const load = async ({ fetch }) => {

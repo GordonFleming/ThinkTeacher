@@ -4,7 +4,7 @@
 
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+        API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
     }
 
 	export const load = async ({ page: { params }, fetch }) => {
@@ -51,14 +51,14 @@
         {#if extraImage}
             <div class="row">
                 <div class="col-sm-12 col-md-6" style="text-align: right;">
-                    <img class="img-fluid mt-2" src='https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/{partner.image.hash}{partner.image.ext}' alt="Partner">
+                    <img class="img-fluid mt-2" src='https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/{partner.image.hash}{partner.image.ext}' alt="Partner">
                 </div>
                 <div class="col-sm-12 col-md-6">
-                    <img class="img-fluid justify-content-start mt-2" src='https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/{partner.custom[0].extraImage.formats.small.hash}{partner.custom[0].extraImage.formats.small.ext}' alt="Partner">
+                    <img class="img-fluid justify-content-start mt-2" src='https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/{partner.custom[0].extraImage.formats.small.hash}{partner.custom[0].extraImage.formats.small.ext}' alt="Partner">
                 </div>
             </div>
         {:else}
-            <img class="img-fluid mx-auto d-block mt-2" src='https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/{partner.image.hash}{partner.image.ext}' alt="Partner">
+            <img class="img-fluid mx-auto d-block mt-2" src='https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/{partner.image.hash}{partner.image.ext}' alt="Partner">
         {/if}
 
         <h2 class="text-center mt-3">{partner.name}</h2>
