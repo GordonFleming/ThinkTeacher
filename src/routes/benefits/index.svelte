@@ -91,49 +91,43 @@
     import SvelteMarkdown from 'svelte-markdown'
 
     let navbar, sticky
-    $: onMount(() => {
-        document.body.scrollTop = 0;
-        if($travelScroll){
-            document.getElementById(`${$travelScroll}`).scrollIntoView({ block: 'center' })
-        } 
-console.log($travelScroll)
+    onMount(() => {
+        //document.body.scrollTop = 0;
+        function scrollBene(){
+            if($travelScroll){
+                document.getElementById(`${$travelScroll}`).scrollIntoView({ block: 'start' })
+            } 
+        }
+        setTimeout(scrollBene, 150);
         navbar = document.getElementById("nav-benefits");
         sticky = navbar.offsetTop;
-	});
+	})
 
     export let travel, wellness, health, courses, finance, legal
 
     export let source, readMore = false
-
-    function stickYesNo() {
-        if (window.pageYOffset >= sticky) {
-            navbar.classList.add("sticky-top")
-        } else {
-            navbar.classList.remove("sticky-top");
-        }
-    }
 </script>
 
 <svelte:head>
 	<title>Benefits</title>
 </svelte:head>
 
-<svelte:window on:scroll={stickYesNo}/>
+<svelte:window on:scroll={() => (window.pageYOffset >= sticky) ? navbar.classList.add("sticky-top") : navbar.classList.remove("sticky-top")}/>
 
 <h1 class="text-center">Exclusive benefits for <span class="think">Think</span>Teacher members</h1>
 
 <div class="text-center" id="nav-benefits">
     <ul class="list-inline">
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('travel').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Travel <span class="text-logo-gold">-</span></h4></li>
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('wellbeing').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Wellbeing <span class="text-logo-gold">-</span></h4></li>
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('medical_aid').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Medical Aid <span class="text-logo-gold">-</span></h4></li>
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('legal').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Legal <span class="text-logo-gold">-</span></h4></li>
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('courses').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Courses <span class="text-logo-gold">-</span></h4></li>
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('finance').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Finance <span class="text-logo-gold">-</h4></li>
-        <!-- <li class="list-inline-item"><h4 on:click={() => document.getElementById('Books').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Books <span class="text-logo-gold">-</span></h4></li> -->
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('photography').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Photography <span class="text-logo-gold">-</span></h4></li>
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('IT').scrollIntoView({ behavior: 'smooth', block: 'center' })}>IT <span class="text-logo-gold">-</span></h4></li>
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('spa').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Spa</h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('travel').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Travel <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('wellbeing').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Wellbeing <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('medical_aid').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Medical Aid <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('legal').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Legal <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('courses').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Courses <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('finance').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Finance <span class="text-logo-gold">-</h4></li>
+        <!-- <li class="list-inline-item"><h4 on:click={() => document.getElementById('Books').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Books <span class="text-logo-gold">-</span></h4></li> -->
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('photography').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Photography <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('IT').scrollIntoView({ behavior: 'smooth', block: 'start' })}>IT <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('spa').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Spa</h4></li>
     </ul>
 </div>
 
