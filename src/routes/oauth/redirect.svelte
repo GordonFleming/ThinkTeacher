@@ -22,7 +22,7 @@
 
         const res = await axios.get(`${API_URL}/auth/google/callback?access_token=${myParam}`)
         userData = res.data
-        browserSet("provider", userData.provider)
+        browserSet("provider", userData.user.provider)
         browserSet("jwt", userData.jwt)
         $user = userData.user;
 
