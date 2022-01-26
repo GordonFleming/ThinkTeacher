@@ -1,5 +1,4 @@
 <script>
-    import { goto } from '$app/navigation'
     import { onMount } from 'svelte'
     import axios from 'axios'
     import { Jumper } from 'svelte-loading-spinners'
@@ -22,7 +21,6 @@
             error = e
         }
 	});
-
 
 	let webinars = [];
 </script>

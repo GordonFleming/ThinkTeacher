@@ -64,11 +64,10 @@
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-6">
             <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                <div class="card-body p-md-4 p-lg-5 text-center">
+                <div class="card-body p-md-4 p-lg-4 text-center">
     
                 <div class="mb-md-3 mt-md-2">
                     <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
-                    <p class="text-white-50 mb-3">Please enter your email and password</p>
 
                     {#if errorMsg != undefined}
                         <h4 class="error-col">{errorMsg}</h4>
@@ -80,7 +79,18 @@
                     {#if $errMsg}
                         <h4 class="error-col">{$errMsg}</h4>
                     {/if}
-                    
+
+                    <div class="mt-4 google-box">                      
+                        <div id="google-sso" class="Sso__button Sso__googleIdButton" on:click={() => goto('https://thinkteacher-strapi.glass.thinkteacher.co.za/connect/google')}>
+                            Continue with Google
+                        </div>
+                        <div class="Sso__divider ">
+                            <span class="Sso__dividerLine"></span>
+                            <span class="Sso__dividerText">or</span>
+                            <span class="Sso__dividerLine"></span>
+                        </div>
+                    </div>
+                    <p class="text-white-50 mb-3">Please enter your email and password</p>
                     <form name="login">
                         <div class="form-outline form-white mb-2 mt-3">
                             <label class="form-label" for="Email">Email</label>
@@ -92,7 +102,7 @@
                         </div>
                         <p class="small mb-3 pb-lg-2"><a class="text-white-50" href="/forgot-password">Forgot password?</a></p>
         
-                        <button class="btn btn-outline-light btn-lg px-4" type="submit" on:click|preventDefault={loginUser}>Login</button>
+                        <button class="btn btn-outline-light btn-lg px-4" type="submit" on:click|preventDefault={loginUser}>Login</button>            
                     </form>
                 
                     <div class="mt-2 pt-1">

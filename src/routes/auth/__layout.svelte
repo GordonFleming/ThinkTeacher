@@ -14,7 +14,7 @@
     }
 
     onMount(async() =>{
-        if(localStorage.getItem("jwt")){
+        if(localStorage.getItem("jwt") && localStorage.getItem("ttNum")){
             const res = await axios.get(`${API_URL}/users/me`, {
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem("jwt"),

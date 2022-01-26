@@ -19,6 +19,10 @@ body {
 	box-sizing: border-box;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
+input{
+    max-width: 400px;
+    margin: 0 auto;
+}
 @font-face {
     font-family: 'Mulish';
     src: local('Pacifico Regular'), url('/Mulish-SemiBold.ttf') format('truetype');
@@ -41,6 +45,7 @@ body {
     padding-top: 5rem;
     border-radius: 20px;
 }
+
 .bg-other{
     background-color: var(--bg-other);
 }
@@ -156,6 +161,96 @@ select option{
     color: rgba(255, 255, 255, 0.7);
     opacity: 1;
     font-size: small;
+}
+
+/* Google button & Devider */
+.google-box{
+    margin: 0 auto; 
+    max-width: 392px; 
+    width: auto;
+}
+.Sso__divider {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin: 28px 0;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+.Sso__dividerLine {
+    border-top: 1px solid #edeff1;
+    width: 40%;
+}
+.Sso__dividerText {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    color: #878a8c;
+    text-transform: uppercase;
+}
+.Sso__googleIdButton:before {
+    background-color: #fff;
+    border-radius: 3px;
+    content: "";
+    height: 46px;
+    left: 2px;
+    position: absolute;
+    top: 2px;
+    width: 46px;
+}
+.Sso__googleIdButton:after {
+    background-repeat: no-repeat;
+    content: "";
+    height: 20px;
+    left: 16px;
+    position: absolute;
+    width: 20px;
+    background-image: url(https://www.redditstatic.com/accountmanager/021031274726bcaef27a190f609eb59f.svg);
+}
+.Sso__button:hover {
+    color: #fff;
+    background: #3394dc;
+}
+.Sso__googleIdButton{
+    padding: 16px 0 16px 65px;
+    position: relative;
+    text-align: left;
+}
+.Sso__button {
+    font-family: IBMPlexSans,sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .5px;
+    line-height: 32px;
+    color: #fff;
+    display: inline-block;
+    border: none;
+    border-radius: 4px;
+    text-align: center;
+    background: #0079d3;
+    text-transform: uppercase;
+    cursor: pointer;
+    line-height: unset;
+    min-height: 35px;
+    max-width: 392px;
+    width: auto;
+    min-width: 155px;
+    padding: 5px 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background-color: #fff;
+    color: #0079d3;
+    border: 1px solid #0079d3;
+    display: block;
+    height: auto;
+    margin: 8px 0;
+    padding: 12px 28px;
+    width: 100%;
 }
 
 /* Icon */

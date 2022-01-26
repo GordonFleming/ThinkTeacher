@@ -10,6 +10,7 @@
 	import { sgKey, prod } from '$lib/env.js'
     import z from 'zxcvbn'
     import saIdParser from 'south-african-id-parser'
+    import { onMount } from 'svelte'
 
     let API_URL = 'http://localhost:1337'
     let sendgridList = "57df636d-5399-423f-bf72-35424b5644b5"
@@ -18,6 +19,13 @@
         sendgridList = "75b1cd1c-6bb0-406b-bc94-d7c2f04bc9f8"
     }
 
+    onMount(() =>{
+        if(localStorage.getItem("provider") === 'google'){
+            registerNext = true
+            provider = true
+        }
+	})
+
     // Disable button
     let buttonNext = true, buttonSubmit = true
     $: (email && username && s) ? buttonNext = false : buttonNext = true
@@ -25,7 +33,7 @@
 
     let username, email, password = ""
     let msg, errorMsg = null
-    let registerNext = false, registered = false
+    let registerNext = false, registered = false, provider = false
     let firstName, lastName, idNum, altMail, cell, eduPhase, qualification, sace, workplace, province
 
     // TT Code Gen
@@ -52,7 +60,26 @@
     $: isValidID = saIdParser.validate(idNum)
     
     async function registerUser(){
-        if(s){ 
+        if(provider){
+            await axios.put(`${API_URL}/users/${id}`,{
+                firstName: firstName,
+                lastName: lastName,
+                idNum: idNum,
+                altMail: altMail,
+                cell: cell,
+                eduPhase: eduPhase,
+                qualification: qualification,
+                sace: sace,
+                workplace: workplace,
+                province: province,
+                ttCode: ttCode, 
+            },
+            { headers: { Authorization: 'Bearer ' + localStorage.getItem("jwt"),} }
+            ).then(response => {
+                msg = response.data.user.firstName + ", you have been successfully registered with ThinkTeacher!"
+            })
+        }
+        if(s && !provider){ 
             errorMsg=null
             await axios
             .post(`${API_URL}/auth/local/register`, {
@@ -154,11 +181,11 @@
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-6">
             <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                {#if registerNext}
+                {#if registerNext && !provider}
                     <i style="padding-top: 1.8rem; padding-left: 1.8rem;" on:click={() => registerNext = false}><Icon data={ arrowLeft } scale="1.8"/></i>
                 {/if}
                 <div class="card-body p-md-3 p-lg-4 text-center">
-                <div class="mb-md-3 mt-md-2">
+                <div class="mb-md-3">
                     <h2 class="fw-bold mb-2 text-uppercase">Register</h2>
                     {#if errorMsg}
                         <h4 class="error-col">{errorMsg}</h4>
@@ -169,10 +196,20 @@
                     {#if registered}
                         <button class="btn btn-secondary mx-auto mt-3 mb-3 fw-bold fs-5" style="width: 300px;" on:click={() => goto("/login")}>I confirmed my email and want to login</button>
                     {/if}
+
+                    <div class="mt-4 google-box">                      
+                        <div id="google-sso" class="Sso__button Sso__googleIdButton" on:click={() => goto('https://thinkteacher-strapi.glass.thinkteacher.co.za/connect/google')}>
+                            Continue with Google
+                        </div>
+                        <div class="Sso__divider ">
+                            <span class="Sso__dividerLine"></span>
+                            <span class="Sso__dividerText">or</span>
+                            <span class="Sso__dividerLine"></span>
+                        </div>
+                    </div>
                     
                     <form id="register">
                         {#if !registerNext}
-                            <p class="text-white-50 mb-3">Please enter your email and password</p>
                             <div class="form-outline form-white mb-2">
                                 <label class="form-label" for="Username">Username</label>
                                 <input type="text" name="username" id="username" class="form-control form-control-lg" placeholder="username" bind:value={username} required />
@@ -181,8 +218,8 @@
                                 <label class="form-label" for="Email">Email</label>
                                 <input type="email" id="Email" class="form-control form-control-lg" placeholder="email" bind:value={email} required />
                             </div>
-                            <div class="form-outline form-white mb-4 text-left">
-                                <label class="form-label" for="Password">Password</label>
+                            <div class="form-outline form-white mb-4">
+                                <label class="form-label" for="Password">Password</label><br>
                                 <input type="password" id="Password" class="form-control form-control-lg" placeholder="password" style="margin-right: -2.2rem; display:inline-block;" bind:value={password} required/>
                                 <i on:click={seePassword}><Icon data={ (seePlz) ? eye : eyeSlash } scale="1.5" style="cursor: pointer; display:inline-block; z-index: 99;"/></i>
                                 {#if password.length > 0}
