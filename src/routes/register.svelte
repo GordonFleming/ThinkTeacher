@@ -21,7 +21,7 @@
     }
 
     onMount(() =>{
-        if(localStorage.getItem("provider") === 'google'){
+        if(localStorage.getItem("provider") == 'google'){
             registerNext = true
             provider = true
         }
@@ -60,6 +60,7 @@
 
     $: isValidID = saIdParser.validate(idNum)
     
+    // TODO: Add loading symbol here until complete and success msg shows
     async function registerUser(){
         if(provider){
             await axios.put(`${API_URL}/users/${$id}`,{
@@ -110,53 +111,38 @@
                 console.log('An error occurred:', error.response)
                 errorMsg = error.response.data.message[0].messages[0].message
             })
-
-            // Account for missing altMail and province
-            if(altMail && province && !errorMsg){
-                await axios
-                .put('https://sendgrid.com/v3/marketing/contacts', {
-                            "list_ids": [sendgridList],
-                            "contacts": [{
-                                "email":email,
-                                "alternate_emails":[altMail],
-                                "first_name":firstName,
-                                "last_name":lastName,
-                                "state_province_region":province,
-                                "phone_number":cell,
-                                "custom_fields": {"e1_T":ttCode},
-                                },
-                            ]},
-                        { headers: { Authorization: `Bearer ${sgKey}`}
-                }).then(response => {
-                    console.log('SG reponse: ', response.statusText, " ", response.data)
-                })
-                .catch((error) => {
-                    console.error(error)
-                })
-            }else if(!errorMsg){
-                await axios
-                .put('https://sendgrid.com/v3/marketing/contacts', {
-                            "list_ids": [sendgridList],
-                            "contacts": [{
-                                "email":email,
-                                "first_name":firstName,
-                                "last_name":lastName,
-                                "phone_number":cell,
-                                "custom_fields": {"e1_T":ttCode},
-                                },
-                            ]},
-                        { headers: { Authorization: `Bearer ${sgKey}`}
-                }).then(response => {
-                    console.log('SG reponse: ', response.statusText, " ", response.data)
-                    document.getElementById("register").reset()
-                    password = ""
-                })
-                .catch((error) => {
-                    console.error(error)
-                })
-            }
         }else{
             errorMsg = "Password not strong enough"
+        }
+        // Sendgrid
+        if(!errorMsg){
+            // Account for missing altMail and province
+            if(altMail && province){
+                altMail = "null@null.com"
+                province = "NA"
+            }
+            await axios
+            .put('https://sendgrid.com/v3/marketing/contacts', {
+                        "list_ids": [sendgridList],
+                        "contacts": [{
+                            "email":email,
+                            "alternate_emails":[altMail],
+                            "first_name":firstName,
+                            "last_name":lastName,
+                            "state_province_region":province,
+                            "phone_number":cell,
+                            "custom_fields": {"e1_T":ttCode},
+                            },
+                        ]},
+                    { headers: { Authorization: `Bearer ${sgKey}`}
+            }).then(response => {
+                console.log('SG reponse: ', response.statusText, " ", response.data)
+                document.getElementById("register").reset()
+                password = ""
+            })
+            .catch((error) => {
+                console.error(error)
+            })
         }
     }
 
@@ -194,6 +180,9 @@
                         <h4 class="success-col">{msg}</h4>
                     {/if}
 
+                    {#if provider}
+                        <p>Please complete your registration...</p>
+                    {/if}
                     {#if registered}
                         <button class="btn btn-secondary mx-auto mt-3 mb-3 fw-bold fs-5" style="width: 300px;" on:click={() => goto("/login")}>I confirmed my email and want to login</button>
                     {/if}
