@@ -79,6 +79,9 @@
             { headers: { Authorization: 'Bearer ' + localStorage.getItem("jwt"),} }
             ).then(response => {
                 msg = response.data.firstName + ", you have been successfully registered with ThinkTeacher!"
+                registerNext = false
+                registered = true
+                document.getElementById("register").reset()
             })
         }
         if(s && !provider){ 
@@ -111,7 +114,7 @@
                 console.log('An error occurred:', error.response)
                 errorMsg = error.response.data.message[0].messages[0].message
             })
-        }else{
+        }else if(!s && !provider){
             errorMsg = "Password not strong enough"
         }
         // Sendgrid
