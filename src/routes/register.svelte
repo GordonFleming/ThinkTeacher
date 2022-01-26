@@ -196,20 +196,21 @@
                     {#if registered}
                         <button class="btn btn-secondary mx-auto mt-3 mb-3 fw-bold fs-5" style="width: 300px;" on:click={() => goto("/login")}>I confirmed my email and want to login</button>
                     {/if}
-
-                    <div class="mt-4 google-box">                      
-                        <div id="google-sso" class="Sso__button Sso__googleIdButton" on:click={() => goto('https://thinkteacher-strapi.glass.thinkteacher.co.za/connect/google')}>
-                            Continue with Google
-                        </div>
-                        <div class="Sso__divider ">
-                            <span class="Sso__dividerLine"></span>
-                            <span class="Sso__dividerText">or</span>
-                            <span class="Sso__dividerLine"></span>
-                        </div>
-                    </div>
                     
                     <form id="register">
                         {#if !registerNext}
+                        
+                            <div class="mt-4 google-box">                      
+                                <div id="google-sso" class="Sso__button Sso__googleIdButton" on:click={() => goto('https://thinkteacher-strapi.glass.thinkteacher.co.za/connect/google')}>
+                                    Continue with Google
+                                </div>
+                                <div class="Sso__divider ">
+                                    <span class="Sso__dividerLine"></span>
+                                    <span class="Sso__dividerText">or</span>
+                                    <span class="Sso__dividerLine"></span>
+                                </div>
+                            </div>
+
                             <div class="form-outline form-white mb-2">
                                 <label class="form-label" for="Username">Username</label>
                                 <input type="text" name="username" id="username" class="form-control form-control-lg" placeholder="username" bind:value={username} required />

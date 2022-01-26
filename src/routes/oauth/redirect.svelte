@@ -24,17 +24,17 @@
         userData = res.data
         browserSet("provider", userData.user.provider)
         browserSet("jwt", userData.jwt)
+        browserSet("id", userData.user.id)
+        $id = userData.user.id
         $user = userData.user;
 
-        if(!userData.idNum){
+        if(!userData.user.idNum){
             goto('/register')
-        }else if(userData.idNum){
+        }else if(userData.user.idNum){
             browserSet("name", userData.user.firstName)
-            $name = userData.firstName;
+            $name = userData.user.firstName;
             browserSet("surname", userData.user.lastName)
-            $surname = userData.lastName;
-            browserSet("id", userData.user.id)
-            $id = userData.id
+            $surname = userData.user.lastName;
             browserSet("ttNum", userData.user.ttCode)
             $ttNum = userData.user.ttCode
             goto('/benefits')
