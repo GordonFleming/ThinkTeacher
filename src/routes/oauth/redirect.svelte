@@ -17,10 +17,10 @@
     let myParam, userData
     onMount(async () => {
         urlParams = new URLSearchParams(window.location.search)
-        myParam = urlParams.get('id_token')
+        myParam = urlParams.get('access_token')
         console.log(myParam)
 
-        const res = await axios.get(`${API_URL}/auth/google/callback?id_token=${myParam}`)
+        const res = await axios.get(`${API_URL}/auth/google/callback?access_token=${myParam}`)
         userData = res.data
         browserSet("provider", userData.provider)
         browserSet("jwt", userData.jwt)
