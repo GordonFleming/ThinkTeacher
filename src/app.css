@@ -209,7 +209,7 @@ select option{
     left: 16px;
     position: absolute;
     width: 20px;
-    background-image: url(https://www.redditstatic.com/accountmanager/021031274726bcaef27a190f609eb59f.svg);
+    background-image: url('static/google.svg');
 }
 .Sso__button:hover {
     color: #fff;
