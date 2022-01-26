@@ -11,6 +11,7 @@
     import z from 'zxcvbn'
     import saIdParser from 'south-african-id-parser'
     import { onMount } from 'svelte'
+    import { id } from '$lib/stores';
 
     let API_URL = 'http://localhost:1337'
     let sendgridList = "57df636d-5399-423f-bf72-35424b5644b5"
@@ -61,7 +62,7 @@
     
     async function registerUser(){
         if(provider){
-            await axios.put(`${API_URL}/users/${id}`,{
+            await axios.put(`${API_URL}/users/${$id}`,{
                 firstName: firstName,
                 lastName: lastName,
                 idNum: idNum,
@@ -199,7 +200,7 @@
                     
                     <form id="register">
                         {#if !registerNext}
-                        
+
                             <div class="mt-4 google-box">                      
                                 <div id="google-sso" class="Sso__button Sso__googleIdButton" on:click={() => goto('https://thinkteacher-strapi.glass.thinkteacher.co.za/connect/google')}>
                                     Continue with Google
