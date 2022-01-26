@@ -96,7 +96,7 @@
         if($travelScroll){
             document.getElementById(`${$travelScroll}`).scrollIntoView({ block: 'center' })
         } 
-
+console.log($travelScroll)
         navbar = document.getElementById("nav-benefits");
         sticky = navbar.offsetTop;
 	});

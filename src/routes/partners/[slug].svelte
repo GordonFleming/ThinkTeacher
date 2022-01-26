@@ -7,7 +7,7 @@
         API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
     }
 
-	export const load = async ({ page: { params }, fetch }) => {
+	export async function load ({ params, fetch }){
 		const { slug } = params
 		const res = await fetch(`${API_URL}/partners?slug=${slug}`)
 
@@ -47,7 +47,7 @@
 
 {#if partner}
     <div class="container bg-dark mt-4 border-custom mt-5 mb-5">
-        <a href="/partners"><Icon data={ arrowLeft } scale="1.8"/></a>
+        <a sveltekit:prefetch href="/partners"><Icon data={ arrowLeft } scale="1.8"/></a>
         {#if extraImage}
             <div class="row">
                 <div class="col-sm-12 col-md-6" style="text-align: right;">

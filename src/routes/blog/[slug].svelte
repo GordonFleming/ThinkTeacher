@@ -5,7 +5,7 @@
         API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
     }
 
-	export const load = async ({ page: { params }, fetch }) => {
+	export async function load({ params, fetch }){
 		const { slug } = params
         const res = await fetch(`${API_URL}/posts?slug=${slug}`)
 
@@ -48,7 +48,7 @@
 
 {#if post}
     <div class="container bg-dark mt-4 border-custom mb-5">
-        <a href="/blog"><Icon data={ arrowLeft } scale="1.8"/></a>
+        <a sveltekit:prefetch href="/blog"><Icon data={ arrowLeft } scale="1.8"/></a>
         <img class="img-fluid mx-auto d-block mt-2" src='https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/{post.image.hash}{post.image.ext}' alt="Blog banner">
 
         <h1 class="text-center">{post.title}</h1>
@@ -56,7 +56,7 @@
 
         <h5 class="mt-5">Author: {post.Author}</h5>
         {#if post.source_url}
-            <a sveltekit:prefetch href="{post.source_url}" target="_blank">{post.source_url}</a><br>
+            <a href="{post.source_url}" target="_blank">{post.source_url}</a><br>
         {/if}
         <time datetime="{publish}">{publish}</time>  
         

@@ -183,7 +183,7 @@
                         <h4 class="success-col">{msg}</h4>
                     {/if}
 
-                    {#if provider}
+                    {#if provider && !registered}
                         <p>Please complete your registration...</p>
                     {/if}
                     {#if registered}
