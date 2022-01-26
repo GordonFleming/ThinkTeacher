@@ -77,7 +77,7 @@
             },
             { headers: { Authorization: 'Bearer ' + localStorage.getItem("jwt"),} }
             ).then(response => {
-                msg = response.data.user.firstName + ", you have been successfully registered with ThinkTeacher!"
+                msg = response.data.firstName + ", you have been successfully registered with ThinkTeacher!"
             })
         }
         if(s && !provider){ 

@@ -18,7 +18,6 @@
     onMount(async () => {
         urlParams = new URLSearchParams(window.location.search)
         myParam = urlParams.get('access_token')
-        console.log(myParam)
 
         const res = await axios.get(`${API_URL}/auth/google/callback?access_token=${myParam}`)
         userData = res.data

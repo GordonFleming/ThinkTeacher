@@ -64,6 +64,7 @@
                 setTimeout(backFalse, 2000)
                 $name = username
                 browserSet("name", $name)
+                console.log(response)
             })
             .catch((error) => {
                 console.error("eee", error.response.data.message[0].messages[0].message.replace("."," "))
