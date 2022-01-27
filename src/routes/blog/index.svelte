@@ -36,7 +36,7 @@
 
 <div class="container mx-auto mt-4 mb-5">
     {#if posts.length <= 0}
-        <h3 class="text-center">No posts are on the blog yet, check back another time.</h3>
+        <h3 class="text-center">Coming Soon!</h3>
     {:else}
         <div class="row justify-content-center">
             {#each posts as post}

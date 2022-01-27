@@ -45,10 +45,10 @@
                     <a class="nav-link fromLeft" sveltekit:prefetch href="/about" on:click={mustClick}>About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fromLeft" sveltekit:prefetch href="/partners" on:click={mustClick}>Partners</a>
+                    <a class="nav-link fromLeft" sveltekit:prefetch href="/benefits" on:click={mustClick}>Benefits</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fromLeft" sveltekit:prefetch href="/benefits" on:click={mustClick}>Benefits</a>
+                    <a class="nav-link fromLeft" sveltekit:prefetch href="/partners" on:click={mustClick}>Partners</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link fromLeft" sveltekit:prefetch href="/blog" on:click={mustClick}>Blog</a>
@@ -59,6 +59,9 @@
                       <li><a class="dropdown-item" sveltekit:prefetch href="/events" on:click={mustClick}>Events</a></li>
                       <li><a class="dropdown-item" sveltekit:prefetch href="/webinars" on:click={mustClick}>Webinars</a></li>
                     </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fromLeft" sveltekit:prefetch href="/our-team" on:click={mustClick}>Our Team</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link fromLeft" sveltekit:prefetch href="/contact-us" on:click={mustClick}>Contact</a>
