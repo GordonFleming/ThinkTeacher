@@ -30,7 +30,7 @@
                 <h3 class="card-header">Bridget Fleming</h3>
                     <div class="card-body">
                         <h5 class="card-title">Founder</h5>
-                        <h6 class="card-subtitle text-muted">MSc | HDE (Wits)</h6>
+                        <h6 class="card-subtitle text-muted">MSc | PGCE</h6>
                     </div>
                     <img class="d-block user-select-none img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/Bridget_New_01cd375526.webp" alt="profile img">
                     <div class="card-body">
@@ -105,8 +105,8 @@
                         <h5 class="card-title">Head of Wellbeing</h5>
                         <h6 class="card-subtitle text-muted">
                             BA Hons | 
-                            H Dip.Ed. | 
-                            PMD (GIBS) | 
+                            PGCE | 
+                            PMD | 
                             Higher Cert. in Financial Planning | 
                             Cert. in Digital Marketing
                         </h6>
@@ -207,7 +207,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Head of Operations</h5>
                         <h6 class="card-subtitle text-muted">
-                            BA (Wits) | HDE (Wits) | BA Hons (SA) | MEd(Wits)  
+                            BA | PGCE | BA Hons (SA) | MEd 
                         </h6>
                     </div>
                     <img class="d-block user-select-none img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/Malcolm_838637bdf3.webp" alt="profile img">
