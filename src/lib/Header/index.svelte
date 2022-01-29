@@ -39,7 +39,7 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbar">
             <ul class="navbar-nav">
                 <div class="nav-img mx-auto">
-                    <a class="navbar-brand" href="/" on:click={mustClick}><img src="/thinkteacherlogo-final.png" alt="logo" width="200" ></a>
+                    <a class="navbar-brand" sveltekit:prefetch href="/" on:click={mustClick}><img src="/thinkteacherlogo-final.png" alt="logo" width="200" ></a>
                 </div>
                 <li class="nav-item">
                     <a class="nav-link fromLeft" sveltekit:prefetch href="/about" on:click={mustClick}>About</a>

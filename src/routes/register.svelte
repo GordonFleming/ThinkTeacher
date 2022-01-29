@@ -12,6 +12,7 @@
     import saIdParser from 'south-african-id-parser'
     import { onMount } from 'svelte'
     import { id } from '$lib/stores';
+    import { Jumper } from 'svelte-loading-spinners'
 
     let API_URL = 'http://localhost:1337'
     let sendgridList = "57df636d-5399-423f-bf72-35424b5644b5"
@@ -28,7 +29,7 @@
 	})
 
     // Disable button
-    let buttonNext = true, buttonSubmit = true
+    let buttonNext = true, buttonSubmit = true, loading = false
     $: (email && username && s) ? buttonNext = false : buttonNext = true
     $: (firstName && lastName && isValidID && cell && eduPhase !== '') ? buttonSubmit = false : buttonSubmit = true
 
@@ -52,11 +53,7 @@
     let barCol = ""
     $: s = z(password).score > 2
     $: progress = (z(password).score/4)*100
-    $: if(s){
-        barCol = "bg-success"
-    }else{
-        barCol = "bg-danger"
-    }
+    $: (s) ? barCol = "bg-success" : barCol = "bg-danger"
 
     $: isValidID = saIdParser.validate(idNum)
     
@@ -119,11 +116,13 @@
         }
         // Sendgrid
         if(!errorMsg){
+            loading = true
+            document.documentElement.scrollTop = 0
+
             // Account for missing altMail and province
-            if(altMail && province){
-                altMail = "null@null.com"
-                province = "NA"
-            }
+            if(!altMail){ altMail = "null@null.com" }
+            if(!province){ province = "NA" }
+                
             await axios
             .put('https://sendgrid.com/v3/marketing/contacts', {
                         "list_ids": [sendgridList],
@@ -142,6 +141,7 @@
                 console.log('SG reponse: ', response.statusText, " ", response.data)
                 document.getElementById("register").reset()
                 password = ""
+                loading = false
             })
             .catch((error) => {
                 console.error(error)
@@ -165,6 +165,12 @@
 <svelte:head>
 	<title>Register</title>
 </svelte:head>
+
+{#if loading}
+    <div class="d-flex justify-content-center mt-5">
+        <Jumper size="150" color="#5C677D" unit="px" duration="1s"></Jumper>
+    </div>
+{/if}
 
 <section class="vh-50 gradient-custom container mt-4 mb-4">
     <div class="py-3 h-100">
