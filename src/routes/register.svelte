@@ -49,15 +49,13 @@
     ttCode += dateNow.replace(new RegExp('/','g'),'')
     ttCode += Math.floor((Math.random() * 899) + 100)
 
-    // Password
+    // Password checks
     let barCol = ""
     $: s = z(password).score > 2
     $: progress = (z(password).score/4)*100
     $: (s) ? barCol = "bg-success" : barCol = "bg-danger"
-
     $: isValidID = saIdParser.validate(idNum)
     
-    // TODO: Add loading symbol here until complete and success msg shows
     async function registerUser(){
         if(provider){
             await axios.put(`${API_URL}/users/${$id}`,{
