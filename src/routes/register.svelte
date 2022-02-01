@@ -189,7 +189,7 @@
                     {#if provider && !registered}
                         <p>Please complete your registration...</p>
                     {/if}
-                    {#if registered}
+                    {#if registered && !provider}
                         <button class="btn btn-secondary mx-auto mt-3 mb-3 fw-bold fs-5" style="width: 300px;" on:click={() => goto("/login")}>I confirmed my email and want to login</button>
                     {/if}
                     
