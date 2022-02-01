@@ -76,7 +76,6 @@
                 msg = response.data.firstName + ", you have been successfully registered with ThinkTeacher!"
                 registerNext = false
                 registered = true
-                document.getElementById("register").reset()
             })
         }
         if(s && !provider){ 
@@ -103,7 +102,6 @@
                 msg = response.data.user.firstName + ", you have been successfully registered with ThinkTeacher! Please confirm your email to login."
                 registerNext = false
                 registered = true
-                document.getElementById("register").reset()
             })
             .catch(error => {
                 console.log('An error occurred:', error.response)
@@ -117,9 +115,9 @@
             loading = true
             document.documentElement.scrollTop = 0
 
-            // Account for missing altMail and province
-            if(!altMail){ altMail = "null@null.com" }
-            if(!province){ province = "NA" }
+            // Account for missing altMail & province
+            if(!altMail) altMail = "null@null.com" 
+            if(!province) province = "NA" 
                 
             await axios
             .put('https://sendgrid.com/v3/marketing/contacts', {
@@ -149,13 +147,13 @@
 
     let seePlz = true
     function seePassword() {
-        var x = document.getElementById("Password");
+        var x = document.getElementById("Password")
         if (x.type === "password") {
-            x.type = "text";
+            x.type = "text"
             seePlz = false
         } else {
             seePlz = true
-            x.type = "password";
+            x.type = "password"
         }
     }
 </script>
