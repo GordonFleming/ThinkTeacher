@@ -74,6 +74,7 @@
             { headers: { Authorization: 'Bearer ' + localStorage.getItem("jwt"),} }
             ).then(response => {
                 msg = response.data.firstName + ", you have been successfully registered with ThinkTeacher!"
+                email = response.data.email
                 registerNext = false
                 registered = true
             })
