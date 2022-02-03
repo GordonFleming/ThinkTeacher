@@ -2,10 +2,10 @@
     import { prod } from '$lib/env.js'
     
     let API_URL = 'http://localhost:1337'
-    let health_cat = 3, travel_cat = 2, course_cat = 5, wellbeing_cat = 4, finance_cat = 6, legal_cat = 1
+    let health_cat = 3, travel_cat = 2, course_cat = 5, wellbeing_cat = 4, finance_cat = 6, legal_cat = 1, books_cat = 6
     if(prod === "true"){
         API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
-        health_cat = 2, travel_cat = 1, course_cat = 6, wellbeing_cat = 3, finance_cat = 5, legal_cat = 4
+        health_cat = 2, travel_cat = 1, course_cat = 6, wellbeing_cat = 3, finance_cat = 5, legal_cat = 4, books_cat = 7
     }
 
 	export const load = async ({ fetch }) => {
@@ -48,7 +48,8 @@
 
         const res = await fetch(endpoint, options);
 
-        let packages = [], travel = [], health = [], wellness = [], courses = [], finance = [], legal = [], source
+        let packages = [], travel = [], health = [], wellness = [], courses = [], finance = [], legal = [], books = []
+        let source
 
         if (res.ok) {
 			const data = await res.json()
@@ -67,12 +68,14 @@
                     finance.push(item)
                 }else if(item.partner.category.id == legal_cat){
                     legal.push(item)
+                }else if(item.partner.category.id == books_cat){
+                    books.push(item)
                 }
             } 
 
             packages.forEach(seperatePackages)
 
-            return { props: { travel, health, wellness, courses, finance, legal, source} }
+            return { props: { travel, health, wellness, courses, finance, legal, books, source} }
 		}
 
         return {
@@ -103,7 +106,7 @@
         sticky = navbar.offsetTop;
 	})
 
-    export let travel, wellness, health, courses, finance, legal
+    export let travel, wellness, health, courses, finance, legal, books
 
     export let source, readMore = false
 </script>
@@ -125,7 +128,7 @@
         <li class="list-inline-item"><h4 on:click={() => document.getElementById('courses').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Courses <span class="text-logo-gold">-</span></h4></li>
         <li class="list-inline-item"><h4 on:click={() => document.getElementById('finance').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Finance <span class="text-logo-gold">-</h4></li>
         <!-- <li class="list-inline-item"><h4 on:click={() => document.getElementById('Books').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Books <span class="text-logo-gold">-</span></h4></li> -->
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('photography').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Photography <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('books').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Book Store <span class="text-logo-gold">-</span></h4></li>
         <li class="list-inline-item"><h4 on:click={() => document.getElementById('IT').scrollIntoView({ behavior: 'smooth', block: 'start' })}>IT <span class="text-logo-gold">-</span></h4></li>
         <li class="list-inline-item"><h4 on:click={() => document.getElementById('spa').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Spa</h4></li>
     </ul>
@@ -221,10 +224,10 @@
             <h4>Coming soon</h4>
         </div> -->
         
-        <!-- Photography -->
-        <div class="grey-grad row justify-content-center big-gap" id="photography">
-            <h2 class="display-3">Photography</h2>
-            <h4>Coming soon</h4>
+        <!-- Book Store -->
+        <div class="grey-grad row justify-content-center big-gap" id="books">
+            <h2 class="display-3">Book Store</h2>
+            <PartnerBenefit partnerData={books} />
         </div>
         <!-- IT -->
         <div class="grey-grad row justify-content-center big-gap" id="IT">

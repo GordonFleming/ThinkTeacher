@@ -190,11 +190,11 @@
             <a href="/benefits" use:viewport on:enterViewport={() => ben7 = true}>
                <div class="placeholder">
                 {#if ben7}
-                    <img transition:fly="{{ y: 200, duration: 600 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/photography_68b64fd52e.webp" alt="photography" on:click={() => $travelScroll='photography'}>
+                    <img transition:fly="{{ y: 200, duration: 600 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/book_store_4ca6894b2a.png" alt="books" on:click={() => $travelScroll='books'}>
                 {/if}
                 </div>
             </a>
-            <h3 class="mt-3">Photography</h3>
+            <h3 class="mt-3">Book Store</h3>
             <h5 class="text-logo-gold">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
