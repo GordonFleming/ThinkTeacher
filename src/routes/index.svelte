@@ -106,7 +106,7 @@
     {#if !$name}
         <div class="row mt-5">
             <div class="col-sm-12 col-lg-4">
-                <h4 id="#hash" class="fs-1 mt-2 text-center">First 500 members get a <strong>FREE</strong> membership for a year</h4>
+                <h4 id="#hash" class="fs-1 mt-2 text-center"><strong>FREE</strong> membership ending soon, register today.</h4>
             </div>
             <div class="col-sm-12 col-lg-4 mt-sm-4 text-center">
                 <button class="btn btn-lg bg-gold shadow-lg cta" style="width: 300px;" on:click={() => goto("/register")}><h4 style="color: black;">Become a member!</h4></button>
@@ -252,6 +252,9 @@
             </div>
             <div class="slide-content">
                 <img class="logo img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/small_MTC_New_Logo_large_7ae60c9ecf.webp" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_exclusivebooks_48aeb13f31.jpeg" alt="partner"/>
             </div>
         </Carousel>
     </div>
