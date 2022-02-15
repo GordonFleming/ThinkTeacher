@@ -100,7 +100,7 @@
             })
             .then(response => {
                 console.log('User profile', response.data.user)
-                msg = response.data.user.firstName + ", you have been successfully registered with ThinkTeacher! Please confirm your email to login."
+                msg = response.data.user.firstName + ", you have been successfully registered with ThinkTeacher!"
                 registerNext = false
                 registered = true
             })
@@ -190,7 +190,7 @@
                         <p>Please complete your registration...</p>
                     {/if}
                     {#if registered && !provider}
-                        <button class="btn btn-secondary mx-auto mt-3 mb-3 fw-bold fs-5" style="width: 300px;" on:click={() => goto("/login")}>I confirmed my email and want to login</button>
+                        <button class="btn btn-secondary mx-auto mt-3 mb-3 fw-bold fs-5" style="width: 300px;" on:click={() => goto("/login")}>Login Now</button>
                     {/if}
                     
                     <form id="register">
