@@ -2,10 +2,10 @@
     import { prod } from '$lib/env.js'
     
     let API_URL = 'http://localhost:1337'
-    let health_cat = 3, travel_cat = 2, course_cat = 5, wellbeing_cat = 4, finance_cat = 6
+    let health_cat = 3, travel_cat = 2, course_cat = 5, wellbeing_cat = 4, finance_cat = 6, legal_cat = 1, books_cat = 6
     if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
-        health_cat = 2, travel_cat = 1, course_cat = 6, wellbeing_cat = 3, finance_cat = 5
+        API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
+        health_cat = 2, travel_cat = 1, course_cat = 6, wellbeing_cat = 3, finance_cat = 5, legal_cat = 4, books_cat = 7
     }
 
 	export const load = async ({ fetch }) => {
@@ -48,7 +48,8 @@
 
         const res = await fetch(endpoint, options);
 
-        let packages = [], travel = [], health = [], wellness = [], courses = [], finance = [], source
+        let packages = [], travel = [], health = [], wellness = [], courses = [], finance = [], legal = [], books = []
+        let source
 
         if (res.ok) {
 			const data = await res.json()
@@ -65,12 +66,16 @@
                     courses.push(item)
                 }else if(item.partner.category.id == finance_cat){
                     finance.push(item)
+                }else if(item.partner.category.id == legal_cat){
+                    legal.push(item)
+                }else if(item.partner.category.id == books_cat){
+                    books.push(item)
                 }
             } 
 
             packages.forEach(seperatePackages)
 
-            return { props: { travel, health, wellness, courses, finance, source} }
+            return { props: { travel, health, wellness, courses, finance, legal, books, source} }
 		}
 
         return {
@@ -89,49 +94,43 @@
     import SvelteMarkdown from 'svelte-markdown'
 
     let navbar, sticky
-    $: onMount(() => {
-        document.body.scrollTop = 0;
-        if($travelScroll){
-            document.getElementById(`${$travelScroll}`).scrollIntoView({ block: 'center' })
-        } 
-
+    onMount(() => {
+        //document.body.scrollTop = 0;
+        function scrollBene(){
+            if($travelScroll){
+                document.getElementById(`${$travelScroll}`).scrollIntoView({ block: 'start' })
+            } 
+        }
+        setTimeout(scrollBene, 150);
         navbar = document.getElementById("nav-benefits");
         sticky = navbar.offsetTop;
-	});
+	})
 
-    export let travel, wellness, health, courses, finance
+    export let travel, wellness, health, courses, finance, legal, books
 
     export let source, readMore = false
-
-    function stickYesNo() {
-        if (window.pageYOffset >= sticky) {
-            navbar.classList.add("sticky-top")
-        } else {
-            navbar.classList.remove("sticky-top");
-        }
-    }
 </script>
 
 <svelte:head>
 	<title>Benefits</title>
 </svelte:head>
 
-<svelte:window on:scroll={stickYesNo}/>
+<svelte:window on:scroll={() => (window.pageYOffset >= sticky) ? navbar.classList.add("sticky-top") : navbar.classList.remove("sticky-top")}/>
 
 <h1 class="text-center">Exclusive benefits for <span class="think">Think</span>Teacher members</h1>
 
 <div class="text-center" id="nav-benefits">
     <ul class="list-inline">
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('travel').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Travel <span class="text-logo-gold">-</span></h4></li>
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('wellbeing').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Wellbeing <span class="text-logo-gold">-</span></h4></li>
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('medical_aid').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Medical Aid <span class="text-logo-gold">-</span></h4></li>
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('legal').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Legal <span class="text-logo-gold">-</span></h4></li>
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('courses').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Courses <span class="text-logo-gold">-</span></h4></li>
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('finance').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Finance <span class="text-logo-gold">-</h4></li>
-        <!-- <li class="list-inline-item"><h4 on:click={() => document.getElementById('Books').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Books <span class="text-logo-gold">-</span></h4></li> -->
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('photography').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Photography <span class="text-logo-gold">-</span></h4></li>
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('IT').scrollIntoView({ behavior: 'smooth', block: 'center' })}>IT <span class="text-logo-gold">-</span></h4></li>
-        <li class="list-inline-item"><h4 on:click={() => document.getElementById('spa').scrollIntoView({ behavior: 'smooth', block: 'center' })}>Spa</h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('travel').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Travel <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('wellbeing').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Wellbeing <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('medical_aid').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Medical Aid <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('legal').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Legal <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('courses').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Courses <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('finance').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Finance <span class="text-logo-gold">-</h4></li>
+        <!-- <li class="list-inline-item"><h4 on:click={() => document.getElementById('Books').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Books <span class="text-logo-gold">-</span></h4></li> -->
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('books').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Book Store <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('IT').scrollIntoView({ behavior: 'smooth', block: 'start' })}>IT <span class="text-logo-gold">-</span></h4></li>
+        <li class="list-inline-item"><h4 on:click={() => document.getElementById('spa').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Spa</h4></li>
     </ul>
 </div>
 
@@ -154,7 +153,7 @@
                 {#each wellness as well}
                     <div class="col-sm-12 col-md-10 col-lg-6">
                         <div class="card bg-dark m-2 shadow-lg">
-                            <img class="img-fluid rounded cta"  src="https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/{well.banner.hash}{well.banner.ext}" alt="cover" on:click={() => goto('/auth/form-wellbeing')}>
+                            <img class="img-fluid rounded cta"  src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/{well.banner.hash}{well.banner.ext}" alt="cover" on:click={() => goto('/auth/form-wellbeing')}>
 
                             <!-- <small class="text-white">Image by: David Travis, Unsplash.</small> -->
                             <div class="card-body">
@@ -194,7 +193,10 @@
         <!-- Legal -->
         <div class="grey-grad row justify-content-center big-gap" id="legal">
             <h2 class="display-3">Legal</h2>
-            <h4>Nearly there...</h4>
+
+            <Benefit benefitData={legal} />
+
+            <PartnerBenefit partnerData={legal} />
         </div>
 
         <!-- Courses -->
@@ -222,10 +224,10 @@
             <h4>Coming soon</h4>
         </div> -->
         
-        <!-- Photography -->
-        <div class="grey-grad row justify-content-center big-gap" id="photography">
-            <h2 class="display-3">Photography</h2>
-            <h4>Coming soon</h4>
+        <!-- Book Store -->
+        <div class="grey-grad row justify-content-center big-gap" id="books">
+            <h2 class="display-3">Book Store</h2>
+            <PartnerBenefit partnerData={books} />
         </div>
         <!-- IT -->
         <div class="grey-grad row justify-content-center big-gap" id="IT">
@@ -247,5 +249,9 @@
     ul li h4:hover{
         cursor: pointer;
         font-size: 135%;
+    }
+    .card{
+        height: 92%;
+        padding: 3%;
     }
 </style>

@@ -1,5 +1,4 @@
 <script>
-    import { goto } from '$app/navigation'
     import { onMount } from 'svelte'
     import axios from 'axios'
     import { Jumper } from 'svelte-loading-spinners'
@@ -7,14 +6,14 @@
 
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+        API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
     }
 
     let loading = true
 
     onMount(async () => {
         try {
-            const res = await axios.get(`${API_URL}/webinars`)
+            const res = await axios.get(`${API_URL}/webinars?_sort=id:DESC`)
             webinars = res.data
             loading = false
             console.log(webinars)
@@ -22,7 +21,6 @@
             error = e
         }
 	});
-
 
 	let webinars = [];
 </script>

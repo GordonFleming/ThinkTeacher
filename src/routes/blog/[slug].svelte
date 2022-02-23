@@ -2,31 +2,28 @@
     import { prod } from '$lib/env.js'
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+        API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
     }
 
-	export const load = async ({ page: { params }, fetch }) => {
+	export async function load({ params, fetch }){
 		const { slug } = params
         const res = await fetch(`${API_URL}/posts?slug=${slug}`)
+        const data = await res.json()
 
-        if (res.ok) {
-			const data = await res.json()
+        if (data.length > 0) {
             return { props: { post: data[0] } }
 		}
 
+        const error = new Error(`The blog with slug of ${slug} was not found`)
         return {
 			status: res.status,
-			error: new Error(`Could not load ${url}`)
+			error: error
 		};
 	};
 </script>
 
 <svelte:head>
-    {#if post}
-        <title>{post.title}</title>
-    {:else}
-        <title>404</title>
-    {/if}
+    <title>{post.title}</title>
 </svelte:head>
 
 <script>
@@ -46,30 +43,23 @@
     }
 </script>
 
-{#if post}
-    <div class="container bg-dark mt-4 border-custom mb-5">
-        <a href="/blog"><Icon data={ arrowLeft } scale="1.8"/></a>
-        <img class="img-fluid mx-auto d-block mt-2" src='https://cdn.statically.io/img/strapi-upload-s3.glass.splyce.dev/media/{post.image.hash}{post.image.ext}' alt="Blog banner">
+<div class="container bg-dark mt-4 border-custom mb-5">
+    <a sveltekit:prefetch href="/blog"><Icon data={ arrowLeft } scale="1.8"/></a>
+    <img class="img-fluid mx-auto d-block mt-2" src='https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/{post.image.hash}{post.image.ext}' alt="Blog banner">
 
-        <h1 class="text-center">{post.title}</h1>
-        <h4 class="text-center text-white">{post.description}</h4>
+    <h1 class="text-center">{post.title}</h1>
+    <h4 class="text-center text-white">{post.description}</h4>
 
-        <h5 class="mt-5">Author: {post.Author}</h5>
-        {#if post.source_url}
-            <a sveltekit:prefetch href="{post.source_url}" target="_blank">{post.source_url}</a><br>
-        {/if}
-        <time datetime="{publish}">{publish}</time>  
-        
-        <div id="mark-down">
-            <SvelteMarkdown {source} />
-        </div>
+    <h5 class="mt-5">Author: {post.Author}</h5>
+    {#if post.source_url}
+        <a href="{post.source_url}" target="_blank">{post.source_url}</a><br>
+    {/if}
+    <time datetime="{publish}">{publish}</time>  
+    
+    <div id="mark-down">
+        <SvelteMarkdown {source} />
     </div>
-{:else}
-    <div class="p-5 text-center">
-        <h2>Not found: 404</h2>
-    </div>
-{/if}
-
+</div>
 
 <style>
     img {

@@ -1,17 +1,24 @@
 <script>
+    import Carousel from '@beyonk/svelte-carousel'
+
     export let webinarData
 </script>
 
 <div class="container">
     <div class="row grey-grad big-gap">
         <h2 class="text-center text-blue">Webinars</h2>
-        {#each webinarData as webinar}
-            <div class="col-md-4 col-sm-12 mt-2">
-                <div class="frame-wrapper">
-                    <iframe src="{webinar.link}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        
+        <Carousel autoplay={2600} perPage={{1000: 3, 500: 1 }} dots={false}>
+            {#each webinarData as webinar}
+                <div class="p-2">
+                    <div class="frame-wrapper">
+                        <iframe src="{webinar.link}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
                 </div>
-            </div>
-        {/each}
+            {/each}
+        </Carousel>
+            
+        
     </div>
 </div>
 

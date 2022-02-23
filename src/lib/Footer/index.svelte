@@ -61,16 +61,16 @@
 
             <ul class="list-unstyled mb-0">
                 <li>
-                    <a href="/login" class="text-white">Login</a>
+                    <a sveltekit:prefetch href="/login" class="text-white">Login</a>
                 </li>
                 <li>
-                    <a href="/forgot-password" class="text-white">Forgot Password</a>
+                    <a sveltekit:prefetch href="/forgot-password" class="text-white">Forgot Password</a>
                 </li>
                 <li>
-                    <a href="/register" class="text-white">Register</a>
+                    <a sveltekit:prefetch href="/register" class="text-white">Register</a>
                 </li>
                 <li>
-                    <a href="/contact-us" class="text-white">Contact</a>
+                    <a sveltekit:prefetch href="/contact-us" class="text-white">Contact</a>
                 </li>
             </ul>
         </div>
@@ -92,7 +92,7 @@
 
     <!-- Copyright -->
     <div class="text-center p-2" style="background-color: var(--logo-gold);">
-    © 2021 Copyright: Think Teacher
+    © 2022 Copyright: ThinkTeacher
     <!-- <a class="text-white" href="https://splyce.dev">Designed: Splyce</a> -->
     </div>
 </footer>

@@ -5,4 +5,4 @@ node_modules
 /package
 .env
 package-lock.json
-.netlify/functions-internal/__render.js
+.netlify

@@ -13,13 +13,13 @@
   },
   "type": "module",
   "dependencies": {
-    "@beyonk/svelte-carousel": "^2.8.0",
+    "@beyonk/svelte-carousel": "^2.9.0",
     "axios": "^0.21.4",
     "countup.js": "^2.0.8",
     "south-african-id-parser": "^1.0.0",
     "svelte-awesome": "^2.3.2",
     "svelte-loading-spinners": "^0.1.7",
-    "svelte-markdown": "^0.1.12",
+    "svelte-markdown": "^0.2.2",
     "zxcvbn": "^4.4.2"
   }
 }

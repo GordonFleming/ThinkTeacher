@@ -10,11 +10,11 @@
 
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+        API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
     }
 
     onMount(async() =>{
-        if(localStorage.getItem("jwt")){
+        if(localStorage.getItem("jwt") && localStorage.getItem("ttNum")){
             const res = await axios.get(`${API_URL}/users/me`, {
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem("jwt"),

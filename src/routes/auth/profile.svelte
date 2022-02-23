@@ -10,7 +10,7 @@
 
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
+        API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
     }
 
     let loading = true
@@ -64,6 +64,7 @@
                 setTimeout(backFalse, 2000)
                 $name = username
                 browserSet("name", $name)
+                console.log(response)
             })
             .catch((error) => {
                 console.error("eee", error.response.data.message[0].messages[0].message.replace("."," "))
