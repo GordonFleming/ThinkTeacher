@@ -4,5 +4,4 @@ node_modules
 /.svelte-kit
 /package
 .env
-package-lock.json
 .netlify
