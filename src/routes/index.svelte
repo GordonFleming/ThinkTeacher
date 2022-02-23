@@ -42,7 +42,7 @@
         intro = false
     },2250);
 
-    onMount(async () =>{
+    onMount(() =>{
         // To stop case where user reloads with the counter in view so therefore nothing is triggered...
         document.body.scrollTop = 0
         document.documentElement.scrollTop = 0
@@ -254,7 +254,7 @@
                 <img class="logo img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/small_MTC_New_Logo_large_7ae60c9ecf.webp" alt="partner"/>
             </div>
             <div class="slide-content">
-                <img class="logo img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_exclusivebooks_779996b0af.jpeg" alt="partner"/>
+                <img class="logo img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_exclusivebooks_48aeb13f31.jpeg" alt="partner"/>
             </div>
         </Carousel>
     </div>
