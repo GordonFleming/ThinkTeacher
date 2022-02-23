@@ -27,7 +27,6 @@
 
 <script>
     import Logo from '$lib/Components/logo.svelte'
-    import WebinarsBar from '$lib/Components/WebinarsBar.svelte'
     import { goto } from '$app/navigation'
     import { CountUp } from 'countup.js'
     import { onMount, afterUpdate, onDestroy } from 'svelte'
