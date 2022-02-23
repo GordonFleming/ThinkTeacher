@@ -1,7 +1,5 @@
 <script  context="module">
     import { prod } from '$lib/env.js'
-    import WebinarsBar from '$lib/Components/WebinarsBar.svelte'
-    import Carousel from '@beyonk/svelte-carousel'
 
     let API_URL = 'http://localhost:1337'
     if(prod === "true"){
@@ -26,6 +24,8 @@
 </script>
 
 <script>
+    import WebinarsBar from '$lib/Components/WebinarsBar.svelte'
+    import Carousel from '@beyonk/svelte-carousel'
     import Logo from '$lib/Components/logo.svelte'
     import { goto } from '$app/navigation'
     import { CountUp } from 'countup.js'
@@ -42,7 +42,7 @@
         intro = false
     },2250);
 
-    onMount(async () =>{
+    onMount(() =>{
         // To stop case where user reloads with the counter in view so therefore nothing is triggered...
         document.body.scrollTop = 0
         document.documentElement.scrollTop = 0

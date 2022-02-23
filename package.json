@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "@sveltejs/adapter-netlify": "^1.0.0-next.46",
-    "@sveltejs/kit": "1.0.0-next.283",
+    "@sveltejs/kit": "1.0.0-next.243",
     "svelte": "^3.46"
   },
   "type": "module",
