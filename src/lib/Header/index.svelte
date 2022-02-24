@@ -85,7 +85,7 @@
 </nav>
 
 <style>
-    @media screen and (min-width: 1200px) {
+    @media screen and (min-width: 1300px) {
         li {
             font-size: 1.16em;
             font-weight: 500;
@@ -102,13 +102,13 @@
         }
     }
 
-    @media screen and (max-width: 1200px) {
+    @media screen and (max-width: 1300px) {
         li {
-            font-size: 0.9em;
-            font-weight: 400;
+            font-size: 1em;
+            font-weight: 460;
         }
         a {
-            line-height: 2.5rem;
+            line-height: 2.6rem;
         }
     }
 
