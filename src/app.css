@@ -70,7 +70,7 @@ body {
 .bg-dark{
     background-color: var(--default-text) !important;
 }
-#svelte {
+#svelte-body {
     display: flex;
     flex-direction: column;
     min-height: 100%;
