@@ -1,9 +1,10 @@
+import adapter from '@sveltejs/adapter-auto';
 
-import adapter from '@sveltejs/adapter-netlify';
-
-export default {
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
 	kit: {
-		adapter: adapter(), // currently the adapter does not take any options
-		target: '#svelte'
+		adapter: adapter(),
 	}
 };
+
+export default config;
