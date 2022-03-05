@@ -10,12 +10,7 @@
     import { user, name, surname, id, errMsg, ttNum } from '$lib/stores'
     import { facebook, twitter, instagram } from 'svelte-awesome/icons'
     import { browserSet } from '$lib/re_utils'
-    import { prod } from '$lib/env.js'
-
-    let API_URL = 'http://localhost:1337'
-    if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
-    }
+    import { API_URL } from '$lib/env.js'
 
     let usernameEmail, password
     let errorMsg

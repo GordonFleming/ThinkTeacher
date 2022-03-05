@@ -5,13 +5,8 @@
     import axios from 'axios'
     import { goto } from '$app/navigation'
     import { onMount } from 'svelte'
-    import { prod } from '$lib/env.js'
+    import { API_URL } from '$lib/env.js'
     import { errMsg } from '$lib/stores'
-
-    let API_URL = 'http://localhost:1337'
-    if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
-    }
 
     onMount(async() =>{
         if(localStorage.getItem("jwt") && localStorage.getItem("ttNum")){

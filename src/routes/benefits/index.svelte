@@ -1,10 +1,8 @@
 <script  context="module">
-    import { prod } from '$lib/env.js'
+    import { prod, API_URL } from '$lib/env.js'
     
-    let API_URL = 'http://localhost:1337'
     let health_cat = 3, travel_cat = 2, course_cat = 5, wellbeing_cat = 4, finance_cat = 6, legal_cat = 1, books_cat = 6
     if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
         health_cat = 2, travel_cat = 1, course_cat = 6, wellbeing_cat = 3, finance_cat = 5, legal_cat = 4, books_cat = 7
     }
 

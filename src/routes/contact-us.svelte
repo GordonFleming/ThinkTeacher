@@ -4,7 +4,7 @@
 
 <script>
     import Icon from 'svelte-awesome'
-    import { send, phone } from 'svelte-awesome/icons'
+    import { send } from 'svelte-awesome/icons'
 </script>
 
 <svelte:head>

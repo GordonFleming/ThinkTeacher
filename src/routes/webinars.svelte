@@ -2,12 +2,7 @@
     import { onMount } from 'svelte'
     import axios from 'axios'
     import { Jumper } from 'svelte-loading-spinners'
-    import { prod } from '$lib/env.js'
-
-    let API_URL = 'http://localhost:1337'
-    if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
-    }
+    import { API_URL } from '$lib/env.js'
 
     let loading = true
 

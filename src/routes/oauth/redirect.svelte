@@ -1,16 +1,11 @@
 <script>
     import { onMount } from 'svelte'
     import axios from 'axios'
-    import { prod } from '$lib/env.js'
+    import { API_URL } from '$lib/env.js'
     import { user, name, surname, id, ttNum } from '$lib/stores';
     import { goto } from '$app/navigation';
     import { Jumper } from 'svelte-loading-spinners'
     import { browserSet } from '$lib/re_utils'
-
-    let API_URL = 'http://localhost:1337'
-    if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
-    }
 
     let loading = true, errMsg
     let urlParams

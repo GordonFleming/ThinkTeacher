@@ -3,13 +3,8 @@
     import { goto } from '$app/navigation';
     import axios from 'axios'
     import { Jumper } from 'svelte-loading-spinners'
-    import { prod } from '$lib/env.js'
+    import { API_URL } from '$lib/env.js'
     import {travelType} from '$lib/stores'
-
-    let API_URL = 'http://localhost:1337'
-    if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
-    }
 
     let loading = true, buttonSubmit = true
     $: if(typeHoliday !== '' && reason !== '' && where !== '' && budget !== ''){ buttonSubmit = false }

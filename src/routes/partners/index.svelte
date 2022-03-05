@@ -1,10 +1,5 @@
 <script  context="module">
-    import { prod } from '$lib/env.js'
-    
-    let API_URL = 'http://localhost:1337'
-    if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
-    }
+    import { API_URL } from '$lib/env.js'
 
 	export const load = async ({ fetch }) => {
         const endpoint = `${API_URL}/graphql`;

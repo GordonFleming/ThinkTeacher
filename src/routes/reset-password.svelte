@@ -6,15 +6,10 @@
     import { onMount } from 'svelte'
     import { goto } from '$app/navigation'
     import axios from 'axios'
-    import { prod } from '$lib/env.js'
+    import { API_URL } from '$lib/env.js'
     import z from 'zxcvbn'
     import Icon from 'svelte-awesome'
     import { eye, eyeSlash } from 'svelte-awesome/icons'
-
-    let API_URL = 'http://localhost:1337'
-    if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
-    }
 
     let password = "", passwordConfirmation
     let errorMsg

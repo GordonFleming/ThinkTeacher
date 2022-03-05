@@ -7,19 +7,12 @@
     import { goto } from '$app/navigation'
     import Icon from 'svelte-awesome'
     import { arrowLeft, eye, eyeSlash } from 'svelte-awesome/icons'
-	import { sgKey, prod } from '$lib/env.js'
+	import { sgKey, sendgridList, API_URL } from '$lib/env.js'
     import z from 'zxcvbn'
     import saIdParser from 'south-african-id-parser'
     import { onMount } from 'svelte'
     import { id } from '$lib/stores';
     import { Jumper } from 'svelte-loading-spinners'
-
-    let API_URL = 'http://localhost:1337'
-    let sendgridList = "57df636d-5399-423f-bf72-35424b5644b5"
-    if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.thinkteacher.co.za"
-        sendgridList = "75b1cd1c-6bb0-406b-bc94-d7c2f04bc9f8"
-    }
 
     onMount(() =>{
         if(localStorage.getItem("provider") == 'google'){
