@@ -1,30 +1,25 @@
+<script  context="module">
+    import { API_URL } from '$lib/env.js'
+
+	export const load = async ({ fetch }) => {
+        const res = await fetch(`${API_URL}/posts`)
+
+        if (res.ok) {
+			const data = await res.json()
+            return { props: { posts: data } }
+		}
+
+        return {
+			status: res.status,
+			error: new Error(`Could not load ${url}`)
+		};
+	};
+</script>
+
 <script>
-	import { goto } from '$app/navigation'
-    import { onMount } from 'svelte'
-    import axios from 'axios'
-    import { Jumper } from 'svelte-loading-spinners'
-    import { prod } from '$lib/env.js'
+	import { goto, prefetch } from '$app/navigation'
 
-    let API_URL = 'http://localhost:1337'
-    if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
-    }
-
-    let loading = true
-
-    onMount(async () => {
-        try {
-            const res = await axios.get(`${API_URL}/posts`)
-            posts = res.data
-            loading = false
-            console.log(posts)
-        } catch (e) {
-            error = e
-        }
-	});
-
-
-	let posts = [];
+	export let posts
 </script>
 
 <svelte:head>
@@ -32,26 +27,21 @@
 </svelte:head>
 
 <div class="my-4">
-	<h1 class="text-center text-3xl font-bold">ThinkTeacher Blog</h1>
+	<h1 class="text-center text-3xl font-bold"><span class="think">Think</span>Teacher Blog</h1>
 </div>
 
 <div class="container mx-auto mt-4 mb-5">
-    {#if loading}
-        <div class="d-flex justify-content-center mt-5">
-            <Jumper size="150" color="#5C677D" unit="px" duration="1s"></Jumper>
-        </div>
-    {/if}
-    {#if posts.length <= 0 && !loading}
-        <h3 class="text-center">No posts are on the blog yet, check back another time.</h3>
+    {#if posts.length <= 0}
+        <h3 class="text-center">Coming Soon!</h3>
     {:else}
         <div class="row justify-content-center">
             {#each posts as post}
                 <div class="col-sm-12 col-md-6 col-lg-4 text-center mt-3">
-                    <div class="blog-block bg-dark p-3" on:click={() => goto('/blog/' + post.slug)}>
+                    <div class="blog-block bg-dark p-3" on:mouseenter={()=> prefetch(`/blog/${post.slug}`)} on:click={() => goto(`/blog/${post.slug}`)}>
                         <h4 class="font-bold">{post.title}</h4>
                         <p class="mt-2 text-white">{post.description}</p>
                         <p class="text-logo-gold">By: {post.Author}</p>
-                        <button class="btn btn-sm bg-gold  shadow cta text-black" on:click={() => goto('/blog/' + post.slug)}>Read More</button>
+                        <button class="btn btn-sm bg-gold  shadow cta text-black" on:click={() => goto(`/blog/${post.slug}`)}>Read More</button>
                     </div>
                 </div>
             {/each}

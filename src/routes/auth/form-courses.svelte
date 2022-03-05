@@ -4,9 +4,10 @@
     import axios from 'axios'
     import { Jumper } from 'svelte-loading-spinners'
     import { API_URL } from '$lib/env.js'
+    import { courseType } from '$lib/stores';
 
     let loading = true, buttonSubmit = true
-    $: if(residence){ buttonSubmit = false }
+    $: if(province){ buttonSubmit = false }
 
     let fullname, email, ttNum, user
 
@@ -25,9 +26,12 @@
         fullname= user.firstName +" "+ user.lastName
         email=user.email
         ttNum=user.ttCode
+        eduPhase=user.eduPhase.replace("_"," ")
+        if(user.workplace){workplace = user.workplace}
+        if(user.province){province = user.province.replace("_"," ")}
     })
 
-    let residence, chronic, medicalAid, gapcover, dependants, scheme
+    let province, myself = true, field = $courseType, message, eduPhase, workplace
 
     async function submitForm(){
         await axios
@@ -36,13 +40,13 @@
                 ttNumber: ttNum,
                 email: email,
                 custom: [{
-                    __component: "custom-form.medical-aid",
-                    residence: residence,
-                    chronic: chronic,
-                    medicalAid: medicalAid,
-                    gapcover: gapcover,
-                    dependants: dependants,
-                    scheme: scheme,
+                    __component: "custom-form.courses",
+                    province: province,
+                    myself: myself,
+                    field: field,
+                    message: message,
+                    eduPhase: eduPhase,
+                    workplace: workplace
                 }],
                 users_permissions_user: user,
             })
@@ -97,45 +101,32 @@
                                     <input type="text" name="idNumber" id="idNum" class="form-control form-control-lg" bind:value={ttNum} readonly required />
                                 </div>
                                 <div class="col-12 mt-2">
-                                    <label class="form-label" for="residence">Place of Residence</label>
-                                    <input type="text" name="residence" id="residence" class="form-control form-control-lg" bind:value={residence} required />
+                                    <label class="form-label" for="eduPhase">Education Phase</label>
+                                    <input type="text" name="eduPhase" id="eduPhase" class="form-control form-control-lg" bind:value={eduPhase} readonly required />
                                 </div>
-                                <div class="col-sm-12 col-md-6 mt-2">
-                                    <label class="form-label form-check-label" for="chronic">Currently on Chronic Medication?</label>
+                                <div class="col-12 mt-2">
+                                    <label class="form-label" for="institute">School / Institution</label>
+                                    <input type="text" name="institute" id="institute" class="form-control form-control-lg" bind:value={workplace} required />
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <label class="form-label" for="field">I am interested in the following workshop / webinar / course / qualification:</label>
+                                    <input type="text" name="field" id="field" class="form-control form-control-lg" bind:value={field} required />
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <label class="form-label" for="province">Province</label>
+                                    <input type="text" name="province" id="province" class="form-control form-control-lg" bind:value={province} required />
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <label class="form-label form-check-label" for="myself">Do you want to register as an individual or on behalf of a group?</label>
                                     <div class="form-switch mt-1">
-                                        <input class="form-check-input form-control" type="checkbox" role="switch" id="chronic" bind:checked={chronic}>
+                                        <input class="form-check-input form-control" type="checkbox" role="switch" id="myself" bind:checked={myself}>
+                                        <p>{(myself) ? 'individual':'group'}</p>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6 mt-2">
-                                    <label class="form-label" for="dependants">Number of Dependants</label>
-                                    <input type="number" name="dependants" id="dependants" class="form-control form-control-lg" placeholder="0" bind:value={dependants} min="0" max="100" />
+                                <div class="col-12 mt-2">
+                                    <label class="form-label" for="Message">Message</label>
+                                    <textarea id="Message" name="message" class="form-control" rows="3" placeholder="Enter your message" bind:value={message} required></textarea>
                                 </div>
-                                <div class="col-sm-12 col-md-6 mt-2">
-                                    <label class="form-label form-check-label" for="medicalAid">Currently have Medical Aid?</label>
-                                    <div class="form-switch mt-1">
-                                        <input class="form-check-input form-control" type="checkbox" role="switch" id="medicalAid" bind:checked={medicalAid}>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6 mt-2">
-                                    <label class="form-label form-check-label" for="gapcover">Currently have gapcover?</label>
-                                    <div class="form-switch mt-1">
-                                        <input class="form-check-input form-control" type="checkbox" role="switch" id="gapcover" bind:checked={gapcover}>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 mt-2">
-                                <label class="form-label" for="scheme">What plan would you be interested in?</label>
-                                <select class="form-select" id="scheme" bind:value={scheme} required>
-                                    <option value="" selected>choose</option>
-                                    <option value="students">Students</option>
-                                    <option value="entry_level_options">Entry Level Options</option>
-                                    <option value="basic_hospital_plans">Basic Hospital Plans</option>
-                                    <option value="better_hospital_plans">Better Hospital Plans</option>
-                                    <option value="hospital_plan_plus_savings">Hospital Plan Plus Savings</option>
-                                    <option value="comprehensive">Comprehensive</option>
-                                    <option value="smart_plans">Smart Plans</option>
-                                    <option value="gapcover">Gapcover</option>
-                                </select>
                             </div>
                             <button class="btn btn-outline-light btn-lg px-4 mt-4" type="submit" on:click|preventDefault={submitForm} disabled={buttonSubmit}>Submit</button>
                         </form>

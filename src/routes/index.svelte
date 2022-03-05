@@ -1,41 +1,49 @@
+<script  context="module">
+    import { API_URL } from '$lib/env.js'
+
+	export const load = async ({ fetch }) => {
+        const res = await fetch(`${API_URL}/users/count`)
+        const resWebinars = await fetch(`${API_URL}/webinars?_limit=4&_sort=id:DESC`)
+
+        if (res.ok && resWebinars.ok) {
+			const data = await res.json()
+            const dataWebinar = await resWebinars.json()
+            return { props: { userCount: data, webinarData: dataWebinar } }
+		}
+
+        return {
+			status: res.status,
+			error: new Error(`Could not load ${url}`)
+		};
+	};
+</script>
+
 <script>
+    import WebinarsBar from '$lib/Components/WebinarsBar.svelte'
+    import Carousel from '@beyonk/svelte-carousel'
     import Logo from '$lib/Components/logo.svelte'
     import { goto } from '$app/navigation'
     import { CountUp } from 'countup.js'
     import { onMount, afterUpdate, onDestroy } from 'svelte'
-    import { prod } from '$lib/env.js'
     import viewport from '$lib/useViewportAction.js';
     import { name, travelScroll, firstTime } from '$lib/stores'
-    import axios from 'axios'
     import { fly } from 'svelte/transition';
 
-    let API_URL = 'http://localhost:1337'
-    if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
-    }
-
-    let loading = true, intro = null
-    let countUp, userCount = 100
+    let intro = null
+    let countUp
+    export let userCount, webinarData
 
     setTimeout(function(){
         intro = false
     },2250);
 
-    onMount(async () =>{
-        try {
-            // To stop case where user reloads with the counter in view so therefore nothing is triggered...
-            document.body.scrollTop = 0
-
-            const res = await axios.get(`${API_URL}/users/count`)
-            userCount += res.data
-            loading = false
-            console.log(userCount)
-        } catch (e) {
-            let error = e
-            console.log(error)
-        }
+    onMount(() =>{
+        // To stop case where user reloads with the counter in view so therefore nothing is triggered...
+        document.body.scrollTop = 0
+        document.documentElement.scrollTop = 0
         countUp = new CountUp('countUser', userCount);
         intro = true
+        document.getElementById('vid').play();
 	})
 
     afterUpdate(() =>{
@@ -45,6 +53,8 @@
     onDestroy(() => {
 		$firstTime = false
 	})
+
+    let ben1, ben2, ben3, ben4, ben5, ben6, ben7, ben8, ben9
 </script>
 
 <svelte:head>
@@ -53,7 +63,7 @@
 
 <div class="banner-all">
     <div class="bg-overlay"></div>
-    <div class="pt-4 bg-banner text-center">
+    <div class="bg-banner text-center">
         {#if $firstTime}
             {#if intro}
                 <h1 id="welcome" in:fly="{{ x: -200, duration: 2250 }}" >Welcome to</h1>
@@ -72,10 +82,17 @@
     </svg>
 </div>
 
-<div class="container mt-5 mb-5">
+<div class="container text-center mt-4">
+    <video id="vid" muted autoplay playsinline>
+        <source src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/TT_INTRO_Burder_Blur_ba9d32550c.webm#t=1" type='video/webm'>
+        <source src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/TT_INTRO_Burder_Blur_4f66cfbe94.mp4#t=1" type='video/mp4'>     
+    </video>
+</div>
+
+<div class="container mt-4 mb-5">
     <div class="row text-center grey-grad rounded justify-content-center big-gap">
         <div class="col-12 p-4">
-            <h3 class="read">Think Teacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
+            <h3 class="read">ThinkTeacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
                 and nurturing networks. Think Teacher's vision is to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa.
             </h3>
         </div>
@@ -84,65 +101,159 @@
     {#if !$name}
         <div class="row mt-5">
             <div class="col-sm-12 col-lg-4">
-                <h4 id="#hash" class="fs-1 mt-2 text-center">First 5 000 members get a <strong>FREE</strong> membership for a year</h4>
+                <h4 id="#hash" class="fs-1 mt-2 text-center"><strong>FREE</strong> membership ending soon, register today.</h4>
             </div>
             <div class="col-sm-12 col-lg-4 mt-sm-4 text-center">
                 <button class="btn btn-lg bg-gold shadow-lg cta" style="width: 300px;" on:click={() => goto("/register")}><h4 style="color: black;">Become a member!</h4></button>
             </div>
             <div class="col-sm-12 col-lg-4">
                 <!-- svelte-ignore a11y-missing-content -->
-                <h1 class="text-center" id="countUser" use:viewport
-                    on:enterViewport={() => countUp.start()}></h1>
+                <h1 class="text-center" id="countUser" use:viewport on:enterViewport={() => countUp.start()} />
                 <h3 class="text-center text-blue">Members and counting!</h3>
             </div>
         </div>
     {/if}
 
+    <!-- Carousel of Webinars -->
+
+    <WebinarsBar {webinarData} />
+
     <div class="row grey-grad text-center big-gap">
-        <h2 class="mb-5">Benefits</h2>
+        <h2>Benefits</h2>
+        <h5 class="mb-5">Click on a benefit!</h5>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="well-being.webp" alt="well being" on:click={() => $travelScroll='wellness'}></a>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben1 = true}>
+                <div class="placeholder">
+                {#if ben1}
+                    <img transition:fly="{{ y: 200, duration: 600 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/well_being_7d5c5b6063.webp" alt="well being" on:click={() => $travelScroll='wellbeing'}>
+                {/if}
+                </div>
+            </a>
             <h3 class="mt-3">Wellbeing</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="travel.webp" alt="travel" on:click={() => $travelScroll='travel'}></a>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben2 = true}>
+               <div class="placeholder">
+                {#if ben2}
+                    <img transition:fly="{{ y: 200, duration: 800 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/travel_65e3eb2228.webp" alt="travel" on:click={() => $travelScroll='travel'}>
+                {/if}    
+                </div>
+            </a>
             <h3 class="mt-3">Travel</h3>
         </div>        
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="health.webp" alt="medical aid" on:click={() => $travelScroll='MedicalAid'}></a>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben3 = true}>
+               <div class="placeholder">
+                {#if ben3}
+                    <img transition:fly="{{ y: 200, duration: 1000 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/health_1d4102b3e6.webp" alt="medical aid" on:click={() => $travelScroll='medical_aid'}>
+                {/if}
+                </div>
+            </a>
             <h3 class="mt-3">Medical Aid</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="insurance.webp" alt="invest" on:click={() => $travelScroll='insurance'}></a>
-            <h3 class="mt-3">Insurance</h3>
-            <h5 class="text-logo-gold">coming soon</h5>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben4 = true}>
+               <div class="placeholder">
+                {#if ben4}    
+                    <img transition:fly="{{ y: 200, duration: 600 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/insurance_f6fd972123.webp" alt="invest" on:click={() => $travelScroll='finance'}>
+                {/if}
+                </div>
+            </a>
+            <h3 class="mt-3">Finance</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="legal.webp" alt="legal" on:click={() => $travelScroll='legal'}></a>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben5 = true}>
+               <div class="placeholder">
+                {#if ben5}
+                    <img transition:fly="{{ y: 200, duration: 800 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/legal_ef185539e1.webp" alt="legal" on:click={() => $travelScroll='legal'}>
+                {/if}
+                </div>
+            </a>
             <h3 class="mt-3">Legal</h3>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
+            <a href="/benefits" use:viewport on:enterViewport={() => ben6 = true}>
+               <div class="placeholder">
+                {#if ben6}
+                    <img transition:fly="{{ y: 200, duration: 1000 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/courses_394e2373ce.webp" alt="courses" on:click={() => $travelScroll='courses'}>  
+                {/if}
+                </div>
+            </a>
+            <h3 class="mt-3">Courses</h3>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
+            <a href="/benefits" use:viewport on:enterViewport={() => ben7 = true}>
+               <div class="placeholder">
+                {#if ben7}
+                    <img transition:fly="{{ y: 200, duration: 600 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/book_store_4ca6894b2a.png" alt="books" on:click={() => $travelScroll='books'}>
+                {/if}
+                </div>
+            </a>
+            <h3 class="mt-3">Book Store</h3>
             <h5 class="text-logo-gold">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-            <a href="/benefits"><img class="img-fluid offer offer-img" src="courses.webp" alt="courses" on:click={() => $travelScroll='courses'}></a>
-            <h3 class="mt-3">Courses</h3>
+            <a href="/benefits" use:viewport on:enterViewport={() => ben8 = true}>
+               <div class="placeholder">
+                {#if ben8}    
+                    <img transition:fly="{{ y: 200, duration: 800 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/tech_1c4a22ee51.webp" alt="IT" on:click={() => $travelScroll='IT'}>
+                {/if}
+                </div>
+            </a>
+            <h3 class="mt-3">IT</h3>
+            <h5 class="text-logo-gold">coming soon</h5>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
+                <a href="/benefits" use:viewport on:enterViewport={() => ben9 = true}>
+                   <div class="placeholder">
+                    {#if ben9}
+                        <img transition:fly="{{ y: 200, duration: 1000 }}" class="img-fluid offer offer-img" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/spa_b785512c3b.webp" alt="spa" on:click={() => $travelScroll='spa'}>
+                    {/if}
+                    </div>
+                </a>
+            <h3 class="mt-3">Spa</h3>
             <h5 class="text-logo-gold">coming soon</h5>
         </div>
     </div>
 
-    <div class="row mt-5 text-center justify-content-center p-3 logo-box">
-        <div class="col-3">
-            <img class="img-fluid logo" src="SAHB.webp" alt="partner">
-        </div>
-        <div class="col-3 d-flex flex-wrap align-items-center">
-            <img class="img-fluid logo" src="ROARRR.webp" alt="partner">
-        </div>
-        <div class="col-3">
-            <img class="img-fluid logo" src="Cirrus.webp" alt="partner">
-        </div>
-        <div class="col-3">
-            <img class="img-fluid logo" src="kim.webp" alt="partner">
-        </div>
+    <div class="container text-center mb-4 grey-grad">
+        <h2 class="mb-4">Why you should become a <span class="text-logo-gold">Think</span>Teacher member</h2>
+
+        <!-- svelte-ignore a11y-media-has-caption -->
+        <video controls playsinline>
+            <source src="https://dmtrzpwsgsztkyucmxbx.supabase.in/storage/v1/object/public/temp/THINK TEACHER_ WHO we are and WHAT we do!.mp4#t=3" type='video/mp4'>
+        </video>
     </div>
+
+    <div class="row mt-5 text-center justify-content-center p-3 logo-box">
+        <Carousel autoplay={2750} perPage={{1300:4, 1000: 3, 500: 2 }} dots={false}>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_SAHB_LOGO_HIGH_RES_ec14dd3c1d.webp" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid mt-3" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_ROARRR_d380578528.webp" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_Cirrus_Image_2_70004a2daf.webp" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_AF_Logo_7049c50238.webp" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_kim_c21bab4e72.png" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_SGM_Logo_b251d32022.webp" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/small_MTC_New_Logo_large_7ae60c9ecf.webp" alt="partner"/>
+            </div>
+            <div class="slide-content">
+                <img class="logo img-fluid" src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_exclusivebooks_779996b0af.jpeg" alt="partner"/>
+            </div>
+        </Carousel>
+    </div>
+
 </div>
 
 <style>
@@ -165,6 +276,10 @@
     .bg-banner{
         background-color: var(--bg-banner);
         height: 400px;
+        padding-top: 5rem;
+    }
+    .placeholder{
+        height: 310px;
     }
     @media screen and (min-width: 1000px) {
         .bg-overlay{
@@ -187,6 +302,7 @@
     @media screen and (max-width: 1000px) {
         .bg-banner{
             height: 200px;
+            padding-top: 2rem;
         }
     }
 

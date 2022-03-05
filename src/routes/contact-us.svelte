@@ -1,10 +1,10 @@
 <script context="module">
-	export const prerender = true
+	export const prerender = true;
 </script>
 
 <script>
     import Icon from 'svelte-awesome'
-    import { send, phone } from 'svelte-awesome/icons'
+    import { send } from 'svelte-awesome/icons'
 </script>
 
 <svelte:head>

@@ -3,15 +3,10 @@
     import { goto } from '$app/navigation';
     import axios from 'axios'
     import { Jumper } from 'svelte-loading-spinners'
-    import { prod } from '$lib/env.js'
+    import { API_URL } from '$lib/env.js'
     import {name} from '$lib/stores'
     import { browserSet } from '$lib/re_utils'
     import { fade } from 'svelte/transition';
-
-    let API_URL = 'http://localhost:1337'
-    if(prod === "true"){
-        API_URL= "https://thinkteacher-strapi.glass.splyce.dev"
-    }
 
     let loading = true
 
@@ -60,11 +55,11 @@
             },
             { headers: { Authorization: 'Bearer ' + localStorage.getItem("jwt"),} }
             ).then(response => {
-                console.log('reponse: ', response)
                 msg = "Success!"
                 setTimeout(backFalse, 2000)
                 $name = username
                 browserSet("name", $name)
+                console.log(response)
             })
             .catch((error) => {
                 console.error("eee", error.response.data.message[0].messages[0].message.replace("."," "))
