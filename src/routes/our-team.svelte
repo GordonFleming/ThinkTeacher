@@ -71,42 +71,6 @@
 
 		<div class="col-sm-12 col-md-12 col-lg-5 g-2">
 			<div class="card bg-dark mb-3">
-				<h3 class="card-header">Rebecca Maluka</h3>
-				<div class="card-body">
-					<h5 class="card-title">Head of Membership</h5>
-					<h6 class="card-subtitle text-muted">
-						Bachelor of Public Administration | PG Dip. in Education Management | Cert.
-						in Customer Management | Cert. in Project Management
-					</h6>
-				</div>
-				<img
-					class="d-block user-select-none img-fluid"
-					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/Rebecca_deb1c7e162.webp"
-					alt="profile img"
-				/>
-				<div class="card-body">
-					<p class="card-text">
-						Rebecca Maluka is a School Operations Manager at Spark Schools and has been
-						in the education field for 14 years. She also has experience in student
-						enrollment within the sales and marketing environment. <br /><br />
-						She is passionate about education and leadership. Rebecca was part of the future
-						leaders’ programme at one the schools at which she worked. She has been involved
-						in numerous non-profit organisations in the community of Alexandra. She is driven
-						by her desire for all South African children to have access to quality education
-						and strives to assist young people both to achieve success and to overcome generational
-						barriers.
-					</p>
-				</div>
-				<div class="card-footer text-muted">
-					<a href="https://www.linkedin.com/in/rebecca-maluka-1997a119/" class="card-link"
-						><Icon data={linkedinSquare} scale="1.8" /></a
-					>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-sm-12 col-md-12 col-lg-5 g-2">
-			<div class="card bg-dark mb-3">
 				<h3 class="card-header">Paul Edey</h3>
 				<div class="card-body">
 					<h5 class="card-title">Liaison to Head of Schools & Webinars</h5>
@@ -191,7 +155,7 @@
 			</div>
 		</div>
 
-		<div class="col-sm-12 col-md-12 col-lg-7 g-2">
+		<div class="col-sm-12 col-md-12 col-lg-5 g-2">
 			<div class="card bg-dark mb-3">
 				<h3 class="card-header">Zanele Masuku</h3>
 				<div class="card-body">
@@ -226,6 +190,49 @@
 				<div class="card-footer text-muted">
 					<a href="https://www.linkedin.com/in/zanele-portia-masuku/" class="card-link"
 						><Icon data={linkedinSquare} scale="1.8" /></a
+					>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-12 col-md-12 col-lg-7 g-2">
+			<div class="card bg-dark mb-3">
+				<h3 class="card-header">Malcolm Williams</h3>
+				<div class="card-body">
+					<h5 class="card-title">Head of Operations</h5>
+					<h6 class="card-subtitle text-muted">BA | PGCE | BA Hons (SA) | MEd</h6>
+				</div>
+				<img
+					class="d-block user-select-none img-fluid"
+					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/Malcolm_838637bdf3.webp"
+					alt="profile img"
+				/>
+				<div class="card-body">
+					<p class="card-text">
+						Teachers, more than any others, have the capacity to change the lives of
+						individuals and, indeed, the future of a nation. <br /><br />
+						This belief has driven Malcolm Williams’ career in education, with 18 years as
+						a Head of top schools across the Independent, Public and Cambridge school sectors.
+						<br /><br />
+						Malcolm thrives on coaching, developing and growing others, and celebrating the
+						success which follows the pursuit of excellence. As a teacher and family man,
+						Malcolm enjoys building relationships and engaging with others; he believes that
+						positive relationships are the core of the learning experience and of attaining
+						fulfilment. <br /><br />
+						<span class="think">ThinkTeacher’s</span> goal is to ensure that each
+						teacher receives the specific support they may require to be the best they
+						can be as people, and as teachers. As Head of Operations, Malcolm is excited
+						by the opportunity to oversee the range of inputs and support options which
+						<span class="think">ThinkTeacher</span>
+						will be offering its members. <br /><br />
+						Malcolm seeks to live life to the full, savour each moment and experience, and
+						get the job done, properly ... with large dollops of fun thrown in for good measure!
+					</p>
+				</div>
+				<div class="card-footer text-muted">
+					<a
+						href="https://www.linkedin.com/in/malcolm-williams-7939a7b5/"
+						class="card-link"><Icon data={linkedinSquare} scale="1.8" /></a
 					>
 				</div>
 			</div>
@@ -303,49 +310,6 @@
 				<div class="card-footer text-muted">
 					<a
 						href="https://www.linkedin.com/in/frances-kerr-phillips-768a34216/"
-						class="card-link"><Icon data={linkedinSquare} scale="1.8" /></a
-					>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-sm-12 col-md-12 col-lg-7 g-2">
-			<div class="card bg-dark mb-3">
-				<h3 class="card-header">Malcolm Williams</h3>
-				<div class="card-body">
-					<h5 class="card-title">Head of Operations</h5>
-					<h6 class="card-subtitle text-muted">BA | PGCE | BA Hons (SA) | MEd</h6>
-				</div>
-				<img
-					class="d-block user-select-none img-fluid"
-					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/Malcolm_838637bdf3.webp"
-					alt="profile img"
-				/>
-				<div class="card-body">
-					<p class="card-text">
-						Teachers, more than any others, have the capacity to change the lives of
-						individuals and, indeed, the future of a nation. <br /><br />
-						This belief has driven Malcolm Williams’ career in education, with 18 years as
-						a Head of top schools across the Independent, Public and Cambridge school sectors.
-						<br /><br />
-						Malcolm thrives on coaching, developing and growing others, and celebrating the
-						success which follows the pursuit of excellence. As a teacher and family man,
-						Malcolm enjoys building relationships and engaging with others; he believes that
-						positive relationships are the core of the learning experience and of attaining
-						fulfilment. <br /><br />
-						<span class="think">ThinkTeacher’s</span> goal is to ensure that each
-						teacher receives the specific support they may require to be the best they
-						can be as people, and as teachers. As Head of Operations, Malcolm is excited
-						by the opportunity to oversee the range of inputs and support options which
-						<span class="think">ThinkTeacher</span>
-						will be offering its members. <br /><br />
-						Malcolm seeks to live life to the full, savour each moment and experience, and
-						get the job done, properly ... with large dollops of fun thrown in for good measure!
-					</p>
-				</div>
-				<div class="card-footer text-muted">
-					<a
-						href="https://www.linkedin.com/in/malcolm-williams-7939a7b5/"
 						class="card-link"><Icon data={linkedinSquare} scale="1.8" /></a
 					>
 				</div>
