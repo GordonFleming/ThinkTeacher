@@ -3,9 +3,7 @@
 
 	export const load = async ({ fetch }) => {
 		const res = await fetch(`${API_URL}/users/count`);
-		const resWebinars = await fetch(
-			`${API_URL}/webinars?_limit=4&_sort=id:DESC`
-		);
+		const resWebinars = await fetch(`${API_URL}/webinars?_limit=4&_sort=id:DESC`);
 
 		if (res.ok && resWebinars.ok) {
 			const data = await res.json();
@@ -68,9 +66,7 @@
 	<div class="bg-banner text-center">
 		{#if $firstTime}
 			{#if intro}
-				<h1 id="welcome" in:fly={{ x: -200, duration: 2250 }}>
-					Welcome to
-				</h1>
+				<h1 id="welcome" in:fly={{ x: -200, duration: 2250 }}>Welcome to</h1>
 			{:else if intro !== null && !intro}
 				<Logo />
 			{/if}
@@ -79,11 +75,7 @@
 		{/if}
 	</div>
 
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		viewBox="0 0 1000 100"
-		preserveAspectRatio="none"
-	>
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
 		<path
 			class=""
 			fill="var(--bg-banner)"
@@ -96,23 +88,25 @@
 
 <div class="container text-center mt-4">
 	<video id="vid" muted autoplay playsinline>
-        <source src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/TT_INTRO_Burder_Blur_ba9d32550c.webm#t=1" type='video/webm'>
-        <source src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/TT_INTRO_Burder_Blur_4f66cfbe94.mp4#t=1" type='video/mp4'>   
+		<source
+			src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/TT_INTRO_Burder_Blur_ba9d32550c.webm#t=1"
+			type="video/webm"
+		/>
+		<source
+			src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/TT_INTRO_Burder_Blur_4f66cfbe94.mp4#t=1"
+			type="video/mp4"
+		/>
 	</video>
 </div>
 
 <div class="container mt-4 mb-5">
-	<div
-		class="row text-center grey-grad rounded justify-content-center big-gap"
-	>
+	<div class="row text-center grey-grad rounded justify-content-center big-gap">
 		<div class="col-12 p-4">
 			<h3 class="read">
-				ThinkTeacher is an online portal dedicated to the inspiring
-				teachers of South Africa, providing access to benefit options,
-				educational opportunities and nurturing networks. Think
-				Teacher's vision is to empower teachers to thrive in their role
-				as innovative and sustainable change agents in and for South
-				Africa.
+				ThinkTeacher is an online portal dedicated to the inspiring teachers of South
+				Africa, providing access to benefit options, educational opportunities and nurturing
+				networks. Think Teacher's vision is to empower teachers to thrive in their role as
+				innovative and sustainable change agents in and for South Africa.
 			</h3>
 		</div>
 	</div>
@@ -153,17 +147,13 @@
 		<h2>Benefits</h2>
 		<h5 class="mb-5">Click on a benefit!</h5>
 		<div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-			<a
-				href="/benefits"
-				use:viewport
-				on:enterViewport={() => (ben1 = true)}
-			>
+			<a href="/benefits" use:viewport on:enterViewport={() => (ben1 = true)}>
 				<div class="placeholder">
 					{#if ben1}
 						<img
 							transition:fly={{ y: 200, duration: 600 }}
 							class="img-fluid offer offer-img"
-							src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/well_being_7d5c5b6063.webp"
+							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/well_being_7d5c5b6063.webp"
 							alt="well being"
 							on:click={() => ($travelScroll = "wellbeing")}
 						/>
@@ -173,17 +163,13 @@
 			<h3 class="mt-3">Wellbeing</h3>
 		</div>
 		<div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-			<a
-				href="/benefits"
-				use:viewport
-				on:enterViewport={() => (ben2 = true)}
-			>
+			<a href="/benefits" use:viewport on:enterViewport={() => (ben2 = true)}>
 				<div class="placeholder">
 					{#if ben2}
 						<img
 							transition:fly={{ y: 200, duration: 800 }}
 							class="img-fluid offer offer-img"
-							src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/travel_65e3eb2228.webp"
+							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/travel_65e3eb2228.webp"
 							alt="travel"
 							on:click={() => ($travelScroll = "travel")}
 						/>
@@ -193,17 +179,13 @@
 			<h3 class="mt-3">Travel</h3>
 		</div>
 		<div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-			<a
-				href="/benefits"
-				use:viewport
-				on:enterViewport={() => (ben3 = true)}
-			>
+			<a href="/benefits" use:viewport on:enterViewport={() => (ben3 = true)}>
 				<div class="placeholder">
 					{#if ben3}
 						<img
 							transition:fly={{ y: 200, duration: 1000 }}
 							class="img-fluid offer offer-img"
-							src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/health_1d4102b3e6.webp"
+							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/health_1d4102b3e6.webp"
 							alt="medical aid"
 							on:click={() => ($travelScroll = "medical_aid")}
 						/>
@@ -213,17 +195,13 @@
 			<h3 class="mt-3">Medical Aid</h3>
 		</div>
 		<div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-			<a
-				href="/benefits"
-				use:viewport
-				on:enterViewport={() => (ben4 = true)}
-			>
+			<a href="/benefits" use:viewport on:enterViewport={() => (ben4 = true)}>
 				<div class="placeholder">
 					{#if ben4}
 						<img
 							transition:fly={{ y: 200, duration: 600 }}
 							class="img-fluid offer offer-img"
-							src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/insurance_f6fd972123.webp"
+							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/insurance_f6fd972123.webp"
 							alt="invest"
 							on:click={() => ($travelScroll = "finance")}
 						/>
@@ -233,17 +211,13 @@
 			<h3 class="mt-3">Finance</h3>
 		</div>
 		<div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-			<a
-				href="/benefits"
-				use:viewport
-				on:enterViewport={() => (ben5 = true)}
-			>
+			<a href="/benefits" use:viewport on:enterViewport={() => (ben5 = true)}>
 				<div class="placeholder">
 					{#if ben5}
 						<img
 							transition:fly={{ y: 200, duration: 800 }}
 							class="img-fluid offer offer-img"
-							src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/legal_ef185539e1.webp"
+							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/legal_ef185539e1.webp"
 							alt="legal"
 							on:click={() => ($travelScroll = "legal")}
 						/>
@@ -253,17 +227,13 @@
 			<h3 class="mt-3">Legal</h3>
 		</div>
 		<div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-			<a
-				href="/benefits"
-				use:viewport
-				on:enterViewport={() => (ben6 = true)}
-			>
+			<a href="/benefits" use:viewport on:enterViewport={() => (ben6 = true)}>
 				<div class="placeholder">
 					{#if ben6}
 						<img
 							transition:fly={{ y: 200, duration: 1000 }}
 							class="img-fluid offer offer-img"
-							src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/courses_394e2373ce.webp"
+							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/courses_394e2373ce.webp"
 							alt="courses"
 							on:click={() => ($travelScroll = "courses")}
 						/>
@@ -273,17 +243,13 @@
 			<h3 class="mt-3">Courses</h3>
 		</div>
 		<div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-			<a
-				href="/benefits"
-				use:viewport
-				on:enterViewport={() => (ben7 = true)}
-			>
+			<a href="/benefits" use:viewport on:enterViewport={() => (ben7 = true)}>
 				<div class="placeholder">
 					{#if ben7}
 						<img
 							transition:fly={{ y: 200, duration: 600 }}
 							class="img-fluid offer offer-img"
-							src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/book_store_4ca6894b2a.png"
+							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/book_store_4ca6894b2a.png"
 							alt="books"
 							on:click={() => ($travelScroll = "books")}
 						/>
@@ -294,17 +260,13 @@
 			<h5 class="text-logo-gold">coming soon</h5>
 		</div>
 		<div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-			<a
-				href="/benefits"
-				use:viewport
-				on:enterViewport={() => (ben8 = true)}
-			>
+			<a href="/benefits" use:viewport on:enterViewport={() => (ben8 = true)}>
 				<div class="placeholder">
 					{#if ben8}
 						<img
 							transition:fly={{ y: 200, duration: 800 }}
 							class="img-fluid offer offer-img"
-							src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/tech_1c4a22ee51.webp"
+							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/tech_1c4a22ee51.webp"
 							alt="IT"
 							on:click={() => ($travelScroll = "IT")}
 						/>
@@ -315,17 +277,13 @@
 			<h5 class="text-logo-gold">coming soon</h5>
 		</div>
 		<div class="col-sm-12 col-md-6 col-lg-4 mb-5">
-			<a
-				href="/benefits"
-				use:viewport
-				on:enterViewport={() => (ben9 = true)}
-			>
+			<a href="/benefits" use:viewport on:enterViewport={() => (ben9 = true)}>
 				<div class="placeholder">
 					{#if ben9}
 						<img
 							transition:fly={{ y: 200, duration: 1000 }}
 							class="img-fluid offer offer-img"
-							src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/spa_b785512c3b.webp"
+							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/spa_b785512c3b.webp"
 							alt="spa"
 							on:click={() => ($travelScroll = "spa")}
 						/>
@@ -339,8 +297,7 @@
 
 	<div class="container text-center mb-4 grey-grad">
 		<h2 class="mb-4">
-			Why you should become a <span class="text-logo-gold">Think</span
-			>Teacher member
+			Why you should become a <span class="text-logo-gold">Think</span>Teacher member
 		</h2>
 
 		<!-- svelte-ignore a11y-media-has-caption -->
@@ -353,64 +310,60 @@
 	</div>
 
 	<div class="row mt-5 text-center justify-content-center p-3 logo-box">
-		<Carousel
-			autoplay={2750}
-			perPage={{ 1300: 4, 1000: 3, 500: 2 }}
-			dots={false}
-		>
+		<Carousel autoplay={2750} perPage={{ 1300: 4, 1000: 3, 500: 2 }} dots={false}>
 			<div class="slide-content">
 				<img
 					class="logo img-fluid"
-					src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_SAHB_LOGO_HIGH_RES_ec14dd3c1d.webp"
+					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_SAHB_LOGO_HIGH_RES_ec14dd3c1d.webp"
 					alt="partner"
 				/>
 			</div>
 			<div class="slide-content">
 				<img
 					class="logo img-fluid mt-3"
-					src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_ROARRR_d380578528.webp"
+					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_ROARRR_d380578528.webp"
 					alt="partner"
 				/>
 			</div>
 			<div class="slide-content">
 				<img
 					class="logo img-fluid"
-					src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_Cirrus_Image_2_70004a2daf.webp"
+					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_Cirrus_Image_2_70004a2daf.webp"
 					alt="partner"
 				/>
 			</div>
 			<div class="slide-content">
 				<img
 					class="logo img-fluid"
-					src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_AF_Logo_7049c50238.webp"
+					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_AF_Logo_7049c50238.webp"
 					alt="partner"
 				/>
 			</div>
 			<div class="slide-content">
 				<img
 					class="logo img-fluid"
-					src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_kim_c21bab4e72.png"
+					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_kim_c21bab4e72.png"
 					alt="partner"
 				/>
 			</div>
 			<div class="slide-content">
 				<img
 					class="logo img-fluid"
-					src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_SGM_Logo_b251d32022.webp"
+					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_SGM_Logo_b251d32022.webp"
 					alt="partner"
 				/>
 			</div>
 			<div class="slide-content">
 				<img
 					class="logo img-fluid"
-					src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/small_MTC_New_Logo_large_7ae60c9ecf.webp"
+					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/small_MTC_New_Logo_large_7ae60c9ecf.webp"
 					alt="partner"
 				/>
 			</div>
 			<div class="slide-content">
 				<img
 					class="logo img-fluid"
-					src="https://cdn.statically.io/img/strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_exclusivebooks_779996b0af.jpeg"
+					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_exclusivebooks_779996b0af.jpeg"
 					alt="partner"
 				/>
 			</div>
