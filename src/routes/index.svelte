@@ -89,11 +89,11 @@
 <div class="container text-center mt-4">
 	<video id="vid" muted autoplay playsinline>
 		<source
-			src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/TT_INTRO_Burder_Blur_ba9d32550c.webm#t=1"
+			src="https://res.cloudinary.com/splyce/video/upload/v1648999283/ThinkTeacher/TT_INTRO_Burder_Blur_rpaqcq.webm#t=1"
 			type="video/webm"
 		/>
 		<source
-			src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/TT_INTRO_Burder_Blur_4f66cfbe94.mp4#t=1"
+			src="https://res.cloudinary.com/splyce/video/upload/v1648999288/ThinkTeacher/TT_INTRO_Burder_Blur_yzoqoi.mp4#t=1"
 			type="video/mp4"
 		/>
 	</video>
