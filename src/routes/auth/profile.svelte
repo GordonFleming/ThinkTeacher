@@ -1,143 +1,145 @@
 <script>
-	import { onMount } from "svelte";
-	import { goto } from "$app/navigation";
-	import axios from "axios";
-	import { Jumper } from "svelte-loading-spinners";
-	import { API_URL, sendgridList, sgKey } from "$lib/env.js";
-	import { name } from "$lib/stores";
-	import { browserSet } from "$lib/re_utils";
-	import { fade } from "svelte/transition";
+	// import { onMount } from "svelte";
+	// import { goto } from "$app/navigation";
+	// import axios from "axios";
+	// import { Jumper } from "svelte-loading-spinners";
+	// import { API_URL, sendgridList, sgKey } from "$lib/env.js";
+	// import { name } from "$lib/stores";
+	// import { browserSet } from "$lib/re_utils";
+	// import { fade } from "svelte/transition";
 
-	let loading = true;
+	// let loading = true;
 
-	let username, email, id;
-	let altMail,
-		cell,
-		eduPhase,
-		qualification,
-		sace,
-		workplace,
-		province,
-		firstName,
-		lastName,
-		ttCode;
-	const res =
-		/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	// let username, email, id;
+	// let altMail,
+	// 	cell,
+	// 	eduPhase,
+	// 	qualification,
+	// 	sace,
+	// 	workplace,
+	// 	province,
+	// 	firstName,
+	// 	lastName,
+	// 	ttCode;
+	// const res =
+	// 	/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-	onMount(async () => {
-		const res = await axios
-			.get(`${API_URL}/users/me`, {
-				headers: {
-					Authorization: "Bearer " + localStorage.getItem("jwt"),
-				},
-			})
-			.catch(function (error) {
-				console.log("Error", error.message);
-				goto("/login");
-			});
-		user = res.data;
-		loading = false;
-		username = user.username;
-		firstName = user.firstName;
-		lastName = user.last_name;
-		ttCode = user.ttCode;
-		email = user.email;
-		eduPhase = user.eduPhase;
-		sace = user.sace;
-		cell = user.cell;
-		altMail = user.altMail;
-		qualification = user.qualification;
-		workplace = user.workplace;
-		province = user.province;
-		id = user.id;
-	});
+	// onMount(async () => {
+	// 	const res = await axios
+	// 		.get(`${API_URL}/users/me`, {
+	// 			headers: {
+	// 				Authorization: "Bearer " + localStorage.getItem("jwt"),
+	// 			},
+	// 		})
+	// 		.catch(function (error) {
+	// 			console.log("Error", error.message);
+	// 			goto("/login");
+	// 		});
+	// 	user = res.data;
+	// 	loading = false;
+	// 	username = user.username;
+	// 	firstName = user.firstName;
+	// 	lastName = user.last_name;
+	// 	ttCode = user.ttCode;
+	// 	email = user.email;
+	// 	eduPhase = user.eduPhase;
+	// 	sace = user.sace;
+	// 	cell = user.cell;
+	// 	altMail = user.altMail;
+	// 	qualification = user.qualification;
+	// 	workplace = user.workplace;
+	// 	province = user.province;
+	// 	id = user.id;
+	// });
 
-	async function updateUser() {
-		if (eduPhase == "none" || !res.test(String(email).toLowerCase())) {
-			errorMsg = "Email not valid of education phase not selected";
-		} else {
-			loading = true;
-			errorMsg = null;
+	// async function updateUser() {
+	// 	if (eduPhase == "none" || !res.test(String(email).toLowerCase())) {
+	// 		errorMsg = "Email not valid of education phase not selected";
+	// 	} else {
+	// 		loading = true;
+	// 		errorMsg = null;
 
-			if (!altMail) altMail = "null@null.com";
-			if (!province) province = "NA";
+	// 		if (!altMail) altMail = "null@null.com";
+	// 		if (!province) province = "NA";
 
-			await axios
-				.put(
-					"https://sendgrid.com/v3/marketing/contacts",
-					{
-						list_ids: [sendgridList],
-						contacts: [
-							{
-								email: email,
-								alternate_emails: [altMail],
-								first_name: firstName,
-								last_name: lastName,
-								state_province_region: province,
-								phone_number: cell,
-								custom_fields: { e1_T: ttCode },
-							},
-						],
-					},
-					{ headers: { Authorization: `Bearer ${sgKey}` } }
-				)
-				.then((response) => {
-					console.log("SG reponse: ", response.statusText, " ", response.data);
-					loading = false;
-				})
-				.catch((error) => {
-					console.error(error);
-				});
+	// 		await axios
+	// 			.put(
+	// 				"https://sendgrid.com/v3/marketing/contacts",
+	// 				{
+	// 					list_ids: [sendgridList],
+	// 					contacts: [
+	// 						{
+	// 							email: email,
+	// 							alternate_emails: [altMail],
+	// 							first_name: firstName,
+	// 							last_name: lastName,
+	// 							state_province_region: province,
+	// 							phone_number: cell,
+	// 							custom_fields: { e1_T: ttCode },
+	// 						},
+	// 					],
+	// 				},
+	// 				{ headers: { Authorization: `Bearer ${sgKey}` } }
+	// 			)
+	// 			.then((response) => {
+	// 				console.log("SG reponse: ", response.statusText, " ", response.data);
+	// 				loading = false;
+	// 			})
+	// 			.catch((error) => {
+	// 				console.error(error);
+	// 			});
 
-			await axios
-				.put(
-					`${API_URL}/users/${id}`,
-					{
-						username: username,
-						email: email,
-						qualification: qualification,
-						cell: cell,
-						eduPhase: eduPhase,
-						sace: sace,
-						workplace: workplace,
-						province: province,
-						altMail: altMail,
-					},
-					{
-						headers: {
-							Authorization: "Bearer " + localStorage.getItem("jwt"),
-						},
-					}
-				)
-				.then((response) => {
-					msg = "Success!";
-					setTimeout(backFalse, 2000);
-					$name = username;
-					browserSet("name", $name);
-					console.log(response);
-				})
-				.catch((error) => {
-					console.error(
-						"eee",
-						error.response.data.message[0].messages[0].message.replace(".", " ")
-					);
-					errorMsg = error.response.data.message[0].messages[0].message.replace(".", " ");
-				});
-		}
-	}
+	// 		await axios
+	// 			.put(
+	// 				`${API_URL}/users/${id}`,
+	// 				{
+	// 					username: username,
+	// 					email: email,
+	// 					qualification: qualification,
+	// 					cell: cell,
+	// 					eduPhase: eduPhase,
+	// 					sace: sace,
+	// 					workplace: workplace,
+	// 					province: province,
+	// 					altMail: altMail,
+	// 				},
+	// 				{
+	// 					headers: {
+	// 						Authorization: "Bearer " + localStorage.getItem("jwt"),
+	// 					},
+	// 				}
+	// 			)
+	// 			.then((response) => {
+	// 				msg = "Success!";
+	// 				setTimeout(backFalse, 2000);
+	// 				$name = username;
+	// 				browserSet("name", $name);
+	// 				console.log(response);
+	// 			})
+	// 			.catch((error) => {
+	// 				console.error(
+	// 					"eee",
+	// 					error.response.data.message[0].messages[0].message.replace(".", " ")
+	// 				);
+	// 				errorMsg = error.response.data.message[0].messages[0].message.replace(".", " ");
+	// 			});
+	// 	}
+	// }
 
-	let errorMsg, msg;
-	function backFalse() {
-		msg = null;
-	}
-	let user;
+	// let errorMsg, msg;
+	// function backFalse() {
+	// 	msg = null;
+	// }
+	// let user;
 </script>
 
 <svelte:head>
 	<title>ThinkTeacher Profile</title>
 </svelte:head>
 
-{#if loading}
+<div class="container mt-5"><h3>Soon you will be able to edit your profile here.</h3></div>
+
+<!-- {#if loading}
 	<div class="d-flex justify-content-center mt-5">
 		<Jumper size="150" color="#5C677D" unit="px" duration="1s" />
 	</div>
@@ -336,7 +338,6 @@
 			</div>
 		</div>
 	</section>
-{/if}
-
+{/if} -->
 <style>
 </style>

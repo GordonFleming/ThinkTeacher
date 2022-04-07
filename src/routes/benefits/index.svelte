@@ -5,7 +5,7 @@
 		travel_cat = 2,
 		course_cat = 5,
 		wellbeing_cat = 4,
-		finance_cat = 6,
+		finance_cat = 1,
 		legal_cat = 1,
 		books_cat = 6;
 	if (prod === "true") {

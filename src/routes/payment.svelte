@@ -1,5 +1,10 @@
 <script>
 	import { onMount } from "svelte";
+	import { id } from "$lib/stores";
+
+	if ($id === undefined) {
+		$id = localStorage.getItem("id");
+	}
 
 	// Replace the supplied `publicKey` with your own.
 	// Ensure that in production you use a production public_key.
@@ -7,7 +12,8 @@
 		inline,
 		form,
 		submitButton = true,
-		amountInCents = 2499,
+		amountInCents = 36000,
+		tokenCreated = false,
 		amountInRands = amountInCents / 100;
 	onMount(async () => {
 		sdk = new window.YocoSDK({
@@ -27,7 +33,8 @@
 		form = document.getElementById("payment-form");
 	});
 
-	function submit() {
+	let token;
+	async function submit() {
 		// Disable the button to prevent multiple clicks while processing
 		submitButton = false;
 		// This is the inline object we created earlier with the sdk
@@ -41,8 +48,9 @@
 					const errorMessage = result.error.message;
 					errorMessage && alert("error occured: " + errorMessage);
 				} else {
-					const token = result;
+					token = result;
 					alert("card successfully tokenised: " + token.id);
+					tokenCreated = true;
 				}
 			})
 			.catch(function (error) {
@@ -50,6 +58,23 @@
 				submitButton = true;
 				alert("error occured: " + error);
 			});
+
+		if (tokenCreated) {
+			await axios
+				.post(`${API_URL}/payments`, {
+					amount_in_cents: amountInCents,
+					token: token,
+					users_permissions_user: {
+						id: $id,
+					},
+				})
+				.then((response) => {
+					console.log(response);
+				})
+				.catch((error) => {
+					console.log("An error occurred:", error.response.data);
+				});
+		}
 	}
 	// Any additional form data you want to submit to your backend should be done here, or in another event listener
 </script>

@@ -1,66 +1,86 @@
 <script>
-    import { onMount } from 'svelte'
-    import { goto } from '$app/navigation';
-    import axios from 'axios'
-    import { Jumper } from 'svelte-loading-spinners'
-    import { API_URL } from '$lib/env.js'
-    import { courseType } from '$lib/stores';
+	import { onMount } from "svelte";
+	import { goto } from "$app/navigation";
+	import axios from "axios";
+	import { Jumper } from "svelte-loading-spinners";
+	import { API_URL } from "$lib/env.js";
+	import { courseType } from "$lib/stores";
 
-    let loading = true, buttonSubmit = true
-    $: if(province){ buttonSubmit = false }
+	let loading = true,
+		buttonSubmit = true;
+	$: if (province) {
+		buttonSubmit = false;
+	}
 
-    let fullname, email, ttNum, user
+	let fullname, email, ttNum, user;
 
-    onMount(async() =>{
-        const res = await axios.get(`${API_URL}/users/me`, {
-            headers: {
-                Authorization: 'Bearer ' + localStorage.getItem("jwt"),
-            },
-        }).catch(function (error) {
-            console.log('Error', error.message);
-            goto("/login")
-        });
-        user = res.data
+	onMount(async () => {
+		const res = await axios
+			.get(`${API_URL}/users/me`, {
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("jwt"),
+				},
+			})
+			.catch(function (error) {
+				console.log("Error", error.message);
+				goto("/login");
+			});
+		user = res.data;
 
-        loading = false
-        fullname= user.firstName +" "+ user.lastName
-        email=user.email
-        ttNum=user.ttCode
-        eduPhase=user.eduPhase.replace("_"," ")
-        if(user.workplace){workplace = user.workplace}
-        if(user.province){province = user.province.replace("_"," ")}
-    })
+		loading = false;
+		fullname = user.firstName + " " + user.lastName;
+		email = user.email;
+		ttNum = user.ttCode;
+		eduPhase = user.eduPhase.replace("_", " ");
+		if (user.workplace) {
+			workplace = user.workplace;
+		}
+		if (user.province) {
+			province = user.province.replace("_", " ");
+		}
+	});
 
-    let province, myself = true, field = $courseType, message, eduPhase, workplace
+	let province,
+		myself = true,
+		field = $courseType,
+		message,
+		eduPhase,
+		workplace;
 
-    async function submitForm(){
-        await axios
-            .post(`${API_URL}/partner-forms/custom`, {
-                fullName: fullname,
-                ttNumber: ttNum,
-                email: email,
-                custom: [{
-                    __component: "custom-form.courses",
-                    province: province,
-                    myself: myself,
-                    field: field,
-                    message: message,
-                    eduPhase: eduPhase,
-                    workplace: workplace
-                }],
-                users_permissions_user: user,
-            })
-            .then(response => {
-                msg = fullname + ", you have successfully made contact with ThinkTeacher's partner. The partner will be in touch with you soon."
-                document.getElementById("contactPartner").reset()
-            })
-            .catch(error => {
-                console.log('An error occurred:', error.response.data)
-                errorMsg = error.response.data.message[0].messages[0].message
-            })
-    }
+	async function submitForm() {
+		await axios
+			.post(`${API_URL}/partner-forms/custom`, {
+				fullName: fullname,
+				ttNumber: ttNum,
+				email: email,
+				custom: [
+					{
+						__component: "custom-form.courses",
+						province: province,
+						myself: myself,
+						field: field,
+						message: message,
+						eduPhase: eduPhase,
+						workplace: workplace,
+					},
+				],
+				users_permissions_user: {
+					id: user.id,
+				},
+			})
+			.then((response) => {
+				msg =
+					fullname +
+					", you have successfully made contact with ThinkTeacher's partner. The partner will be in touch with you soon.";
+				document.getElementById("contactPartner").reset();
+			})
+			.catch((error) => {
+				console.log("An error occurred:", error.response.data);
+				errorMsg = error.response.data.message[0].messages[0].message;
+			});
+	}
 
-    let msg, errorMsg
+	let msg, errorMsg;
 </script>
 
 <svelte:head>
@@ -68,89 +88,173 @@
 </svelte:head>
 
 {#if loading}
-    <div class="d-flex justify-content-center mt-5">
-        <Jumper size="150" color="#5C677D" unit="px" duration="1s"></Jumper>
-    </div>
+	<div class="d-flex justify-content-center mt-5">
+		<Jumper size="150" color="#5C677D" unit="px" duration="1s" />
+	</div>
 {:else}
-    <section class="vh-50 gradient-custom container mt-4 mb-4">
-        <div class="py-3 h-100">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-12 col-md-8 col-lg-6 col-xl-6">
-                <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                    <div class="card-body p-md-3 p-lg-4 text-center">
-                    <div class="mb-md-3 mt-md-2">
-                        <h2 class="fw-bold mb-2 text-uppercase">Contact Partner</h2>
-                        {#if errorMsg}
-                            <h4 class="error-col">{errorMsg}</h4>
-                        {:else if msg}
-                            <h4 class="success-col">{msg}</h4>
-                        {/if}
-                        
-                        <form id="contactPartner">            
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label class="form-label" for="name">Name</label>
-                                    <input type="text" name="fullname" id="name" class="form-control form-control-lg" bind:value={fullname} readonly required />
-                                </div>
-                                <div class="col-md-12 mt-2">
-                                    <label class="form-label" for="surname">Email</label>
-                                    <input type="text" name="surname" id="surname" class="form-control form-control-lg" bind:value={email} readonly required />
-                                </div>
-                                <div class="col-12 mt-2">
-                                    <label class="form-label" for="idNum">ThinkTeacher Number</label>
-                                    <input type="text" name="idNumber" id="idNum" class="form-control form-control-lg" bind:value={ttNum} readonly required />
-                                </div>
-                                <div class="col-12 mt-2">
-                                    <label class="form-label" for="eduPhase">Education Phase</label>
-                                    <input type="text" name="eduPhase" id="eduPhase" class="form-control form-control-lg" bind:value={eduPhase} readonly required />
-                                </div>
-                                <div class="col-12 mt-2">
-                                    <label class="form-label" for="institute">School / Institution</label>
-                                    <input type="text" name="institute" id="institute" class="form-control form-control-lg" bind:value={workplace} required />
-                                </div>
-                                <div class="col-12 mt-2">
-                                    <label class="form-label" for="field">I am interested in the following workshop / webinar / course / qualification:</label>
-                                    <input type="text" name="field" id="field" class="form-control form-control-lg" bind:value={field} required />
-                                </div>
-                                <div class="col-12 mt-2">
-                                    <label class="form-label" for="province">Province</label>
-                                    <input type="text" name="province" id="province" class="form-control form-control-lg" bind:value={province} required />
-                                </div>
-                                <div class="col-12 mt-2">
-                                    <label class="form-label form-check-label" for="myself">Do you want to register as an individual or on behalf of a group?</label>
-                                    <div class="form-switch mt-1">
-                                        <input class="form-check-input form-control" type="checkbox" role="switch" id="myself" bind:checked={myself}>
-                                        <p>{(myself) ? 'individual':'group'}</p>
-                                    </div>
-                                </div>
-                                <div class="col-12 mt-2">
-                                    <label class="form-label" for="Message">Message</label>
-                                    <textarea id="Message" name="message" class="form-control" rows="3" placeholder="Enter your message" bind:value={message} required></textarea>
-                                </div>
-                            </div>
-                            <button class="btn btn-outline-light btn-lg px-4 mt-4" type="submit" on:click|preventDefault={submitForm} disabled={buttonSubmit}>Submit</button>
-                        </form>
-                    </div>
+	<section class="vh-50 gradient-custom container mt-4 mb-4">
+		<div class="py-3 h-100">
+			<div class="row d-flex justify-content-center align-items-center h-100">
+				<div class="col-12 col-md-8 col-lg-6 col-xl-6">
+					<div class="card bg-dark text-white" style="border-radius: 1rem;">
+						<div class="card-body p-md-3 p-lg-4 text-center">
+							<div class="mb-md-3 mt-md-2">
+								<h2 class="fw-bold mb-2 text-uppercase">Contact Partner</h2>
+								{#if errorMsg}
+									<h4 class="error-col">{errorMsg}</h4>
+								{:else if msg}
+									<h4 class="success-col">{msg}</h4>
+								{/if}
 
-                    </div>
-                </div>
-                </div>
-            </div>
-        </div>
-    </section>
+								<form id="contactPartner">
+									<div class="row">
+										<div class="col-md-12">
+											<label class="form-label" for="name">Name</label>
+											<input
+												type="text"
+												name="fullname"
+												id="name"
+												class="form-control form-control-lg"
+												bind:value={fullname}
+												readonly
+												required
+											/>
+										</div>
+										<div class="col-md-12 mt-2">
+											<label class="form-label" for="surname">Email</label>
+											<input
+												type="text"
+												name="surname"
+												id="surname"
+												class="form-control form-control-lg"
+												bind:value={email}
+												readonly
+												required
+											/>
+										</div>
+										<div class="col-12 mt-2">
+											<label class="form-label" for="idNum"
+												>ThinkTeacher Number</label
+											>
+											<input
+												type="text"
+												name="idNumber"
+												id="idNum"
+												class="form-control form-control-lg"
+												bind:value={ttNum}
+												readonly
+												required
+											/>
+										</div>
+										<div class="col-12 mt-2">
+											<label class="form-label" for="eduPhase"
+												>Education Phase</label
+											>
+											<input
+												type="text"
+												name="eduPhase"
+												id="eduPhase"
+												class="form-control form-control-lg"
+												bind:value={eduPhase}
+												readonly
+												required
+											/>
+										</div>
+										<div class="col-12 mt-2">
+											<label class="form-label" for="institute"
+												>School / Institution</label
+											>
+											<input
+												type="text"
+												name="institute"
+												id="institute"
+												class="form-control form-control-lg"
+												bind:value={workplace}
+												required
+											/>
+										</div>
+										<div class="col-12 mt-2">
+											<label class="form-label" for="field"
+												>I am interested in the following workshop / webinar
+												/ course / qualification:</label
+											>
+											<input
+												type="text"
+												name="field"
+												id="field"
+												class="form-control form-control-lg"
+												bind:value={field}
+												required
+											/>
+										</div>
+										<div class="col-12 mt-2">
+											<label class="form-label" for="province">Province</label
+											>
+											<input
+												type="text"
+												name="province"
+												id="province"
+												class="form-control form-control-lg"
+												bind:value={province}
+												required
+											/>
+										</div>
+										<div class="col-12 mt-2">
+											<label class="form-label form-check-label" for="myself"
+												>Do you want to register as an individual or on
+												behalf of a group?</label
+											>
+											<div class="form-switch mt-1">
+												<input
+													class="form-check-input form-control"
+													type="checkbox"
+													role="switch"
+													id="myself"
+													bind:checked={myself}
+												/>
+												<p>{myself ? "individual" : "group"}</p>
+											</div>
+										</div>
+										<div class="col-12 mt-2">
+											<label class="form-label" for="Message">Message</label>
+											<textarea
+												id="Message"
+												name="message"
+												class="form-control"
+												rows="3"
+												placeholder="Enter your message"
+												bind:value={message}
+												required
+											/>
+										</div>
+									</div>
+									<button
+										class="btn btn-outline-light btn-lg px-4 mt-4"
+										type="submit"
+										on:click|preventDefault={submitForm}
+										disabled={buttonSubmit}>Submit</button
+									>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 {/if}
 
 <style>
-    .form-check-input{
-        margin: 0 auto !important;
-    }
-    .form-check-input:checked {
-        background-color: var(--logo-gold);
-        border-color: var(--logo-gold);
-    }
-    .form-check-input:focus {
-        border-color: rgba(255, 255, 255, 0.4);
-        outline: 0;
-        box-shadow: 0 0 0 0.25rem rgba(217, 183, 61, 0.055);
-    }
+	.form-check-input {
+		margin: 0 auto !important;
+	}
+	.form-check-input:checked {
+		background-color: var(--logo-gold);
+		border-color: var(--logo-gold);
+	}
+	.form-check-input:focus {
+		border-color: rgba(255, 255, 255, 0.4);
+		outline: 0;
+		box-shadow: 0 0 0 0.25rem rgba(217, 183, 61, 0.055);
+	}
 </style>
