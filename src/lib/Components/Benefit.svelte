@@ -8,23 +8,23 @@
 		switch (benefitData[0].partner.company_name.toLowerCase()) {
 			case "cirrus travel":
 				$travelType = type.toLowerCase().replace(" ", "_");
-				goto("/auth/form-travel");
+				goto("/auth/form/travel");
 				break;
 			case "macmillan":
 				$courseType = type;
-				goto("/auth/form-courses");
+				goto("/auth/form/courses");
 				break;
 			case "kim forbes":
-				goto("/auth/form-wellbeing");
+				goto("/auth/form/wellbeing");
 				break;
 			case "sa health brokers (pty) ltd":
-				goto("/auth/form-medical-aid");
+				goto("/auth/form/medical-aid");
 				break;
 			case "alexander forbes":
-				goto("/auth/form-finance");
+				goto("/auth/form/finance");
 				break;
 			case "stephen g. may":
-				goto("/auth/form-legal");
+				goto("/auth/form/legal");
 				break;
 			default:
 				goto("/");

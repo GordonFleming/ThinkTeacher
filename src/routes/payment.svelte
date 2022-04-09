@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from "svelte";
-	import { id } from "$lib/stores";
+	import { id, errMsg } from "$lib/stores";
 	import axios from "axios";
 	import { API_URL } from "$lib/env.js";
 	import { Jumper } from "svelte-loading-spinners";
@@ -17,7 +17,6 @@
 		submitButton = true,
 		amountInCents = 36000,
 		amountInRands = amountInCents / 100,
-		errMsg,
 		successMsg;
 
 	onMount(async () => {
@@ -64,7 +63,7 @@
 
 		inline.on("card_tokenized", function (token) {
 			console.log("restsdfgsdgs", token);
-			errMsg = undefined;
+			$errMsg = "";
 			successMsg = undefined;
 			axios
 				.post(`${API_URL}/payments`, {
@@ -81,7 +80,7 @@
 					paying = false;
 				})
 				.catch((error) => {
-					errMsg = error.response.data.message.error.displayMessage;
+					$errMsg = error.response.data.message.error.displayMessage;
 					console.log("An error occurred:", error.response.data);
 					paying = false;
 				});
@@ -103,8 +102,8 @@
 				<h4 class="success-col">{successMsg}</h4>
 				<Icon class="success-col" data={checkCircleO} scale="2.4" />
 			{/if}
-			{#if errMsg !== undefined}
-				<h4 class="error-col">{errMsg}</h4>
+			{#if $errMsg !== ""}
+				<h4 class="error-col">{$errMsg}</h4>
 			{/if}
 
 			{#if loading || paying}
