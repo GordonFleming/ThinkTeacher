@@ -257,7 +257,6 @@
 				</div>
 			</a>
 			<h3 class="mt-3">Book Store</h3>
-			<h5 class="text-logo-gold">coming soon</h5>
 		</div>
 		<div class="col-sm-12 col-md-6 col-lg-4 mb-5">
 			<a href="/benefits" use:viewport on:enterViewport={() => (ben8 = true)}>
@@ -266,14 +265,14 @@
 						<img
 							transition:fly={{ y: 200, duration: 800 }}
 							class="img-fluid offer offer-img"
-							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/tech_1c4a22ee51.webp"
-							alt="IT"
-							on:click={() => ($travelScroll = "IT")}
+							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/kia_car_b41351adfc.webp"
+							alt="cars"
+							on:click={() => ($travelScroll = "cars")}
 						/>
 					{/if}
 				</div>
 			</a>
-			<h3 class="mt-3">IT</h3>
+			<h3 class="mt-3">Cars</h3>
 			<h5 class="text-logo-gold">coming soon</h5>
 		</div>
 		<div class="col-sm-12 col-md-6 col-lg-4 mb-5">
@@ -283,14 +282,14 @@
 						<img
 							transition:fly={{ y: 200, duration: 1000 }}
 							class="img-fluid offer offer-img"
-							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/spa_b785512c3b.webp"
-							alt="spa"
-							on:click={() => ($travelScroll = "spa")}
+							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/photography_68b64fd52e.webp"
+							alt="Photography"
+							on:click={() => ($travelScroll = "photography")}
 						/>
 					{/if}
 				</div>
 			</a>
-			<h3 class="mt-3">Spa</h3>
+			<h3 class="mt-3">Photography</h3>
 			<h5 class="text-logo-gold">coming soon</h5>
 		</div>
 	</div>
