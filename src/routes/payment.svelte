@@ -19,6 +19,9 @@
 		amountInRands = amountInCents / 100,
 		successMsg;
 
+	let mem_disc = "ThinkTeacher Annual Membership";
+	let refNum = Math.floor(Math.random() * 90000) + 10000;
+
 	onMount(async () => {
 		if ($id === undefined) {
 			$id = localStorage.getItem("id");
@@ -70,6 +73,8 @@
 					amount_in_cents: amountInCents,
 					token: token.id,
 					payed: true,
+					description: mem_disc,
+					reference_number: refNum,
 					users_permissions_user: {
 						id: $id,
 					},
