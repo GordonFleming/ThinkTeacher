@@ -43,7 +43,7 @@
 				$errMsg = "Your account's payment is not up to date...";
 			}
 
-			// Check for if you have payed
+			// Check for if you have paid
 
 			// TODO: use this below to check if it has been a year since a user paid and needs to renew their membership
 

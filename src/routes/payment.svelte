@@ -2,7 +2,7 @@
 	import { onMount } from "svelte";
 	import { id, errMsg } from "$lib/stores";
 	import axios from "axios";
-	import { API_URL, prod, yocoPubKey } from "$lib/env.js";
+	import { API_URL, yocoPubKey } from "$lib/env.js";
 	import { Jumper } from "svelte-loading-spinners";
 	import Icon from "svelte-awesome";
 	import { checkCircleO } from "svelte-awesome/icons";
@@ -70,7 +70,7 @@
 				.post(`${API_URL}/payments`, {
 					amount_in_cents: amountInCents,
 					token: token.id,
-					payed: true,
+					paid: true,
 					description: mem_disc,
 					reference_number: refNum,
 					users_permissions_user: {
