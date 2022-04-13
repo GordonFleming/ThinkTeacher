@@ -22,6 +22,7 @@
 
 	onMount(() => {
 		logoutUser();
+		$errMsg = "";
 	});
 
 	async function loginUser() {

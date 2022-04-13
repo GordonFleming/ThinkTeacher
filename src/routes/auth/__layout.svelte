@@ -32,7 +32,7 @@
 
 			const year = 3.16 * Math.pow(10, 10);
 			const created_at = res.data.created_at;
-			const cut_off_date = "2022-04-12";
+			const cut_off_date = "2022-04-30";
 			// Check for those users who are valid free members
 			if (compareTime(new Date(created_at), new Date(cut_off_date))) {
 				paid = true;
