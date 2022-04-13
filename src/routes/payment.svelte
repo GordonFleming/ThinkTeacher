@@ -2,12 +2,10 @@
 	import { onMount } from "svelte";
 	import { id, errMsg } from "$lib/stores";
 	import axios from "axios";
-	import { API_URL } from "$lib/env.js";
+	import { API_URL, prod, yocoPubKey } from "$lib/env.js";
 	import { Jumper } from "svelte-loading-spinners";
 	import Icon from "svelte-awesome";
 	import { checkCircleO } from "svelte-awesome/icons";
-
-	// TODO : show any errors to user... add user name, surname and any others along with the meta you want like ttcode...
 
 	let sdk,
 		inline,
@@ -28,7 +26,7 @@
 		}
 
 		sdk = new window.YocoSDK({
-			publicKey: "pk_test_7322f2efgOezbbk123c4",
+			publicKey: yocoPubKey,
 		});
 
 		inline = sdk.inline({
