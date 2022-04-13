@@ -333,8 +333,8 @@
 			</div>
 			<div class="slide-content">
 				<img
-					class="logo img-fluid"
-					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_AF_Logo_7049c50238.webp"
+					class="logo img-fluid mt-3"
+					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_alex_forbes_62be1d48f7.webp"
 					alt="partner"
 				/>
 			</div>
@@ -363,6 +363,20 @@
 				<img
 					class="logo img-fluid"
 					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_exclusivebooks_779996b0af.jpeg"
+					alt="partner"
+				/>
+			</div>
+			<div class="slide-content">
+				<img
+					class="logo img-fluid mt-3"
+					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_kia_logo_16b0a03857.webp"
+					alt="partner"
+				/>
+			</div>
+			<div class="slide-content">
+				<img
+					class="logo img-fluid"
+					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_photography_partner_9ce8b13a83.webp"
 					alt="partner"
 				/>
 			</div>
