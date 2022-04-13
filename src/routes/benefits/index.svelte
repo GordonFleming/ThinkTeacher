@@ -5,9 +5,11 @@
 		travel_cat = 2,
 		course_cat = 5,
 		wellbeing_cat = 4,
-		finance_cat = 6,
-		legal_cat = 1,
-		books_cat = 6;
+		finance_cat = 1,
+		legal_cat = 9,
+		books_cat = 6,
+		cars_cat = 7,
+		photography_cat = 8;
 	if (prod === "true") {
 		(health_cat = 2),
 			(travel_cat = 1),
@@ -15,7 +17,9 @@
 			(wellbeing_cat = 3),
 			(finance_cat = 5),
 			(legal_cat = 4),
-			(books_cat = 7);
+			(books_cat = 7),
+			(cars_cat = 8),
+			(photography_cat = 9);
 	}
 
 	export const load = async ({ fetch }) => {
@@ -65,34 +69,66 @@
 			courses = [],
 			finance = [],
 			legal = [],
-			books = [];
+			books = [],
+			cars = [],
+			photography = [];
 		let source;
 
 		if (res.ok) {
 			const data = await res.json();
 			packages = data.data.packages;
+
 			function seperatePackages(item) {
-				if (item.partner.category.id == travel_cat) {
-					travel.push(item);
-				} else if (item.partner.category.id == health_cat) {
-					health.push(item);
-				} else if (item.partner.category.id == wellbeing_cat) {
-					wellness.push(item);
-					source = wellness[0].details;
-				} else if (item.partner.category.id == course_cat) {
-					courses.push(item);
-				} else if (item.partner.category.id == finance_cat) {
-					finance.push(item);
-				} else if (item.partner.category.id == legal_cat) {
-					legal.push(item);
-				} else if (item.partner.category.id == books_cat) {
-					books.push(item);
+				switch (parseInt(item.partner.category.id)) {
+					case travel_cat:
+						travel.push(item);
+						break;
+					case health_cat:
+						health.push(item);
+						break;
+					case wellbeing_cat:
+						wellness.push(item);
+						source = wellness[0].details;
+						break;
+					case course_cat:
+						courses.push();
+						break;
+					case finance_cat:
+						finance.push(item);
+						break;
+					case legal_cat:
+						legal.push(item);
+						break;
+					case books_cat:
+						books.push(item);
+						break;
+					case cars_cat:
+						cars.push(item);
+						break;
+					case photography_cat:
+						photography.push(item);
+						break;
+					default:
+						console.log("This belongs to nothing...");
 				}
 			}
 
 			packages.forEach(seperatePackages);
 
-			return { props: { travel, health, wellness, courses, finance, legal, books, source } };
+			return {
+				props: {
+					travel,
+					health,
+					wellness,
+					courses,
+					finance,
+					legal,
+					books,
+					cars,
+					photography,
+					source,
+				},
+			};
 		}
 
 		return {
@@ -115,7 +151,9 @@
 		//document.body.scrollTop = 0;
 		function scrollBene() {
 			if ($travelScroll) {
-				document.getElementById(`${$travelScroll}`).scrollIntoView({ block: "start" });
+				document
+					.getElementById(`${$travelScroll}`)
+					.scrollIntoView({ behavior: "smooth", block: "start" });
 			}
 		}
 		setTimeout(scrollBene, 150);
@@ -124,6 +162,7 @@
 	});
 
 	export let travel, wellness, health, courses, finance, legal, books;
+	//cars, photography;
 
 	export let source,
 		readMore = false;
@@ -219,20 +258,20 @@
 			<h4
 				on:click={() =>
 					document
-						.getElementById("IT")
+						.getElementById("cars")
 						.scrollIntoView({ behavior: "smooth", block: "start" })}
 			>
-				IT <span class="text-logo-gold">-</span>
+				Cars <span class="text-logo-gold">-</span>
 			</h4>
 		</li>
 		<li class="list-inline-item">
 			<h4
 				on:click={() =>
 					document
-						.getElementById("spa")
+						.getElementById("photography")
 						.scrollIntoView({ behavior: "smooth", block: "start" })}
 			>
-				Spa
+				Photography
 			</h4>
 		</li>
 	</ul>
@@ -345,14 +384,14 @@
 			<h2 class="display-3">Book Store</h2>
 			<PartnerBenefit partnerData={books} />
 		</div>
-		<!-- IT -->
-		<div class="grey-grad row justify-content-center big-gap" id="IT">
-			<h2 class="display-3">IT</h2>
+		<!-- cars -->
+		<div class="grey-grad row justify-content-center big-gap" id="cars">
+			<h2 class="display-3">Cars</h2>
 			<h4>Coming soon</h4>
 		</div>
-		<!-- Spa -->
-		<div class="grey-grad row justify-content-center big-gap" id="spa">
-			<h2 class="display-3">Spa</h2>
+		<!-- Photography -->
+		<div class="grey-grad row justify-content-center big-gap" id="photography">
+			<h2 class="display-3">Photography</h2>
 			<h4>Coming soon</h4>
 		</div>
 	</div>
