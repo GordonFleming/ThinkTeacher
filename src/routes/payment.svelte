@@ -44,10 +44,12 @@
 	let token;
 	async function makePayment() {
 		submitButton = false;
+		loading = true;
 		inline
 			.createToken()
 			.then(function (result) {
 				submitButton = true;
+				loading = false;
 				if (result.error) {
 					const errorMessage = result.error.message;
 					console.log(errorMessage);
