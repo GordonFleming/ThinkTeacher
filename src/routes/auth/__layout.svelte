@@ -8,8 +8,6 @@
 	import { errMsg, cut_off_date } from "$lib/stores";
 	import { compareTime } from "$lib/re_utils";
 
-	let paid = false;
-
 	onMount(async () => {
 		if (localStorage.getItem("jwt") && localStorage.getItem("ttNum")) {
 			const res = await axios
@@ -27,12 +25,35 @@
 					}
 				});
 
+			const paymentFind = await axios
+				.get(`${API_URL}/payments?users_permissions_user.id=${res.data.id}`, {
+					headers: {
+						Authorization: "Bearer " + localStorage.getItem("jwt"),
+					},
+				})
+				.catch(function (error) {
+					console.log(error);
+					$errMsg = "No payment found...";
+				});
+
+			// TODO: rather implement this logic in the backend
 			const year = 3.16 * Math.pow(10, 10);
 			const created_at = res.data.created_at;
+
+			let paidMember = false;
+			let payment = paymentFind.data;
+
+			if (payment.length > 0) {
+				if (payment[0].paid) {
+					paidMember = true;
+				}
+			}
+
 			// Check for those users who are valid free members
-			if (compareTime(new Date(created_at), new Date($cut_off_date))) {
-				paid = true;
-				console.log("you are paid up");
+			if (paidMember) {
+				console.log("you are paid up, payment check");
+			} else if (compareTime(new Date(created_at), new Date($cut_off_date))) {
+				console.log("you are paid up, free member");
 			} else {
 				goto("/payment");
 				console.log("payment needed");

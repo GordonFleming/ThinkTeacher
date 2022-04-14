@@ -42,8 +42,20 @@
 				browserSet("ttNum", response.data.user.ttCode);
 				$ttNum = response.data.user.ttCode;
 				let created_at = response.data.user.created_at;
-				if (compareTime(new Date(created_at), new Date($cut_off_date))) {
-					console.log("you are paid up");
+				let payment = response.data.user.payments;
+				let paidMember = false;
+				console.log(payment);
+				if (payment.length > 0) {
+					if (payment[0].paid) {
+						paidMember = true;
+					}
+				}
+
+				if (paidMember) {
+					console.log("you are paid up, payment check");
+					goto("/benefits");
+				} else if (compareTime(new Date(created_at), new Date($cut_off_date))) {
+					console.log("you are paid up, free member");
 					goto("/benefits");
 				} else {
 					console.log("you are not paid up");
@@ -51,7 +63,7 @@
 				}
 			})
 			.catch((error) => {
-				console.log("An error occurred:", error.response);
+				console.log("An error occurred:", error);
 				errorMsg = error.response.data.message[0].messages[0].message;
 			});
 	}
