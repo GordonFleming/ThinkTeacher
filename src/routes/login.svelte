@@ -7,9 +7,9 @@
 	import axios from "axios";
 	import { goto } from "$app/navigation";
 	import Icon from "svelte-awesome";
-	import { name, surname, id, errMsg, ttNum } from "$lib/stores";
+	import { name, surname, id, errMsg, ttNum, cut_off_date } from "$lib/stores";
 	import { facebook, twitter, instagram } from "svelte-awesome/icons";
-	import { browserSet } from "$lib/re_utils";
+	import { browserSet, compareTime } from "$lib/re_utils";
 	import { API_URL } from "$lib/env.js";
 
 	let usernameEmail, password;
@@ -41,7 +41,14 @@
 				$id = response.data.id;
 				browserSet("ttNum", response.data.user.ttCode);
 				$ttNum = response.data.user.ttCode;
-				goto("/benefits");
+				let created_at = response.data.user.created_at;
+				if (compareTime(new Date(created_at), new Date($cut_off_date))) {
+					console.log("you are paid up");
+					goto("/benefits");
+				} else {
+					console.log("you are not paid up");
+					goto("/payment");
+				}
 			})
 			.catch((error) => {
 				console.log("An error occurred:", error.response);

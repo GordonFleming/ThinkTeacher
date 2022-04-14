@@ -101,6 +101,7 @@
 	<div class="row">
 		<div class="text-center">
 			<h2 class="mb-4">Membership <span class="text-blue">Payment</span></h2>
+			<h6>Pay via EFT or by card payment</h6>
 			{#if successMsg !== undefined}
 				<h4 class="success-col">{successMsg}</h4>
 				<Icon class="success-col" data={checkCircleO} scale="2.4" />
@@ -161,6 +162,15 @@
 			src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/mastercard_colour_446709c296.svg"
 			alt="mastercard"
 		/>
+	</div>
+	<hr class="rounded" />
+	<div class="row">
+		<div class="col text-center mt-4 mb-4">
+			<h5>EFT details:</h5>
+			<p>ThinkTeacher (Pty) LTD</p>
+			<p>Nedbank</p>
+			<p>Business account: 1217188746</p>
+		</div>
 	</div>
 </div>
 

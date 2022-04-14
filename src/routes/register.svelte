@@ -87,8 +87,7 @@
 					},
 					{
 						headers: {
-							Authorization:
-								"Bearer " + localStorage.getItem("jwt"),
+							Authorization: "Bearer " + localStorage.getItem("jwt"),
 						},
 					}
 				)
@@ -130,8 +129,7 @@
 				})
 				.catch((error) => {
 					console.log("An error occurred:", error.response);
-					errorMsg =
-						error.response.data.message[0].messages[0].message;
+					errorMsg = error.response.data.message[0].messages[0].message;
 				});
 		} else if (!s && !provider) {
 			errorMsg = "Password not strong enough";
@@ -165,12 +163,7 @@
 					{ headers: { Authorization: `Bearer ${sgKey}` } }
 				)
 				.then((response) => {
-					console.log(
-						"SG reponse: ",
-						response.statusText,
-						" ",
-						response.data
-					);
+					console.log("SG reponse: ", response.statusText, " ", response.data);
 					document.getElementById("register").reset();
 					password = "";
 					loading = false;
@@ -208,10 +201,7 @@
 	<div class="py-3 h-100">
 		<div class="row d-flex justify-content-center align-items-center h-100">
 			<div class="col-12 col-md-8 col-lg-6 col-xl-6">
-				<div
-					class="card bg-dark text-white"
-					style="border-radius: 1rem;"
-				>
+				<div class="card bg-dark text-white" style="border-radius: 1rem;">
 					{#if registerNext && !provider}
 						<i
 							style="padding-top: 1.8rem; padding-left: 1.8rem;"
@@ -221,9 +211,7 @@
 					{/if}
 					<div class="card-body p-md-3 p-lg-4 text-center">
 						<div class="mb-md-3">
-							<h2 class="fw-bold mb-2 text-uppercase">
-								Register
-							</h2>
+							<h2 class="fw-bold mb-2 text-uppercase">Register</h2>
 							{#if errorMsg}
 								<h4 class="error-col">{errorMsg}</h4>
 							{:else if msg}
@@ -233,12 +221,14 @@
 							{#if provider && !registered}
 								<p>Please complete your registration...</p>
 							{/if}
+							<h6 class="text-danger">
+								*From 15th April payment for membership will be required
+							</h6>
 							{#if registered && !provider}
 								<button
 									class="btn btn-secondary mx-auto mt-3 mb-3 fw-bold fs-5"
 									style="width: 300px;"
-									on:click={() => goto("/login")}
-									>Login Now</button
+									on:click={() => goto("/login")}>Login Now</button
 								>
 							{/if}
 
@@ -257,17 +247,13 @@
 										</div>
 										<div class="Sso__divider ">
 											<span class="Sso__dividerLine" />
-											<span class="Sso__dividerText"
-												>or</span
-											>
+											<span class="Sso__dividerText">or</span>
 											<span class="Sso__dividerLine" />
 										</div>
 									</div>
 
 									<div class="form-outline form-white mb-2">
-										<label class="form-label" for="Username"
-											>Username</label
-										>
+										<label class="form-label" for="Username">Username</label>
 										<input
 											type="text"
 											name="username"
@@ -279,9 +265,7 @@
 										/>
 									</div>
 									<div class="form-outline form-white mb-2">
-										<label class="form-label" for="Email"
-											>Email</label
-										>
+										<label class="form-label" for="Email">Email</label>
 										<input
 											type="email"
 											id="Email"
@@ -292,9 +276,8 @@
 										/>
 									</div>
 									<div class="form-outline form-white mb-4">
-										<label class="form-label" for="Password"
-											>Password</label
-										><br />
+										<label class="form-label" for="Password">Password</label><br
+										/>
 										<input
 											type="password"
 											id="Password"
@@ -332,16 +315,13 @@
 
 									<button
 										class="btn btn-outline-light btn-lg px-4"
-										on:click|preventDefault={() =>
-											(registerNext = true)}
+										on:click|preventDefault={() => (registerNext = true)}
 										disabled={buttonNext}>Next</button
 									>
 								{:else}
 									<div class="row">
 										<div class="col-sm-12 col-md-6">
-											<label class="form-label" for="name"
-												>First Name</label
-											>
+											<label class="form-label" for="name">First Name</label>
 											<input
 												type="text"
 												name="username"
@@ -353,10 +333,7 @@
 											/>
 										</div>
 										<div class="col-sm-12 col-md-6">
-											<label
-												class="form-label"
-												for="surname">Surname</label
-											>
+											<label class="form-label" for="surname">Surname</label>
 											<input
 												type="text"
 												name="surname"
@@ -368,10 +345,7 @@
 											/>
 										</div>
 										<div class="col-sm-12 col-md-6 mt-3">
-											<label
-												class="form-label"
-												for="idNum">ID Number</label
-											>
+											<label class="form-label" for="idNum">ID Number</label>
 											<input
 												type="text"
 												name="idNumber"
@@ -382,20 +356,13 @@
 												required
 											/>
 											{#if idNum}
-												<small
-													style={isValidID ||
-														"color:red"}
-												>
-													{isValidID
-														? "Valid"
-														: "Not a valid"} ID
+												<small style={isValidID || "color:red"}>
+													{isValidID ? "Valid" : "Not a valid"} ID
 												</small>
 											{/if}
 										</div>
 										<div class="col-sm-12 col-md-6 mt-3">
-											<label class="form-label" for="cell"
-												>Cell Number</label
-											>
+											<label class="form-label" for="cell">Cell Number</label>
 											<input
 												type="tel"
 												name="cell"
@@ -409,9 +376,7 @@
 											/>
 										</div>
 										<div class="col-12 mt-3">
-											<label
-												class="form-label"
-												for="eduPhase"
+											<label class="form-label" for="eduPhase"
 												>Education Phase</label
 											>
 											<select
@@ -421,25 +386,18 @@
 												bind:value={eduPhase}
 												required
 											>
-												<option value="" selected
-													>choose phase</option
-												>
-												<option
-													value="early_childhood_development"
+												<option value="" selected>choose phase</option>
+												<option value="early_childhood_development"
 													>Early Childhood Development</option
 												>
 												<option value="foundation_phase"
 													>Foundation Phase</option
 												>
-												<option
-													value="intermediate_phase"
+												<option value="intermediate_phase"
 													>Intermediate Phase</option
 												>
-												<option value="senior_phase"
-													>Senior Phase</option
-												>
-												<option
-													value="further_education"
+												<option value="senior_phase">Senior Phase</option>
+												<option value="further_education"
 													>Further Education</option
 												>
 												<option value="training_phase"
@@ -448,8 +406,7 @@
 											</select>
 										</div>
 										<div class="col-sm-12 col-md-6 mt-3">
-											<label class="form-label" for="sace"
-												>SACE Number</label
+											<label class="form-label" for="sace">SACE Number</label
 											><small class="text-danger"
 												>&nbsp;&nbsp;&nbsp;&nbsp;*optional</small
 											>
@@ -480,9 +437,7 @@
 											/>
 										</div>
 										<div class="col-12 mt-3">
-											<label
-												class="form-label"
-												for="altEmail"
+											<label class="form-label" for="altEmail"
 												>Alternative Email</label
 											><small class="text-danger"
 												>&nbsp;&nbsp;&nbsp;&nbsp;*optional</small
@@ -496,9 +451,7 @@
 											/>
 										</div>
 										<div class="col-12 mt-3">
-											<label
-												class="form-label"
-												for="school"
+											<label class="form-label" for="school"
 												>School / Institution</label
 											><small class="text-danger"
 												>&nbsp;&nbsp;&nbsp;&nbsp;*optional</small
@@ -513,9 +466,7 @@
 											/>
 										</div>
 										<div class="col-12 mt-2">
-											<label
-												class="form-label"
-												for="province">Province</label
+											<label class="form-label" for="province">Province</label
 											><small class="text-danger"
 												>&nbsp;&nbsp;&nbsp;&nbsp;*optional</small
 											>
@@ -528,33 +479,15 @@
 												<option value="none" selected
 													>choose province</option
 												>
-												<option value="gauteng"
-													>Gauteng</option
-												>
-												<option value="free_state"
-													>Free State</option
-												>
-												<option value="western_cape"
-													>Western Cape</option
-												>
-												<option value="north_west"
-													>North West</option
-												>
-												<option value="northern_cape"
-													>Northern Cape</option
-												>
-												<option value="limpopo"
-													>Limpopo</option
-												>
-												<option value="kwazulu_natal"
-													>KwaZulu-Natal</option
-												>
-												<option value="mpumalanga"
-													>Mpumalanga</option
-												>
-												<option value="eastern_cape"
-													>Eastern Cape</option
-												>
+												<option value="gauteng">Gauteng</option>
+												<option value="free_state">Free State</option>
+												<option value="western_cape">Western Cape</option>
+												<option value="north_west">North West</option>
+												<option value="northern_cape">Northern Cape</option>
+												<option value="limpopo">Limpopo</option>
+												<option value="kwazulu_natal">KwaZulu-Natal</option>
+												<option value="mpumalanga">Mpumalanga</option>
+												<option value="eastern_cape">Eastern Cape</option>
 											</select>
 										</div>
 									</div>

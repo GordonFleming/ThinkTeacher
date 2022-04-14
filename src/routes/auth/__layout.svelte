@@ -5,13 +5,10 @@
 	import { goto } from "$app/navigation";
 	import { onMount } from "svelte";
 	import { API_URL } from "$lib/env.js";
-	import { errMsg } from "$lib/stores";
+	import { errMsg, cut_off_date } from "$lib/stores";
+	import { compareTime } from "$lib/re_utils";
 
 	let paid = false;
-
-	function compareTime(time1, time2) {
-		return new Date(time1) < new Date(time2); // true if time1 is earlier
-	}
 
 	onMount(async () => {
 		if (localStorage.getItem("jwt") && localStorage.getItem("ttNum")) {
@@ -32,9 +29,8 @@
 
 			const year = 3.16 * Math.pow(10, 10);
 			const created_at = res.data.created_at;
-			const cut_off_date = "2022-04-30";
 			// Check for those users who are valid free members
-			if (compareTime(new Date(created_at), new Date(cut_off_date))) {
+			if (compareTime(new Date(created_at), new Date($cut_off_date))) {
 				paid = true;
 				console.log("you are paid up");
 			} else {
