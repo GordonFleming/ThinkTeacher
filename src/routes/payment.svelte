@@ -96,7 +96,7 @@
 
 <svelte:head>
 	<title>Payment</title>
-	<script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
+	<script async defer src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
 </svelte:head>
 
 <div class="container mt-5">
@@ -126,13 +126,9 @@
 		<div class="col d-flex justify-content-center">
 			<form id="payment-form">
 				<div class="one-liner">
-					{#await sdk}
-						<p>loading</p>
-					{:then}
-						<div id="card-frame">
-							<!-- Yoco Inline form will be added here -->
-						</div>
-					{/await}
+					<div id="card-frame">
+						<!-- Yoco Inline form will be added here -->
+					</div>
 
 					<div class="text-center mt-4 mb-4">
 						<button
