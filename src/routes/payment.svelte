@@ -6,7 +6,6 @@
 	import { Jumper } from "svelte-loading-spinners";
 	import Icon from "svelte-awesome";
 	import { checkCircleO } from "svelte-awesome/icons";
-	import { browser } from "$app/env";
 
 	let sdk,
 		inline,
@@ -26,11 +25,9 @@
 			$id = localStorage.getItem("id");
 		}
 
-		if (browser) {
-			sdk = new window.YocoSDK({
-				publicKey: yocoPubKey,
-			});
-		}
+		sdk = new YocoSDK({
+			publicKey: yocoPubKey,
+		});
 
 		inline = sdk.inline({
 			layout: "basic",
