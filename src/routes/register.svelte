@@ -15,7 +15,7 @@
 	import { Jumper } from "svelte-loading-spinners";
 
 	onMount(() => {
-		if (localStorage.getItem("provider") == "google") {
+		if (sessionStorage.getItem("provider") == "google") {
 			registerNext = true;
 			provider = true;
 		}
@@ -92,12 +92,17 @@
 					}
 				)
 				.then((response) => {
+					console.log("User profile", response.data.user);
 					msg =
 						response.data.firstName +
 						", you have been successfully registered with ThinkTeacher!";
 					email = response.data.email;
 					registerNext = false;
 					registered = true;
+				})
+				.catch((error) => {
+					console.log("An error occurred:", error.response);
+					errorMsg = error.response.data.message[0].messages[0].message;
 				});
 		}
 		if (s && !provider) {
@@ -224,7 +229,7 @@
 							<h6 class="text-danger">
 								*From 15th April payment for membership will be required
 							</h6>
-							{#if registered && !provider}
+							{#if registered}
 								<button
 									class="btn btn-secondary mx-auto mt-3 mb-3 fw-bold fs-5"
 									style="width: 300px;"

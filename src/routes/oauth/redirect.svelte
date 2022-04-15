@@ -5,7 +5,7 @@
 	import { name, surname, id, ttNum } from "$lib/stores";
 	import { goto } from "$app/navigation";
 	import { Jumper } from "svelte-loading-spinners";
-	import { browserSet } from "$lib/re_utils";
+	import { browserSet, browserSessionSet } from "$lib/re_utils";
 
 	let loading = true,
 		errMsg;
@@ -17,7 +17,7 @@
 
 		const res = await axios.get(`${API_URL}/auth/google/callback?access_token=${myParam}`);
 		userData = res.data;
-		browserSet("provider", userData.user.provider);
+		browserSessionSet("provider", userData.user.provider);
 		browserSet("jwt", userData.jwt);
 		browserSet("id", userData.user.id);
 		$id = userData.user.id;
