@@ -25,7 +25,7 @@
 			$id = localStorage.getItem("id");
 		}
 
-		sdk = new YocoSDK({
+		sdk = new window.YocoSDK({
 			publicKey: yocoPubKey,
 		});
 
@@ -126,9 +126,14 @@
 		<div class="col d-flex justify-content-center">
 			<form id="payment-form">
 				<div class="one-liner">
-					<div id="card-frame">
-						<!-- Yoco Inline form will be added here -->
-					</div>
+					{#await sdk}
+						<p>loading</p>
+					{:then}
+						<div id="card-frame">
+							<!-- Yoco Inline form will be added here -->
+						</div>
+					{/await}
+
 					<div class="text-center mt-4 mb-4">
 						<button
 							id="pay-button"
