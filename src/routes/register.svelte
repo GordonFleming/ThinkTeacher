@@ -67,6 +67,10 @@
 	$: s ? (barCol = "bg-success") : (barCol = "bg-danger");
 	$: isValidID = saIdParser.validate(idNum);
 
+	console.log("This is ID: ", id);
+	console.log("This is $ID: ", $id);
+	console.log("This is URL: ", `${API_URL}/users/${$id}`);
+
 	async function registerUser() {
 		if (provider) {
 			await axios
