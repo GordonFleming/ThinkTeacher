@@ -420,14 +420,12 @@
 												>&nbsp;&nbsp;&nbsp;&nbsp;*optional</small
 											>
 											<input
-												type="number"
+												type="text"
 												name="sace"
 												id="sace"
 												class="form-control form-control-lg"
 												placeholder="SACE number"
 												bind:value={sace}
-												min="0"
-												max="999999999"
 											/>
 										</div>
 										<div class="col-sm-12 col-md-6 mt-3">
