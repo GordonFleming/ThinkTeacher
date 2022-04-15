@@ -5,8 +5,7 @@
 	import { name, surname, id, ttNum, cut_off_date } from "$lib/stores";
 	import { goto } from "$app/navigation";
 	import { Jumper } from "svelte-loading-spinners";
-	import { browserSet, browserSessionSet } from "$lib/re_utils";
-	import { user } from "svelte-awesome/icons";
+	import { browserSet, browserSessionSet, compareTime } from "$lib/re_utils";
 
 	let loading = true,
 		errMsg;
