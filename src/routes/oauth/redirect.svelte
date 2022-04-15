@@ -2,10 +2,11 @@
 	import { onMount } from "svelte";
 	import axios from "axios";
 	import { API_URL } from "$lib/env.js";
-	import { name, surname, id, ttNum } from "$lib/stores";
+	import { name, surname, id, ttNum, cut_off_date } from "$lib/stores";
 	import { goto } from "$app/navigation";
 	import { Jumper } from "svelte-loading-spinners";
 	import { browserSet, browserSessionSet } from "$lib/re_utils";
+	import { user } from "svelte-awesome/icons";
 
 	let loading = true,
 		errMsg;
@@ -22,6 +23,16 @@
 		browserSet("id", userData.user.id);
 		$id = userData.user.id;
 
+		let created_at = userData.user.created_at;
+		let payment = userData.user.payments;
+		let paidMember = false;
+		console.log(payment);
+		if (payment.length > 0) {
+			if (payment[0].paid) {
+				paidMember = true;
+			}
+		}
+
 		if (!userData.user.idNum) {
 			goto("/register");
 		} else if (userData.user.idNum) {
@@ -31,7 +42,17 @@
 			$surname = userData.user.lastName;
 			browserSet("ttNum", userData.user.ttCode);
 			$ttNum = userData.user.ttCode;
-			goto("/benefits");
+
+			if (paidMember) {
+				console.log("you are paid up, payment check");
+				goto("/benefits");
+			} else if (compareTime(new Date(created_at), new Date($cut_off_date))) {
+				console.log("you are paid up, free member");
+				goto("/benefits");
+			} else {
+				console.log("you are not paid up");
+				goto("/payment");
+			}
 		} else {
 			errMsg = "Something went wrong...";
 		}
