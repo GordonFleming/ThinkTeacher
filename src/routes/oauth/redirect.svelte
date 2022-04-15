@@ -32,7 +32,7 @@
 			}
 		}
 
-		if (!userData.user.idNum) {
+		if (!userData.user.idNum || !userData.user.firstName) {
 			goto("/register");
 		} else if (userData.user.idNum) {
 			browserSet("name", userData.user.firstName);
