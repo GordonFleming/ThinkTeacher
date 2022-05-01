@@ -295,58 +295,6 @@
 		</div>
 	</div>
 
-	<div class="row grey-grad big-gap">
-		<h2>Benefit Details:</h2>
-		<div class="col-md-6 col-sm-12">
-			<ul>
-				<li class="list-group-item">Many webinars on a range of topics</li>
-				<li class="list-group-item">A monthly newsletter of partner specials and talks</li>
-				<li class="list-group-item">
-					The Exclusive Books (EB) book club which give members 10% off at all EB stores
-				</li>
-				<li class="list-group-item">
-					Life coaching and nutrition, bereavement and trauma counselling on our wellbeing
-					platform
-				</li>
-				<li class="list-group-item">
-					Kia Motors Membership Scheme, offering vehicles at cost plus 2% including a five
-					year unlimited mileage warranty with financing through MFC (Nedbank)
-				</li>
-				<li class="list-group-item">
-					Alexander Forbes Membership Scheme on a range of discounted products, with
-					access to dedicated financial advisors
-				</li>
-			</ul>
-		</div>
-		<div class="col-md-6 col-sm-12">
-			<ul>
-				<li class="list-group-item">
-					Group medical aid and gap cover rates with Discovery, Turnberry and Sirago
-					through SA Medical Brokers
-				</li>
-				<li class="list-group-item">
-					A range of discounted courses from early learning to FET phase with Macmillan
-					Teacher Campus
-				</li>
-				<li class="list-group-item">
-					Legal advice and access to dedicated lawyers with Stephen May Attorney-at-Law
-				</li>
-				<li class="list-group-item">
-					Specialised and discounted travel packages designed for teachers in school
-					holidays with Cirrus Travel
-				</li>
-				<li class="list-group-item">
-					Nedbank financial assistance, with the Karri School App and a range of financial
-					banking products for teachers
-				</li>
-				<li class="list-group-item">
-					More partners join us monthly to support the most noble of professions,
-					teaching!
-				</li>
-			</ul>
-		</div>
-	</div>
-
 	<div class="container text-center mb-4 grey-grad big-gap">
 		<h2 class="mb-4">
 			Why you should become a <span class="text-logo-gold">Think</span>Teacher member
@@ -359,6 +307,61 @@
 				type="video/mp4"
 			/>
 		</video>
+	</div>
+
+	<div class="row grey-grad big-gap">
+		<h2>Benefit Details:</h2>
+		<div class="col-md-6 col-sm-12">
+			<ul>
+				<li class="list-group-item fw-bold">
+					SA Medical Brokers: group medical aid and gap cover rates with Discovery,
+					Turnberry and Sirago
+				</li>
+				<li class="list-group-item fw-bold">
+					Alexander Forbes Membership Scheme with a range of discounted products, and
+					access to dedicated financial advisors
+				</li>
+				<li class="list-group-item fw-bold">
+					Nedbank financial assistance, with the Karri School App and a range of financial
+					banking products for teachers
+				</li>
+				<li class="list-group-item fw-bold">
+					Kia Motors Membership Scheme, offering vehicles at cost plus 2% including a
+					five- year unlimited mileage warranty with financing through MFC (Nedbank)
+				</li>
+				<li class="list-group-item fw-bold">
+					Legal advice and access to dedicated lawyers with Stephen May Attorney-at-Law
+				</li>
+			</ul>
+		</div>
+		<div class="col-md-6 col-sm-12">
+			<ul>
+				<li class="list-group-item fw-bold">
+					Macmillan Teacher Campus: discounted courses from Early Learning to FET phase
+				</li>
+				<li class="list-group-item fw-bold">
+					Cirrus Travel: specialised and discounted travel packages designed for teachers
+					during school holidays
+				</li>
+				<li class="list-group-item fw-bold">
+					Exclusive Books (EB) book club - 10% off at all EB stores
+				</li>
+				<li class="list-group-item fw-bold">
+					Well-being platform for life coaching, nutritional advice, bereavement and
+					trauma counselling
+				</li>
+				<li class="list-group-item fw-bold">
+					Regular webinars on a range of topics of interest to teachers
+				</li>
+				<li class="list-group-item fw-bold">
+					Monthly newsletters with the latest Think Teacher benefits
+				</li>
+				<!-- <li class="list-group-item">
+					More partners join us monthly to support the most noble of professions,
+					teaching!
+				</li> -->
+			</ul>
+		</div>
 	</div>
 
 	<div class="row mt-5 text-center justify-content-center p-3 logo-box">
