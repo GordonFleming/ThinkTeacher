@@ -39,7 +39,6 @@
 		registered = false,
 		provider = false,
 		terms = false;
-	$: console.log(terms);
 	let firstName,
 		lastName,
 		idNum,

@@ -114,7 +114,7 @@
 
 	{#if !$name}
 		<div class="row mt-5">
-			<h4 class="text-center fs-1">☕ For the price of a coffee a month ☕</h4>
+			<h4 class="text-center fs-1 mb-4">☕ For the price of a coffee a month ☕</h4>
 			<div class="col-sm-12 col-lg-4">
 				<h4 class="fs-1 mt-2 text-center">
 					Actively teaching <strong>R360</strong> pa
@@ -317,51 +317,47 @@
 
 	<div class="row grey-grad big-gap">
 		<h2>Benefit Details:</h2>
-		<div class="col-md-6 col-sm-12">
+		<div class="col-md-6 col-sm-12 benefit-list">
 			<ul>
-				<li class="list-group-item fw-bold">
+				<li class=" fw-bold">
 					SA Medical Brokers: group medical aid and gap cover rates with Discovery,
 					Turnberry and Sirago
 				</li>
-				<li class="list-group-item fw-bold">
+				<li class=" fw-bold">
 					Alexander Forbes Membership Scheme with a range of discounted products, and
 					access to dedicated financial advisors
 				</li>
-				<li class="list-group-item fw-bold">
+				<li class=" fw-bold">
 					Nedbank financial assistance, with the Karri School App and a range of financial
 					banking products for teachers
 				</li>
-				<li class="list-group-item fw-bold">
+				<li class=" fw-bold">
 					Kia Motors Membership Scheme, offering vehicles at cost plus 2% including a
 					five- year unlimited mileage warranty with financing through MFC (Nedbank)
 				</li>
-				<li class="list-group-item fw-bold">
+				<li class=" fw-bold">
 					Legal advice and access to dedicated lawyers with Stephen May Attorney-at-Law
 				</li>
 			</ul>
 		</div>
-		<div class="col-md-6 col-sm-12">
+		<div class="col-md-6 col-sm-12 benefit-list">
 			<ul>
-				<li class="list-group-item fw-bold">
+				<li class=" fw-bold">
 					Macmillan Teacher Campus: discounted courses from Early Learning to FET phase
 				</li>
-				<li class="list-group-item fw-bold">
+				<li class=" fw-bold">
 					Cirrus Travel: specialised and discounted travel packages designed for teachers
 					during school holidays
 				</li>
-				<li class="list-group-item fw-bold">
-					Exclusive Books (EB) book club - 10% off at all EB stores
-				</li>
-				<li class="list-group-item fw-bold">
+				<li class=" fw-bold">Exclusive Books (EB) book club - 10% off at all EB stores</li>
+				<li class=" fw-bold">
 					Well-being platform for life coaching, nutritional advice, bereavement and
 					trauma counselling
 				</li>
-				<li class="list-group-item fw-bold">
+				<li class=" fw-bold">
 					Regular webinars on a range of topics of interest to teachers
 				</li>
-				<li class="list-group-item fw-bold">
-					Monthly newsletters with the latest Think Teacher benefits
-				</li>
+				<li class=" fw-bold">Monthly newsletters with the latest Think Teacher benefits</li>
 				<!-- <li class="list-group-item">
 					More partners join us monthly to support the most noble of professions,
 					teaching!
@@ -471,8 +467,19 @@
 	.placeholder {
 		height: 310px;
 	}
-	.list-group-item {
+	.benefit-list ul li {
 		font-size: 1.3em;
+		position: relative;
+		padding: 1rem 0.3rem;
+		color: #212529;
+		text-decoration: none;
+		background-color: transparent;
+		border: 0 solid rgba(255, 255, 255, 0.2);
+	}
+	.benefit-list ul {
+		/* list-style: square outside; */
+
+		list-style-image: url("https://strapi-upload-s3.glass.thinkteacher.co.za/media/m_favicon_08702889be.png");
 	}
 	@media screen and (min-width: 1000px) {
 		.bg-overlay {
