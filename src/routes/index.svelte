@@ -114,9 +114,10 @@
 
 	{#if !$name}
 		<div class="row mt-5">
+			<h4 class="text-center fs-1">☕ For the price of a coffee a month ☕</h4>
 			<div class="col-sm-12 col-lg-4">
-				<h4 id="#hash" class="fs-1 mt-2 text-center">
-					<strong>FREE</strong> membership ending 15th April, register today.
+				<h4 class="fs-1 mt-2 text-center">
+					Actively teaching <strong>R360</strong> pa
 				</h4>
 			</div>
 			<div class="col-sm-12 col-lg-4 mt-sm-4 text-center">
@@ -128,6 +129,11 @@
 				>
 			</div>
 			<div class="col-sm-12 col-lg-4">
+				<h4 class="fs-1 mt-2 text-center">
+					Students and retired teachers <strong>R120</strong> pa
+				</h4>
+			</div>
+			<div class="col-sm-12 col-lg-12 mt-4">
 				<!-- svelte-ignore a11y-missing-content -->
 				<h1
 					class="text-center"

@@ -26,7 +26,7 @@
 		buttonSubmit = true,
 		loading = false;
 	$: email && username && s ? (buttonNext = false) : (buttonNext = true);
-	$: firstName && lastName && isValidID && cell && eduPhase !== ""
+	$: firstName && lastName && isValidID && cell && eduPhase !== "" && terms
 		? (buttonSubmit = false)
 		: (buttonSubmit = true);
 
@@ -37,7 +37,9 @@
 		errorMsg = null;
 	let registerNext = false,
 		registered = false,
-		provider = false;
+		provider = false,
+		terms = false;
+	$: console.log(terms);
 	let firstName,
 		lastName,
 		idNum,
@@ -497,9 +499,31 @@
 												<option value="eastern_cape">Eastern Cape</option>
 											</select>
 										</div>
+										<div class="form-check text-center mt-3 col-12">
+											<label for="flexCheckDefault">
+												Terms and Conditions, available <a
+													target="_blank"
+													href="https://strapi-upload-s3.glass.thinkteacher.co.za/media/Think_Teacher_Member_Terms_and_Conditions_Final_draft_34d3c8193b.pdf"
+													>here</a
+												>.
+											</label>
+											<input
+												class="form-check-input"
+												type="checkbox"
+												bind:checked={terms}
+												value=""
+												id="flexCheckDefault"
+											/>
+											<br />
+											<small class="text-danger"
+												>&nbsp;&nbsp;&nbsp;&nbsp;*Please check the T&Cs
+												above</small
+											>
+										</div>
 									</div>
+
 									<button
-										class="btn btn-outline-light btn-lg px-4 mt-4"
+										class="btn btn-outline-light btn-lg px-4 mt-3"
 										type="submit"
 										on:click|preventDefault={registerUser}
 										disabled={buttonSubmit}>Register</button
@@ -527,13 +551,16 @@
 	i {
 		cursor: pointer;
 	}
-	input[type="number"]::-webkit-outer-spin-button,
-	input[type="number"]::-webkit-inner-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
+	.form-check-input:checked {
+		background-color: var(--logo-gold);
+		border-color: black;
 	}
-
-	input[type="number"] {
-		-moz-appearance: textfield;
+	.form-check-input {
+		border-color: black;
+		padding: 10px;
+	}
+	.form-check .form-check-input {
+		float: none;
+		margin-left: 1.5em;
 	}
 </style>
