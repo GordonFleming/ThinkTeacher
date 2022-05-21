@@ -2,18 +2,16 @@
 	import { API_URL } from "$lib/env.js";
 
 	export const load = async ({ fetch }) => {
-		const res = await fetch(`${API_URL}/users/count`);
 		const resWebinars = await fetch(`${API_URL}/webinars?_limit=4&_sort=id:DESC`);
 
-		if (res.ok && resWebinars.ok) {
-			const data = await res.json();
+		if (resWebinars.ok) {
 			const dataWebinar = await resWebinars.json();
-			return { props: { userCount: data, webinarData: dataWebinar } };
+			return { props: { webinarData: dataWebinar } };
 		}
 
 		return {
-			status: res.status,
-			error: new Error(`Could not load ${url}`),
+			status: resWebinars.status,
+			error: new Error(`Could not load`),
 		};
 	};
 </script>
@@ -23,15 +21,13 @@
 	import Carousel from "@beyonk/svelte-carousel";
 	import Logo from "$lib/Components/logo.svelte";
 	import { goto } from "$app/navigation";
-	import { CountUp } from "countup.js";
 	import { onMount, afterUpdate, onDestroy } from "svelte";
 	import viewport from "$lib/useViewportAction.js";
 	import { name, travelScroll, firstTime } from "$lib/stores";
 	import { fly } from "svelte/transition";
 
 	let intro = null;
-	let countUp;
-	export let userCount, webinarData;
+	export let webinarData;
 
 	setTimeout(function () {
 		intro = false;
@@ -41,14 +37,12 @@
 		// To stop case where user reloads with the counter in view so therefore nothing is triggered...
 		// document.body.scrollTop = 0;
 		// document.documentElement.scrollTop = 0;
-		countUp = new CountUp("countUser", userCount);
 		intro = true;
 		document.getElementById("vid").play();
 	});
 
 	afterUpdate(() => {
 		$name = localStorage.getItem("name");
-		countUp = new CountUp("countUser", userCount);
 	});
 
 	onDestroy(() => {
@@ -132,16 +126,6 @@
 				<h4 class="fs-1 mt-2 text-center">
 					Students and retired teachers <strong>R120</strong> pa
 				</h4>
-			</div>
-			<div class="col-sm-12 col-lg-12 mt-4">
-				<!-- svelte-ignore a11y-missing-content -->
-				<h1
-					class="text-center"
-					id="countUser"
-					use:viewport
-					on:enterViewport={() => countUp.start()}
-				/>
-				<h3 class="text-center text-blue">Members and counting!</h3>
 			</div>
 		</div>
 	{/if}
@@ -508,11 +492,6 @@
 
 	#welcome {
 		margin-top: 0;
-	}
-	#countUser {
-		font-size: 5em;
-		color: var(--logo-grey);
-		margin-top: 1rem;
 	}
 
 	/* TODO */
