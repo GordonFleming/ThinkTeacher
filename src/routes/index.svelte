@@ -264,7 +264,6 @@
 				</div>
 			</a>
 			<h3 class="mt-3"><span class="text-logo-gold">Think</span> Wheels</h3>
-			<h5 class="text-blue">coming soon</h5>
 		</div>
 		<div class="col-sm-12 col-md-6 col-lg-4 mb-4">
 			<a href="/benefits" use:viewport on:enterViewport={() => (ben9 = true)}>
@@ -307,7 +306,7 @@
 						<img
 							transition:fly={{ y: 200, duration: 1000 }}
 							class="img-fluid offer offer-img"
-							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/business_coach_e057192db9.webp"
+							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/business_coach_0ba79df117.webp"
 							alt="Connect"
 							on:click={() => ($travelScroll = "business_coach")}
 						/>

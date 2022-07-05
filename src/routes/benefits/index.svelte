@@ -161,7 +161,7 @@
 		sticky = navbar.offsetTop;
 	});
 
-	export let travel, wellness, health, courses, finance, legal, books;
+	export let travel, wellness, health, courses, finance, legal, books, cars;
 	//cars, photography;
 
 	export let source,
@@ -387,11 +387,28 @@
 		<!-- cars -->
 		<div class="grey-grad row justify-content-center big-gap" id="cars">
 			<h2 class="display-3">Cars</h2>
-			<h4>Coming soon</h4>
+			<Benefit benefitData={cars} />
+
+			<PartnerBenefit partnerData={cars} />
 		</div>
 		<!-- Photography -->
 		<div class="grey-grad row justify-content-center big-gap" id="photography">
 			<h2 class="display-3">Photography</h2>
+			<h4>Coming soon</h4>
+		</div>
+		<!-- Connect -->
+		<div class="grey-grad row justify-content-center big-gap" id="connect">
+			<h2 class="display-3">Connect</h2>
+			<h4>Coming soon</h4>
+		</div>
+		<!-- Business -->
+		<div class="grey-grad row justify-content-center big-gap" id="business">
+			<h2 class="display-3">Business Coach</h2>
+			<h4>Coming soon</h4>
+		</div>
+		<!-- Jobs -->
+		<div class="grey-grad row justify-content-center big-gap" id="jobs">
+			<h2 class="display-3">Jobs</h2>
 			<h4>Coming soon</h4>
 		</div>
 	</div>
