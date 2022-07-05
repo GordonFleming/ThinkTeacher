@@ -26,6 +26,9 @@
 			case "stephen g. may":
 				goto("/auth/form/legal");
 				break;
+			case "kia":
+				goto("/auth/form/cars");
+				break;
 			default:
 				goto("/");
 		}
