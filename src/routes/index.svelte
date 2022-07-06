@@ -289,7 +289,7 @@
 						<img
 							transition:fly={{ y: 200, duration: 1000 }}
 							class="img-fluid offer offer-img"
-							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/connect_79305a0496.webp"
+							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/connectivity_573adf1be7.webp"
 							alt="Connect"
 							on:click={() => ($travelScroll = "connect")}
 						/>
