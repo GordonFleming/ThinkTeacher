@@ -468,7 +468,7 @@
 			<div class="slide-content">
 				<img
 					class="logo img-fluid"
-					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_photography_partner_9ce8b13a83.webp"
+					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_turnberry_6a7f42ce0a.jpeg"
 					alt="partner"
 				/>
 			</div>
