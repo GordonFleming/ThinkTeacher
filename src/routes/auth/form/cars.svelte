@@ -61,7 +61,7 @@
 			})
 			.catch((error) => {
 				console.log("An error occurred:", error.response.data);
-				errorMsg = error.response.data.message[0].messages[0].message;
+				errorMsg = error.response.data.message[0];
 			});
 	}
 
