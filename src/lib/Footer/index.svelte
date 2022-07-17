@@ -1,6 +1,12 @@
 <script>
-	import Icon from "svelte-awesome";
-	import { facebook, twitter, instagram, linkedin, youtubeSquare } from "svelte-awesome/icons";
+	import Fa from "svelte-fa/src/fa.svelte";
+	import {
+		faFacebook,
+		faTwitter,
+		faInstagram,
+		faLinkedin,
+		faYoutube,
+	} from "@fortawesome/free-brands-svg-icons";
 
 	function scrollTop() {
 		document.body.scrollTop = 0; // For Safari
@@ -15,35 +21,35 @@
 			class="btn btn-outline-light btn-floating m-1"
 			href="https://www.facebook.com/thinkteacher"
 			target="_blank"
-			role="button"><Icon data={facebook} scale="1.8" /></a
+			role="button"><Fa icon={faFacebook} size="1.8x" /></a
 		>
 		<!-- Twitter -->
 		<a
 			class="btn btn-outline-light btn-floating m-1"
 			href="https://twitter.com/thinkteacher_sa"
 			target="_blank"
-			role="button"><Icon data={twitter} scale="1.8" /></a
+			role="button"><Fa icon={faTwitter} size="1.8x" /></a
 		>
 		<!-- Instagram -->
 		<a
 			class="btn btn-outline-light btn-floating m-1"
 			href="https://www.instagram.com/thinkteacher_rsa"
 			target="_blank"
-			role="button"><Icon data={instagram} scale="1.8" /></a
+			role="button"><Fa icon={faInstagram} size="1.8x" /></a
 		>
 		<!-- Linkedin -->
 		<a
 			class="btn btn-outline-light btn-floating m-1"
 			href="https://www.linkedin.com/company/think-teacher"
 			target="_blank"
-			role="button"><Icon data={linkedin} scale="1.8" /></a
+			role="button"><Fa icon={faLinkedin} size="1.8x" /></a
 		>
 		<!-- Youtube -->
 		<a
 			class="btn btn-outline-light btn-floating m-1"
 			href="https://www.youtube.com/channel/UCN-byMa-sTVbwKWNkbMM9bQ"
 			target="_blank"
-			role="button"><Icon data={youtubeSquare} scale="1.8" /></a
+			role="button"><Fa icon={faYoutube} size="1.8x" /></a
 		>
 		<i class="fab fa-youtube" />
 	</section>

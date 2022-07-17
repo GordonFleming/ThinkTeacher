@@ -4,8 +4,8 @@
 	import axios from "axios";
 	import { API_URL, yocoPubKey } from "$lib/env.js";
 	import { Jumper } from "svelte-loading-spinners";
-	import Icon from "svelte-awesome";
-	import { checkCircleO } from "svelte-awesome/icons";
+	import Fa from "svelte-fa";
+	import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 
 	let sdk,
 		inline,
@@ -105,7 +105,7 @@
 			<h6>Pay via EFT or by card payment</h6>
 			{#if successMsg !== undefined}
 				<h4 class="success-col">{successMsg}</h4>
-				<Icon class="success-col" data={checkCircleO} scale="2.4" />
+				<Fa class="success-col" icon={faCircleCheck} size="2.4x" />
 			{/if}
 			{#if $errMsg !== ""}
 				<h4 class="error-col">{$errMsg}</h4>

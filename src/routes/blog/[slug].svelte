@@ -19,8 +19,8 @@
 </script>
 
 <script>
-	import Icon from "svelte-awesome";
-	import { arrowLeft } from "svelte-awesome/icons";
+	import Fa from "svelte-fa";
+	import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 	import SvelteMarkdown from "svelte-markdown";
 
 	export let post;
@@ -40,7 +40,7 @@
 </svelte:head>
 
 <div class="container bg-dark mt-4 border-custom mb-5">
-	<a sveltekit:prefetch href="/blog"><Icon data={arrowLeft} scale="1.8" /></a>
+	<a sveltekit:prefetch href="/blog"><Fa icon={faArrowLeft} size="1.8x" /></a>
 	<img
 		class="img-fluid mx-auto d-block mt-2"
 		src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/{post.image.hash}{post.image
