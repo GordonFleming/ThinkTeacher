@@ -6,9 +6,9 @@
 	import { onMount } from "svelte";
 	import axios from "axios";
 	import { goto } from "$app/navigation";
-	import Icon from "svelte-awesome";
+	import Fa from "svelte-fa";
 	import { name, surname, id, errMsg, ttNum, cut_off_date } from "$lib/stores";
-	import { facebook, twitter, instagram } from "svelte-awesome/icons";
+	import { faFacebook, faTwitter, faInstagram } from "@fortawesome/free-brands-svg-icons";
 	import { browserSet, compareTime } from "$lib/re_utils";
 	import { API_URL } from "$lib/env.js";
 
@@ -152,15 +152,15 @@
 							<div class="mt-2 pt-1">
 								<a
 									href="https://www.facebook.com/thinkteacher"
-									class="text-white px-2"><Icon data={facebook} scale="1.4" /></a
+									class="text-white px-2"><Fa icon={faFacebook} size="1.4x" /></a
 								>
 								<a
 									href="https://twitter.com/thinkteacher_sa"
-									class="text-white px-2"><Icon data={twitter} scale="1.4" /></a
+									class="text-white px-2"><Fa icon={faTwitter} size="1.4x" /></a
 								>
 								<a
 									href="https://www.instagram.com/thinkteacher_rsa"
-									class="text-white px-2"><Icon data={instagram} scale="1.4" /></a
+									class="text-white px-2"><Fa icon={faInstagram} size="1.4x" /></a
 								>
 							</div>
 						</div>

@@ -3,8 +3,8 @@
 </script>
 
 <script>
-	import Icon from "svelte-awesome";
-	import { linkedinSquare } from "svelte-awesome/icons";
+	import Fa from "svelte-fa";
+	import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 </script>
 
 <svelte:head>
@@ -63,7 +63,7 @@
 				<div class="card-footer text-muted">
 					<a
 						href="https://www.linkedin.com/in/bridget-fleming-a1b33551/"
-						class="card-link"><Icon data={linkedinSquare} scale="1.8" /></a
+						class="card-link"><Fa icon={faLinkedin} size="1.8x" /></a
 					>
 				</div>
 			</div>
@@ -100,7 +100,7 @@
 				</div>
 				<div class="card-footer text-muted">
 					<a href="https://www.linkedin.com/in/paul-edey-86952814a/" class="card-link"
-						><Icon data={linkedinSquare} scale="1.8" /></a
+						><Fa icon={faLinkedin} size="1.8x" /></a
 					>
 				</div>
 			</div>
@@ -149,7 +149,7 @@
 				<div class="card-footer text-muted">
 					<a
 						href="https://www.linkedin.com/in/kim-forbes-transition-coach-36608750/"
-						class="card-link"><Icon data={linkedinSquare} scale="1.8" /></a
+						class="card-link"><Fa icon={faLinkedin} size="1.8x" /></a
 					>
 				</div>
 			</div>
@@ -189,7 +189,7 @@
 				</div>
 				<div class="card-footer text-muted">
 					<a href="https://www.linkedin.com/in/zanele-portia-masuku/" class="card-link"
-						><Icon data={linkedinSquare} scale="1.8" /></a
+						><Fa icon={faLinkedin} size="1.8x" /></a
 					>
 				</div>
 			</div>
@@ -232,7 +232,7 @@
 				<div class="card-footer text-muted">
 					<a
 						href="https://www.linkedin.com/in/malcolm-williams-7939a7b5/"
-						class="card-link"><Icon data={linkedinSquare} scale="1.8" /></a
+						class="card-link"><Fa icon={faLinkedin} size="1.8x" /></a
 					>
 				</div>
 			</div>
@@ -271,7 +271,7 @@
 				</div>
 				<div class="card-footer text-muted">
 					<a href="https://www.linkedin.com/in/ferdie-heunis-8bb3943a/" class="card-link"
-						><Icon data={linkedinSquare} scale="1.8" /></a
+						><Fa icon={faLinkedin} size="1.8x" /></a
 					>
 				</div>
 			</div>
@@ -310,7 +310,7 @@
 				<div class="card-footer text-muted">
 					<a
 						href="https://www.linkedin.com/in/frances-kerr-phillips-768a34216/"
-						class="card-link"><Icon data={linkedinSquare} scale="1.8" /></a
+						class="card-link"><Fa icon={faLinkedin} size="1.8x" /></a
 					>
 				</div>
 			</div>

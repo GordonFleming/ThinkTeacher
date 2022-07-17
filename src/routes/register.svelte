@@ -5,8 +5,8 @@
 <script>
 	import axios from "axios";
 	import { goto } from "$app/navigation";
-	import Icon from "svelte-awesome";
-	import { arrowLeft, eye, eyeSlash } from "svelte-awesome/icons";
+	import Fa from "svelte-fa";
+	import { faArrowLeft, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 	import { sgKey, sendgridList, API_URL } from "$lib/env.js";
 	import z from "zxcvbn";
 	import saIdParser from "south-african-id-parser";
@@ -216,7 +216,7 @@
 						<i
 							style="padding-top: 1.8rem; padding-left: 1.8rem;"
 							on:click={() => (registerNext = false)}
-							><Icon data={arrowLeft} scale="1.8" /></i
+							><Fa icon={faArrowLeft} size="1.8x" /></i
 						>
 					{/if}
 					<div class="card-body p-md-3 p-lg-4 text-center">
@@ -298,9 +298,9 @@
 											required
 										/>
 										<i on:click={seePassword}
-											><Icon
-												data={seePlz ? eye : eyeSlash}
-												scale="1.5"
+											><Fa
+												icon={seePlz ? faEye : faEyeSlash}
+												size="1.5x"
 												style="cursor: pointer; display:inline-block; z-index: 99;"
 											/></i
 										>
