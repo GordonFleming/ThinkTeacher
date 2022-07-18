@@ -10,40 +10,40 @@
 
 <footer style="background-color: var(--default-text);" class="text-center text-black mt-5">
 	<section class="mb-2 mt-3">
-		<!-- Facebook -->
-		<a
-			class="btn btn-outline-light btn-floating m-1"
-			href="https://www.facebook.com/thinkteacher"
-			target="_blank"
-			role="button"><Icon data={facebook} scale="1.8" /></a
-		>
 		<!-- Twitter -->
 		<a
 			class="btn btn-outline-light btn-floating m-1"
 			href="https://twitter.com/thinkteacher_sa"
 			target="_blank"
-			role="button"><Icon data={twitter} scale="2.2" /></a
+			role="button"><Icon data={twitter} scale="2.5" /></a
 		>
 		<!-- Instagram -->
 		<a
 			class="btn btn-outline-light btn-floating m-1"
 			href="https://www.instagram.com/thinkteacher_rsa"
 			target="_blank"
-			role="button"><Icon data={instagram} scale="2.2" /></a
+			role="button"><Icon data={instagram} scale="2.5" /></a
+		>
+		<!-- Facebook -->
+		<a
+			class="btn btn-outline-light btn-floating m-1"
+			href="https://www.facebook.com/thinkteacher"
+			target="_blank"
+			role="button"><Icon data={facebook} scale="2.5" /></a
 		>
 		<!-- Linkedin -->
 		<a
 			class="btn btn-outline-light btn-floating m-1"
 			href="https://www.linkedin.com/company/think-teacher"
 			target="_blank"
-			role="button"><Icon data={linkedin} scale="2.2" /></a
+			role="button"><Icon data={linkedin} scale="2.5" /></a
 		>
 		<!-- Youtube -->
 		<a
 			class="btn btn-outline-light btn-floating m-1"
 			href="https://www.youtube.com/channel/UCN-byMa-sTVbwKWNkbMM9bQ"
 			target="_blank"
-			role="button"><Icon data={youtube} scale="2.2" /></a
+			role="button"><Icon data={youtube} scale="2.5" /></a
 		>
 	</section>
 
@@ -125,8 +125,7 @@
 
 			<ul class="list-unstyled mb-0">
 				<li>
-					<a href="mailto:zani@thinkteacher.co.za" class="text-white"
-						>zani@thinkteacher.co.za</a
+					<a href="mailto:zani@thinkteacher.co.za" class="text-white">Zani@ThinkTeacher</a
 					>
 				</li>
 				<li>
@@ -156,6 +155,9 @@
 	h5,
 	p {
 		color: var(--bg-primary);
+	}
+	li {
+		margin-top: 8px;
 	}
 	li a {
 		color: var(--bg-primary) !important;

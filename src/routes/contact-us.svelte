@@ -41,7 +41,7 @@
 	<meta name="description" content="Contact ThinkTeacher here!" />
 </svelte:head>
 
-<div class="container mt-5 mb-5">
+<div class="container mt-4 mb-5">
 	<section class="vh-50 gradient-custom">
 		<div class="py-3 h-100">
 			<div class="row d-flex justify-content-center align-items-center h-100">
@@ -141,7 +141,9 @@
 					><a href="mailto:zani@thinkteacher.co.za">zani@thinkteacher.co.za</a></span
 				>
 			</h4>
-			<Icon data={send} scale="6" fill="#4F5D89" />
+			<a href="mailto:zani@thinkteacher.co.za"
+				><Icon data={send} scale="6" fill="#4F5D89" /></a
+			>
 		</div>
 	</div>
 </div>

@@ -65,7 +65,7 @@
 		let packages = [],
 			travel = [],
 			health = [],
-			wellness = [],
+			wellbeing = [],
 			courses = [],
 			finance = [],
 			legal = [],
@@ -87,8 +87,8 @@
 						health.push(item);
 						break;
 					case wellbeing_cat:
-						wellness.push(item);
-						source = wellness[0].details;
+						wellbeing.push(item);
+						source = wellbeing[0].details;
 						break;
 					case course_cat:
 						courses.push(item);
@@ -119,7 +119,7 @@
 				props: {
 					travel,
 					health,
-					wellness,
+					wellbeing,
 					courses,
 					finance,
 					legal,
@@ -151,6 +151,7 @@
 		//document.body.scrollTop = 0;
 		function scrollBene() {
 			if ($travelScroll) {
+				console.log("teydbwfvelw ", $travelScroll);
 				document
 					.getElementById(`${$travelScroll}`)
 					.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -161,11 +162,8 @@
 		sticky = navbar.offsetTop;
 	});
 
-	export let travel, wellness, health, courses, finance, legal, books, cars;
+	export let travel, wellbeing, health, courses, finance, legal, books, cars;
 	//cars, photography;
-
-	export let source,
-		readMore = false;
 </script>
 
 <svelte:head>
@@ -290,12 +288,12 @@
 		</div>
 
 		<!-- Wellbeing -->
-		<div class="grey-grad row justify-content-center">
+		<div class="grey-grad row justify-content-center" id="wellbeing">
 			<h2 class="display-3">Wellbeing</h2>
 
-			<Benefit benefitData={wellness} />
+			<Benefit benefitData={wellbeing} />
 
-			<PartnerBenefit partnerData={wellness} />
+			<PartnerBenefit partnerData={wellbeing} />
 		</div>
 
 		<!-- MedicalAid -->
