@@ -54,6 +54,11 @@
 
 <svelte:head>
 	<title>Home</title>
+	<meta
+		name="description"
+		content="ThinkTeacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
+                and nurturing networks. ThinkTeacher's vision is to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa."
+	/>
 </svelte:head>
 
 <div class="banner-all">
