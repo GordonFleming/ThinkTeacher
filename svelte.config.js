@@ -4,7 +4,11 @@ import adapter from '@sveltejs/adapter-auto';
 const config = {
 	kit: {
 		adapter: adapter(),
-	}
+	},
+    prerender: {
+        default: true,
+        entries: ['*', '/robots.txt', '/sitemap.xml']
+      }
 };
 
 export default config;
