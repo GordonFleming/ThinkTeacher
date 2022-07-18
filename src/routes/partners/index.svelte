@@ -51,6 +51,7 @@
 
 <svelte:head>
 	<title>Partners</title>
+	<meta name="description" content="View ThinkTeacher's great partners!" />
 </svelte:head>
 
 <div class="container mb-5">

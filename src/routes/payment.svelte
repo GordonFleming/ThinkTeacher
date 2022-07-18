@@ -14,8 +14,11 @@
 		paying = false,
 		submitButton = true,
 		amountInCents = 36000,
-		amountInRands = amountInCents / 100,
-		successMsg;
+		successMsg,
+		retireStu = false;
+
+	$: amountInRands = amountInCents / 100;
+	$: retireStu ? (amountInCents = 12000) : (amountInCents = 36000);
 
 	let mem_disc = "ThinkTeacher Annual Membership";
 	let refNum = Math.floor(Math.random() * 90000) + 10000;
@@ -105,7 +108,7 @@
 			<h6>Pay via EFT or by card payment</h6>
 			{#if successMsg !== undefined}
 				<h4 class="success-col">{successMsg}</h4>
-				<Icon class="success-col" data={checkCircleO} scale="3" />
+				<Icon data={checkCircleO} scale="8" fill="green" />
 			{/if}
 			{#if $errMsg !== ""}
 				<h4 class="error-col">{$errMsg}</h4>
@@ -128,6 +131,17 @@
 					<div id="card-frame">
 						<!-- Yoco Inline form will be added here -->
 					</div>
+
+					<!-- <div class="form-switch mt-3 text-center">
+						<label for="retireStu">Are you a student or a retired teacher?</label>
+						<input
+							class="form-check-input form-control mx-auto"
+							type="checkbox"
+							role="switch"
+							id="retireStu"
+							bind:checked={retireStu}
+						/>
+					</div> -->
 
 					<div class="text-center mt-4 mb-4">
 						<button
@@ -199,5 +213,21 @@
 		border-radius: 3px;
 		max-width: 20vw;
 		margin: 0 auto;
+	}
+	.form-switch {
+		padding-left: 0;
+	}
+	.form-check-input {
+		/* margin: 0 auto !important; */
+		background-color: var(--logo-grey);
+	}
+	.form-check-input:checked {
+		background-color: var(--logo-gold);
+		border-color: var(--logo-gold);
+	}
+	.form-check-input:focus {
+		border-color: rgba(255, 255, 255, 0.4);
+		outline: 0;
+		box-shadow: 0 0 0 0.25rem rgba(217, 183, 61, 0.055);
 	}
 </style>

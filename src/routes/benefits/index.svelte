@@ -170,6 +170,7 @@
 
 <svelte:head>
 	<title>Benefits</title>
+	<meta name="description" content="View the many ThinkTeacher's great benefits!" />
 </svelte:head>
 
 <svelte:window

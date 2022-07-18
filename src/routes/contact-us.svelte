@@ -5,10 +5,40 @@
 <script>
 	import Icon from "$lib/Icons/icon.svelte";
 	import { send } from "$lib/Icons/icons";
+	import { API_URL } from "$lib/env.js";
+	import axios from "axios";
+	import { Jumper } from "svelte-loading-spinners";
+
+	let name, email, subject, message;
+	let loading = false;
+
+	async function submitForm() {
+		loading = true;
+		await axios
+			.post(`${API_URL}/contacts`, {
+				name: name,
+				email: email,
+				subject: subject,
+				message: message,
+			})
+			.then((response) => {
+				msg = name + ", you have successfully made contact with ThinkTeacher.";
+				console.log(response);
+				loading = false;
+				document.getElementById("contact").reset();
+			})
+			.catch((error) => {
+				console.log("An error occurred:", error);
+				// errorMsg = error.response.data.message[0];
+			});
+	}
+
+	let msg, errorMsg;
 </script>
 
 <svelte:head>
 	<title>Contact</title>
+	<meta name="description" content="Contact ThinkTeacher here!" />
 </svelte:head>
 
 <div class="container mt-5 mb-5">
@@ -21,22 +51,13 @@
 							<h2 class="fw-bold mb-2 text-uppercase">Contact</h2>
 							<p class="text-white-50 mb-3">Please feel free to contact us.</p>
 
-							<form
-								name="contact"
-								method="POST"
-								netlify-honeypot="bot-field"
-								data-netlify="true"
-							>
-								<p class="hidden">
-									<label
-										>Don’t fill this out if you’re human: <input
-											name="bot-field"
-										/></label
-									>
-								</p>
+							{#if errorMsg}
+								<h4 class="error-col">{errorMsg}</h4>
+							{:else if msg}
+								<h4 class="success-col">{msg}</h4>
+							{/if}
 
-								<input type="hidden" name="form-name" value="contact" />
-
+							<form id="contact">
 								<div class="form-outline form-white mb-2">
 									<label class="form-label" for="Name">Name</label>
 									<input
@@ -46,6 +67,7 @@
 										class="form-control form-control-lg"
 										placeholder="Enter your name"
 										required
+										bind:value={name}
 									/>
 								</div>
 								<div class="form-outline form-white mb-4">
@@ -56,6 +78,7 @@
 										class="form-control form-control-lg"
 										placeholder="Enter your email"
 										required
+										bind:value={email}
 									/>
 								</div>
 								<div class="form-outline form-white mb-2">
@@ -67,6 +90,7 @@
 										class="form-control form-control-lg"
 										placeholder="Enter your subject"
 										required
+										bind:value={subject}
 									/>
 								</div>
 								<div class="form-outline form-white mb-4">
@@ -78,11 +102,25 @@
 										rows="8"
 										placeholder="Enter your message"
 										required
+										bind:value={message}
 									/>
 								</div>
 
-								<button class="btn btn-outline-light btn-lg px-4" type="submit"
-									>Submit</button
+								{#if loading}
+									<div class="d-flex justify-content-center mt-5">
+										<Jumper
+											size="150"
+											color="#5C677D"
+											unit="px"
+											duration="1s"
+										/>
+									</div>
+								{/if}
+
+								<button
+									class="btn btn-outline-light btn-lg px-4"
+									type="submit"
+									on:click|preventDefault={submitForm}>Submit</button
 								>
 							</form>
 						</div>

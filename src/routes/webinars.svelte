@@ -25,6 +25,7 @@
 
 <svelte:head>
 	<title>Webinars</title>
+	<meta name="description" content="View the many ThinkTeacher's great webinars!" />
 </svelte:head>
 
 <div class="container mt-5 mb-5">
@@ -50,14 +51,11 @@
 						</div>
 						<p class="text-white mt-2">{webinar.description}</p>
 						<p class="text-secondary">
-							{new Date(webinar.created_at).toLocaleString(
-								"en-ZA",
-								{
-									month: "long",
-									day: "2-digit",
-									year: "numeric",
-								}
-							)}
+							{new Date(webinar.created_at).toLocaleString("en-ZA", {
+								month: "long",
+								day: "2-digit",
+								year: "numeric",
+							})}
 						</p>
 					</div>
 				</div>

@@ -199,6 +199,7 @@
 
 <svelte:head>
 	<title>Register</title>
+	<meta name="description" content="Register for ThinkTeacher!" />
 </svelte:head>
 
 {#if loading}
@@ -231,9 +232,7 @@
 							{#if provider && !registered}
 								<p>Please complete your registration...</p>
 							{/if}
-							<h6 class="text-danger">
-								*From 15th April payment for membership will be required
-							</h6>
+
 							{#if registered}
 								<button
 									class="btn btn-secondary mx-auto mt-3 mb-3 fw-bold fs-5"

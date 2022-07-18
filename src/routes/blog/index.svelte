@@ -1,29 +1,33 @@
-<script  context="module">
-    import { API_URL } from '$lib/env.js'
+<script context="module">
+	import { API_URL } from "$lib/env.js";
 
 	export const load = async ({ fetch }) => {
-        const res = await fetch(`${API_URL}/posts`)
+		const res = await fetch(`${API_URL}/posts`);
 
-        if (res.ok) {
-			const data = await res.json()
-            return { props: { posts: data } }
+		if (res.ok) {
+			const data = await res.json();
+			return { props: { posts: data } };
 		}
 
-        return {
+		return {
 			status: res.status,
-			error: new Error(`Could not load ${url}`)
+			error: new Error(`Could not load ${url}`),
 		};
 	};
 </script>
 
 <script>
-	import { goto, prefetch } from '$app/navigation'
+	import { goto, prefetch } from "$app/navigation";
 
-	export let posts
+	export let posts;
 </script>
 
 <svelte:head>
 	<title>Blog</title>
+	<meta
+		name="description"
+		content="View all sorts of blog posts, written by Teachers for teachers!"
+	/>
 </svelte:head>
 
 <div class="my-4">
@@ -31,34 +35,41 @@
 </div>
 
 <div class="container mx-auto mt-4 mb-5">
-    {#if posts.length <= 0}
-        <h3 class="text-center">Coming Soon!</h3>
-    {:else}
-        <div class="row justify-content-center">
-            {#each posts as post}
-                <div class="col-sm-12 col-md-6 col-lg-4 text-center mt-3">
-                    <div class="blog-block bg-dark p-3" on:mouseenter={()=> prefetch(`/blog/${post.slug}`)} on:click={() => goto(`/blog/${post.slug}`)}>
-                        <h4 class="font-bold">{post.title}</h4>
-                        <p class="mt-2 text-white">{post.description}</p>
-                        <p class="text-logo-gold">By: {post.Author}</p>
-                        <button class="btn btn-sm bg-gold  shadow cta text-black" on:click={() => goto(`/blog/${post.slug}`)}>Read More</button>
-                    </div>
-                </div>
-            {/each}
-        </div>
-    {/if}
+	{#if posts.length <= 0}
+		<h3 class="text-center">Coming Soon!</h3>
+	{:else}
+		<div class="row justify-content-center">
+			{#each posts as post}
+				<div class="col-sm-12 col-md-6 col-lg-4 text-center mt-3">
+					<div
+						class="blog-block bg-dark p-3"
+						on:mouseenter={() => prefetch(`/blog/${post.slug}`)}
+						on:click={() => goto(`/blog/${post.slug}`)}
+					>
+						<h4 class="font-bold">{post.title}</h4>
+						<p class="mt-2 text-white">{post.description}</p>
+						<p class="text-logo-gold">By: {post.Author}</p>
+						<button
+							class="btn btn-sm bg-gold  shadow cta text-black"
+							on:click={() => goto(`/blog/${post.slug}`)}>Read More</button
+						>
+					</div>
+				</div>
+			{/each}
+		</div>
+	{/if}
 </div>
 
 <style>
-    h4{
-        color: #fff;
-    }
-    .blog-block {
-        border-radius: 20px;
-        border: 3px solid var(--logo-gold);
-    }
-    .blog-block:hover {
-        cursor: pointer;
-        border: 3px solid var(--logo-grey);
-    }
+	h4 {
+		color: #fff;
+	}
+	.blog-block {
+		border-radius: 20px;
+		border: 3px solid var(--logo-gold);
+	}
+	.blog-block:hover {
+		cursor: pointer;
+		border: 3px solid var(--logo-grey);
+	}
 </style>

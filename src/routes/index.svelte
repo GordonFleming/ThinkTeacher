@@ -100,7 +100,7 @@
 			<h3 class="read">
 				ThinkTeacher is an online portal dedicated to the inspiring teachers of South
 				Africa, providing access to benefit options, educational opportunities and nurturing
-				networks. Think Teacher's vision is to empower teachers to thrive in their role as
+				networks. ThinkTeacher's vision is to empower teachers to thrive in their role as
 				innovative and sustainable change agents in and for South Africa.
 			</h3>
 		</div>
@@ -391,7 +391,7 @@
 				<li class=" fw-bold">
 					Regular webinars on a range of topics of interest to teachers
 				</li>
-				<li class=" fw-bold">Monthly newsletters with the latest Think Teacher benefits</li>
+				<li class=" fw-bold">Monthly newsletters with the latest ThinkTeacher benefits</li>
 				<!-- <li class="list-group-item">
 					More partners join us monthly to support the most noble of professions,
 					teaching!

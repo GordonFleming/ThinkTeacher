@@ -71,6 +71,7 @@
 
 <svelte:head>
 	<title>Login</title>
+	<meta name="description" content="ThinkTeacher Login" />
 </svelte:head>
 
 <section class="vh-50 gradient-custom container mt-4 mb-4">
