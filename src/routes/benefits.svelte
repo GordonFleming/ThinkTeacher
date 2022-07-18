@@ -21,7 +21,6 @@
 			(cars_cat = 8),
 			(photography_cat = 9);
 	}
-	console.log(course_cat);
 
 	export const load = async ({ fetch }) => {
 		const endpoint = `${API_URL}/graphql`;
@@ -167,8 +166,6 @@
 
 	export let source,
 		readMore = false;
-
-	$: console.log(courses);
 </script>
 
 <svelte:head>
@@ -293,49 +290,10 @@
 		</div>
 
 		<!-- Wellbeing -->
-		<div class="grey-grad row big-gap justify-content-center" id="wellbeing">
+		<div class="grey-grad row justify-content-center">
 			<h2 class="display-3">Wellbeing</h2>
 
-			<div class="row mt-2 justify-content-center">
-				{#each wellness as well}
-					<div class="col-sm-12 col-md-10 col-lg-6">
-						<div class="card bg-dark m-2 shadow-lg">
-							<img
-								class="img-fluid rounded cta"
-								src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/{well
-									.banner.hash}{well.banner.ext}"
-								alt="cover"
-								on:click={() => goto("/auth/form-wellbeing")}
-							/>
-
-							<!-- <small class="text-white">Image by: David Travis, Unsplash.</small> -->
-							<div class="card-body">
-								<h3 class="card-title text-logo-gold">
-									Think <span class="text-lighter-blue">{well.name}</span>
-								</h3>
-								<p class="card-text">
-									{@html well.description}
-								</p>
-								{#if readMore}
-									<button
-										class="btn btn-sm bg-gold shadow cta text-black"
-										on:click={() => (readMore = false)}>Read less</button
-									><br /><br />
-									<p style="text-align: justify;"><SvelteMarkdown {source} /></p>
-								{:else}
-									<button
-										class="btn btn-sm bg-gold shadow cta text-black"
-										on:click={() => (readMore = true)}>Read more</button
-									>
-								{/if}
-							</div>
-							<div class="card-footer">
-								<span class="badge bg-light">{well.partner.company_name}</span>
-							</div>
-						</div>
-					</div>
-				{/each}
-			</div>
+			<Benefit benefitData={wellness} />
 
 			<PartnerBenefit partnerData={wellness} />
 		</div>
