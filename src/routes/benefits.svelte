@@ -21,6 +21,7 @@
 			(cars_cat = 8),
 			(photography_cat = 9);
 	}
+	console.log(course_cat);
 
 	export const load = async ({ fetch }) => {
 		const endpoint = `${API_URL}/graphql`;
@@ -91,7 +92,7 @@
 						source = wellness[0].details;
 						break;
 					case course_cat:
-						courses.push();
+						courses.push(item);
 						break;
 					case finance_cat:
 						finance.push(item);
@@ -166,6 +167,8 @@
 
 	export let source,
 		readMore = false;
+
+	$: console.log(courses);
 </script>
 
 <svelte:head>
@@ -373,12 +376,6 @@
 			<PartnerBenefit partnerData={finance} />
 			<!-- <iframe src="https://retirements.digital.alexanderforbes.co.za/introduction/2/" title="My Retirement Picture" frameborder="0"></iframe> -->
 		</div>
-
-		<!-- Books -->
-		<!-- <div class="grey-grad row justify-content-center big-gap" id="Books">
-            <h2 class="display-3">Books</h2>
-            <h4>Coming soon</h4>
-        </div> -->
 
 		<!-- Book Store -->
 		<div class="grey-grad row justify-content-center big-gap" id="books">
