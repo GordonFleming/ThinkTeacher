@@ -149,7 +149,9 @@ select option{
 }
 
 /* Bootsrap mods */
-
+.form-check-input:hover{
+    cursor: pointer;
+}
 .container-fluid{
     padding: 0;
 }
