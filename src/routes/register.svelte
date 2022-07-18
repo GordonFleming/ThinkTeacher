@@ -298,11 +298,7 @@
 											required
 										/>
 										<i on:click={seePassword}
-											><Icon
-												data={seePlz ? eye : eyeSlash}
-												scale="1.5"
-												style="cursor: pointer; display:inline-block; z-index: 99;"
-											/></i
+											><Icon data={seePlz ? eye : eyeSlash} scale="1.5" /></i
 										>
 										{#if password.length > 0}
 											<div class="progress mt-2">
