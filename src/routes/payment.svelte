@@ -187,6 +187,9 @@
 			<p>Nedbank</p>
 			<p>Business account: 1217188746</p>
 		</div>
+		<div class="mb-4">
+			Contact <strong><a href="mailto:zani@thinkteacher.co.za">Zani</a></strong>
+		</div>
 	</div>
 </div>
 
