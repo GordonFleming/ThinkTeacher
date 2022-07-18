@@ -5,8 +5,8 @@
 <script>
 	import axios from "axios";
 	import { goto } from "$app/navigation";
-	import Icon from "svelte-awesome";
-	import { arrowLeft, eye, eyeSlash } from "svelte-awesome/icons";
+	import Icon from "$lib/Icons/icon.svelte";
+	import { arrowLeft, eye, eyeSlash } from "$lib/Icons/icons";
 	import { sgKey, sendgridList, API_URL } from "$lib/env.js";
 	import z from "zxcvbn";
 	import saIdParser from "south-african-id-parser";
@@ -216,7 +216,7 @@
 						<i
 							style="padding-top: 1.8rem; padding-left: 1.8rem;"
 							on:click={() => (registerNext = false)}
-							><Icon data={arrowLeft} scale="1.8" /></i
+							><Icon data={arrowLeft} scale="2" /></i
 						>
 					{/if}
 					<div class="card-body p-md-3 p-lg-4 text-center">

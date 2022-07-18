@@ -17,8 +17,8 @@
 </script>
 
 <script>
-	import Icon from "svelte-awesome";
-	import { arrowLeft } from "svelte-awesome/icons";
+	import Icon from "$lib/Icons/icon.svelte";
+	import { arrowLeft } from "$lib/Icons/icons";
 	import SvelteMarkdown from "svelte-markdown";
 	import { onMount } from "svelte";
 	import { travelScroll } from "$lib/stores";
@@ -38,7 +38,7 @@
 </svelte:head>
 
 <div class="container bg-dark mt-4 border-custom mt-5 mb-5">
-	<a sveltekit:prefetch href="/partners"><Icon data={arrowLeft} scale="1.8" /></a>
+	<a sveltekit:prefetch href="/partners"><Icon data={arrowLeft} scale="3" /></a>
 	{#if extraImage}
 		<div class="row">
 			<div class="col-sm-12 col-md-6" style="text-align: right;">

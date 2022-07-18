@@ -1,6 +1,6 @@
 <script>
-	import Icon from "svelte-awesome";
-	import { facebook, twitter, instagram, linkedin, youtubeSquare } from "svelte-awesome/icons";
+	import Icon from "$lib/Icons/icon.svelte";
+	import { facebook, twitter, instagram, linkedin, youtube } from "$lib/Icons/icons";
 
 	function scrollTop() {
 		document.body.scrollTop = 0; // For Safari
@@ -43,9 +43,8 @@
 			class="btn btn-outline-light btn-floating m-1"
 			href="https://www.youtube.com/channel/UCN-byMa-sTVbwKWNkbMM9bQ"
 			target="_blank"
-			role="button"><Icon data={youtubeSquare} scale="1.8" /></a
+			role="button"><Icon data={youtube} scale="1.8" /></a
 		>
-		<i class="fab fa-youtube" />
 	</section>
 
 	<!-- Section: Text -->
@@ -112,9 +111,6 @@
 					<a sveltekit:prefetch href="/register" class="text-white">Register</a>
 				</li>
 				<li>
-					<a sveltekit:prefetch href="/contact-us" class="text-white">Contact</a>
-				</li>
-				<li>
 					<a
 						target="_blank"
 						href="https://strapi-upload-s3.glass.thinkteacher.co.za/media/Think_Teacher_Member_Terms_and_Conditions_Final_draft_34d3c8193b.pdf"
@@ -132,6 +128,9 @@
 					<a href="mailto:zani@thinkteacher.co.za" class="text-white"
 						>zani@thinkteacher.co.za</a
 					>
+				</li>
+				<li>
+					<a sveltekit:prefetch href="/contact-us" class="text-white">Contact Us</a>
 				</li>
 			</ul>
 		</div>
