@@ -22,28 +22,28 @@
 			class="btn btn-outline-light btn-floating m-1"
 			href="https://twitter.com/thinkteacher_sa"
 			target="_blank"
-			role="button"><Icon data={twitter} scale="1.8" /></a
+			role="button"><Icon data={twitter} scale="2.2" /></a
 		>
 		<!-- Instagram -->
 		<a
 			class="btn btn-outline-light btn-floating m-1"
 			href="https://www.instagram.com/thinkteacher_rsa"
 			target="_blank"
-			role="button"><Icon data={instagram} scale="1.8" /></a
+			role="button"><Icon data={instagram} scale="2.2" /></a
 		>
 		<!-- Linkedin -->
 		<a
 			class="btn btn-outline-light btn-floating m-1"
 			href="https://www.linkedin.com/company/think-teacher"
 			target="_blank"
-			role="button"><Icon data={linkedin} scale="1.8" /></a
+			role="button"><Icon data={linkedin} scale="2.2" /></a
 		>
 		<!-- Youtube -->
 		<a
 			class="btn btn-outline-light btn-floating m-1"
 			href="https://www.youtube.com/channel/UCN-byMa-sTVbwKWNkbMM9bQ"
 			target="_blank"
-			role="button"><Icon data={youtube} scale="1.8" /></a
+			role="button"><Icon data={youtube} scale="2.2" /></a
 		>
 	</section>
 
