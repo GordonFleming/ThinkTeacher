@@ -153,7 +153,7 @@
 							<div class="mt-2 pt-1">
 								<a
 									href="https://www.facebook.com/thinkteacher"
-									class="text-white px-2"><Icon data={facebook} scale="1.4" /></a
+									class="text-white px-2"><Icon data={facebook} scale="2.2" /></a
 								>
 								<a
 									href="https://twitter.com/thinkteacher_sa"

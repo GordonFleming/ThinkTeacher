@@ -6,7 +6,7 @@ const config = {
 		adapter: adapter(),
         prerender: {
             default: true,
-            entries: ['*', '/robots.txt', '/sitemap.xml']
+            entries: ['/sitemap.xml']
           }
 	},
 };
