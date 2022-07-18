@@ -2,10 +2,6 @@
 	export const prerender = true;
 </script>
 
-<script>
-
-</script>
-
 <svelte:head>
 	<title>Events</title>
 </svelte:head>
@@ -16,7 +12,3 @@
         <h3>Coming Soon!</h3>
     </div>
 </div>
-
-<style>
-
-</style>
