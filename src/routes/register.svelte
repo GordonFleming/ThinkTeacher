@@ -298,7 +298,7 @@
 											<span class="input-group-text" on:click={seePassword}
 												><Icon
 													data={seePlz ? eye : eyeSlash}
-													scale="1.5"
+													scale="1.8"
 												/></span
 											>
 										</div>

@@ -75,8 +75,8 @@
 				document.getElementById("contactPartner").reset();
 			})
 			.catch((error) => {
-				console.log("An error occurred:", error.response.data);
-				errorMsg = error.response.data.message[0].messages[0].message;
+				console.log("An error occurred:", error);
+				// errorMsg = error.response.data.message[0].messages[0].message;
 			});
 	}
 

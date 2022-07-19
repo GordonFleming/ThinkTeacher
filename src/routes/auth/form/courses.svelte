@@ -35,7 +35,8 @@
 		if (user.workplace) {
 			workplace = user.workplace;
 		}
-		if (user.province) {
+		console.log(user.province);
+		if (user.province !== "none") {
 			province = user.province.replace("_", " ");
 		}
 	});

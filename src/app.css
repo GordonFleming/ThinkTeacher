@@ -45,6 +45,9 @@ body {
 .bg-other{
     background-color: var(--bg-other);
 }
+.bg-blue{
+    background-color: var(--logo-grey) !important;
+}
 .bg-gold{
     background-color: var(--logo-gold);
 }

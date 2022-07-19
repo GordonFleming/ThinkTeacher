@@ -132,7 +132,7 @@
 						<!-- Yoco Inline form will be added here -->
 					</div>
 
-					<!-- <div class="form-switch mt-3 text-center">
+					<div class="form-switch mt-3 text-center">
 						<label for="retireStu">Are you a student or a retired teacher?</label>
 						<input
 							class="form-check-input form-control mx-auto"
@@ -141,12 +141,13 @@
 							id="retireStu"
 							bind:checked={retireStu}
 						/>
-					</div> -->
+					</div>
 
 					<div class="text-center mt-4 mb-4">
 						<button
 							id="pay-button"
-							class:bg-gold={submitButton}
+							class:bg-blue={submitButton && amountInRands == 360}
+							class:bg-gold={submitButton && amountInRands == 120}
 							class:cta={submitButton}
 							class="btn btn-lg shadow"
 							on:click|preventDefault={makePayment}
