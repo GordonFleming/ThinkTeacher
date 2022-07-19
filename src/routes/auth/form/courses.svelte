@@ -49,6 +49,7 @@
 		workplace;
 
 	async function submitForm() {
+		loading = true;
 		await axios
 			.post(`${API_URL}/partner-forms/custom`, {
 				fullName: fullname,
@@ -73,12 +74,14 @@
 				msg =
 					fullname +
 					", you have successfully made contact with ThinkTeacher's partner. The partner will be in touch with you soon.";
-				document.getElementById("contactPartner").reset();
+				loading = false;
+				buttonSubmit = true;
 			})
 			.catch((error) => {
 				console.log("An error occurred:", error.response.data);
 				errorMsg = error.response.data.message[0].messages[0].message;
-			});
+			})
+			.finally(() => document.getElementById("contactPartner").reset());
 	}
 
 	let msg, errorMsg;
