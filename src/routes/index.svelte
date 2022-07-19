@@ -141,7 +141,9 @@
 
 	<div class="row grey-grad text-center big-gap">
 		<h2>Benefits</h2>
-		<h5 class="mb-5">Click on a benefit!</h5>
+		<h5 class="mb-5">
+			Click on a benefit below to see what our partners can offer you as a ThinkTeacher member
+		</h5>
 		<div class="col-sm-12 col-md-6 col-lg-4 mb-4">
 			<a href="/benefits" use:viewport on:enterViewport={() => (ben1 = true)}>
 				<div class="placeholder">
@@ -277,14 +279,14 @@
 						<img
 							transition:fly={{ y: 200, duration: 1000 }}
 							class="img-fluid offer offer-img"
-							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/photography_68b64fd52e.webp"
-							alt="Photography"
-							on:click={() => ($travelScroll = "photography")}
+							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/glasses_1bde567ac8.webp"
+							alt="Glasses"
+							on:click={() => ($travelScroll = "glasses")}
 						/>
 					{/if}
 				</div>
 			</a>
-			<h3 class="mt-3"><span class="text-logo-gold">Think</span> Photography</h3>
+			<h3 class="mt-3"><span class="text-logo-gold">Think</span> Glasses</h3>
 			<h5 class="text-blue">coming soon</h5>
 		</div>
 		<div class="col-sm-12 col-md-6 col-lg-4 mb-4">

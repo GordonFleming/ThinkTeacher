@@ -99,50 +99,54 @@
 						<form>
 							<div class="form-outline form-white mb-2 text-left">
 								<label class="form-label" for="Password">Password</label>
-								<input
-									type="password"
-									id="Password"
-									class="form-control form-control-lg"
-									placeholder="Password"
-									bind:value={password}
-									style="margin-right: -2.2rem; display:inline-block;"
-									required
-								/>
-								<i on:click={seePassword}
-									><Icon data={seePlz ? eye : eyeSlash} scale="1.5" /></i
-								>
+								<div class="input-group mb-3">
+									<input
+										type="password"
+										id="Password"
+										class="form-control form-control-lg"
+										placeholder="password"
+										bind:value={password}
+										required
+									/>
+									<span class="input-group-text" on:click={seePassword}
+										><Icon data={seePlz ? eye : eyeSlash} scale="1.5" /></span
+									>
+								</div>
 							</div>
-							<div class="progress mt-2">
-								<div
-									class="progress-bar {barCol}"
-									role="progressbar"
-									style="width: {progress}%;"
-									aria-valuenow="100"
-									aria-valuemin="0"
-									aria-valuemax="100"
-								/>
-							</div>
-							<p style={s || "color:red"}>
-								{s
-									? "Strong password"
-									: "Password not strong enough. Try using a mix of capital letters, numbers and special characters with a length > 8."}
-							</p>
+							{#if password.length > 0}
+								<div class="progress mt-2">
+									<div
+										class="progress-bar {barCol}"
+										role="progressbar"
+										style="width: {progress}%;"
+										aria-valuenow="100"
+										aria-valuemin="0"
+										aria-valuemax="100"
+									/>
+								</div>
+								<p style={s || "color:red"}>
+									{s
+										? "Strong password"
+										: "Password not strong enough. Try using a mix of capital letters, numbers and special characters with a length > 8."}
+								</p>
+							{/if}
 							<div class="form-outline form-white mb-4 mt-3 text-left">
 								<label class="form-label" for="PasswordConfirm"
 									>Password Confirmation</label
 								>
-								<input
-									type="password"
-									id="PasswordConfirm"
-									class="form-control form-control-lg"
-									placeholder="Password (again)"
-									bind:value={passwordConfirmation}
-									style="margin-right: -2.2rem; display:inline-block;"
-									required
-								/>
-								<i on:click={seePassword}
-									><Icon data={seePlz ? eye : eyeSlash} scale="1.5" /></i
-								>
+								<div class="input-group mb-3">
+									<input
+										type="password"
+										id="PasswordConfirm"
+										class="form-control form-control-lg"
+										placeholder="password (again)"
+										bind:value={passwordConfirmation}
+										required
+									/>
+									<span class="input-group-text" on:click={seePassword}
+										><Icon data={seePlz ? eye : eyeSlash} scale="1.5" /></span
+									>
+								</div>
 							</div>
 
 							<button

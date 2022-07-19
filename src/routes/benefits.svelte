@@ -9,7 +9,7 @@
 		legal_cat = 9,
 		books_cat = 6,
 		cars_cat = 7,
-		photography_cat = 8;
+		glasses_cat = 8;
 	if (prod === "true") {
 		(health_cat = 2),
 			(travel_cat = 1),
@@ -19,7 +19,7 @@
 			(legal_cat = 4),
 			(books_cat = 7),
 			(cars_cat = 8),
-			(photography_cat = 9);
+			(glasses_cat = 9);
 	}
 
 	export const load = async ({ fetch }) => {
@@ -71,7 +71,7 @@
 			legal = [],
 			books = [],
 			cars = [],
-			photography = [];
+			glasses = [];
 		let source;
 
 		if (res.ok) {
@@ -105,8 +105,8 @@
 					case cars_cat:
 						cars.push(item);
 						break;
-					case photography_cat:
-						photography.push(item);
+					case glasses_cat:
+						glasses.push(item);
 						break;
 					default:
 						console.log("This belongs to nothing...");
@@ -125,7 +125,7 @@
 					legal,
 					books,
 					cars,
-					photography,
+					glasses,
 					source,
 				},
 			};
@@ -163,7 +163,7 @@
 	});
 
 	export let travel, wellbeing, health, courses, finance, legal, books, cars;
-	//cars, photography;
+	//cars, glasses;
 </script>
 
 <svelte:head>
@@ -267,10 +267,10 @@
 			<h4
 				on:click={() =>
 					document
-						.getElementById("photography")
+						.getElementById("glasses")
 						.scrollIntoView({ behavior: "smooth", block: "start" })}
 			>
-				Photography
+				Glasses
 			</h4>
 		</li>
 	</ul>
@@ -345,9 +345,9 @@
 
 			<PartnerBenefit partnerData={cars} />
 		</div>
-		<!-- Photography -->
-		<div class="grey-grad row justify-content-center big-gap" id="photography">
-			<h2 class="display-3">Photography</h2>
+		<!-- Glasses -->
+		<div class="grey-grad row justify-content-center big-gap" id="glasses">
+			<h2 class="display-3">Glasses</h2>
 			<h4>Coming soon</h4>
 		</div>
 		<!-- Connect -->

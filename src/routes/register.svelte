@@ -285,20 +285,24 @@
 										/>
 									</div>
 									<div class="form-outline form-white mb-4">
-										<label class="form-label" for="Password">Password</label><br
-										/>
-										<input
-											type="password"
-											id="Password"
-											class="form-control form-control-lg"
-											placeholder="password"
-											style="margin-right: -2.2rem; display:inline-block;"
-											bind:value={password}
-											required
-										/>
-										<i on:click={seePassword}
-											><Icon data={seePlz ? eye : eyeSlash} scale="1.5" /></i
-										>
+										<label class="form-label" for="Password">Password</label>
+										<div class="input-group mb-3">
+											<input
+												type="password"
+												id="Password"
+												class="form-control form-control-lg"
+												placeholder="password"
+												bind:value={password}
+												required
+											/>
+											<span class="input-group-text" on:click={seePassword}
+												><Icon
+													data={seePlz ? eye : eyeSlash}
+													scale="1.5"
+												/></span
+											>
+										</div>
+
 										{#if password.length > 0}
 											<div class="progress mt-2">
 												<div
