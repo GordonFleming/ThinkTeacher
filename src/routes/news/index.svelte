@@ -23,15 +23,15 @@
 </script>
 
 <svelte:head>
-	<title>Blog</title>
+	<title>News Flash</title>
 	<meta
 		name="description"
-		content="View all sorts of blog posts, written by Teachers for teachers!"
+		content="View all sorts of news flash posts, written by Teachers for teachers!"
 	/>
 </svelte:head>
 
 <div class="my-4">
-	<h1 class="text-center text-3xl font-bold"><span class="think">Think</span>Teacher Blog</h1>
+	<h1 class="text-center text-3xl font-bold"><span class="think">Think</span>Teacher News</h1>
 </div>
 
 <div class="container mx-auto mt-4 mb-5">
@@ -42,16 +42,14 @@
 			{#each posts as post}
 				<div class="col-sm-12 col-md-6 col-lg-4 text-center mt-3">
 					<div
-						class="blog-block bg-dark p-3"
-						on:mouseenter={() => prefetch(`/blog/${post.slug}`)}
-						on:click={() => goto(`/blog/${post.slug}`)}
+						class="news-block bg-dark p-3"
+						on:mouseenter={() => prefetch(`/news/${post.slug}`)}
+						on:click={() => goto(`/news/${post.slug}`)}
 					>
 						<h4 class="font-bold">{post.title}</h4>
-						<p class="mt-2 text-white">{post.description}</p>
-						<p class="text-logo-gold">By: {post.Author}</p>
 						<button
 							class="btn btn-sm bg-gold  shadow cta text-black"
-							on:click={() => goto(`/blog/${post.slug}`)}>Read More</button
+							on:click={() => goto(`/news/${post.slug}`)}>Read More</button
 						>
 					</div>
 				</div>
@@ -64,11 +62,11 @@
 	h4 {
 		color: #fff;
 	}
-	.blog-block {
+	.news-block {
 		border-radius: 20px;
 		border: 3px solid var(--logo-gold);
 	}
-	.blog-block:hover {
+	.news-block:hover {
 		cursor: pointer;
 		border: 3px solid var(--logo-grey);
 	}

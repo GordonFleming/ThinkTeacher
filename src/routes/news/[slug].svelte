@@ -10,7 +10,7 @@
 			return { props: { post: data[0] } };
 		}
 
-		const error = new Error(`The blog with slug of ${slug} was not found`);
+		const error = new Error(`The news with slug of ${slug} was not found`);
 		return {
 			status: res.status,
 			error: error,
@@ -22,6 +22,14 @@
 	import Icon from "$lib/Icons/icon.svelte";
 	import { arrowLeft } from "$lib/Icons/icons";
 	import SvelteMarkdown from "svelte-markdown";
+	import { onMount } from "svelte";
+
+	let PdfViewer;
+
+	onMount(async () => {
+		const module = await import("svelte-pdf");
+		PdfViewer = module.default;
+	});
 
 	export let post;
 	let date;
@@ -39,22 +47,20 @@
 	<title>{post.title}</title>
 </svelte:head>
 
-<div class="container bg-dark mt-4 border-custom mb-5">
-	<a sveltekit:prefetch href="/blog"><Icon data={arrowLeft} scale="3" /></a>
-	<img
-		class="img-fluid mx-auto d-block mt-2"
-		src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/{post.image.hash}{post.image
-			.ext}"
-		alt="Blog banner"
-	/>
+<div class="container">
+	<a sveltekit:prefetch href="/news"><Icon data={arrowLeft} scale="3" /></a>
+	<h1 class="text-center mb-4" style="margin-top: 0;">{post.title}</h1>
 
-	<h1 class="text-center">{post.title}</h1>
-	<h4 class="text-center text-white">{post.description}</h4>
+	<div class="text-center">
+		<svelte:component
+			this={PdfViewer}
+			scale="1.4"
+			showBorder="false"
+			showButtons="false"
+			url={post.pdf.url}
+		/>
+	</div>
 
-	<h5 class="mt-5">Author: {post.Author}</h5>
-	{#if post.source_url}
-		<a href={post.source_url} target="_blank">{post.source_url}</a><br />
-	{/if}
 	<time datetime={publish}>{publish}</time>
 
 	<div id="mark-down">
@@ -63,16 +69,8 @@
 </div>
 
 <style>
-	img {
-		max-height: 400px;
-		width: auto;
-	}
 	h1 {
 		color: var(--logo-gold);
-	}
-	h5 {
-		color: var(--bg-banner);
-		line-height: 0;
 	}
 	time {
 		color: #fff;

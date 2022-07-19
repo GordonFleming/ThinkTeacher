@@ -320,7 +320,7 @@
 							class="img-fluid offer offer-img"
 							src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/business_coach_0ba79df117.webp"
 							alt="Connect"
-							on:click={() => ($travelScroll = "business_coach")}
+							on:click={() => ($travelScroll = "business")}
 						/>
 					{/if}
 				</div>
@@ -481,6 +481,13 @@
 				<img
 					class="logo img-fluid"
 					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_turnberry_6a7f42ce0a.jpeg"
+					alt="partner"
+				/>
+			</div>
+			<div class="slide-content">
+				<img
+					class="logo img-fluid"
+					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_raintree_53a2b76328.webp"
 					alt="partner"
 				/>
 			</div>

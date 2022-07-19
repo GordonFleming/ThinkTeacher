@@ -9,7 +9,8 @@
 		legal_cat = 9,
 		books_cat = 6,
 		cars_cat = 7,
-		glasses_cat = 8;
+		glasses_cat = 8,
+		business_cat = 9;
 	if (prod === "true") {
 		(health_cat = 2),
 			(travel_cat = 1),
@@ -19,7 +20,8 @@
 			(legal_cat = 4),
 			(books_cat = 7),
 			(cars_cat = 8),
-			(glasses_cat = 9);
+			(glasses_cat = 9),
+			(business_cat = 10);
 	}
 
 	export const load = async ({ fetch }) => {
@@ -71,7 +73,8 @@
 			legal = [],
 			books = [],
 			cars = [],
-			glasses = [];
+			glasses = [],
+			business = [];
 		let source;
 
 		if (res.ok) {
@@ -108,6 +111,9 @@
 					case glasses_cat:
 						glasses.push(item);
 						break;
+					case business_cat:
+						business.push(item);
+						break;
 					default:
 						console.log("This belongs to nothing...");
 				}
@@ -126,6 +132,7 @@
 					books,
 					cars,
 					glasses,
+					business,
 					source,
 				},
 			};
@@ -162,7 +169,7 @@
 		sticky = navbar.offsetTop;
 	});
 
-	export let travel, wellbeing, health, courses, finance, legal, books, cars;
+	export let travel, wellbeing, health, courses, finance, legal, books, cars, business;
 	//cars, glasses;
 </script>
 
@@ -345,6 +352,13 @@
 
 			<PartnerBenefit partnerData={cars} />
 		</div>
+		<!-- Business -->
+		<div class="grey-grad row justify-content-center big-gap" id="business">
+			<h2 class="display-3">Business Coach</h2>
+			<Benefit benefitData={business} />
+
+			<PartnerBenefit partnerData={business} />
+		</div>
 		<!-- Glasses -->
 		<div class="grey-grad row justify-content-center big-gap" id="glasses">
 			<h2 class="display-3">Glasses</h2>
@@ -353,11 +367,6 @@
 		<!-- Connect -->
 		<div class="grey-grad row justify-content-center big-gap" id="connect">
 			<h2 class="display-3">Connect</h2>
-			<h4>Coming soon</h4>
-		</div>
-		<!-- Business -->
-		<div class="grey-grad row justify-content-center big-gap" id="business">
-			<h2 class="display-3">Business Coach</h2>
 			<h4>Coming soon</h4>
 		</div>
 		<!-- Jobs -->

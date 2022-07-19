@@ -1,11 +1,11 @@
 import axios from 'axios'
-//TODO add blog posts
+//TODO add news posts
 const website = 'https://thinkteacher.co.za'
 
 export async function GET() {
   const res = await axios.get('https://thinkteacher-strapi.glass.thinkteacher.co.za/partners')
   const partners = res.data
-  const pages = [`about`, `benefits`, `partners`, `blog`, `webinars`, `contact-us`, `login`, `register`]
+  const pages = [`about`, `benefits`, `partners`, `news`, `webinars`, `contact-us`, `login`, `register`]
   const body = sitemap(partners, pages)
 
   const headers = {

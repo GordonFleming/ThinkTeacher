@@ -85,8 +85,8 @@
 					<a
 						class="nav-link fromLeft"
 						sveltekit:prefetch
-						href="/blog"
-						on:click={mustClick}>Blog</a
+						href="/news"
+						on:click={mustClick}>News Flash</a
 					>
 				</li>
 				<li class="nav-item dropdown">
