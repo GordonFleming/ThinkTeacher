@@ -92,208 +92,159 @@
 		<Jumper size="150" color="#5C677D" unit="px" duration="1s" />
 	</div>
 {:else}
-	<section class="vh-50 gradient-custom container mt-4 mb-4">
-		<div class="py-3 h-100">
-			<div class="row d-flex justify-content-center align-items-center h-100">
-				<div class="col-12 col-md-8 col-lg-6 col-xl-6">
-					<div class="card bg-dark text-white" style="border-radius: 1rem;">
-						<div class="card-body p-md-3 p-lg-4 text-center">
-							<div class="mb-md-3 mt-md-2">
-								<h2 class="fw-bold mb-2 text-uppercase">Contact Partner</h2>
-								{#if errorMsg}
-									<h4 class="error-col">{errorMsg}</h4>
-								{:else if msg}
-									<h4 class="success-col">{msg}</h4>
-								{/if}
+	<h2 class="fw-bold mb-2 text-uppercase">Contact Partner</h2>
+	{#if errorMsg}
+		<h4 class="error-col">{errorMsg}</h4>
+	{:else if msg}
+		<h4 class="success-col">{msg}</h4>
+	{/if}
 
-								<form id="contactPartner">
-									<div class="row">
-										<div class="col-md-12">
-											<label class="form-label" for="name">Name</label>
-											<input
-												type="text"
-												name="fullname"
-												id="name"
-												class="form-control form-control-lg"
-												bind:value={fullname}
-												readonly
-												required
-											/>
-										</div>
-										<div class="col-md-12 mt-2">
-											<label class="form-label" for="surname">Email</label>
-											<input
-												type="text"
-												name="surname"
-												id="surname"
-												class="form-control form-control-lg"
-												bind:value={email}
-												readonly
-												required
-											/>
-										</div>
-										<div class="col-12 mt-2">
-											<label class="form-label" for="idNum"
-												>ThinkTeacher Number</label
-											>
-											<input
-												type="text"
-												name="idNumber"
-												id="idNum"
-												class="form-control form-control-lg"
-												bind:value={ttNum}
-												readonly
-												required
-											/>
-										</div>
-										<div class="col-sm-12 col-md-6 mt-2">
-											<label for="startDate">Start Date</label>
-											<input
-												type="date"
-												id="startDate"
-												name="startDate"
-												class="form-control form-control-lg"
-												bind:value={startDate}
-											/>
-										</div>
-										<div class="col-sm-12 col-md-6 mt-2">
-											<label for="endDate">End Date</label>
-											<input
-												type="date"
-												id="endDate"
-												name="endDate"
-												class="form-control form-control-lg"
-												bind:value={endDate}
-											/>
-										</div>
-										<div class="col-sm-12 col-md-6 mt-2">
-											<label class="form-label" for="typeHoliday"
-												>Type of Holiday</label
-											>
-											<select
-												class="form-select"
-												id="typeHoliday"
-												bind:value={typeHoliday}
-												required
-											>
-												<option value="" selected>choose</option>
-												<option value="beach">Beach</option>
-												<option value="bush">Bush</option>
-												<option value="ski">Ski</option>
-												<option value="mountains">Mountains</option>
-												<option value="city">City</option>
-												<option value="adventure">Adventure</option>
-												<option value="conference">Conference</option>
-												<option value="sports_tours">Sports Tours</option>
-												<option value="other">Other</option>
-											</select>
-										</div>
-										<div class="col-sm-12 col-md-6 mt-2">
-											<label class="form-label" for="reason"
-												>Reason for Travel</label
-											>
-											<select
-												class="form-select"
-												id="reason"
-												bind:value={reason}
-												required
-											>
-												<option value="" selected>choose</option>
-												<option value="leisure">Leisure</option>
-												<option value="business">Business</option>
-												<option value="sport">Sport</option>
-											</select>
-										</div>
-										<div class="col-sm-12 col-md-6 mt-2">
-											<label class="form-label" for="destination"
-												>Destination</label
-											>
-											<select
-												class="form-select"
-												id="destination"
-												bind:value={where}
-												required
-											>
-												<option value="" selected>choose</option>
-												<option value="domestic">Domestic</option>
-												<option value="international">International</option>
-												<option value="africa">Africa</option>
-											</select>
-										</div>
-										<div class="col-sm-12 col-md-6 mt-2">
-											<label
-												class="form-label form-check-label"
-												for="nationality">South African</label
-											>
-											<div class="form-switch mt-1">
-												<input
-													class="form-check-input form-control"
-													type="checkbox"
-													role="switch"
-													id="nationality"
-													bind:checked={nationality}
-												/>
-											</div>
-										</div>
-										<div class="col-sm-12 col-md-6 mt-2">
-											<label class="form-label" for="numChild"
-												>How many under 18</label
-											>
-											<input
-												type="number"
-												name="numChild"
-												id="numChild"
-												class="form-control form-control-lg"
-												placeholder="0"
-												bind:value={numChild}
-												min="0"
-												max="100"
-											/>
-										</div>
-										<div class="col-sm-12 col-md-6 mt-2">
-											<label class="form-label" for="numAdult"
-												>How many Adults</label
-											>
-											<input
-												type="number"
-												name="numAdult"
-												id="numAdult"
-												class="form-control form-control-lg"
-												placeholder="0"
-												bind:value={numAdult}
-												min="0"
-												max="100"
-											/>
-										</div>
-										<div class="col-12 mt-2">
-											<label class="form-label" for="budget">Budget</label>
-											<select
-												class="form-select"
-												id="budget"
-												bind:value={budget}
-												required
-											>
-												<option value="" selected>choose</option>
-												<option value="budget">Budget</option>
-												<option value="standard">Standard</option>
-												<option value="luxury">Luxury</option>
-											</select>
-										</div>
-									</div>
-									<button
-										class="btn btn-outline-light btn-lg px-4 mt-4"
-										type="submit"
-										on:click|preventDefault={submitForm}
-										disabled={buttonSubmit}>Submit</button
-									>
-								</form>
-							</div>
-						</div>
-					</div>
+	<form id="contactPartner">
+		<div class="row">
+			<div class="col-md-12">
+				<label class="form-label" for="name">Name</label>
+				<input
+					type="text"
+					name="fullname"
+					id="name"
+					class="form-control form-control-lg"
+					bind:value={fullname}
+					readonly
+					required
+				/>
+			</div>
+			<div class="col-md-12 mt-2">
+				<label class="form-label" for="surname">Email</label>
+				<input
+					type="text"
+					name="surname"
+					id="surname"
+					class="form-control form-control-lg"
+					bind:value={email}
+					readonly
+					required
+				/>
+			</div>
+			<div class="col-12 mt-2">
+				<label class="form-label" for="idNum">ThinkTeacher Number</label>
+				<input
+					type="text"
+					name="idNumber"
+					id="idNum"
+					class="form-control form-control-lg"
+					bind:value={ttNum}
+					readonly
+					required
+				/>
+			</div>
+			<div class="col-sm-12 col-md-6 mt-2">
+				<label for="startDate">Start Date</label>
+				<input
+					type="date"
+					id="startDate"
+					name="startDate"
+					class="form-control form-control-lg"
+					bind:value={startDate}
+				/>
+			</div>
+			<div class="col-sm-12 col-md-6 mt-2">
+				<label for="endDate">End Date</label>
+				<input
+					type="date"
+					id="endDate"
+					name="endDate"
+					class="form-control form-control-lg"
+					bind:value={endDate}
+				/>
+			</div>
+			<div class="col-sm-12 col-md-6 mt-2">
+				<label class="form-label" for="typeHoliday">Type of Holiday</label>
+				<select class="form-select" id="typeHoliday" bind:value={typeHoliday} required>
+					<option value="" selected>choose</option>
+					<option value="beach">Beach</option>
+					<option value="bush">Bush</option>
+					<option value="ski">Ski</option>
+					<option value="mountains">Mountains</option>
+					<option value="city">City</option>
+					<option value="adventure">Adventure</option>
+					<option value="conference">Conference</option>
+					<option value="sports_tours">Sports Tours</option>
+					<option value="other">Other</option>
+				</select>
+			</div>
+			<div class="col-sm-12 col-md-6 mt-2">
+				<label class="form-label" for="reason">Reason for Travel</label>
+				<select class="form-select" id="reason" bind:value={reason} required>
+					<option value="" selected>choose</option>
+					<option value="leisure">Leisure</option>
+					<option value="business">Business</option>
+					<option value="sport">Sport</option>
+				</select>
+			</div>
+			<div class="col-sm-12 col-md-6 mt-2">
+				<label class="form-label" for="destination">Destination</label>
+				<select class="form-select" id="destination" bind:value={where} required>
+					<option value="" selected>choose</option>
+					<option value="domestic">Domestic</option>
+					<option value="international">International</option>
+					<option value="africa">Africa</option>
+				</select>
+			</div>
+			<div class="col-sm-12 col-md-6 mt-2">
+				<label class="form-label form-check-label" for="nationality">South African</label>
+				<div class="form-switch mt-1">
+					<input
+						class="form-check-input form-control"
+						type="checkbox"
+						role="switch"
+						id="nationality"
+						bind:checked={nationality}
+					/>
 				</div>
 			</div>
+			<div class="col-sm-12 col-md-6 mt-2">
+				<label class="form-label" for="numChild">How many under 18</label>
+				<input
+					type="number"
+					name="numChild"
+					id="numChild"
+					class="form-control form-control-lg"
+					placeholder="0"
+					bind:value={numChild}
+					min="0"
+					max="100"
+				/>
+			</div>
+			<div class="col-sm-12 col-md-6 mt-2">
+				<label class="form-label" for="numAdult">How many Adults</label>
+				<input
+					type="number"
+					name="numAdult"
+					id="numAdult"
+					class="form-control form-control-lg"
+					placeholder="0"
+					bind:value={numAdult}
+					min="0"
+					max="100"
+				/>
+			</div>
+			<div class="col-12 mt-2">
+				<label class="form-label" for="budget">Budget</label>
+				<select class="form-select" id="budget" bind:value={budget} required>
+					<option value="" selected>choose</option>
+					<option value="budget">Budget</option>
+					<option value="standard">Standard</option>
+					<option value="luxury">Luxury</option>
+				</select>
+			</div>
 		</div>
-	</section>
+		<button
+			class="btn btn-outline-light btn-lg px-4 mt-4"
+			type="submit"
+			on:click|preventDefault={submitForm}
+			disabled={buttonSubmit}>Submit</button
+		>
+	</form>
 {/if}
 
 <style>

@@ -43,9 +43,8 @@
 				email: email,
 				custom: [
 					{
-						__component: "custom-form.cars",
+						__component: "custom-form.finance",
 						message: message,
-						options: options,
 					},
 				],
 				users_permissions_user: {
@@ -77,107 +76,69 @@
 		<Jumper size="150" color="#5C677D" unit="px" duration="1s" />
 	</div>
 {:else}
-	<section class="vh-50 gradient-custom container mt-4 mb-4">
-		<div class="py-3 h-100">
-			<div class="row d-flex justify-content-center align-items-center h-100">
-				<div class="col-12 col-md-8 col-lg-6 col-xl-6">
-					<div class="card bg-dark text-white" style="border-radius: 1rem;">
-						<div class="card-body p-md-3 p-lg-4 text-center">
-							<div class="mb-md-3 mt-md-2">
-								<h2 class="fw-bold mb-2 text-uppercase">Contact Partner</h2>
-								{#if errorMsg}
-									<h4 class="error-col">{errorMsg}</h4>
-								{:else if msg}
-									<h4 class="success-col">{msg}</h4>
-								{/if}
+	<h2 class="fw-bold mb-2 text-uppercase">Contact Partner</h2>
+	{#if errorMsg}
+		<h4 class="error-col">{errorMsg}</h4>
+	{:else if msg}
+		<h4 class="success-col">{msg}</h4>
+	{/if}
 
-								<form id="contactPartner">
-									<div class="row">
-										<div class="col-md-12">
-											<label class="form-label" for="name">Name</label>
-											<input
-												type="text"
-												name="fullname"
-												id="name"
-												class="form-control form-control-lg"
-												bind:value={fullname}
-												readonly
-												required
-											/>
-										</div>
-										<div class="col-md-12 mt-2">
-											<label class="form-label" for="surname">Email</label>
-											<input
-												type="text"
-												name="surname"
-												id="surname"
-												class="form-control form-control-lg"
-												bind:value={email}
-												readonly
-												required
-											/>
-										</div>
-										<div class="col-12 mt-2">
-											<label class="form-label" for="idNum"
-												>ThinkTeacher Number</label
-											>
-											<input
-												type="text"
-												name="idNumber"
-												id="idNum"
-												class="form-control form-control-lg"
-												bind:value={ttNum}
-												readonly
-												required
-											/>
-										</div>
-										<div class="col-12 mt-2">
-											<label class="form-label" for="message">Message</label>
-											<textarea
-												type="text"
-												name="message"
-												id="message"
-												placeholder="enter your enquiry here..."
-												class="form-control form-control-lg"
-												bind:value={message}
-												required
-											/>
-										</div>
-									</div>
-									<div class="col-12 mt-2">
-										<label class="form-label" for="options"
-											>What car are you interested in?</label
-										>
-										<select
-											class="form-select"
-											id="options"
-											bind:value={options}
-											required
-										>
-											<option value="" selected>choose</option>
-											<option value="picanto">Picanto</option>
-											<option value="rio">Rio</option>
-											<option value="pegas">Pegas</option>
-											<option value="sonet">Sonet</option>
-											<option value="seltos">Seltos</option>
-											<option value="sportage">Sportage</option>
-											<option value="sorento">Sorento</option>
-											<option value="carnival">Carnival</option>
-											<option value="picanto_runner">Picanto Runner</option>
-										</select>
-									</div>
-									<button
-										class="btn btn-outline-light btn-lg px-4 mt-4"
-										type="submit"
-										on:click|preventDefault={submitForm}
-										disabled={buttonSubmit}>Submit</button
-									>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
+	<form id="contactPartner">
+		<div class="row">
+			<div class="col-md-12">
+				<label class="form-label" for="name">Name</label>
+				<input
+					type="text"
+					name="fullname"
+					id="name"
+					class="form-control form-control-lg"
+					bind:value={fullname}
+					readonly
+					required
+				/>
+			</div>
+			<div class="col-md-12 mt-2">
+				<label class="form-label" for="surname">Email</label>
+				<input
+					type="text"
+					name="surname"
+					id="surname"
+					class="form-control form-control-lg"
+					bind:value={email}
+					readonly
+					required
+				/>
+			</div>
+			<div class="col-12 mt-2">
+				<label class="form-label" for="idNum">ThinkTeacher Number</label>
+				<input
+					type="text"
+					name="idNumber"
+					id="idNum"
+					class="form-control form-control-lg"
+					bind:value={ttNum}
+					readonly
+					required
+				/>
+			</div>
+			<div class="col-12 mt-2">
+				<label class="form-label" for="message">Message</label>
+				<textarea
+					type="text"
+					name="message"
+					id="message"
+					placeholder="enter your enquiry here..."
+					class="form-control form-control-lg"
+					bind:value={message}
+					required
+				/>
 			</div>
 		</div>
-	</section>
+		<button
+			class="btn btn-outline-light btn-lg px-4 mt-4"
+			type="submit"
+			on:click|preventDefault={submitForm}
+			disabled={buttonSubmit}>Submit</button
+		>
+	</form>
 {/if}
