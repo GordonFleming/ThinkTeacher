@@ -124,11 +124,7 @@
 		}
 	}
 	.border-custom {
-		border-top: 3px solid var(--logo-gold);
-		border-left: 3px solid var(--logo-gold);
-
-		border-bottom: 3px solid var(--logo-grey);
-		border-right: 3px solid var(--logo-grey);
+		border: 3px solid var(--logo-gold);
 	}
 	iframe {
 		position: absolute;
@@ -136,7 +132,7 @@
 		top: 0;
 		left: 0;
 		width: 100%;
-		height: 200px;
+		height: 100%;
 	}
 	.frame-wrapper {
 		position: relative;
