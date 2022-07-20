@@ -156,6 +156,13 @@
 							PAY - R {amountInRands}
 						</button>
 					</div>
+
+					<div class="text-center mb-3">
+						Corporate sponsorship of a school:
+						<a href="mailto:zani@thinkteacher.co.za" class="btn btn-sm bg-gold"
+							>Contact Zani</a
+						>
+					</div>
 				</div>
 				<p class="success-payment-message" />
 			</form>

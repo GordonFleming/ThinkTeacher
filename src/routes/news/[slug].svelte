@@ -48,7 +48,7 @@
 </svelte:head>
 
 <div class="container">
-	<a sveltekit:prefetch href="/news"><Icon data={arrowLeft} scale="3" /></a>
+	<a sveltekit:prefetch href="/news"><Icon data={arrowLeft} scale="3" fill="#4F5D89" /></a>
 	<h1 class="text-center mb-4" style="margin-top: 0;">{post.title}</h1>
 
 	<div class="text-center">
@@ -88,13 +88,5 @@
 		.container {
 			padding: 5rem;
 		}
-	}
-
-	.border-custom {
-		border-top: 3px solid var(--logo-gold);
-		border-left: 3px solid var(--logo-gold);
-
-		border-bottom: 3px solid var(--logo-grey);
-		border-right: 3px solid var(--logo-grey);
 	}
 </style>

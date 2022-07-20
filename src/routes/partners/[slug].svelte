@@ -5,7 +5,6 @@
 		const { slug } = params;
 		const res = await fetch(`${API_URL}/partners?slug=${slug}`);
 		const data = await res.json();
-		console.log("something??", data);
 
 		if (data.length > 0) {
 			return { props: { partner: data[0] } };
@@ -27,9 +26,12 @@
 	let source;
 	if (partner) source = partner.bio;
 
-	let extraImage = false;
+	let extraImage = false,
+		webinar = false;
 	onMount(() => {
-		partner.custom.length > 0 ? (extraImage = true) : (extraImage = false);
+		console.log(partner.custom[0].webinar);
+		partner.custom[0].extraImage ? (extraImage = true) : (extraImage = false);
+		partner.custom[0].url ? (webinar = true) : (webinar = false);
 	});
 </script>
 
@@ -71,6 +73,23 @@
 	<h2 class="text-center mt-3">{partner.name}</h2>
 	<h4 class="text-center text-white">{partner.description}</h4>
 
+	{#if webinar}
+		<h4 class="text-logo-gold">Webinar:</h4>
+		<div class="col-lg-6 col-md-12 mt-2">
+			<div class="webinar-wrapper">
+				<div class="frame-wrapper">
+					<iframe
+						src={partner.custom[0].url}
+						title="YouTube video player"
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						allowfullscreen
+					/>
+				</div>
+			</div>
+		</div>
+	{/if}
+
 	<div id="mark-down">
 		<SvelteMarkdown {source} />
 	</div>
@@ -110,5 +129,30 @@
 
 		border-bottom: 3px solid var(--logo-grey);
 		border-right: 3px solid var(--logo-grey);
+	}
+	iframe {
+		position: absolute;
+		max-width: 800px;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 200px;
+	}
+	.frame-wrapper {
+		position: relative;
+		padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+		overflow: hidden;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+	}
+	.webinar-wrapper {
+		padding: 3%;
+		position: relative;
+		background-color: var(--logo-grey);
+		border-radius: 5px;
+		border: 3px solid var(--logo-gold);
+		height: 100%;
 	}
 </style>

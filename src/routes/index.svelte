@@ -1,4 +1,4 @@
-<script context="module">
+<!-- <script context="module">
 	import { API_URL } from "$lib/env.js";
 
 	export const load = async ({ fetch }) => {
@@ -14,8 +14,7 @@
 			error: new Error(`Could not load`),
 		};
 	};
-</script>
-
+</script> -->
 <script>
 	import WebinarsBar from "$lib/Components/WebinarsBar.svelte";
 	import Carousel from "@beyonk/svelte-carousel";
@@ -27,7 +26,6 @@
 	import { fly } from "svelte/transition";
 
 	let intro = null;
-	export let webinarData;
 
 	setTimeout(function () {
 		intro = false;
@@ -137,12 +135,12 @@
 					Students and retired teachers <strong>R120</strong> pa
 				</h4>
 			</div>
+			<h4 class="fs-1 mt-5 text-center">Corporate sponsor a school and gift membership</h4>
 		</div>
 	{/if}
 
 	<!-- Carousel of Webinars -->
-
-	<WebinarsBar {webinarData} />
+	<WebinarsBar />
 
 	<div class="row grey-grad text-center big-gap">
 		<h2>Benefits</h2>
@@ -413,7 +411,7 @@
 	</div>
 
 	<div class="row mt-5 text-center justify-content-center p-3 logo-box">
-		<Carousel autoplay={2750} perPage={{ 1300: 4, 1000: 3, 500: 2 }} dots={false}>
+		<Carousel autoplay={2750} perPage={{ 1300: 4, 1000: 3, 500: 2 }} dots={false} rtl={true}>
 			<div class="slide-content">
 				<img
 					class="logo img-fluid"
