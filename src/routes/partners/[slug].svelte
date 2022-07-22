@@ -29,9 +29,10 @@
 	let extraImage = false,
 		webinar = false;
 	onMount(() => {
-		console.log(partner.custom[0].webinar);
-		partner.custom[0].extraImage ? (extraImage = true) : (extraImage = false);
-		partner.custom[0].url ? (webinar = true) : (webinar = false);
+		if (partner.custom[0]) {
+			partner.custom[0].extraImage !== undefined ? (extraImage = true) : (extraImage = false);
+			partner.custom[0].url !== undefined ? (webinar = true) : (webinar = false);
+		}
 	});
 </script>
 
