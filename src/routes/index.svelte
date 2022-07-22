@@ -1,20 +1,3 @@
-<!-- <script context="module">
-	import { API_URL } from "$lib/env.js";
-
-	export const load = async ({ fetch }) => {
-		const resWebinars = await fetch(`${API_URL}/webinars?_limit=4&_sort=id:DESC`);
-
-		if (resWebinars.ok) {
-			const dataWebinar = await resWebinars.json();
-			return { props: { webinarData: dataWebinar } };
-		}
-
-		return {
-			status: resWebinars.status,
-			error: new Error(`Could not load`),
-		};
-	};
-</script> -->
 <script>
 	import WebinarsBar from "$lib/Components/WebinarsBar.svelte";
 	import Carousel from "@beyonk/svelte-carousel";
@@ -36,7 +19,6 @@
 		// document.body.scrollTop = 0;
 		// document.documentElement.scrollTop = 0;
 		intro = true;
-		document.getElementById("vid").play();
 	});
 
 	afterUpdate(() => {
