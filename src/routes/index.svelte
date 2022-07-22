@@ -84,31 +84,18 @@
 	</svg>
 </div>
 
-<div class="container text-center mt-4">
-	<video id="vid" muted autoplay playsinline>
-		<source
-			src="https://res.cloudinary.com/splyce/video/upload/v1648999283/ThinkTeacher/TT_INTRO_Burder_Blur_rpaqcq.webm#t=1"
-			type="video/webm"
-		/>
-		<source
-			src="https://res.cloudinary.com/splyce/video/upload/v1648999288/ThinkTeacher/TT_INTRO_Burder_Blur_yzoqoi.mp4#t=1"
-			type="video/mp4"
-		/>
-	</video>
+<div class="container text-center mt-5">
+	<p class="fs-2 lh-lg">
+		Why ThinkTeacher? Each teacher cares for a few hundred odd students or learners. If we can
+		care for and promote the teaching profession, we can inspire the youth of South Africa.
+		“Education is the most powerful weapon you can use to change the world.” Nelson Mandela.
+	</p>
+	<p class="fs-4 text-blue">
+		<span class="think">Think</span>Teacher - by teachers for teachers.
+	</p>
 </div>
 
 <div class="container mt-4 mb-5">
-	<div class="row text-center grey-grad rounded justify-content-center big-gap">
-		<div class="col-12 p-4">
-			<h3 class="read">
-				ThinkTeacher is an online portal dedicated to the inspiring teachers of South
-				Africa, providing access to benefit options, educational opportunities and nurturing
-				networks. ThinkTeacher's vision is to empower teachers to thrive in their role as
-				innovative and sustainable change agents in and for South Africa.
-			</h3>
-		</div>
-	</div>
-
 	{#if !$name}
 		<div class="row mt-5">
 			<div class="row justify-content-center">
@@ -138,6 +125,18 @@
 			<h4 class="fs-1 mt-5 text-center">Corporate sponsor a school and gift membership</h4>
 		</div>
 	{/if}
+
+	<div class="row text-center grey-grad rounded justify-content-center big-gap">
+		<div class="col-12 p-4">
+			<h2>About us</h2>
+			<h3 class="read">
+				ThinkTeacher is an online portal dedicated to the inspiring teachers of South
+				Africa, providing access to benefit options, educational opportunities and nurturing
+				networks. ThinkTeacher's vision is to empower teachers to thrive in their role as
+				innovative and sustainable change agents in and for South Africa.
+			</h3>
+		</div>
+	</div>
 
 	<!-- Carousel of Webinars -->
 	<WebinarsBar />
@@ -395,8 +394,8 @@
 				</li>
 				<li class=" fw-bold">Exclusive Books (EB) book club - 10% off at all EB stores</li>
 				<li class=" fw-bold">
-					Well-being platform for life coaching, nutritional advice, bereavement and
-					trauma counselling
+					Wellbeing platform for life coaching, nutritional advice, bereavement and trauma
+					counselling
 				</li>
 				<li class=" fw-bold">
 					Regular webinars on a range of topics of interest to teachers
