@@ -99,6 +99,7 @@
 
 <svelte:head>
 	<title>Payment</title>
+	<script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
 </svelte:head>
 
 <div class="container mt-5">
