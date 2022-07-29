@@ -24,7 +24,20 @@
 		};
 
 	$: amountInRands = amountInCents / 100;
-	$: retireStu ? (inlineObj.amountInCents = 12000) : (inlineObj.amountInCents = 36000);
+
+	function changePrice() {
+		if (!loading) {
+			if (!retireStu) {
+				amountInCents = 12000;
+				inlineObj.amountInCents = 12000;
+				sdk.inline(inlineObj);
+			} else {
+				amountInCents = 36000;
+				inlineObj.amountInCents = 36000;
+				sdk.inline(inlineObj);
+			}
+		}
+	}
 
 	let mem_disc = "ThinkTeacher Annual Membership";
 	let refNum = Math.floor(Math.random() * 90000) + 10000;
@@ -141,6 +154,7 @@
 							type="checkbox"
 							role="switch"
 							id="retireStu"
+							on:click={changePrice}
 							bind:checked={retireStu}
 						/>
 					</div>
