@@ -145,12 +145,8 @@
 		<div class="col d-flex justify-content-center">
 			<form id="payment-form">
 				<div class="one-liner">
-					<div id="card-frame">
-						<!-- Yoco Inline form will be added here -->
-					</div>
-
 					<div class="form-switch mt-3 text-center">
-						<label for="retireStu">Are you a student or a retired teacher?</label>
+						<label for="retireStu">Are you a student or a retired teacher?</label><br />
 						<input
 							class="form-check-input form-control mx-auto"
 							type="checkbox"
@@ -159,6 +155,10 @@
 							on:click={changePrice}
 							bind:checked={retireStu}
 						/>
+					</div>
+
+					<div id="card-frame">
+						<!-- Yoco Inline form will be added here -->
 					</div>
 
 					<div class="text-center mt-4 mb-4">
