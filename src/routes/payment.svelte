@@ -31,10 +31,12 @@
 				amountInCents = 12000;
 				inlineObj.amountInCents = 12000;
 				inline = sdk.inline(inlineObj);
+				inline.mount("#card-frame");
 			} else {
 				amountInCents = 36000;
 				inlineObj.amountInCents = 36000;
 				inline = sdk.inline(inlineObj);
+				inline.mount("#card-frame");
 			}
 		}
 	}
