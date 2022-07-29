@@ -15,10 +15,16 @@
 		submitButton = true,
 		amountInCents = 36000,
 		successMsg,
-		retireStu = false;
+		retireStu = false,
+		inlineObj = {
+			layout: "basic",
+			amountInCents: amountInCents,
+			currency: "ZAR",
+			showErrors: true,
+		};
 
 	$: amountInRands = amountInCents / 100;
-	$: retireStu ? (amountInCents = 12000) : (amountInCents = 36000);
+	$: retireStu ? (inlineObj.amountInCents = 12000) : (inlineObj.amountInCents = 36000);
 
 	let mem_disc = "ThinkTeacher Annual Membership";
 	let refNum = Math.floor(Math.random() * 90000) + 10000;
@@ -32,12 +38,7 @@
 			publicKey: yocoPubKey,
 		});
 
-		inline = sdk.inline({
-			layout: "basic",
-			amountInCents: amountInCents,
-			currency: "ZAR",
-			showErrors: true,
-		});
+		inline = sdk.inline(inlineObj);
 
 		inline.mount("#card-frame");
 		form = document.getElementById("payment-form");
@@ -68,7 +69,7 @@
 			});
 
 		inline.on("card_tokenized", function (token) {
-			console.log("restsdfgsdgs", token);
+			console.log("token ", token);
 			$errMsg = "";
 			successMsg = undefined;
 			axios
