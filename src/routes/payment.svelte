@@ -30,11 +30,11 @@
 			if (!retireStu) {
 				amountInCents = 12000;
 				inlineObj.amountInCents = 12000;
-				sdk.inline(inlineObj);
+				inline = sdk.inline(inlineObj);
 			} else {
 				amountInCents = 36000;
 				inlineObj.amountInCents = 36000;
-				sdk.inline(inlineObj);
+				inline = sdk.inline(inlineObj);
 			}
 		}
 	}
