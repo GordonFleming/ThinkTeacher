@@ -79,17 +79,17 @@
 </script>
 
 <div class="container text-center mt-4">
-	<nav>
+	<!-- <nav>
 		<a href="/auth">Home</a>
 		<a href="/auth/selections">Selections</a>
 		<a href="/auth/profile">Profile</a>
-	</nav>
+	</nav> -->
 	<slot />
 </div>
 
-<style>
+<!-- <style>
 	nav a {
 		padding: 1rem;
 		font-size: 1.2em;
 	}
-</style>
+</style> -->
