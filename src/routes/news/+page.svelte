@@ -1,25 +1,9 @@
-<script context="module">
-	import { API_URL } from "$lib/env.js";
-
-	export const load = async ({ fetch }) => {
-		const res = await fetch(`${API_URL}/posts`);
-
-		if (res.ok) {
-			const data = await res.json();
-			return { props: { posts: data } };
-		}
-
-		return {
-			status: res.status,
-			error: new Error(`Could not load ${url}`),
-		};
-	};
-</script>
-
 <script>
 	import { goto, prefetch } from "$app/navigation";
 
-	export let posts;
+	export let data;
+
+	let { posts } = data;
 </script>
 
 <svelte:head>

@@ -1,20 +1,3 @@
-<script context="module">
-	import { API_URL } from "$lib/env.js";
-
-	export async function load({ params, fetch }) {
-		const { slug } = params;
-		const res = await fetch(`${API_URL}/partners?slug=${slug}`);
-		const data = await res.json();
-
-		if (data.length > 0) {
-			return { props: { partner: data[0] } };
-		}
-
-		const error = new Error(`The partner with slug of ${slug} was not found`);
-		return { status: res.status, error: error };
-	}
-</script>
-
 <script>
 	import Icon from "$lib/Icons/icon.svelte";
 	import { arrowLeft } from "$lib/Icons/icons";
@@ -22,7 +5,8 @@
 	import { onMount } from "svelte";
 	import { travelScroll } from "$lib/stores";
 
-	export let partner;
+	export let data;
+	let { partner } = data;
 	let source;
 	if (partner) source = partner.bio;
 
