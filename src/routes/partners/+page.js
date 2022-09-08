@@ -5,7 +5,7 @@ import { API_URL } from "$lib/env.js";
 export const load = async ({ fetch }) => {
 	const endpoint = `${API_URL}/graphql`;
 	const headers = {
-		"content-type": "application/json",
+		"content-type": "application/json"
 	};
 	const graphqlQuery = {
 		operationName: "fetchPartners",
