@@ -334,7 +334,7 @@
 		<!-- svelte-ignore a11y-media-has-caption -->
 		<video controls playsinline>
 			<source
-				src="https://dmtrzpwsgsztkyucmxbx.supabase.in/storage/v1/object/public/temp/THINK TEACHER_ WHO we are and WHAT we do!.mp4#t=3"
+				src="https://res.cloudinary.com/splyce/video/upload/v1662746574/ThinkTeacher/THINK_TEACHER__WHO_we_are_and_WHAT_we_do_ahyxiz.mp4#t=3"
 				type="video/mp4"
 			/>
 		</video>
