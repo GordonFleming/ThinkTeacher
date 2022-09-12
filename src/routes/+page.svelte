@@ -470,6 +470,13 @@
 					alt="partner"
 				/>
 			</div>
+            <div class="slide-content">
+				<img
+					class="logo img-fluid"
+					src="https://res.cloudinary.com/splyce/image/upload/v1663001701/ThinkTeacher/partners/flow/Flow_Logo_On_White_cropped_qtnra6.jpg"
+					alt="partner"
+				/>
+			</div>
 		</Carousel>
 	</div>
 </div>
