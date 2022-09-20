@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
-
-import { prod, API_URL } from "$lib/env.js";
+import { api } from '../../db'
+import { prod } from "$lib/env.js";
 
 let health_cat = 3,
 	travel_cat = 2,
@@ -25,11 +25,8 @@ if (prod === "true") {
 		(business_cat = 10);
 }
 
-export const load = async ({ fetch }) => {
-	const endpoint = `${API_URL}/graphql`;
-	const headers = {
-		"content-type": "application/json",
-	};
+export async function load() {
+	const endpoint = `graphql`;
 	const graphqlQuery = {
 		operationName: "fetchBenefits",
 		query: `query fetchBenefits {     
@@ -57,13 +54,7 @@ export const load = async ({ fetch }) => {
 		variables: {},
 	};
 
-	const options = {
-		method: "POST",
-		headers: headers,
-		body: JSON.stringify(graphqlQuery),
-	};
-
-	const res = await fetch(endpoint, options);
+	const res = await api('POST', endpoint, graphqlQuery);
 
 	let packages = [],
 		travel = [],
@@ -137,5 +128,5 @@ export const load = async ({ fetch }) => {
 		};
 	}
 
-	throw error(500, `Could not load page`);
+	throw error(res.status);
 };

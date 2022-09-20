@@ -1,12 +1,8 @@
 import { error } from '@sveltejs/kit';
+import { api } from '../../db'
 
-import { API_URL } from "$lib/env.js";
-
-export const load = async ({ fetch }) => {
-	const endpoint = `${API_URL}/graphql`;
-	const headers = {
-		"content-type": "application/json"
-	};
+export async function load() {
+	const endpoint = `graphql`;
 	const graphqlQuery = {
 		operationName: "fetchPartners",
 		query: `query fetchPartners {     
@@ -23,18 +19,16 @@ export const load = async ({ fetch }) => {
 		variables: {},
 	};
 
-	const options = {
-		method: "POST",
-		headers: headers,
-		body: JSON.stringify(graphqlQuery),
-	};
+	const res = await api('POST', endpoint, graphqlQuery);
+    const data = await res.json();
 
-	const res = await fetch(endpoint, options);
+    if (res.status === 404 || data.length === 0) {
+        throw error(404, `No partners found`);
+    }
 
 	if (res.ok) {
-		const data = await res.json();
 		return { partners: data.data.partners };
 	}
 
-	throw error(500, `Could not load page`);
+	throw error(res.status);
 };
