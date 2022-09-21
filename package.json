@@ -16,7 +16,7 @@
     },
     "type": "module",
     "dependencies": {
-        "@beyonk/svelte-carousel": "2.8.0",
+        "@splidejs/svelte-splide": "^0.2.8",
         "axios": "^0.26.0",
         "countup.js": "^2.0.8",
         "south-african-id-parser": "^1.0.0",

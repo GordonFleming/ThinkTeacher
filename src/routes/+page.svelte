@@ -1,12 +1,39 @@
 <script>
 	import WebinarsBar from "$lib/Components/WebinarsBar.svelte";
-	import Carousel from "@beyonk/svelte-carousel";
 	import Logo from "$lib/Components/logo.svelte";
 	import { goto } from "$app/navigation";
 	import { onMount, afterUpdate, onDestroy } from "svelte";
 	import viewport from "$lib/useViewportAction.js";
 	import { name, travelScroll, firstTime } from "$lib/stores";
 	import { fly } from "svelte/transition";
+    import { Splide, SplideSlide } from '@splidejs/svelte-splide';
+	import '@splidejs/svelte-splide/css';
+
+    const options = { 
+        //rewind: true, 
+        type: 'loop',
+        autoplay: true, 
+        perPage: 3,
+        perMove: 1,
+        interval: 2600,
+        speed: 600,
+        direction: 'rtl',
+        gap: '1rem',
+        breakpoints: {
+            1500: {
+                perPage: 4,
+            },
+            1000: {
+                perPage: 3,
+            },
+            500: {
+                perPage: 2,
+            }
+        },
+        arrows: false,
+        pagination: false,
+        easing: 'linear'
+    }
 
 	let intro = null;
 
@@ -392,84 +419,107 @@
 	</div>
 
 	<div class="row mt-5 text-center justify-content-center p-3 logo-box">
-		<Carousel autoplay={2750} perPage={{ 1300: 4, 1000: 3, 500: 2 }} dots={false} rtl={true}>
-			<div class="slide-content">
+		<Splide options={options} aria-label="partners carousel">
+			<SplideSlide>
+            <div class="slide-content">
 				<img
 					class="logo img-fluid"
 					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_SAHB_LOGO_HIGH_RES_ec14dd3c1d.webp"
 					alt="partner"
 				/>
 			</div>
-			<div class="slide-content">
+            </SplideSlide>
+			<SplideSlide>
+            <div class="slide-content">
 				<img
 					class="logo img-fluid mt-3"
 					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_ROARRR_d380578528.webp"
 					alt="partner"
 				/>
 			</div>
-			<div class="slide-content">
+            </SplideSlide>
+			<SplideSlide>
+            <div class="slide-content">
 				<img
 					class="logo img-fluid"
 					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_Cirrus_Image_2_70004a2daf.webp"
 					alt="partner"
 				/>
 			</div>
-			<div class="slide-content">
+            </SplideSlide>
+			<SplideSlide>
+            <div class="slide-content">
 				<img
 					class="logo img-fluid mt-3"
 					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_alex_forbes_62be1d48f7.webp"
 					alt="partner"
 				/>
 			</div>
-			<div class="slide-content">
+            </SplideSlide>
+			<SplideSlide>
+            <div class="slide-content">
 				<img
 					class="logo img-fluid"
 					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_kim_c21bab4e72.png"
 					alt="partner"
 				/>
 			</div>
-			<div class="slide-content">
+            </SplideSlide>
+			<SplideSlide>
+            <div class="slide-content">
 				<img
 					class="logo img-fluid"
 					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_SGM_Logo_b251d32022.webp"
 					alt="partner"
 				/>
 			</div>
-			<div class="slide-content">
+            </SplideSlide>
+			<SplideSlide>
+            <div class="slide-content">
 				<img
 					class="logo img-fluid"
 					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/small_MTC_New_Logo_large_7ae60c9ecf.webp"
 					alt="partner"
 				/>
 			</div>
-			<div class="slide-content">
+            </SplideSlide>
+			<SplideSlide>
+            <div class="slide-content">
 				<img
 					class="logo img-fluid"
 					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_exclusivebooks_779996b0af.jpeg"
 					alt="partner"
 				/>
 			</div>
-			<div class="slide-content">
+            </SplideSlide>
+			<SplideSlide>
+            <div class="slide-content">
 				<img
 					class="logo img-fluid mt-3"
 					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_kia_logo_16b0a03857.webp"
 					alt="partner"
 				/>
 			</div>
-			<div class="slide-content">
+            </SplideSlide>
+			<SplideSlide>
+            <div class="slide-content">
 				<img
 					class="logo img-fluid"
 					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_turnberry_6a7f42ce0a.jpeg"
 					alt="partner"
 				/>
 			</div>
-			<div class="slide-content">
+            </SplideSlide>
+			<SplideSlide>
+            <div class="slide-content">
 				<img
 					class="logo img-fluid"
 					src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_raintree_53a2b76328.webp"
 					alt="partner"
 				/>
 			</div>
+            </SplideSlide>
+            <SplideSlide>
             <div class="slide-content">
 				<img
 					class="logo img-fluid"
@@ -477,7 +527,8 @@
 					alt="partner"
 				/>
 			</div>
-		</Carousel>
+            </SplideSlide>
+		</Splide>
 	</div>
 </div>
 
