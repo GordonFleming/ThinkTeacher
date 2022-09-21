@@ -12,10 +12,10 @@
         speed: 800,
         gap: '1rem',
         breakpoints: {
-            1000: {
-                perPage: 3,
+            1200: {
+                perPage: 2,
             },
-            500: {
+            800: {
                 perPage: 1,
             },
         },
