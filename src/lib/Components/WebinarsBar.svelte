@@ -1,16 +1,17 @@
 <script>
-    import { Splide, SplideSlide } from '@splidejs/svelte-splide';
-	import '@splidejs/svelte-splide/css';
+    import { Splide, SplideSlide } from "@splidejs/svelte-splide";
+    import "@splidejs/svelte-splide/css";
 
-    const options = { 
-        //rewind: true, 
-        type: 'loop',
-        autoplay: true, 
+    const options = {
+        //rewind: true,
+        type: "loop",
+        autoplay: true,
         perPage: 3,
         perMove: 1,
         interval: 3000,
         speed: 800,
-        gap: '1rem',
+        gap: "1rem",
+        direction: "rtl",
         breakpoints: {
             1200: {
                 perPage: 2,
@@ -21,8 +22,8 @@
         },
         arrows: false,
         pagination: false,
-        easing: 'linear'
-    }
+        easing: "linear",
+    };
 
     const webinarData = [
         {
@@ -57,25 +58,25 @@
     <div class="row grey-grad big-gap">
         <h2 class="text-center text-blue">Webinars</h2>
 
-        <Splide options={options} aria-label="webinar carousel">
+        <Splide {options} aria-label="webinar carousel">
             {#each webinarData as webinar}
-            <SplideSlide>
-                <div class="p-2">
-                    <div class="frame-wrapper">
-                        <a href={webinar.link} target="_blank">
-                            <img
-                            class="img-fluid p-1"
-                            src={webinar.img}
-                            alt="webinar Thumbnail"/>
-                        </a>
-                        <p class="text-white p-1">
-                            {webinar.title}
-                        </p>
+                <SplideSlide>
+                    <div class="p-2">
+                        <div class="frame-wrapper">
+                            <a href={webinar.link} target="_blank">
+                                <img
+                                    class="img-fluid p-1"
+                                    src={webinar.img}
+                                    alt="webinar Thumbnail"
+                                />
+                            </a>
+                            <p class="text-white p-1">
+                                {webinar.title}
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </SplideSlide>
-
-        {/each}
+                </SplideSlide>
+            {/each}
         </Splide>
     </div>
 </div>
