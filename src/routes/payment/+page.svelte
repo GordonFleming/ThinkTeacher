@@ -59,7 +59,7 @@
             inline.mount("#card-frame");
             form = document.getElementById("payment-form");
             loading = false;
-        }, 500);
+        }, 600);
     });
 
     let token;
