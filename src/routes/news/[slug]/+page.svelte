@@ -1,7 +1,7 @@
 <script>
     import Icon from "$lib/Icons/icon.svelte";
     import { arrowLeft } from "$lib/Icons/icons";
-    import SvelteMarkdown from "svelte-markdown";
+    // import SvelteMarkdown from "svelte-markdown";
 
     export let data;
     let { post } = data;
@@ -31,9 +31,9 @@
 
     <time datetime={publish}>{publish}</time>
 
-    <div id="mark-down">
+    <!-- <div id="mark-down">
         <SvelteMarkdown {source} />
-    </div>
+    </div> -->
 </div>
 
 <style>
