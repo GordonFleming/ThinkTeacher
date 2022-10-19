@@ -13,7 +13,7 @@
         loading = true,
         paying = false,
         submitButton = true,
-        amountInCents = 36000,
+        amountInCents = 29000,
         successMsg,
         retireStu = false,
         inlineObj = {
@@ -33,8 +33,8 @@
                 inline = sdk.inline(inlineObj);
                 inline.mount("#card-frame");
             } else {
-                amountInCents = 36000;
-                inlineObj.amountInCents = 36000;
+                amountInCents = 29000;
+                inlineObj.amountInCents = 29000;
                 inline = sdk.inline(inlineObj);
                 inline.mount("#card-frame");
             }
