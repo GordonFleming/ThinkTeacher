@@ -59,7 +59,7 @@
             inline.mount("#card-frame");
             form = document.getElementById("payment-form");
             loading = false;
-        }, 600);
+        }, 1500);
     });
 
     let token;
@@ -125,6 +125,7 @@
         <div class="text-center">
             <h2 class="mb-4">Membership <span class="text-blue">Payment</span></h2>
             <h6>Pay via EFT or by card payment</h6>
+            <h6 class="text-logo-gold">Discounted price for teachers month!</h6>
             {#if successMsg !== undefined}
                 <h4 class="success-col">{successMsg}</h4>
                 <Icon data={checkCircleO} scale="8" fill="green" />
