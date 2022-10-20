@@ -6,16 +6,31 @@ export async function load() {
 	const graphqlQuery = {
 		operationName: "fetchPartners",
 		query: `query fetchPartners {     
-                partners (sort: "id") {
-                    id,
-                    name,
-                    description,
-                    logo{hash,ext},
-                    company_name,
-                    category{name},
-                    slug
+            partners (sort: "id") {
+                data {
+                    attributes {
+                        name,
+                        description,
+                        company_name,
+                        slug,
+                        logo {
+                            data {
+                                attributes{
+                                    url
+                                }
+                            }
+                        }
+                        category {
+                            data {
+                                attributes {
+                                    name
+                                }
+                            }
+                        }
+                    }
                 } 
-            }`,
+            }		
+        }`,
 		variables: {},
 	};
 

@@ -63,7 +63,7 @@
                 <SplideSlide>
                     <div class="p-2">
                         <div class="frame-wrapper">
-                            <a href={webinar.link} target="_blank">
+                            <a href={webinar.link} target="_blank" rel="noopener noreferrer">
                                 <img
                                     class="img-fluid p-1"
                                     src={webinar.img}

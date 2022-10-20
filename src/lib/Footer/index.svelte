@@ -14,35 +14,35 @@
 		<a
 			class="btn btn-outline-light btn-floating m-1"
 			href="https://twitter.com/thinkteacher_sa"
-			target="_blank"
+			target="_blank" rel="noopener noreferrer"
 			role="button"><Icon data={twitter} scale="2.5" /></a
 		>
 		<!-- Instagram -->
 		<a
 			class="btn btn-outline-light btn-floating m-1"
 			href="https://www.instagram.com/thinkteacher_rsa"
-			target="_blank"
+			target="_blank" rel="noopener noreferrer"
 			role="button"><Icon data={instagram} scale="2.5" /></a
 		>
 		<!-- Facebook -->
 		<a
 			class="btn btn-outline-light btn-floating m-1"
 			href="https://www.facebook.com/thinkteacher"
-			target="_blank"
+			target="_blank" rel="noopener noreferrer"
 			role="button"><Icon data={facebook} scale="2.5" /></a
 		>
 		<!-- Linkedin -->
 		<a
 			class="btn btn-outline-light btn-floating m-1"
 			href="https://www.linkedin.com/company/think-teacher"
-			target="_blank"
+			target="_blank" rel="noopener noreferrer"
 			role="button"><Icon data={linkedin} scale="2.5" /></a
 		>
 		<!-- Youtube -->
 		<a
 			class="btn btn-outline-light btn-floating m-1"
 			href="https://www.youtube.com/channel/UCN-byMa-sTVbwKWNkbMM9bQ"
-			target="_blank"
+			target="_blank" rel="noopener noreferrer"
 			role="button"><Icon data={youtube} scale="2.5" /></a
 		>
 	</section>
@@ -62,33 +62,33 @@
 				<li>
 					<a
 						href="https://www.facebook.com/thinkteacher"
-						target="_blank"
+						target="_blank" rel="noopener noreferrer"
 						class="text-white">Facebook</a
 					>
 				</li>
 				<li>
-					<a href="https://twitter.com/thinkteacher_sa" target="_blank" class="text-white"
+					<a href="https://twitter.com/thinkteacher_sa" target="_blank" rel="noopener noreferrer" class="text-white"
 						>Twitter</a
 					>
 				</li>
 				<li>
 					<a
 						href="https://www.instagram.com/thinkteacher_rsa"
-						target="_blank"
+						target="_blank" rel="noopener noreferrer"
 						class="text-white">Instagram</a
 					>
 				</li>
 				<li>
 					<a
 						href="https://www.linkedin.com/company/think-teacher"
-						target="_blank"
+						target="_blank" rel="noopener noreferrer"
 						class="text-white">Linkedin</a
 					>
 				</li>
 				<li>
 					<a
 						href="https://www.youtube.com/channel/UCN-byMa-sTVbwKWNkbMM9bQ"
-						target="_blank"
+						target="_blank" rel="noopener noreferrer"
 						class="text-white">YouTube</a
 					>
 				</li>
@@ -112,7 +112,7 @@
 				</li>
 				<li>
 					<a
-						target="_blank"
+						target="_blank" rel="noopener noreferrer"
 						href="https://strapi-upload-s3.glass.thinkteacher.co.za/media/Think_Teacher_Member_Terms_and_Conditions_Final_draft_34d3c8193b.pdf"
 						class="text-white">Terms & Conditions</a
 					>

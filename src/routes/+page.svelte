@@ -155,7 +155,12 @@
             Click on a benefit below to see what our partners can offer you as a ThinkTeacher member
         </h5>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben1 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben1 = true)}
+                on:click={() => ($travelScroll = "wellbeing")}
+            >
                 <div class="placeholder">
                     {#if ben1}
                         <img
@@ -163,7 +168,6 @@
                             class="img-fluid offer offer-img"
                             src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/well_being_7d5c5b6063.webp"
                             alt="well being"
-                            on:click={() => ($travelScroll = "wellbeing")}
                         />
                     {/if}
                 </div>
@@ -171,7 +175,12 @@
             <h3 class="mt-3"><span class="text-logo-gold">Think</span> Wellbeing</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben2 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben2 = true)}
+                on:click={() => ($travelScroll = "travel")}
+            >
                 <div class="placeholder">
                     {#if ben2}
                         <img
@@ -179,7 +188,6 @@
                             class="img-fluid offer offer-img"
                             src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/travel_65e3eb2228.webp"
                             alt="travel"
-                            on:click={() => ($travelScroll = "travel")}
                         />
                     {/if}
                 </div>
@@ -187,7 +195,12 @@
             <h3 class="mt-3"><span class="text-logo-gold">Think</span> Travel</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben3 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben3 = true)}
+                on:click={() => ($travelScroll = "medical_aid")}
+            >
                 <div class="placeholder">
                     {#if ben3}
                         <img
@@ -195,7 +208,6 @@
                             class="img-fluid offer offer-img"
                             src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/health_1d4102b3e6.webp"
                             alt="medical aid"
-                            on:click={() => ($travelScroll = "medical_aid")}
                         />
                     {/if}
                 </div>
@@ -203,7 +215,12 @@
             <h3 class="mt-3"><span class="text-logo-gold">Think</span> Medical Aid</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben4 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben4 = true)}
+                on:click={() => ($travelScroll = "finance")}
+            >
                 <div class="placeholder">
                     {#if ben4}
                         <img
@@ -211,7 +228,6 @@
                             class="img-fluid offer offer-img"
                             src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/insurance_f6fd972123.webp"
                             alt="invest"
-                            on:click={() => ($travelScroll = "finance")}
                         />
                     {/if}
                 </div>
@@ -219,7 +235,12 @@
             <h3 class="mt-3"><span class="text-logo-gold">Think</span> Finance</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben5 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben5 = true)}
+                on:click={() => ($travelScroll = "legal")}
+            >
                 <div class="placeholder">
                     {#if ben5}
                         <img
@@ -227,7 +248,6 @@
                             class="img-fluid offer offer-img"
                             src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/legal_ef185539e1.webp"
                             alt="legal"
-                            on:click={() => ($travelScroll = "legal")}
                         />
                     {/if}
                 </div>
@@ -235,7 +255,12 @@
             <h3 class="mt-3"><span class="text-logo-gold">Think</span> Legal</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben6 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben6 = true)}
+                on:click={() => ($travelScroll = "courses")}
+            >
                 <div class="placeholder">
                     {#if ben6}
                         <img
@@ -243,7 +268,6 @@
                             class="img-fluid offer offer-img"
                             src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/courses_394e2373ce.webp"
                             alt="courses"
-                            on:click={() => ($travelScroll = "courses")}
                         />
                     {/if}
                 </div>
@@ -251,7 +275,12 @@
             <h3 class="mt-3"><span class="text-logo-gold">Think</span> Courses</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben7 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben7 = true)}
+                on:click={() => ($travelScroll = "books")}
+            >
                 <div class="placeholder">
                     {#if ben7}
                         <img
@@ -259,7 +288,6 @@
                             class="img-fluid offer offer-img"
                             src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/book_store_4ca6894b2a.png"
                             alt="books"
-                            on:click={() => ($travelScroll = "books")}
                         />
                     {/if}
                 </div>
@@ -267,7 +295,12 @@
             <h3 class="mt-3"><span class="text-logo-gold">Think</span> Book Store</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben8 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben8 = true)}
+                on:click={() => ($travelScroll = "cars")}
+            >
                 <div class="placeholder">
                     {#if ben8}
                         <img
@@ -275,7 +308,6 @@
                             class="img-fluid offer offer-img"
                             src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/kia_car_b41351adfc.webp"
                             alt="cars"
-                            on:click={() => ($travelScroll = "cars")}
                         />
                     {/if}
                 </div>
@@ -283,7 +315,12 @@
             <h3 class="mt-3"><span class="text-logo-gold">Think</span> Wheels</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben9 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben9 = true)}
+                on:click={() => ($travelScroll = "glasses")}
+            >
                 <div class="placeholder">
                     {#if ben9}
                         <img
@@ -291,7 +328,6 @@
                             class="img-fluid offer offer-img"
                             src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/glasses_1bde567ac8.webp"
                             alt="Glasses"
-                            on:click={() => ($travelScroll = "glasses")}
                         />
                     {/if}
                 </div>
@@ -300,7 +336,12 @@
             <h5 class="text-blue">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben10 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben10 = true)}
+                on:click={() => ($travelScroll = "connect")}
+            >
                 <div class="placeholder">
                     {#if ben10}
                         <img
@@ -308,7 +349,6 @@
                             class="img-fluid offer offer-img"
                             src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/connectivity_573adf1be7.webp"
                             alt="Connect"
-                            on:click={() => ($travelScroll = "connect")}
                         />
                     {/if}
                 </div>
@@ -317,7 +357,12 @@
             <h5 class="text-blue">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben11 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben11 = true)}
+                on:click={() => ($travelScroll = "business")}
+            >
                 <div class="placeholder">
                     {#if ben11}
                         <img
@@ -325,7 +370,6 @@
                             class="img-fluid offer offer-img"
                             src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/business_coach_0ba79df117.webp"
                             alt="Connect"
-                            on:click={() => ($travelScroll = "business")}
                         />
                     {/if}
                 </div>
@@ -334,7 +378,12 @@
             <h5 class="text-blue">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben12 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben12 = true)}
+                on:click={() => ($travelScroll = "jobs")}
+            >
                 <div class="placeholder">
                     {#if ben12}
                         <img
@@ -342,7 +391,6 @@
                             class="img-fluid offer offer-img"
                             src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/jobs_9c15750f8b.webp"
                             alt="Connect"
-                            on:click={() => ($travelScroll = "jobs")}
                         />
                     {/if}
                 </div>

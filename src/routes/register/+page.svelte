@@ -498,7 +498,7 @@
 										<div class="form-check text-center mt-3 col-12">
 											<label for="flexCheckDefault">
 												Terms and Conditions, available <a
-													target="_blank"
+													target="_blank" rel="noopener noreferrer"
 													href="https://strapi-upload-s3.glass.thinkteacher.co.za/media/Think_Teacher_Member_Terms_and_Conditions_Final_draft_34d3c8193b.pdf"
 													>here</a
 												>.
