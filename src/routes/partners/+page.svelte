@@ -39,7 +39,7 @@
 						>
 					</div>
 					<div class="card-footer">
-						<a sveltekit:prefetch href="/benefits"
+						<a data-sveltekit-prefetch href="/benefits"
 							><span
 								class="badge bg-light"
 								on:click={() =>

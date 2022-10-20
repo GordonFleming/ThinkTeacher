@@ -25,7 +25,7 @@
 </svelte:head>
 
 <div class="container bg-dark mt-4 border-custom mt-5 mb-5">
-	<a sveltekit:prefetch href="/partners"><Icon data={arrowLeft} scale="3" /></a>
+	<a data-sveltekit-prefetch href="/partners"><Icon data={arrowLeft} scale="3" /></a>
 	{#if extraImage}
 		<div class="row">
 			<div class="col-sm-12 col-md-6" style="text-align: right;">

@@ -1,23 +1,7 @@
 <script>
-	import { onMount } from "svelte";
-	import axios from "axios";
-	import { Jumper } from "svelte-loading-spinners";
-	import { API_URL } from "$lib/env.js";
-
-	let loading = true;
-
-	onMount(async () => {
-		try {
-			const res = await axios.get(`${API_URL}/webinars?_sort=id:DESC`);
-			webinars = res.data;
-			loading = false;
-			console.log(webinars);
-		} catch (e) {
-			error = e;
-		}
-	});
-
-	let webinars = [];
+    export let data;
+    
+    let { webinars } = data;
 
 	// date = new Date(webinar.created_at)
 	// publish = date.toLocaleString('en-ZA', { month: 'long', day: '2-digit', year: 'numeric'})
@@ -32,11 +16,6 @@
 	<div class="row text-center justify-content-center">
 		<h1 class="mb-4"><span class="think">Think</span>Teacher Webinars</h1>
 
-		{#if loading}
-			<div class="d-flex justify-content-center mt-5">
-				<Jumper size="150" color="#5C677D" unit="px" duration="1s" />
-			</div>
-		{:else}
 			{#each webinars as webinar}
 				<div class="col-lg-6 col-md-12 mt-2">
 					<div class="webinar-wrapper">
@@ -60,7 +39,6 @@
 					</div>
 				</div>
 			{/each}
-		{/if}
 	</div>
 </div>
 

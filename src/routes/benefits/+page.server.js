@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { api } from '../../db'
+import { apiGraph } from '../../db'
 import { prod } from "$lib/env.js";
 
 let health_cat = 3,
@@ -54,7 +54,7 @@ export async function load() {
 		variables: {},
 	};
 
-	const res = await api('POST', endpoint, graphqlQuery);
+	const res = await apiGraph('POST', endpoint, graphqlQuery);
 
 	let packages = [],
 		travel = [],

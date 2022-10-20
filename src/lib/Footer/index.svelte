@@ -100,15 +100,15 @@
 
 			<ul class="list-unstyled mb-0">
 				<li>
-					<a sveltekit:prefetch href="/login" class="text-white">Login</a>
+					<a data-sveltekit-prefetch href="/login" class="text-white">Login</a>
 				</li>
 				<li>
-					<a sveltekit:prefetch href="/forgot-password" class="text-white"
+					<a data-sveltekit-prefetch href="/forgot-password" class="text-white"
 						>Forgot Password</a
 					>
 				</li>
 				<li>
-					<a sveltekit:prefetch href="/register" class="text-white">Register</a>
+					<a data-sveltekit-prefetch href="/register" class="text-white">Register</a>
 				</li>
 				<li>
 					<a
@@ -129,7 +129,7 @@
 					>
 				</li>
 				<li>
-					<a sveltekit:prefetch href="/contact-us" class="text-white">Contact Us</a>
+					<a data-sveltekit-prefetch href="/contact-us" class="text-white">Contact Us</a>
 				</li>
 			</ul>
 		</div>

@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { api } from '../../db'
+import { apiGraph } from '../../db'
 
 export async function load() {
 	const endpoint = `graphql`;
@@ -19,7 +19,7 @@ export async function load() {
 		variables: {},
 	};
 
-	const res = await api('POST', endpoint, graphqlQuery);
+	const res = await apiGraph('POST', endpoint, graphqlQuery);
     const data = await res.json();
 
     if (res.status === 404 || data.length === 0) {

@@ -53,14 +53,14 @@
 		<div class="collapse navbar-collapse justify-content-end" id="navbar">
 			<ul class="navbar-nav">
 				<div class="nav-img mx-auto">
-					<a class="navbar-brand" sveltekit:prefetch href="/" on:click={mustClick}
+					<a class="navbar-brand" data-sveltekit-prefetch href="/" on:click={mustClick}
 						><img src="/thinkteacherlogo-final.png" alt="logo" width="200" /></a
 					>
 				</div>
 				<li class="nav-item">
 					<a
 						class="nav-link fromLeft"
-						sveltekit:prefetch
+						data-sveltekit-prefetch
 						href="/about"
 						on:click={mustClick}>About</a
 					>
@@ -68,7 +68,7 @@
 				<li class="nav-item">
 					<a
 						class="nav-link fromLeft"
-						sveltekit:prefetch
+						data-sveltekit-prefetch
 						href="/benefits"
 						on:click={mustClick}>Benefits</a
 					>
@@ -76,7 +76,7 @@
 				<li class="nav-item">
 					<a
 						class="nav-link fromLeft"
-						sveltekit:prefetch
+						data-sveltekit-prefetch
 						href="/partners"
 						on:click={mustClick}>Partners</a
 					>
@@ -84,7 +84,7 @@
 				<li class="nav-item">
 					<a
 						class="nav-link fromLeft"
-						sveltekit:prefetch
+						data-sveltekit-prefetch
 						href="/news"
 						on:click={mustClick}>News Flash</a
 					>
@@ -101,7 +101,7 @@
 						<li>
 							<a
 								class="dropdown-item"
-								sveltekit:prefetch
+								data-sveltekit-prefetch
 								href="/events"
 								on:click={mustClick}>Events</a
 							>
@@ -109,7 +109,7 @@
 						<li>
 							<a
 								class="dropdown-item"
-								sveltekit:prefetch
+								data-sveltekit-prefetch
 								href="/webinars"
 								on:click={mustClick}>Webinars</a
 							>
@@ -117,12 +117,12 @@
 					</ul>
 				</li>
 				<!-- <li class="nav-item">
-                    <a class="nav-link fromLeft" sveltekit:prefetch href="/our-team" on:click={mustClick}>Our Team</a>
+                    <a class="nav-link fromLeft" data-sveltekit-prefetch href="/our-team" on:click={mustClick}>Our Team</a>
                 </li> -->
 				<li class="nav-item">
 					<a
 						class="nav-link fromLeft"
-						sveltekit:prefetch
+						data-sveltekit-prefetch
 						href="/contact-us"
 						on:click={mustClick}>Contact</a
 					>
