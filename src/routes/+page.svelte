@@ -166,7 +166,7 @@
                         <img
                             transition:fly={{ y: 200, duration: 600 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/well_being_7d5c5b6063.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/well_being_a72b443d32.webp"
                             alt="well being"
                         />
                     {/if}
@@ -186,7 +186,7 @@
                         <img
                             transition:fly={{ y: 200, duration: 800 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/travel_65e3eb2228.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/travel_dedeab0486.webp"
                             alt="travel"
                         />
                     {/if}
@@ -206,7 +206,7 @@
                         <img
                             transition:fly={{ y: 200, duration: 1000 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/health_1d4102b3e6.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/health_d3dd30eed4.webp"
                             alt="medical aid"
                         />
                     {/if}
@@ -226,7 +226,7 @@
                         <img
                             transition:fly={{ y: 200, duration: 600 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/insurance_f6fd972123.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/insurance_65016c0e82.webp"
                             alt="invest"
                         />
                     {/if}
@@ -246,7 +246,7 @@
                         <img
                             transition:fly={{ y: 200, duration: 800 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/legal_ef185539e1.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/legal_9c79c917bb.webp"
                             alt="legal"
                         />
                     {/if}
@@ -266,7 +266,7 @@
                         <img
                             transition:fly={{ y: 200, duration: 1000 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/courses_394e2373ce.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/courses_d4d4152811.webp"
                             alt="courses"
                         />
                     {/if}
@@ -286,7 +286,7 @@
                         <img
                             transition:fly={{ y: 200, duration: 600 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/book_store_4ca6894b2a.png"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/bookstore_2e3811bf76.webp"
                             alt="books"
                         />
                     {/if}
@@ -306,7 +306,7 @@
                         <img
                             transition:fly={{ y: 200, duration: 800 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/kia_car_b41351adfc.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/kia_car_2cea78c493.webp"
                             alt="cars"
                         />
                     {/if}
@@ -326,7 +326,7 @@
                         <img
                             transition:fly={{ y: 200, duration: 1000 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/glasses_1bde567ac8.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/glasses_7a0c367bde.webp"
                             alt="Glasses"
                         />
                     {/if}
@@ -347,7 +347,7 @@
                         <img
                             transition:fly={{ y: 200, duration: 1000 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/connectivity_573adf1be7.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/connectivity_5c27d7e7c1.webp"
                             alt="Connect"
                         />
                     {/if}
@@ -368,7 +368,7 @@
                         <img
                             transition:fly={{ y: 200, duration: 1000 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/business_coach_0ba79df117.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/business_coach_443e1401ca.webp"
                             alt="Connect"
                         />
                     {/if}
@@ -389,7 +389,7 @@
                         <img
                             transition:fly={{ y: 200, duration: 1000 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/jobs_9c15750f8b.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/jobs_7cacf0d38d.webp"
                             alt="Connect"
                         />
                     {/if}

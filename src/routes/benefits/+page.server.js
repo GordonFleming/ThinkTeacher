@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { apiGraph } from '../../db'
+import { apiGraph } from '$lib/db'
 import { prod } from "$lib/env.js";
 
 let health_cat = 3,

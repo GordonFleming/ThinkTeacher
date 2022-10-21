@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { apiGraph } from '../../db'
+import { apiGraph } from '$lib/db';
 
 export async function load() {
 	const endpoint = `graphql`;
@@ -42,7 +42,7 @@ export async function load() {
     }
 
 	if (res.ok) {
-		return { partners: data.data.partners };
+		return { partners: data.data.partners.data };
 	}
 
 	throw error(res.status);

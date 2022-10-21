@@ -15,7 +15,7 @@
     <h1 class="text-center mb-4"><span class="think">Think</span>Teacher Partners</h1>
 
     <div class="row justify-content-center">
-        {#each partners.data as partner}
+        {#each partners as partner}
             <div class="col-sm-12 col-md-6 col-lg-4">
                 <div class="card bg-dark m-2 shadow-lg">
                     <a data-sveltekit-prefetch href={`/partners/${partner.attributes.slug}`}>

@@ -1,7 +1,6 @@
 import { API_URL, BASE_API_URL, strapiKey } from "$lib/env.js";
 
 export function api(method, endpoint, data) {
-    console.log(`${API_URL}/${endpoint}`);
 	return fetch(`${API_URL}/${endpoint}`, {
 		method,
 		headers: {
