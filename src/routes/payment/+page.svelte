@@ -193,17 +193,17 @@
         <img
             class="img-fluid mb-3"
             id="yoco"
-            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/yoco_colour_d4694a7164.svg"
+            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/yoco_colour_d4694a7164_83225b3216.svg"
             alt="yoco"
         /><br />
         <img
             class="img-fluid payment-logo"
-            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/visa_colour_0104f4de82.svg"
+            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/visa_colour_0104f4de82_1673c173d7.svg"
             alt="visa"
         />
         <img
             class="img-fluid payment-logo"
-            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/mastercard_colour_446709c296.svg"
+            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/mastercard_colour_446709c296_788c700d60.svg"
             alt="mastercard"
         />
     </div>

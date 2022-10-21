@@ -469,9 +469,11 @@
         <Splide {options} aria-label="partners carousel">
             <SplideSlide>
                 <div class="slide-content">
+                    <!-- thumbnail_ -->
+
                     <img
                         class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_SAHB_LOGO_HIGH_RES_ec14dd3c1d.webp"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_SAHB_LOGO_HIGH_RES_ec14dd3c1d_2635d05c5f.webp"
                         alt="partner"
                     />
                 </div>
@@ -480,7 +482,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid mt-3"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_ROARRR_d380578528.webp"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_ROARRR_d380578528_f8a05a6049.webp"
                         alt="partner"
                     />
                 </div>
@@ -489,7 +491,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_Cirrus_Image_2_70004a2daf.webp"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_Cirrus_Image_2_70004a2daf_8d211bdd99.webp"
                         alt="partner"
                     />
                 </div>
@@ -498,7 +500,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid mt-3"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_alex_forbes_62be1d48f7.webp"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_alex_forbes_62be1d48f7_3cfd9bd8c3.webp"
                         alt="partner"
                     />
                 </div>
@@ -507,7 +509,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_kim_c21bab4e72.png"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_kim_c21bab4e72_fbacefe335.png"
                         alt="partner"
                     />
                 </div>
@@ -516,7 +518,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_SGM_Logo_b251d32022.webp"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_SGM_Logo_b251d32022_ac78ee1ee9.webp"
                         alt="partner"
                     />
                 </div>
@@ -525,7 +527,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/small_MTC_New_Logo_large_7ae60c9ecf.webp"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_MTC_New_Logo_large_7ae60c9ecf_3e8f419fa5.webp"
                         alt="partner"
                     />
                 </div>
@@ -534,7 +536,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_exclusivebooks_779996b0af.jpeg"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_exclusivebooks_779996b0af_dd9c921c21.jpeg"
                         alt="partner"
                     />
                 </div>
@@ -543,7 +545,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid mt-3"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_kia_logo_16b0a03857.webp"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_kia_logo_16b0a03857_c412c2856c.webp"
                         alt="partner"
                     />
                 </div>
@@ -552,7 +554,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_turnberry_6a7f42ce0a.jpeg"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_turnberry_6a7f42ce0a_cc802e5705.jpeg"
                         alt="partner"
                     />
                 </div>
@@ -561,7 +563,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_raintree_53a2b76328.webp"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_raintree_53a2b76328_1a99af7f72.webp"
                         alt="partner"
                     />
                 </div>
@@ -570,7 +572,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid"
-                        src="https://res.cloudinary.com/splyce/image/upload/v1663001701/ThinkTeacher/partners/flow/Flow_Logo_On_White_cropped_qtnra6.jpg"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_Flow_Logo_On_White_cropped_1985224419.jpg"
                         alt="partner"
                     />
                 </div>
@@ -616,7 +618,7 @@
     .benefit-list ul {
         /* list-style: square outside; */
 
-        list-style-image: url("https://strapi-upload-s3.glass.thinkteacher.co.za/media/m_favicon_08702889be.png");
+        list-style-image: url("https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/m_favicon_08702889be_d8548d4c57.png");
     }
     @media screen and (min-width: 1000px) {
         .bg-overlay {

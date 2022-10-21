@@ -70,7 +70,7 @@
                                     alt="webinar Thumbnail"
                                 />
                             </a>
-                            <p class="text-white p-1">
+                            <p class="text-white text-start p-1">
                                 {webinar.title}
                             </p>
                         </div>

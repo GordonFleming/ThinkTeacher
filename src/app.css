@@ -210,7 +210,7 @@ select option{
     left: 16px;
     position: absolute;
     width: 20px;
-    background-image: url('https://strapi-upload-s3.glass.thinkteacher.co.za/media/google_8e57284397.svg');
+    background-image: url('https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/google_8e57284397_04160c9ac0.svg');
 }
 .Sso__button:hover {
     color: #fff;
