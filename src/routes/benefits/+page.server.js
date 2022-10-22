@@ -13,49 +13,64 @@ let health_cat = 3,
 	glasses_cat = 8,
 	business_cat = 9;
 if (prod === "true") {
-	(health_cat = 2),
-		(travel_cat = 1),
-		(course_cat = 6),
+	(health_cat = 5),
+		(travel_cat = 2),
+		(course_cat = 7),
 		(wellbeing_cat = 3),
-		(finance_cat = 5),
+		(finance_cat = 6),
 		(legal_cat = 4),
-		(books_cat = 7),
-		(cars_cat = 8),
-		(glasses_cat = 9),
-		(business_cat = 10);
+		(books_cat = 8),
+		(cars_cat = 9),
+		(business_cat = 11);
 }
 
 export async function load() {
 	const endpoint = `graphql`;
 	const graphqlQuery = {
-		operationName: "fetchBenefits",
-		query: `query fetchBenefits {     
-                packages {
-                    name,
-                    description,
-                    partner {
-                        company_name,
+		operationName: "fetchPackages",
+		query: `query fetchPackages {  
+            packages (pagination: { start: 0, limit: -1}) {
+                data {
+                    attributes {
+                        name,
                         description,
-                        category{
-                            id,
+                        details,
+                        banner {
+                                data {
+                                    attributes {
+                                        url
+                                }
+                            }
                         },
-                        logo{
-                            url
-                        },
-                        slug
-                    },
-                    details,
-                    banner{
-                        hash,
-                        ext
+                        partner {
+                            data {
+                                attributes {
+                                    company_name,
+                                    description,
+                                    category {
+                                        data {
+                                            id
+                                        }
+                                    },
+                                    logo {
+                                        data {
+                                            attributes {
+                                                    url
+                                            }
+                                        }
+                                    }
+                                    slug
+                                }
+                            }
+                        }
                     }
                 } 
-            }`,
+            }		
+        }`,
 		variables: {},
 	};
 
 	const res = await apiGraph('POST', endpoint, graphqlQuery);
-
 	let packages = [],
 		travel = [],
 		health = [],
@@ -71,10 +86,11 @@ export async function load() {
 
 	if (res.ok) {
 		const data = await res.json();
-		packages = data.data.packages;
+		packages = data.data.packages.data;
+        // console.log(packages)
 
 		function seperatePackages(item) {
-			switch (parseInt(item.partner.category.id)) {
+			switch (parseInt(item.attributes.partner.data.attributes.category.data.id)) {
 				case travel_cat:
 					travel.push(item);
 					break;
