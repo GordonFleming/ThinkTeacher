@@ -5,6 +5,7 @@
 
     export let data;
     let { post } = data;
+    console.log(data);
     let date;
     let publish;
     let source;
@@ -25,7 +26,11 @@
     <h1 class="text-center mb-4" style="margin-top: 0;">{post.title}</h1>
     <div class="text-center">
         <div class="responsive-iframe-container">
-            <iframe src={post.pdf.url} title={post.title} class="responsive-iframe" />
+            <iframe
+                src={post.pdf.data.attributes.url}
+                title={post.title}
+                class="responsive-iframe"
+            />
         </div>
     </div>
 

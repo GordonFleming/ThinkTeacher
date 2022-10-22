@@ -25,12 +25,13 @@
         <div class="row justify-content-center">
             {#each posts as post}
                 <div class="col-sm-12 col-md-6 col-lg-4 text-center mt-3">
-                    <a data-sveltekit-prefetch href="/news/{post.slug}">
+                    <a data-sveltekit-prefetch href="/news/{post.attributes.slug}">
                         <div class="news-block bg-dark p-3">
-                            <h4 class="font-bold">{post.title}</h4>
+                            <h4 class="font-bold">{post.attributes.title}</h4>
                             <button
                                 class="btn btn-sm bg-gold  shadow cta text-black"
-                                on:click={() => goto(`/news/${post.slug}`)}>Read More</button
+                                on:click={() => goto(`/news/${post.attributes.slug}`)}
+                                >Read More</button
                             >
                         </div>
                     </a>
@@ -41,6 +42,9 @@
 </div>
 
 <style>
+    a {
+        text-decoration: none;
+    }
     h4 {
         color: #fff;
     }

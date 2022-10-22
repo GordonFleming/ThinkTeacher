@@ -110,20 +110,22 @@
             errorMsg = null;
             await axios
                 .post(`${API_URL}/auth/local/register`, {
-                    username: username,
-                    email: email,
-                    password: password,
-                    firstName: firstName,
-                    lastName: lastName,
-                    idNum: idNum,
-                    altMail: altMail,
-                    cell: cell,
-                    eduPhase: eduPhase,
-                    qualification: qualification,
-                    sace: sace,
-                    workplace: workplace,
-                    province: province,
-                    ttCode: ttCode,
+                    data: {
+                        username: username,
+                        email: email,
+                        password: password,
+                        firstName: firstName,
+                        lastName: lastName,
+                        idNum: idNum,
+                        altMail: altMail,
+                        cell: cell,
+                        eduPhase: eduPhase,
+                        qualification: qualification,
+                        sace: sace,
+                        workplace: workplace,
+                        province: province,
+                        ttCode: ttCode,
+                    },
                 })
                 .then((response) => {
                     console.log("User profile", response.data.user);
@@ -213,6 +215,7 @@
                         <i
                             style="padding-top: 1.8rem; padding-left: 1.8rem;"
                             on:click={() => (registerNext = false)}
+                            on:keydown={() => (registerNext = false)}
                             ><Icon data={arrowLeft} scale="2" /></i
                         >
                     {/if}
@@ -240,7 +243,7 @@
                             <form id="register">
                                 {#if !registerNext}
                                     <div class="mt-4 google-box">
-                                        <div
+                                        <button
                                             id="google-sso"
                                             class="Sso__button Sso__googleIdButton"
                                             on:click={() =>
@@ -249,7 +252,7 @@
                                                 )}
                                         >
                                             Continue with Google
-                                        </div>
+                                        </button>
                                         <div class="Sso__divider ">
                                             <span class="Sso__dividerLine" />
                                             <span class="Sso__dividerText">or</span>
@@ -291,11 +294,14 @@
                                                 bind:value={password}
                                                 required
                                             />
-                                            <span class="input-group-text" on:click={seePassword}
+                                            <button
+                                                type="button"
+                                                class="input-group-text"
+                                                on:click={seePassword}
                                                 ><Icon
                                                     data={seePlz ? eye : eyeSlash}
                                                     scale="1.8"
-                                                /></span
+                                                /></button
                                             >
                                         </div>
 

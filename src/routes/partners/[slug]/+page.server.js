@@ -46,8 +46,8 @@ export async function load({ params }) {
 	const res = await apiGraph('POST', endpoint, graphqlQuery);
     const data = await res.json();
 
-    if (res.status === 404 || data.length === 0) {
-        throw error(404, `No partners found`);
+    if (res.status === 404 || data.data.partners.data.length === 0) {
+        throw error(404, `No partner found, ${slug}`);
     }
 
 	if (res.ok) {

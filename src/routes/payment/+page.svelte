@@ -91,13 +91,15 @@
             successMsg = undefined;
             axios
                 .post(`${API_URL}/payments`, {
-                    amount_in_cents: amountInCents,
-                    token: token.id,
-                    paid: true,
-                    description: mem_disc,
-                    reference_number: refNum,
-                    users_permissions_user: {
-                        id: $id,
+                    data: {
+                        amount_in_cents: amountInCents,
+                        token: token.id,
+                        paid: true,
+                        description: mem_disc,
+                        reference_number: refNum,
+                        users_permissions_user: {
+                            id: $id,
+                        },
                     },
                 })
                 .then((response) => {
