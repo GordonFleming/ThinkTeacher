@@ -4,8 +4,9 @@ export const prerender = true;
 const website = 'https://thinkteacher.co.za'
 
 export async function GET() {
-  const res = await axios.get('https://thinkteacher-strapi.glass.thinkteacher.co.za/partners')
-  const partners = res.data
+  const res = await axios.get('https://tt-strapi.glass.thinkteacher.co.za/api/partners')
+  const partners = res.data.data
+  console.log(partners);
   const pages = [`about`, `benefits`, `partners`, `news`, `webinars`, `contact-us`, `login`, `register`]
   const body = sitemap(partners, pages)
 
@@ -54,8 +55,8 @@ const sitemap = (
   ${partners
     .map(partner => `
   <url>
-    <loc>${website}/partners/${partner.slug}</loc>
-    <lastmod>${partner.updated_at}</lastmod>
+    <loc>${website}/partners/${partner.attributes.slug}</loc>
+    <lastmod>${partner.attributes.updated_at}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
