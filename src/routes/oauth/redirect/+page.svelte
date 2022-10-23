@@ -14,10 +14,8 @@
     onMount(async () => {
         urlParams = new URLSearchParams(window.location.search);
         myParam = urlParams.get("access_token");
-        console.log(myParam);
 
         const res = await axios.get(`${API_URL}/auth/google/callback?access_token=${myParam}`);
-        console.log(res);
 
         userData = res.data;
         browserSessionSet("provider", userData.user.provider);
@@ -26,14 +24,7 @@
         $id = userData.user.id;
 
         let created_at = userData.user.created_at;
-        let payment = userData.user.payments;
-        let paidMember = false;
-        console.log(payment);
-        if (payment.length > 0) {
-            if (payment[0].paid) {
-                paidMember = true;
-            }
-        }
+        let paidMember = userData.user.paid;
 
         if (!userData.user.idNum || !userData.user.firstName) {
             goto("/register");

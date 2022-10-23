@@ -28,7 +28,6 @@
                 password: password,
             })
             .then((response) => {
-                console.log(response);
                 browserSet("jwt", response.data.jwt);
                 browserSet("name", response.data.user.firstName);
                 $name = response.data.firstName;
@@ -39,14 +38,7 @@
                 browserSet("ttNum", response.data.user.ttCode);
                 $ttNum = response.data.user.ttCode;
                 let created_at = response.data.user.created_at;
-                let payment = response.data.user.payments;
-                let paidMember = false;
-                console.log(payment);
-                if (payment.length > 0) {
-                    if (payment[0].paid) {
-                        paidMember = true;
-                    }
-                }
+                let paidMember = userData.user.paid;
 
                 if (paidMember) {
                     console.log("you are paid up, payment check");
