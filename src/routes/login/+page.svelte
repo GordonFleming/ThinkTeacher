@@ -28,6 +28,7 @@
                 password: password,
             })
             .then((response) => {
+                console.log(response);
                 browserSet("jwt", response.data.jwt);
                 browserSet("name", response.data.user.firstName);
                 $name = response.data.firstName;
