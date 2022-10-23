@@ -29,27 +29,27 @@
         {
             title: "An Educational Journey with Dale Jackson",
             link: "https://youtube.com/embed/hQRyEkx_J94",
-            img: "https://strapi-upload-s3.glass.thinkteacher.co.za/media/edu_webinar_903fd2c4cb.webp",
+            img: "https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/edu_webinar_f52625a71a.webp",
         },
         {
             title: "Stress management with Libby Edmonds",
             link: "https://youtube.com/embed/wQN6VKoDkgc",
-            img: "https://strapi-upload-s3.glass.thinkteacher.co.za/media/management_webinar_3218ba2050.webp",
+            img: "https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/management_webinar_61013690bf.webp",
         },
         {
             title: "Holistic wellness with Claudia Pescivolo",
             link: "https://youtube.com/embed/OSDx62h6Gpk",
-            img: "https://strapi-upload-s3.glass.thinkteacher.co.za/media/wellness_webinar_2d54de6811.webp",
+            img: "https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/wellness_webinar_1bba8b0866.webp",
         },
         {
             title: "The big interview with Kim Hatchuel ",
             link: "https://youtube.com/embed/HDQXwqzEA5U",
-            img: "https://strapi-upload-s3.glass.thinkteacher.co.za/media/hatchul_webinar_30ba04ddf9.webp",
+            img: "https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/hatchul_webinar_a9e21ad314.webp",
         },
         {
             title: "Building resilience with Kim Forbes",
             link: "https://www.youtube.com/embed/dFSZPxwBTGc",
-            img: "https://strapi-upload-s3.glass.thinkteacher.co.za/media/kim_webinar_fb2c5a6298.webp",
+            img: "https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/kim_webinar_2de6caf1cf.webp",
         },
     ];
 </script>
@@ -63,14 +63,14 @@
                 <SplideSlide>
                     <div class="p-2">
                         <div class="frame-wrapper">
-                            <a href={webinar.link} target="_blank">
+                            <a href={webinar.link} target="_blank" rel="noopener noreferrer">
                                 <img
                                     class="img-fluid p-1"
                                     src={webinar.img}
                                     alt="webinar Thumbnail"
                                 />
                             </a>
-                            <p class="text-white p-1">
+                            <p class="text-white text-start p-1">
                                 {webinar.title}
                             </p>
                         </div>

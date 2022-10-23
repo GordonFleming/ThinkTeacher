@@ -155,15 +155,19 @@
             Click on a benefit below to see what our partners can offer you as a ThinkTeacher member
         </h5>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben1 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben1 = true)}
+                on:click={() => ($travelScroll = "wellbeing")}
+            >
                 <div class="placeholder">
                     {#if ben1}
                         <img
                             transition:fly={{ y: 200, duration: 600 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/well_being_7d5c5b6063.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/well_being_a72b443d32.webp"
                             alt="well being"
-                            on:click={() => ($travelScroll = "wellbeing")}
                         />
                     {/if}
                 </div>
@@ -171,15 +175,19 @@
             <h3 class="mt-3"><span class="text-logo-gold">Think</span> Wellbeing</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben2 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben2 = true)}
+                on:click={() => ($travelScroll = "travel")}
+            >
                 <div class="placeholder">
                     {#if ben2}
                         <img
                             transition:fly={{ y: 200, duration: 800 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/travel_65e3eb2228.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/travel_dedeab0486.webp"
                             alt="travel"
-                            on:click={() => ($travelScroll = "travel")}
                         />
                     {/if}
                 </div>
@@ -187,15 +195,19 @@
             <h3 class="mt-3"><span class="text-logo-gold">Think</span> Travel</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben3 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben3 = true)}
+                on:click={() => ($travelScroll = "medical_aid")}
+            >
                 <div class="placeholder">
                     {#if ben3}
                         <img
                             transition:fly={{ y: 200, duration: 1000 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/health_1d4102b3e6.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/health_d3dd30eed4.webp"
                             alt="medical aid"
-                            on:click={() => ($travelScroll = "medical_aid")}
                         />
                     {/if}
                 </div>
@@ -203,15 +215,19 @@
             <h3 class="mt-3"><span class="text-logo-gold">Think</span> Medical Aid</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben4 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben4 = true)}
+                on:click={() => ($travelScroll = "finance")}
+            >
                 <div class="placeholder">
                     {#if ben4}
                         <img
                             transition:fly={{ y: 200, duration: 600 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/insurance_f6fd972123.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/insurance_65016c0e82.webp"
                             alt="invest"
-                            on:click={() => ($travelScroll = "finance")}
                         />
                     {/if}
                 </div>
@@ -219,15 +235,19 @@
             <h3 class="mt-3"><span class="text-logo-gold">Think</span> Finance</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben5 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben5 = true)}
+                on:click={() => ($travelScroll = "legal")}
+            >
                 <div class="placeholder">
                     {#if ben5}
                         <img
                             transition:fly={{ y: 200, duration: 800 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/legal_ef185539e1.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/legal_9c79c917bb.webp"
                             alt="legal"
-                            on:click={() => ($travelScroll = "legal")}
                         />
                     {/if}
                 </div>
@@ -235,15 +255,19 @@
             <h3 class="mt-3"><span class="text-logo-gold">Think</span> Legal</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben6 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben6 = true)}
+                on:click={() => ($travelScroll = "courses")}
+            >
                 <div class="placeholder">
                     {#if ben6}
                         <img
                             transition:fly={{ y: 200, duration: 1000 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/courses_394e2373ce.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/courses_d4d4152811.webp"
                             alt="courses"
-                            on:click={() => ($travelScroll = "courses")}
                         />
                     {/if}
                 </div>
@@ -251,15 +275,19 @@
             <h3 class="mt-3"><span class="text-logo-gold">Think</span> Courses</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben7 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben7 = true)}
+                on:click={() => ($travelScroll = "books")}
+            >
                 <div class="placeholder">
                     {#if ben7}
                         <img
                             transition:fly={{ y: 200, duration: 600 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/book_store_4ca6894b2a.png"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/bookstore_2e3811bf76.webp"
                             alt="books"
-                            on:click={() => ($travelScroll = "books")}
                         />
                     {/if}
                 </div>
@@ -267,15 +295,19 @@
             <h3 class="mt-3"><span class="text-logo-gold">Think</span> Book Store</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben8 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben8 = true)}
+                on:click={() => ($travelScroll = "cars")}
+            >
                 <div class="placeholder">
                     {#if ben8}
                         <img
                             transition:fly={{ y: 200, duration: 800 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/kia_car_b41351adfc.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/kia_car_2cea78c493.webp"
                             alt="cars"
-                            on:click={() => ($travelScroll = "cars")}
                         />
                     {/if}
                 </div>
@@ -283,15 +315,19 @@
             <h3 class="mt-3"><span class="text-logo-gold">Think</span> Wheels</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben9 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben9 = true)}
+                on:click={() => ($travelScroll = "glasses")}
+            >
                 <div class="placeholder">
                     {#if ben9}
                         <img
                             transition:fly={{ y: 200, duration: 1000 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/glasses_1bde567ac8.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/glasses_7a0c367bde.webp"
                             alt="Glasses"
-                            on:click={() => ($travelScroll = "glasses")}
                         />
                     {/if}
                 </div>
@@ -300,15 +336,19 @@
             <h5 class="text-blue">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben10 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben10 = true)}
+                on:click={() => ($travelScroll = "connect")}
+            >
                 <div class="placeholder">
                     {#if ben10}
                         <img
                             transition:fly={{ y: 200, duration: 1000 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/connectivity_573adf1be7.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/connectivity_5c27d7e7c1.webp"
                             alt="Connect"
-                            on:click={() => ($travelScroll = "connect")}
                         />
                     {/if}
                 </div>
@@ -317,15 +357,19 @@
             <h5 class="text-blue">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben11 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben11 = true)}
+                on:click={() => ($travelScroll = "business")}
+            >
                 <div class="placeholder">
                     {#if ben11}
                         <img
                             transition:fly={{ y: 200, duration: 1000 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/business_coach_0ba79df117.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/business_coach_443e1401ca.webp"
                             alt="Connect"
-                            on:click={() => ($travelScroll = "business")}
                         />
                     {/if}
                 </div>
@@ -334,15 +378,19 @@
             <h5 class="text-blue">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a href="/benefits" use:viewport on:enterViewport={() => (ben12 = true)}>
+            <a
+                href="/benefits"
+                use:viewport
+                on:enterViewport={() => (ben12 = true)}
+                on:click={() => ($travelScroll = "jobs")}
+            >
                 <div class="placeholder">
                     {#if ben12}
                         <img
                             transition:fly={{ y: 200, duration: 1000 }}
                             class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/jobs_9c15750f8b.webp"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/jobs_7cacf0d38d.webp"
                             alt="Connect"
-                            on:click={() => ($travelScroll = "jobs")}
                         />
                     {/if}
                 </div>
@@ -421,9 +469,11 @@
         <Splide {options} aria-label="partners carousel">
             <SplideSlide>
                 <div class="slide-content">
+                    <!-- thumbnail_ -->
+
                     <img
                         class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_SAHB_LOGO_HIGH_RES_ec14dd3c1d.webp"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_SAHB_LOGO_HIGH_RES_ec14dd3c1d_2635d05c5f.webp"
                         alt="partner"
                     />
                 </div>
@@ -432,7 +482,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid mt-3"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_ROARRR_d380578528.webp"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_ROARRR_d380578528_f8a05a6049.webp"
                         alt="partner"
                     />
                 </div>
@@ -441,7 +491,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_Cirrus_Image_2_70004a2daf.webp"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_Cirrus_Image_2_70004a2daf_8d211bdd99.webp"
                         alt="partner"
                     />
                 </div>
@@ -450,7 +500,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid mt-3"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_alex_forbes_62be1d48f7.webp"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_alex_forbes_62be1d48f7_3cfd9bd8c3.webp"
                         alt="partner"
                     />
                 </div>
@@ -459,7 +509,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_kim_c21bab4e72.png"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_kim_c21bab4e72_fbacefe335.png"
                         alt="partner"
                     />
                 </div>
@@ -468,7 +518,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_SGM_Logo_b251d32022.webp"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_SGM_Logo_b251d32022_ac78ee1ee9.webp"
                         alt="partner"
                     />
                 </div>
@@ -477,7 +527,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/small_MTC_New_Logo_large_7ae60c9ecf.webp"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_MTC_New_Logo_large_7ae60c9ecf_3e8f419fa5.webp"
                         alt="partner"
                     />
                 </div>
@@ -486,7 +536,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_exclusivebooks_779996b0af.jpeg"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_exclusivebooks_779996b0af_dd9c921c21.jpeg"
                         alt="partner"
                     />
                 </div>
@@ -495,7 +545,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid mt-3"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_kia_logo_16b0a03857.webp"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_kia_logo_16b0a03857_c412c2856c.webp"
                         alt="partner"
                     />
                 </div>
@@ -504,7 +554,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_turnberry_6a7f42ce0a.jpeg"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_turnberry_6a7f42ce0a_cc802e5705.jpeg"
                         alt="partner"
                     />
                 </div>
@@ -513,7 +563,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/media/thumbnail_raintree_53a2b76328.webp"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_raintree_53a2b76328_1a99af7f72.webp"
                         alt="partner"
                     />
                 </div>
@@ -522,7 +572,7 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid"
-                        src="https://res.cloudinary.com/splyce/image/upload/v1663001701/ThinkTeacher/partners/flow/Flow_Logo_On_White_cropped_qtnra6.jpg"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_Flow_Logo_On_White_cropped_1985224419.jpg"
                         alt="partner"
                     />
                 </div>
@@ -568,7 +618,7 @@
     .benefit-list ul {
         /* list-style: square outside; */
 
-        list-style-image: url("https://strapi-upload-s3.glass.thinkteacher.co.za/media/m_favicon_08702889be.png");
+        list-style-image: url("https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/m_favicon_08702889be_d8548d4c57.png");
     }
     @media screen and (min-width: 1000px) {
         .bg-overlay {

@@ -3,5 +3,5 @@
 </script>
 
 <div class="container p-4 text-center">
-	<h1>{$page.status} : {$page.error.message}</h1>
+	<h1>{$page.error.message}</h1>
 </div>
