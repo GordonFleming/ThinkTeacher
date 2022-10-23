@@ -64,9 +64,9 @@
     $: s ? (barCol = "bg-success") : (barCol = "bg-danger");
     $: isValidID = saIdParser.validate(idNum);
 
-    console.log("This is ID: ", id);
-    console.log("This is $ID: ", $id);
-    console.log("This is URL: ", `${API_URL}/users/${$id}`);
+    // console.log("This is ID: ", id);
+    // console.log("This is $ID: ", $id);
+    // console.log("This is URL: ", `${API_URL}/users/${$id}`);
 
     async function registerUser() {
         if (provider) {
@@ -103,29 +103,27 @@
                 })
                 .catch((error) => {
                     console.log("An error occurred:", error.response);
-                    errorMsg = error.response.data.message[0].messages[0].message;
+                    errorMsg = error.response.data.error.message;
                 });
         }
         if (s && !provider) {
             errorMsg = null;
             await axios
                 .post(`${API_URL}/auth/local/register`, {
-                    data: {
-                        username: username,
-                        email: email,
-                        password: password,
-                        firstName: firstName,
-                        lastName: lastName,
-                        idNum: idNum,
-                        altMail: altMail,
-                        cell: cell,
-                        eduPhase: eduPhase,
-                        qualification: qualification,
-                        sace: sace,
-                        workplace: workplace,
-                        province: province,
-                        ttCode: ttCode,
-                    },
+                    username: username,
+                    email: email,
+                    password: password,
+                    firstName: firstName,
+                    lastName: lastName,
+                    idNum: idNum,
+                    altMail: altMail,
+                    cell: cell,
+                    eduPhase: eduPhase,
+                    qualification: qualification,
+                    sace: sace,
+                    workplace: workplace,
+                    province: province,
+                    ttCode: ttCode,
                 })
                 .then((response) => {
                     console.log("User profile", response.data.user);
@@ -137,7 +135,7 @@
                 })
                 .catch((error) => {
                     console.log("An error occurred:", error.response);
-                    errorMsg = error.response.data.message[0].messages[0].message;
+                    errorMsg = error.response.data.error.message;
                 });
         } else if (!s && !provider) {
             errorMsg = "Password not strong enough";

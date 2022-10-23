@@ -43,7 +43,7 @@
                 })
                 .catch((error) => {
                     console.log("An error occurred:", error.response);
-                    errorMsg = error.response.data.message[0].messages[0].message;
+                    errorMsg = error.response.data.error.message;
                 });
         } else {
             errorMsg = "Password not strong enough";
