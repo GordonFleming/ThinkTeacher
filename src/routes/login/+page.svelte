@@ -93,7 +93,9 @@
                             {/if}
 
                             <div class="mt-4 google-box">
-                                <a href="https://tt-strapi.glass.thinkteacher.co.za/connect/google">
+                                <a
+                                    href="https://tt-strapi.glass.thinkteacher.co.za/api/connect/google"
+                                >
                                     <div id="google-sso" class="Sso__button Sso__googleIdButton">
                                         Continue with Google
                                     </div>

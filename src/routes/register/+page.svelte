@@ -248,7 +248,7 @@
                                             class="Sso__button Sso__googleIdButton"
                                             on:click={() =>
                                                 goto(
-                                                    "https://tt-strapi.glass.thinkteacher.co.za/connect/google"
+                                                    "https://tt-strapi.glass.thinkteacher.co.za/api/connect/google"
                                                 )}
                                         >
                                             Continue with Google

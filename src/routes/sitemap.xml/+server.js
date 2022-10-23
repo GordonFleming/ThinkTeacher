@@ -6,7 +6,6 @@ const website = 'https://thinkteacher.co.za'
 export async function GET() {
   const res = await axios.get('https://tt-strapi.glass.thinkteacher.co.za/api/partners')
   const partners = res.data.data
-  console.log(partners);
   const pages = [`about`, `benefits`, `partners`, `news`, `webinars`, `contact-us`, `login`, `register`]
   const body = sitemap(partners, pages)
 
