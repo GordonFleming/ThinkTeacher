@@ -6,7 +6,7 @@ export async function load() {
 	const graphqlQuery = {
 		operationName: "fetchPartners",
 		query: `query fetchPartners {     
-            partners (sort: "id") {
+            partners (sort: "name") {
                 data {
                     attributes {
                         name,
