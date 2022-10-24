@@ -38,7 +38,7 @@
                 browserSet("ttNum", response.data.user.ttCode);
                 $ttNum = response.data.user.ttCode;
                 let created_at = response.data.user.created_at;
-                let paidMember = userData.user.paid;
+                let paidMember = response.data.user.paid;
 
                 if (paidMember) {
                     console.log("you are paid up, payment check");

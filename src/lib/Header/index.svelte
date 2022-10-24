@@ -137,7 +137,7 @@
                     >
                     <h6>
                         &nbsp;&nbsp;Welcome {$name},
-                        <a href="/" on:click={logoutUser}>
+                        <a style="text-decoration: none;" href="/" on:click={logoutUser}>
                             <span id="logout" style="color: var(--logo-gold);">Logout</span>
                         </a>
                     </h6>

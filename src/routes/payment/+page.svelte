@@ -115,11 +115,13 @@
             form.reset();
         });
     }
+
+    $: console.log(retireStu);
 </script>
 
 <svelte:head>
     <title>Payment</title>
-    <script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
+    <script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js" async defer></script>
 </svelte:head>
 
 <div class="container mt-5">
@@ -148,10 +150,15 @@
         </div>
 
         <div class="col d-flex justify-content-center">
-            <form id="payment-form">
+            <div id="payment-form">
                 <div class="one-liner">
                     <div class="form-switch mt-3 text-center">
-                        <label for="retireStu">Are you a student or a retired teacher?</label><br />
+                        <p>Are you a student or a retired teacher?</p>
+                        {#if retireStu}
+                            <label for="retireStu" class="form-check-label">Yes</label>
+                        {:else if !retireStu}
+                            <label for="retireStu" class="form-check-label">No</label>
+                        {/if}
                         <input
                             class="form-check-input form-control mx-auto"
                             type="checkbox"
@@ -188,7 +195,7 @@
                     </div>
                 </div>
                 <p class="success-payment-message" />
-            </form>
+            </div>
         </div>
     </div>
     <hr class="rounded" />
