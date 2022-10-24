@@ -3,6 +3,7 @@
     import { id, errMsg } from "$lib/stores";
     import axios from "axios";
     import { API_URL, yocoPubKey } from "$lib/env.js";
+    import { apiGraph } from "$lib/db";
     import { Jumper } from "svelte-loading-spinners";
     import Icon from "$lib/Icons/icon.svelte";
     import { checkCircleO } from "$lib/Icons/icons";
@@ -12,6 +13,7 @@
         form,
         loading = true,
         paying = false,
+        voucher,
         submitButton = true,
         amountInCents = 29000,
         successMsg,
@@ -41,7 +43,6 @@
         }
     }
 
-    let mem_disc = "ThinkTeacher Annual Membership";
     let refNum = Math.floor(Math.random() * 90000) + 10000;
 
     onMount(async () => {
@@ -95,11 +96,9 @@
                         amount_in_cents: amountInCents,
                         token: token.id,
                         paid: true,
-                        description: mem_disc,
+                        description: "ThinkTeacher Annual Membership (card)",
                         reference_number: refNum,
-                        users_permissions_user: {
-                            id: $id,
-                        },
+                        users_permissions_user: $id,
                     },
                 })
                 .then((response) => {
@@ -116,7 +115,31 @@
         });
     }
 
-    $: console.log(retireStu);
+    async function makeVoucherPayment() {
+        axios
+            .post(`${API_URL}/payments`, {
+                data: {
+                    // Extra voucher value
+                    voucher: voucher,
+                    amount_in_cents: amountInCents,
+                    token: null,
+                    paid: true,
+                    description: "ThinkTeacher Annual Membership (voucher)",
+                    reference_number: refNum,
+                    users_permissions_user: $id,
+                },
+            })
+            .then((response) => {
+                successMsg = "Success, payment has been made!";
+                console.log(response);
+                paying = false;
+            })
+            .catch((error) => {
+                $errMsg = error.response.data.error.message;
+                console.log("An error occurred:", error.response.data.error.message);
+                paying = false;
+            });
+    }
 </script>
 
 <svelte:head>
@@ -128,13 +151,13 @@
     <div class="row">
         <div class="text-center">
             <h2 class="mb-4">Membership <span class="text-blue">Payment</span></h2>
-            <h6>Pay via EFT or by card payment</h6>
+            <h6>Pay via EFT, Voucher or by Card payment</h6>
             <h6 class="text-logo-gold">Discounted price for teachers month!</h6>
             {#if successMsg !== undefined}
                 <h4 class="success-col">{successMsg}</h4>
                 <Icon data={checkCircleO} scale="8" fill="green" />
             {/if}
-            {#if $errMsg !== ""}
+            {#if $errMsg !== "" && !successMsg}
                 <h4 class="error-col">{$errMsg}</h4>
             {/if}
 
@@ -150,7 +173,7 @@
         </div>
 
         <div class="col d-flex justify-content-center">
-            <div id="payment-form">
+            <form id="payment-form">
                 <div class="one-liner">
                     <div class="form-switch mt-3 text-center">
                         <p>Are you a student or a retired teacher?</p>
@@ -168,15 +191,14 @@
                             bind:checked={retireStu}
                         />
                     </div>
-
+                    <p class="fw-bold text-center mt-3">Pay with a card:</p>
                     <div id="card-frame">
                         <!-- Yoco Inline form will be added here -->
                     </div>
-
-                    <div class="text-center mt-4 mb-4">
+                    <div class="text-center mt-3 mb-3">
                         <button
                             id="pay-button"
-                            class:bg-blue={submitButton && amountInRands == 360}
+                            class:bg-blue={submitButton && amountInRands == 290}
                             class:bg-gold={submitButton && amountInRands == 120}
                             class:cta={submitButton}
                             class="btn btn-lg shadow"
@@ -184,6 +206,38 @@
                             disabled={!submitButton}
                         >
                             PAY - R {amountInRands}
+                        </button>
+                    </div>
+
+                    <div class="Sso__divider ">
+                        <span class="Sso__dividerLine" />
+                        <span class="Sso__dividerText">or</span>
+                        <span class="Sso__dividerLine" />
+                    </div>
+
+                    <div class="text-center">
+                        <label class="fw-bold mb-2" for="voucher">Pay with a voucher:</label>
+                        <input
+                            class="form-control mx-auto"
+                            placeholder="TT000000"
+                            type="text"
+                            name="voucher"
+                            id="voucherInput"
+                            minlength="8"
+                            maxlength="8"
+                            bind:value={voucher}
+                        />
+                    </div>
+
+                    <div class="text-center mt-3 mb-3">
+                        <button
+                            id="pay-button"
+                            class:cta={submitButton}
+                            class="btn btn-lg shadow bg-blue"
+                            on:click|preventDefault={makeVoucherPayment}
+                            disabled={!submitButton}
+                        >
+                            PAY
                         </button>
                     </div>
 
@@ -195,7 +249,7 @@
                     </div>
                 </div>
                 <p class="success-payment-message" />
-            </div>
+            </form>
         </div>
     </div>
     <hr class="rounded" />
@@ -271,5 +325,12 @@
         border-color: rgba(255, 255, 255, 0.4);
         outline: 0;
         box-shadow: 0 0 0 0.25rem rgba(217, 183, 61, 0.055);
+    }
+    #voucherInput {
+        border-color: #4f5d89;
+        width: 50%;
+        background-color: #4f5d895a;
+        color: #000;
+        font-weight: 500;
     }
 </style>
