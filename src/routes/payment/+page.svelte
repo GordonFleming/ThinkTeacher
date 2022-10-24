@@ -2,8 +2,7 @@
     import { onMount } from "svelte";
     import { id, errMsg } from "$lib/stores";
     import axios from "axios";
-    import { API_URL, yocoPubKey } from "$lib/env.js";
-    import { apiGraph } from "$lib/db";
+    import { API_URL, yocoPubKey, strapiKey } from "$lib/env.js";
     import { Jumper } from "svelte-loading-spinners";
     import Icon from "$lib/Icons/icon.svelte";
     import { checkCircleO } from "$lib/Icons/icons";
@@ -50,6 +49,8 @@
             $id = localStorage.getItem("id");
         }
 
+        console.log(strapiKey);
+
         setTimeout(() => {
             sdk = new window.YocoSDK({
                 publicKey: yocoPubKey,
@@ -91,16 +92,25 @@
             $errMsg = "";
             successMsg = undefined;
             axios
-                .post(`${API_URL}/payments`, {
-                    data: {
-                        amount_in_cents: amountInCents,
-                        token: token.id,
-                        paid: true,
-                        description: "ThinkTeacher Annual Membership (card)",
-                        reference_number: refNum,
-                        users_permissions_user: $id,
+                .post(
+                    `${API_URL}/payments`,
+                    {
+                        data: {
+                            amount_in_cents: amountInCents,
+                            token: token.id,
+                            paid: true,
+                            description: "ThinkTeacher Annual Membership (card)",
+                            reference_number: refNum,
+                            users_permissions_user: $id,
+                        },
                     },
-                })
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: "Bearer " + strapiKey,
+                        },
+                    }
+                )
                 .then((response) => {
                     successMsg = "Success, payment has been made!";
                     console.log(response);
@@ -117,18 +127,27 @@
 
     async function makeVoucherPayment() {
         axios
-            .post(`${API_URL}/payments`, {
-                data: {
-                    // Extra voucher value
-                    voucher: voucher,
-                    amount_in_cents: amountInCents,
-                    token: null,
-                    paid: true,
-                    description: "ThinkTeacher Annual Membership (voucher)",
-                    reference_number: refNum,
-                    users_permissions_user: $id,
+            .post(
+                `${API_URL}/payments`,
+                {
+                    data: {
+                        // Extra voucher value
+                        voucher: voucher,
+                        amount_in_cents: amountInCents,
+                        token: null,
+                        paid: true,
+                        description: "ThinkTeacher Annual Membership (voucher)",
+                        reference_number: refNum,
+                        users_permissions_user: $id,
+                    },
                 },
-            })
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: "Bearer " + strapiKey,
+                    },
+                }
+            )
             .then((response) => {
                 successMsg = "Success, payment has been made!";
                 console.log(response);
