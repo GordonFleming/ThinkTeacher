@@ -3,7 +3,7 @@
     import axios from "axios";
     import { goto } from "$app/navigation";
     import Icon from "$lib/Icons/icon.svelte";
-    import { name, surname, id, errMsg, ttNum, cut_off_date } from "$lib/stores";
+    import { name, surname, id, errMsg, ttNum } from "$lib/stores";
     import { facebook, twitter, instagram } from "$lib/Icons/icons";
     import { browserSet, compareTime } from "$lib/re_utils";
     import { API_URL } from "$lib/env.js";
@@ -37,13 +37,13 @@
                 $id = response.data.id;
                 browserSet("ttNum", response.data.user.ttCode);
                 $ttNum = response.data.user.ttCode;
-                let created_at = response.data.user.created_at;
+                let created_at = response.data.user.createdAt;
                 let paidMember = response.data.user.paid;
 
                 if (paidMember) {
                     console.log("you are paid up, payment check");
                     goto("/benefits");
-                } else if (compareTime(new Date(created_at), new Date($cut_off_date))) {
+                } else if (compareTime(created_at)) {
                     console.log("you are paid up, free member");
                     goto("/benefits");
                 } else {

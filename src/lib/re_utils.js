@@ -1,4 +1,5 @@
 import { browser } from '$app/environment'
+import dayjs from 'dayjs';
 
 export function browserSet(key, value){
     if(browser) {
@@ -12,6 +13,15 @@ export function browserSessionSet(key, value){
     }
 }
 
-export function compareTime(time1, time2) {
-    return new Date(time1) < new Date(time2); // true if time1 is earlier
+const cut_off_date = dayjs("2022-04-15");
+
+export function compareTime(created_at) {
+    console.log(created_at);
+    let check_date = dayjs(created_at).add(10, 'month');
+    if (dayjs(cut_off_date).isAfter(dayjs(created_at), 'month')) {
+        console.log("run2");
+        return !dayjs(check_date).isBefore(dayjs(), 'month');
+    }
+    console.log("run");
+    return false;
 }

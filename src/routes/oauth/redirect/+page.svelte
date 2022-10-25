@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import axios from "axios";
     import { API_URL } from "$lib/env.js";
-    import { name, surname, id, ttNum, cut_off_date } from "$lib/stores";
+    import { name, surname, id, ttNum } from "$lib/stores";
     import { goto } from "$app/navigation";
     import { Jumper } from "svelte-loading-spinners";
     import { browserSet, browserSessionSet, compareTime } from "$lib/re_utils";
@@ -23,7 +23,7 @@
         browserSet("id", userData.user.id);
         $id = userData.user.id;
 
-        let created_at = userData.user.created_at;
+        let created_at = userData.user.createdAt;
         let paidMember = userData.user.paid;
 
         if (!userData.user.idNum || !userData.user.firstName) {
@@ -39,7 +39,7 @@
             if (paidMember) {
                 console.log("you are paid up, payment check");
                 goto("/benefits");
-            } else if (compareTime(new Date(created_at), new Date($cut_off_date))) {
+            } else if (compareTime(created_at)) {
                 console.log("you are paid up, free member");
                 goto("/benefits");
             } else {

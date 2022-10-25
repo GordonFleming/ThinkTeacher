@@ -49,8 +49,6 @@
             $id = localStorage.getItem("id");
         }
 
-        console.log(strapiKey);
-
         setTimeout(() => {
             sdk = new window.YocoSDK({
                 publicKey: yocoPubKey,
@@ -167,7 +165,7 @@
 </svelte:head>
 
 <div class="container mt-5">
-    <div class="row">
+    <div class="row justify-content-center">
         <div class="text-center">
             <h2 class="mb-4">Membership <span class="text-blue">Payment</span></h2>
             <h6>Pay via EFT, Voucher or by Card payment</h6>
@@ -191,84 +189,79 @@
             {/if}
         </div>
 
-        <div class="col d-flex justify-content-center">
+        <div class="col-12 col-sm-12 col-md-8 col-lg-6">
             <form id="payment-form">
-                <div class="one-liner">
-                    <div class="form-switch mt-3 text-center">
-                        <p>Are you a student or a retired teacher?</p>
-                        {#if retireStu}
-                            <label for="retireStu" class="form-check-label">Yes</label>
-                        {:else if !retireStu}
-                            <label for="retireStu" class="form-check-label">No</label>
-                        {/if}
-                        <input
-                            class="form-check-input form-control mx-auto"
-                            type="checkbox"
-                            role="switch"
-                            id="retireStu"
-                            on:click={changePrice}
-                            bind:checked={retireStu}
-                        />
-                    </div>
-                    <p class="fw-bold text-center mt-3">Pay with a card:</p>
-                    <div id="card-frame">
-                        <!-- Yoco Inline form will be added here -->
-                    </div>
-                    <div class="text-center mt-3 mb-3">
-                        <button
-                            id="pay-button"
-                            class:bg-blue={submitButton && amountInRands == 290}
-                            class:bg-gold={submitButton && amountInRands == 120}
-                            class:cta={submitButton}
-                            class="btn btn-lg shadow"
-                            on:click|preventDefault={makePayment}
-                            disabled={!submitButton}
-                        >
-                            PAY - R {amountInRands}
-                        </button>
-                    </div>
-
-                    <div class="Sso__divider ">
-                        <span class="Sso__dividerLine" />
-                        <span class="Sso__dividerText">or</span>
-                        <span class="Sso__dividerLine" />
-                    </div>
-
-                    <div class="text-center">
-                        <label class="fw-bold mb-2" for="voucher">Pay with a voucher:</label>
-                        <input
-                            class="form-control mx-auto"
-                            placeholder="TT000000"
-                            type="text"
-                            name="voucher"
-                            id="voucherInput"
-                            minlength="8"
-                            maxlength="8"
-                            bind:value={voucher}
-                        />
-                    </div>
-
-                    <div class="text-center mt-3 mb-3">
-                        <button
-                            id="pay-button"
-                            class:cta={submitButton}
-                            class="btn btn-lg shadow bg-blue"
-                            on:click|preventDefault={makeVoucherPayment}
-                            disabled={!submitButton}
-                        >
-                            PAY
-                        </button>
-                    </div>
-
-                    <div class="text-center mb-3">
-                        Corporate sponsorship of a school:
-                        <a href="mailto:zani@thinkteacher.co.za" class="btn btn-sm bg-gold"
-                            >Contact Zani</a
-                        >
-                    </div>
+                <div class="form-switch mt-3 text-center">
+                    <p>Are you a student or a retired teacher?</p>
+                    {#if retireStu}
+                        <label for="retireStu" class="form-check-label">Yes</label>
+                    {:else if !retireStu}
+                        <label for="retireStu" class="form-check-label">No</label>
+                    {/if}
+                    <input
+                        class="form-check-input form-control mx-auto"
+                        type="checkbox"
+                        role="switch"
+                        id="retireStu"
+                        on:click={changePrice}
+                        bind:checked={retireStu}
+                    />
                 </div>
-                <p class="success-payment-message" />
+                <p class="fw-bold text-center mt-3">Pay with a card:</p>
+                <div id="card-frame" class="mx-auto">
+                    <!-- Yoco Inline form will be added here -->
+                </div>
+                <div class="text-center mt-3 mb-3">
+                    <button
+                        id="pay-button"
+                        class:bg-blue={submitButton && amountInRands == 290}
+                        class:bg-gold={submitButton && amountInRands == 120}
+                        class:cta={submitButton}
+                        class="btn btn-lg shadow"
+                        on:click|preventDefault={makePayment}
+                        disabled={!submitButton}
+                    >
+                        PAY - R {amountInRands}
+                    </button>
+                </div>
             </form>
+
+            <div class="Sso__divider ">
+                <span class="Sso__dividerLine" />
+                <span class="Sso__dividerText">or</span>
+                <span class="Sso__dividerLine" />
+            </div>
+
+            <div class="text-center">
+                <label class="fw-bold mb-2" for="voucher">Pay with a voucher:</label>
+                <input
+                    class="form-control mx-auto"
+                    placeholder="TT000000"
+                    type="text"
+                    name="voucher"
+                    id="voucherInput"
+                    minlength="8"
+                    maxlength="8"
+                    bind:value={voucher}
+                />
+            </div>
+
+            <div class="text-center mt-3 mb-3">
+                <button
+                    id="pay-button"
+                    class:cta={submitButton}
+                    class="btn btn-lg shadow bg-blue"
+                    on:click|preventDefault={makeVoucherPayment}
+                    disabled={!submitButton}
+                >
+                    PAY
+                </button>
+            </div>
+
+            <div class="text-center mb-3">
+                Corporate sponsorship of a school:
+                <a href="mailto:zani@thinkteacher.co.za" class="btn btn-sm bg-gold">Contact Zani</a>
+            </div>
         </div>
     </div>
     <hr class="rounded" />

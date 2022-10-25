@@ -5,7 +5,7 @@
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
     import { API_URL } from "$lib/env.js";
-    import { errMsg, cut_off_date } from "$lib/stores";
+    import { errMsg } from "$lib/stores";
     import { compareTime } from "$lib/re_utils";
 
     onMount(async () => {
@@ -36,9 +36,7 @@
             // 		$errMsg = "No payment found...";
             // 	});
 
-            // TODO: rather implement this logic in the backend
-            const year = 3.16 * Math.pow(10, 10);
-            const created_at = res.data.created_at;
+            const created_at = res.data.createdAt;
 
             let paidMember = res.data.paid;
             // let payment = paymentFind.data;
@@ -52,12 +50,12 @@
             // Check for those users who are valid free members
             if (paidMember) {
                 console.log("you are paid up, payment check");
-            } else if (compareTime(new Date(created_at), new Date($cut_off_date))) {
+            } else if (compareTime(created_at)) {
                 console.log("you are paid up, free member");
             } else {
                 goto("/payment");
                 console.log("payment needed");
-                $errMsg = "Your account's payment is not up to date...";
+                $errMsg = "Payment is due";
             }
 
             // Check for if you have paid
