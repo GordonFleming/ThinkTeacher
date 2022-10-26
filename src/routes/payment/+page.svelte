@@ -96,7 +96,7 @@
                         data: {
                             amount_in_cents: amountInCents,
                             token: token.id,
-                            paid: true,
+                            paid: false,
                             description: "ThinkTeacher Annual Membership (card)",
                             reference_number: refNum,
                             users_permissions_user: $id,
@@ -136,7 +136,7 @@
                         voucher: voucher,
                         amount_in_cents: amountInCents,
                         token: null,
-                        paid: true,
+                        paid: false,
                         description: "ThinkTeacher Annual Membership (voucher)",
                         reference_number: refNum,
                         users_permissions_user: $id,
