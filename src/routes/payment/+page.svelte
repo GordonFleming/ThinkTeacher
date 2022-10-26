@@ -12,7 +12,7 @@
         form,
         loading = true,
         paying = false,
-        voucher,
+        voucher = "",
         submitButton = true,
         amountInCents = 29000,
         successMsg,
@@ -123,7 +123,10 @@
         });
     }
 
+    let voucherCheck = true;
+    $: voucher.length === 8 ? (voucherCheck = false) : (voucherCheck = true);
     async function makeVoucherPayment() {
+        voucherCheck = true;
         axios
             .post(
                 `${API_URL}/payments`,
@@ -149,12 +152,12 @@
             .then((response) => {
                 successMsg = "Success, payment has been made!";
                 console.log(response);
-                paying = false;
+                voucherCheck = false;
             })
             .catch((error) => {
                 $errMsg = error.response.data.error.message;
                 console.log("An error occurred:", error.response.data.error.message);
-                paying = false;
+                voucherCheck = false;
             });
     }
 </script>
@@ -249,10 +252,10 @@
             <div class="text-center mt-3 mb-3">
                 <button
                     id="pay-button"
-                    class:cta={submitButton}
+                    class:cta={voucherCheck}
                     class="btn btn-lg shadow bg-blue"
                     on:click|preventDefault={makeVoucherPayment}
-                    disabled={!submitButton}
+                    disabled={voucherCheck}
                 >
                     PAY
                 </button>
