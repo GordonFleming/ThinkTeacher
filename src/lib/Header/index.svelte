@@ -9,6 +9,7 @@
             document.querySelector(".animated-icon3").classList.toggle("open");
         });
         $name = localStorage.getItem("name");
+        $ttNum = localStorage.getItem("ttNum");
         $surname = localStorage.getItem("surname");
         avatar = `https://avatars.dicebear.com/api/initials/${
             $name + "-" + $surname
