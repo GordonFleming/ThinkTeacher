@@ -596,9 +596,6 @@
         font-size: 2.4em;
         text-align: center;
     }
-    .read {
-        line-height: 2;
-    }
     .banner-all {
         position: relative;
     }

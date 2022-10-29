@@ -26,6 +26,9 @@ body {
     font-weight: normal;
     font-style: normal;
 }
+.read {
+    line-height: 2;
+}
 .think {
     color: var(--logo-gold);
     font-weight: 900;
