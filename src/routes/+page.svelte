@@ -134,7 +134,7 @@
         </div>
     {/if}
 
-    <div class="row text-center grey-grad rounded justify-content-center big-gap">
+    <!-- <div class="row text-center grey-grad rounded justify-content-center big-gap">
         <div class="col-12 p-4">
             <h2>About us</h2>
             <h3 class="read">
@@ -144,7 +144,7 @@
                 innovative and sustainable change agents in and for South Africa.
             </h3>
         </div>
-    </div>
+    </div> -->
 
     <!-- Carousel of Webinars -->
     <!-- <WebinarsBar /> -->
@@ -688,8 +688,8 @@
     .logo {
         max-height: 120px;
         width: auto;
-        -webkit-filter: grayscale(100%);
-        filter: grayscale(100%);
+        /* -webkit-filter: grayscale(100%); */
+        /* filter: grayscale(100%); */
     }
     .logo-box {
         border: var(--logo-gold) 3px solid;
