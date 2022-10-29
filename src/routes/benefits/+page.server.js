@@ -10,7 +10,6 @@ let health_cat = 3,
 	legal_cat = 9,
 	books_cat = 6,
 	cars_cat = 7,
-	glasses_cat = 8,
 	business_cat = 9;
 if (prod === "true") {
 	(health_cat = 5),
@@ -80,7 +79,6 @@ export async function load() {
 		legal = [],
 		books = [],
 		cars = [],
-		glasses = [],
 		business = [];
 	let source;
 
@@ -116,9 +114,6 @@ export async function load() {
 				case cars_cat:
 					cars.push(item);
 					break;
-				case glasses_cat:
-					glasses.push(item);
-					break;
 				case business_cat:
 					business.push(item);
 					break;
@@ -138,7 +133,6 @@ export async function load() {
 			legal,
 			books,
 			cars,
-			glasses,
 			business,
 			source,
 		};

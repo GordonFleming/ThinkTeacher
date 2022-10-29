@@ -144,20 +144,7 @@
                         .getElementById("cars")
                         .scrollIntoView({ behavior: "smooth", block: "start" })}
             >
-                <h4>
-                    Cars <span class="text-logo-gold">-</span>
-                </h4>
-            </button>
-        </li>
-        <li class="list-inline-item">
-            <button
-                class="scrl-btn"
-                on:click={() =>
-                    document
-                        .getElementById("glasses")
-                        .scrollIntoView({ behavior: "smooth", block: "start" })}
-            >
-                <h4>Glasses</h4>
+                <h4>Cars</h4>
             </button>
         </li>
     </ul>
@@ -238,11 +225,6 @@
             <Benefit benefitData={business} />
 
             <PartnerBenefit partnerData={business} />
-        </div>
-        <!-- Glasses -->
-        <div class="grey-grad row justify-content-center big-gap" id="glasses">
-            <h2 class="display-3">Glasses</h2>
-            <h4>Coming soon</h4>
         </div>
         <!-- Connect -->
         <div class="grey-grad row justify-content-center big-gap" id="connect">

@@ -149,7 +149,7 @@
     <!-- Carousel of Webinars -->
     <!-- <WebinarsBar /> -->
 
-    <div class="row grey-grad text-center big-gap">
+    <div class="row grey-grad text-center big-gap justify-content-center">
         <h2>Benefits</h2>
         <h5 class="mb-5">
             Click on a benefit below to see what our partners can offer you as a ThinkTeacher member
@@ -329,29 +329,6 @@
             <h3 class="text-lowercase mt-3 text-blue">
                 <span class="text-logo-gold">think</span>Wheels
             </h3>
-        </div>
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a
-                href="/benefits"
-                use:viewport
-                on:enterViewport={() => (ben9 = true)}
-                on:click={() => ($travelScroll = "glasses")}
-            >
-                <div class="placeholder">
-                    {#if ben9}
-                        <img
-                            transition:fly={{ y: 200, duration: 1000 }}
-                            class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/glasses_7a0c367bde.webp"
-                            alt="Glasses"
-                        />
-                    {/if}
-                </div>
-            </a>
-            <h3 class="text-lowercase mt-3 text-blue">
-                <span class="text-logo-gold">think</span>Glasses
-            </h3>
-            <h5 class="text-blue">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
             <a
