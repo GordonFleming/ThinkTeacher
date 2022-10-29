@@ -158,7 +158,7 @@
                             <a style="text-decoration: none;" href="/" on:click={logoutUser}>
                                 <span id="logout" class="text-logo-gold">Logout</span>
                             </a><br />
-                            <span class="text-logo-gold" style="font-size: 0.75em;">{$ttNum}</span>
+                            <!-- <span class="text-logo-gold" style="font-size: 0.75em;">{$ttNum}</span> -->
                         </h6>
                     </div>
                 {:else}

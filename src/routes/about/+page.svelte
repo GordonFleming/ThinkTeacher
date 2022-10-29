@@ -9,7 +9,7 @@
 </svelte:head>
 
 <h2 class="mt-5 text-blue text-center">
-    Why you should become a <span class="text-logo-gold">think</span>teacher member
+    Why <span class="text-logo-gold">think</span>teacher
 </h2>
 
 <div class="container mb-4">
