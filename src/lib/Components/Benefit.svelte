@@ -48,8 +48,8 @@
                         on:keydown={() => redirectPlusDataCompute(benData.attributes.name)}
                     />
                     <div class="card-body">
-                        <h3 class="card-title text-logo-gold">
-                            Think <span class="text-lighter-blue">{benData.attributes.name}</span>
+                        <h3 class="card-title text-logo-gold text-lowercase">
+                            think<span class="text-white">{benData.attributes.name}</span>
                         </h3>
                         <p class="card-text">
                             {@html benData.attributes.description}

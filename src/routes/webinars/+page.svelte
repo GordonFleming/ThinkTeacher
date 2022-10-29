@@ -21,7 +21,7 @@
 
 <div class="container mt-5 mb-5">
     <div class="row text-center justify-content-center">
-        <h1 class="mb-4"><span class="think">Think</span>Teacher Webinars</h1>
+        <h1 class="mb-4"><span class="think">think</span>teacher Webinars</h1>
 
         {#each webinars as webinar}
             <div class="col-lg-6 col-md-12 mt-2">

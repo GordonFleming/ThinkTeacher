@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo:wght@600&display=swap');
 :root {
     --logo-gold: #D9B73D;
     --logo-grey: #4F5D89;
@@ -7,7 +8,6 @@
     --bg-other: #CACFD9;
     --bg-banner: #CACFD9;
 }
-
 html{
     height: 100%;
 }
@@ -32,6 +32,7 @@ body {
 .think {
     color: var(--logo-gold);
     font-weight: 900;
+    font-family: 'Exo', sans-serif;
 }
 .sticky-top{
     background-color: #fff;

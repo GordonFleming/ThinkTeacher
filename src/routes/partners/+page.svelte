@@ -12,7 +12,7 @@
 </svelte:head>
 
 <div class="container mb-5">
-    <h1 class="text-center mb-4"><span class="think">Think</span>Teacher Partners</h1>
+    <h1 class="text-center mb-4"><span class="think">think</span>teacher Partners</h1>
 
     <div class="row justify-content-center">
         {#each partners as partner}

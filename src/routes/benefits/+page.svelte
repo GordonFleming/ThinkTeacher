@@ -39,7 +39,7 @@
             : navbar.classList.remove("sticky-top")}
 />
 
-<h1 class="text-center">Exclusive benefits for <span class="think">Think</span>Teacher members</h1>
+<h1 class="text-center">Exclusive benefits for <span class="think">think</span>teacher members</h1>
 
 <div class="text-center" id="nav-benefits">
     <ul class="list-inline">

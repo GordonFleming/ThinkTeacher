@@ -99,7 +99,7 @@
         “Education is the most powerful weapon you can use to change the world.” <br /> Nelson Mandela.
     </p>
     <p class="fs-4 text-blue">
-        <span class="think">Think</span>Teacher - by teachers for teachers.
+        <span class="think">think</span>teacher - by teachers for teachers.
     </p>
 </div>
 
@@ -172,7 +172,9 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Wellbeing</h3>
+            <h3 class="text-lowercase mt-3 text-blue">
+                <span class="text-logo-gold">think</span>Wellbeing
+            </h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
             <a
@@ -192,7 +194,9 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Travel</h3>
+            <h3 class="text-lowercase mt-3 text-blue">
+                <span class="text-logo-gold">think</span>Travel
+            </h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
             <a
@@ -212,8 +216,8 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3 text-blue">
-                <span class="text-logo-gold">Think</span> Medical Aid
+            <h3 class="text-lowercase mt-3 text-blue">
+                <span class="text-logo-gold">think</span>Medical Aid
             </h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
@@ -234,7 +238,9 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Finance</h3>
+            <h3 class="text-lowercase mt-3 text-blue">
+                <span class="text-logo-gold">think</span>Finance
+            </h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
             <a
@@ -254,7 +260,9 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Legal</h3>
+            <h3 class="text-lowercase mt-3 text-blue">
+                <span class="text-logo-gold">think</span>Legal
+            </h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
             <a
@@ -274,7 +282,9 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Courses</h3>
+            <h3 class="text-lowercase mt-3 text-blue">
+                <span class="text-logo-gold">think</span>Courses
+            </h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
             <a
@@ -294,8 +304,8 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3 text-blue">
-                <span class="text-logo-gold">Think</span> Book Store
+            <h3 class="text-lowercase mt-3 text-blue">
+                <span class="text-logo-gold">think</span>Book Store
             </h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
@@ -316,7 +326,9 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Wheels</h3>
+            <h3 class="text-lowercase mt-3 text-blue">
+                <span class="text-logo-gold">think</span>Wheels
+            </h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
             <a
@@ -336,7 +348,9 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Glasses</h3>
+            <h3 class="text-lowercase mt-3 text-blue">
+                <span class="text-logo-gold">think</span>Glasses
+            </h3>
             <h5 class="text-blue">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
@@ -357,7 +371,9 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Connect</h3>
+            <h3 class="text-lowercase mt-3 text-blue">
+                <span class="text-logo-gold">think</span>Connect
+            </h3>
             <h5 class="text-blue">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
@@ -378,7 +394,9 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Business</h3>
+            <h3 class="text-lowercase mt-3 text-blue">
+                <span class="text-logo-gold">think</span>Business
+            </h3>
             <h5 class="text-blue">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
@@ -399,14 +417,16 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Jobs</h3>
+            <h3 class="text-lowercase mt-3 text-blue">
+                <span class="text-logo-gold">think</span>Jobs
+            </h3>
             <h5 class="text-blue">coming soon</h5>
         </div>
     </div>
 
     <div class="container text-center mb-4 grey-grad big-gap">
         <h2 class="mb-4">
-            Why you should become a <span class="text-logo-gold">Think</span>Teacher member
+            Why you should become a <span class="text-logo-gold">think</span>eacher member
         </h2>
 
         <!-- svelte-ignore a11y-media-has-caption -->

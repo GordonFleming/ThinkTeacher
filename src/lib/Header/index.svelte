@@ -1,6 +1,6 @@
 <script>
     import { onMount, afterUpdate } from "svelte";
-    import { name, surname } from "$lib/stores";
+    import { name, surname, ttNum } from "$lib/stores";
     import { goto } from "$app/navigation";
 
     let avatar = "";
@@ -152,12 +152,15 @@
                     <a class="mb-2" title="User profile" href="/auth/profile" on:click={mustClick}
                         ><img class="avatar" src={avatar} alt="avatar" /></a
                     >
-                    <h6>
-                        &nbsp;&nbsp;Welcome {$name},
-                        <a style="text-decoration: none;" href="/" on:click={logoutUser}>
-                            <span id="logout" style="color: var(--logo-gold);">Logout</span>
-                        </a>
-                    </h6>
+                    <div>
+                        <h6>
+                            &nbsp;&nbsp;Welcome {$name},
+                            <a style="text-decoration: none;" href="/" on:click={logoutUser}>
+                                <span id="logout" class="text-logo-gold">Logout</span>
+                            </a><br />
+                            <span class="text-logo-gold" style="font-size: 0.75em;">{$ttNum}</span>
+                        </h6>
+                    </div>
                 {:else}
                     <p>
                         <a
