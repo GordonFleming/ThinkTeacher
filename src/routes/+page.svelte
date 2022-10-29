@@ -96,7 +96,7 @@
     <p class="fs-2 lh-lg">
         Why ThinkTeacher? Each teacher cares for a few hundred odd students or learners. If we can
         care for and promote the teaching profession, we can inspire the youth of South Africa.
-        “Education is the most powerful weapon you can use to change the world.” Nelson Mandela.
+        “Education is the most powerful weapon you can use to change the world.” <br /> Nelson Mandela.
     </p>
     <p class="fs-4 text-blue">
         <span class="think">Think</span>Teacher - by teachers for teachers.
@@ -147,7 +147,7 @@
     </div>
 
     <!-- Carousel of Webinars -->
-    <WebinarsBar />
+    <!-- <WebinarsBar /> -->
 
     <div class="row grey-grad text-center big-gap">
         <h2>Benefits</h2>
@@ -172,7 +172,7 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3"><span class="text-logo-gold">Think</span> Wellbeing</h3>
+            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Wellbeing</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
             <a
@@ -192,7 +192,7 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3"><span class="text-logo-gold">Think</span> Travel</h3>
+            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Travel</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
             <a
@@ -212,7 +212,9 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3"><span class="text-logo-gold">Think</span> Medical Aid</h3>
+            <h3 class="mt-3 text-blue">
+                <span class="text-logo-gold">Think</span> Medical Aid
+            </h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
             <a
@@ -232,7 +234,7 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3"><span class="text-logo-gold">Think</span> Finance</h3>
+            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Finance</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
             <a
@@ -252,7 +254,7 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3"><span class="text-logo-gold">Think</span> Legal</h3>
+            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Legal</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
             <a
@@ -272,7 +274,7 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3"><span class="text-logo-gold">Think</span> Courses</h3>
+            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Courses</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
             <a
@@ -292,7 +294,9 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3"><span class="text-logo-gold">Think</span> Book Store</h3>
+            <h3 class="mt-3 text-blue">
+                <span class="text-logo-gold">Think</span> Book Store
+            </h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
             <a
@@ -312,7 +316,7 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3"><span class="text-logo-gold">Think</span> Wheels</h3>
+            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Wheels</h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
             <a
@@ -332,7 +336,7 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3"><span class="text-logo-gold">Think</span> Glasses</h3>
+            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Glasses</h3>
             <h5 class="text-blue">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
@@ -353,7 +357,7 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3"><span class="text-logo-gold">Think</span> Connect</h3>
+            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Connect</h3>
             <h5 class="text-blue">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
@@ -374,7 +378,7 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3"><span class="text-logo-gold">Think</span> Business</h3>
+            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Business</h3>
             <h5 class="text-blue">coming soon</h5>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
@@ -395,7 +399,7 @@
                     {/if}
                 </div>
             </a>
-            <h3 class="mt-3"><span class="text-logo-gold">Think</span> Jobs</h3>
+            <h3 class="mt-3 text-blue"><span class="text-logo-gold">Think</span> Jobs</h3>
             <h5 class="text-blue">coming soon</h5>
         </div>
     </div>

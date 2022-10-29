@@ -82,7 +82,7 @@
                 <div class="card bg-dark text-white" style="border-radius: 1rem;">
                     <div class="card-body p-md-4 p-lg-4 text-center">
                         <div class="mb-md-3">
-                            <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
+                            <h2 class="fw-bold mb-2">LOGIN</h2>
 
                             {#if errorMsg != undefined}
                                 <h4 class="error-col">{errorMsg}</h4>
@@ -124,14 +124,14 @@
                                         required
                                     />
                                 </div>
-                                <div class="form-outline form-white mb-2 text-left">
+                                <div class="form-outline form-white mb-4">
                                     <label class="form-label" for="Password">Password</label>
                                     <div class="input-group mb-3">
                                         <input
                                             type="password"
                                             id="Password"
                                             class="form-control form-control-lg"
-                                            placeholder="Password"
+                                            placeholder="password"
                                             bind:value={password}
                                             required
                                         />
@@ -192,8 +192,8 @@
 </section>
 
 <style>
-    input {
+    /* input {
         max-width: 400px;
         margin: 0 auto;
-    }
+    } */
 </style>

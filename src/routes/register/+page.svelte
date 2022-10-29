@@ -219,7 +219,7 @@
                     {/if}
                     <div class="card-body p-md-3 p-lg-4 text-center">
                         <div class="mb-md-3">
-                            <h2 class="fw-bold mb-2 text-uppercase">Register</h2>
+                            <h2 class="fw-bold mb-2">REGISTER</h2>
                             {#if errorMsg}
                                 <h4 class="error-col">{errorMsg}</h4>
                             {:else if msg}

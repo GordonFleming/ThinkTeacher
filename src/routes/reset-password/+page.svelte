@@ -77,7 +77,7 @@
             <div class="col-12 col-md-8 col-lg-6 col-xl-6">
                 <div class="card bg-dark text-white" style="border-radius: 1rem;">
                     <div class="card-body p-md-4 p-lg-5 text-center">
-                        <h2 class="fw-bold mb-2 text-uppercase">Forgot Password</h2>
+                        <h2 class="fw-bold mb-2 text-uppercase">Reset Password</h2>
                         <p class="text-white-50 mb-3">Please enter your new password below.</p>
 
                         {#if errorMsg}

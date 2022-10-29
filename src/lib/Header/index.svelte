@@ -60,16 +60,16 @@
                     <a
                         class="nav-link fromLeft"
                         data-sveltekit-prefetch
-                        href="/about"
-                        on:click={mustClick}>About</a
+                        href="/"
+                        on:click={mustClick}>Home</a
                     >
                 </li>
                 <li class="nav-item">
                     <a
                         class="nav-link fromLeft"
                         data-sveltekit-prefetch
-                        href="/benefits"
-                        on:click={mustClick}>Benefits</a
+                        href="/about"
+                        on:click={mustClick}>About</a
                     >
                 </li>
                 <li class="nav-item">
@@ -84,11 +84,27 @@
                     <a
                         class="nav-link fromLeft"
                         data-sveltekit-prefetch
+                        href="/benefits"
+                        on:click={mustClick}>Benefits</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a
+                        class="nav-link fromLeft"
+                        data-sveltekit-prefetch
                         href="/news"
                         on:click={mustClick}>News Flash</a
                     >
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item">
+                    <a
+                        class="nav-link fromLeft"
+                        data-sveltekit-prefetch
+                        href="/webinars"
+                        on:click={mustClick}>Webinars</a
+                    >
+                </li>
+                <!-- <li class="nav-item dropdown">
                     <a
                         class="nav-link from-left dropdown-toggle"
                         data-bs-toggle="dropdown"
@@ -114,7 +130,8 @@
                             >
                         </li>
                     </ul>
-                </li>
+                </li> -->
+
                 <!-- <li class="nav-item">
                     <a class="nav-link fromLeft" data-sveltekit-prefetch href="/our-team" on:click={mustClick}>Our Team</a>
                 </li> -->
@@ -217,7 +234,7 @@
         display: inline-block;
         width: auto;
     }
-    .dropdown-menu {
+    /* .dropdown-menu {
         background-color: #fefeff;
     }
     .dropdown-item {
@@ -227,7 +244,7 @@
         color: #fff;
         text-decoration: none;
         background-color: #fff;
-    }
+    } */
     #logout {
         cursor: pointer;
         font-size: 1.12em;
