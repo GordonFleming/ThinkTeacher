@@ -4,7 +4,7 @@
     import { goto } from "$app/navigation";
     import Icon from "$lib/Icons/icon.svelte";
     import { name, surname, id, errMsg, ttNum } from "$lib/stores";
-    import { facebook, twitter, instagram } from "$lib/Icons/icons";
+    import { facebook, twitter, instagram, eye, eyeSlash } from "$lib/Icons/icons";
     import { browserSet, compareTime } from "$lib/re_utils";
     import { API_URL } from "$lib/env.js";
 
@@ -55,6 +55,18 @@
                 console.log("An error occurred:", error);
                 errorMsg = error.response.data.error.message;
             });
+    }
+
+    let seePlz = true;
+    function seePassword() {
+        var x = document.getElementById("Password");
+        if (x.type === "password") {
+            x.type = "text";
+            seePlz = false;
+        } else {
+            seePlz = true;
+            x.type = "password";
+        }
     }
 </script>
 
@@ -114,15 +126,27 @@
                                 </div>
                                 <div class="form-outline form-white mb-2 text-left">
                                     <label class="form-label" for="Password">Password</label>
-                                    <input
-                                        type="password"
-                                        id="Password"
-                                        class="form-control form-control-lg"
-                                        placeholder="Password"
-                                        bind:value={password}
-                                        required
-                                    />
+                                    <div class="input-group mb-3">
+                                        <input
+                                            type="password"
+                                            id="Password"
+                                            class="form-control form-control-lg"
+                                            placeholder="Password"
+                                            bind:value={password}
+                                            required
+                                        />
+                                        <button
+                                            type="button"
+                                            class="input-group-text"
+                                            on:click={seePassword}
+                                            ><Icon
+                                                data={seePlz ? eye : eyeSlash}
+                                                scale="1.8"
+                                            /></button
+                                        >
+                                    </div>
                                 </div>
+
                                 <p class="small mb-3 pb-lg-2">
                                     <a class="text-white-50" href="/forgot-password"
                                         >Forgot password?</a
