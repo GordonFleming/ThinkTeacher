@@ -46,6 +46,10 @@ body {
     border-radius: 20px;
 }
 
+.font-exo {
+    font-family: "Exo", sans-serif;
+}
+
 .bg-other{
     background-color: var(--bg-other);
 }
@@ -153,6 +157,10 @@ select option{
 
 .hidden {
     display: none;
+}
+.clear-btn{
+    background: none; 
+    border: none;
 }
 
 /* Bootsrap mods */

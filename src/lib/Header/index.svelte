@@ -26,6 +26,7 @@
     function logoutUser() {
         localStorage.clear();
         $name = null;
+        goto("/");
     }
 
     function mustClick() {
@@ -132,9 +133,6 @@
                     </ul>
                 </li> -->
 
-                <!-- <li class="nav-item">
-                    <a class="nav-link fromLeft" data-sveltekit-prefetch href="/our-team" on:click={mustClick}>Our Team</a>
-                </li> -->
                 <li class="nav-item">
                     <a
                         class="nav-link fromLeft"
@@ -149,17 +147,41 @@
             <!-- Right elements -->
             <div class="d-flex align-items-center align-top">
                 {#if $name}
-                    <a class="mb-2" title="User profile" href="/auth/profile" on:click={mustClick}
-                        ><img class="avatar" src={avatar} alt="avatar" /></a
-                    >
-                    <div>
+                    <div class="mt-2">
                         <h6>
-                            &nbsp;&nbsp;Welcome {$name},
-                            <a style="text-decoration: none;" href="/" on:click={logoutUser}>
+                            Welcome <span class="text-logo-gold">{$name}</span>
+                            <!-- <a style="text-decoration: none;" href="/" on:click={logoutUser}>
                                 <span id="logout" class="text-logo-gold">Logout</span>
-                            </a><br />
-                            <!-- <span class="text-logo-gold" style="font-size: 0.75em;">{$ttNum}</span> -->
+                            </a> -->
+                            <br />
+                            <small class="text-blue" style="font-size: 0.75em;">{$ttNum}</small>
                         </h6>
+                    </div>
+                    <div class="dropdown" style="margin-right: 1rem;">
+                        <button
+                            type="button"
+                            title="Options"
+                            class="clear-btn"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                        >
+                            <img class="avatar" src={avatar} alt="avatar" />
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <button
+                                    class="dropdown-item"
+                                    type="button"
+                                    on:click={() => goto("/auth/profile")}>Profile</button
+                                >
+                            </li>
+                            <li>
+                                <button class="dropdown-item" type="button" on:click={logoutUser}
+                                    >Logout</button
+                                >
+                            </li>
+                        </ul>
                     </div>
                 {:else}
                     <p>
@@ -186,13 +208,10 @@
 </nav>
 
 <style>
-    @media screen and (min-width: 1300px) {
-        li {
+    @media screen and (min-width: 1450px) {
+        .nav-item {
             font-size: 1.16em;
             font-weight: 500;
-        }
-        a {
-            line-height: 2.8rem;
         }
         .nav-img {
             padding-right: 6rem;
@@ -200,15 +219,16 @@
         .navbar-nav .nav-link {
             margin-right: 15px;
             margin-left: 15px;
+            line-height: 2.8rem;
         }
     }
 
-    @media screen and (max-width: 1300px) {
-        li {
+    @media screen and (max-width: 1450px) {
+        .nav-item {
             font-size: 1em;
             font-weight: 460;
         }
-        a {
+        .navbar-nav .nav-link {
             line-height: 2.6rem;
         }
     }
@@ -218,12 +238,12 @@
             max-width: 80px;
             height: auto;
         }
-        a {
+        .navbar-nav .nav-link {
             font-size: 1.14em;
             line-height: 3rem;
             text-align: center;
         }
-        li {
+        .nav-item {
             text-align: center;
         }
     }
@@ -237,29 +257,35 @@
         display: inline-block;
         width: auto;
     }
-    /* .dropdown-menu {
+    .dropdown-menu {
         background-color: #fefeff;
     }
     .dropdown-item {
         color: black;
     }
+    .dropdown-item:hover {
+        color: rgb(78, 75, 75);
+    }
     .dropdown-item:active {
         color: #fff;
         text-decoration: none;
         background-color: #fff;
-    } */
-    #logout {
+    }
+    .dropdown-item:focus {
+        color: rgb(92, 90, 90);
+    }
+    /* #logout {
         cursor: pointer;
         font-size: 1.12em;
         transition: 0.3s;
-    }
+    } */
     h6 {
         color: var(--logo-grey);
         margin-right: 1rem;
     }
-    #logout:hover {
+    /* #logout:hover {
         font-size: 1.15em;
-    }
+    } */
     a:after {
         display: block;
         content: "";

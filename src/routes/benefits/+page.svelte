@@ -4,6 +4,7 @@
     import { travelScroll } from "$lib/stores";
     import Benefit from "$lib/Components/Benefit.svelte";
     import PartnerBenefit from "$lib/Components/PartnerBenefit.svelte";
+    import Title from "$lib/Components/Title.svelte";
     import SvelteMarkdown from "svelte-markdown";
 
     let navbar, sticky;
@@ -39,7 +40,7 @@
             : navbar.classList.remove("sticky-top")}
 />
 
-<h1 class="text-center">Exclusive benefits for <span class="think">think</span>teacher members</h1>
+<Title title={"benefits"} />
 
 <div class="text-center" id="nav-benefits">
     <ul class="list-inline">

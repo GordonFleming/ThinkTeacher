@@ -1,4 +1,6 @@
 <script>
+    import Title from "$lib/Components/Title.svelte";
+
     export let data;
 
     let { webinars } = data;
@@ -19,10 +21,9 @@
     <meta name="description" content="View the many ThinkTeacher's great webinars!" />
 </svelte:head>
 
-<div class="container mt-5 mb-5">
+<div class="container mb-5">
+    <Title title={"webinars"} />
     <div class="row text-center justify-content-center">
-        <h1 class="mb-4"><span class="think">think</span>teacher Webinars</h1>
-
         {#each webinars as webinar}
             <div class="col-lg-6 col-md-12 mt-2">
                 <div class="webinar-wrapper">

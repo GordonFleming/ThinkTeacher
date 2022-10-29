@@ -35,7 +35,7 @@
 </script>
 
 <svelte:head>
-    <title>Contact</title>
+    <title>Contact Us</title>
     <meta name="description" content="Contact ThinkTeacher here!" />
 </svelte:head>
 
@@ -46,8 +46,10 @@
                 <div class="col-12 col-md-8 col-lg-6 col-xl-6">
                     <div class="card bg-dark text-white" style="border-radius: 1rem;">
                         <div class="card-body p-md-4 p-lg-5 text-center">
-                            <h2 class="fw-bold mb-2 text-uppercase">Contact</h2>
-                            <p class="text-white-50 mb-3">Please feel free to contact us.</p>
+                            <h2 class="fw-bold mb-2 text-uppercase">Contact Us</h2>
+                            <p class="text-white-50 mb-3">
+                                Please feel free to contact us anytime.
+                            </p>
 
                             {#if errorMsg}
                                 <h4 class="error-col">{errorMsg}</h4>

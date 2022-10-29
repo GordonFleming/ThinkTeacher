@@ -1,6 +1,7 @@
 <script>
     import { goto, prefetch } from "$app/navigation";
     import { travelScroll } from "$lib/stores";
+    import Title from "$lib/Components/Title.svelte";
 
     export let data;
     let { partners } = data;
@@ -12,7 +13,7 @@
 </svelte:head>
 
 <div class="container mb-5">
-    <h1 class="text-center mb-4"><span class="think">think</span>teacher partners</h1>
+    <Title title={"partners"} />
 
     <div class="row justify-content-center">
         {#each partners as partner}

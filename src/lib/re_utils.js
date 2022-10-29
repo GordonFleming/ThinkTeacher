@@ -16,12 +16,9 @@ export function browserSessionSet(key, value){
 const cut_off_date = dayjs("2022-04-15");
 
 export function compareTime(created_at) {
-    console.log(created_at);
     let check_date = dayjs(created_at).add(10, 'month');
     if (dayjs(cut_off_date).isAfter(dayjs(created_at), 'month')) {
-        console.log("run2");
         return !dayjs(check_date).isBefore(dayjs(), 'month');
     }
-    console.log("run");
     return false;
 }

@@ -1,5 +1,6 @@
 <script>
     import { goto } from "$app/navigation";
+    import Title from "$lib/Components/Title.svelte";
 
     export let data;
 
@@ -14,13 +15,9 @@
     />
 </svelte:head>
 
-<div class="my-4">
-    <h1 class="text-center text-3xl font-bold">
-        <span class="think">think</span>teacher news flash
-    </h1>
-</div>
+<div class="container mx-auto mb-5">
+    <Title title={"news flashes"} />
 
-<div class="container mx-auto mt-4 mb-5">
     {#if posts.length <= 0}
         <h3 class="text-center">Coming Soon!</h3>
     {:else}
