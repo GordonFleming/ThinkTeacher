@@ -217,7 +217,7 @@
                 </div>
             </a>
             <h3 class="text-lowercase mt-3 text-blue">
-                <span class="text-logo-gold">think</span>Medical Aid
+                <span class="text-logo-gold">think</span>MedicalAid
             </h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
@@ -305,7 +305,7 @@
                 </div>
             </a>
             <h3 class="text-lowercase mt-3 text-blue">
-                <span class="text-logo-gold">think</span>Book Store
+                <span class="text-logo-gold">think</span>BookStore
             </h3>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
@@ -426,7 +426,7 @@
 
     <div class="container text-center mb-4 grey-grad big-gap">
         <h2 class="mb-4">
-            Why you should become a <span class="text-logo-gold">think</span>eacher member
+            Why you should become a <span class="text-logo-gold">think</span>teacher member
         </h2>
 
         <!-- svelte-ignore a11y-media-has-caption -->
