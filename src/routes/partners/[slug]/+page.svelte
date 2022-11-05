@@ -2,7 +2,7 @@
     import Icon from "$lib/Icons/icon.svelte";
     import { arrowLeft } from "$lib/Icons/icons";
     import SvelteMarkdown from "svelte-markdown";
-    import { travelScroll } from "$lib/stores";
+    import { goto } from "$app/navigation";
 
     export let data;
     let { partner } = data;
@@ -53,12 +53,10 @@
     </div>
 
     <div class="text-center mt-4">
-        <a href="/benefits"
-            ><button
-                class="btn bg-gold shadow cta text-black fs-5 p-1"
-                on:click={() => ($travelScroll = partner.category.data.attributes.name)}
-                >Enquire</button
-            ></a
+        ><button
+            class="btn bg-gold shadow cta text-black fs-5 p-1"
+            on:click={() => goto(`/benefits/${partner.category.data.attributes.name}`)}
+            >Enquire</button
         >
     </div>
 </div>

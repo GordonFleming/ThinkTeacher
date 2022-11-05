@@ -28,8 +28,11 @@
                         <div class="border-bottom border-dark border-1 mb-2" />
                         <button
                             class="btn btn-sm bg-gold shadow cta text-black"
-                            on:click={() => goto("/partners/" + partnerData[0].partner.slug)}
-                            >Read More</button
+                            on:click={() =>
+                                goto(
+                                    "/partners/" +
+                                        partnerData[0].attributes.partner.data.attributes.slug
+                                )}>Read More</button
                         >
                     </div>
                 </div>

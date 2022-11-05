@@ -3,8 +3,7 @@
     import Logo from "$lib/Components/logo.svelte";
     import { goto } from "$app/navigation";
     import { onMount, afterUpdate, onDestroy } from "svelte";
-    import viewport from "$lib/useViewportAction.js";
-    import { name, travelScroll, firstTime } from "$lib/stores";
+    import { name, firstTime } from "$lib/stores";
     import { fly } from "svelte/transition";
     import { Splide, SplideSlide } from "@splidejs/svelte-splide";
     import "@splidejs/svelte-splide/css";
@@ -41,9 +40,6 @@
     }, 2250);
 
     onMount(() => {
-        // To stop case where user reloads with the counter in view so therefore nothing is triggered...
-        // document.body.scrollTop = 0;
-        // document.documentElement.scrollTop = 0;
         intro = true;
     });
 
@@ -54,8 +50,6 @@
     onDestroy(() => {
         $firstTime = false;
     });
-
-    let ben1, ben2, ben3, ben4, ben5, ben6, ben7, ben8, ben9, ben10, ben11, ben12;
 </script>
 
 <svelte:head>
@@ -134,272 +128,8 @@
         </div>
     {/if}
 
-    <!-- <div class="row text-center grey-grad rounded justify-content-center big-gap">
-        <div class="col-12 p-4">
-            <h2>About us</h2>
-            <h3 class="read">
-                ThinkTeacher is an online portal dedicated to the inspiring teachers of South
-                Africa, providing access to benefit options, educational opportunities and nurturing
-                networks. ThinkTeacher's vision is to empower teachers to thrive in their role as
-                innovative and sustainable change agents in and for South Africa.
-            </h3>
-        </div>
-    </div> -->
-
     <!-- Carousel of Webinars -->
     <!-- <WebinarsBar /> -->
-
-    <div class="row grey-grad text-center big-gap justify-content-center">
-        <h2>Benefits</h2>
-        <h5 class="mb-5">
-            Click on a benefit below to see what our partners can offer you as a ThinkTeacher member
-        </h5>
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a
-                href="/benefits"
-                use:viewport
-                on:enterViewport={() => (ben1 = true)}
-                on:click={() => ($travelScroll = "wellbeing")}
-            >
-                <div class="placeholder">
-                    {#if ben1}
-                        <img
-                            transition:fly={{ y: 200, duration: 600 }}
-                            class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/well_being_a72b443d32.webp"
-                            alt="well being"
-                        />
-                    {/if}
-                </div>
-            </a>
-            <h3 class="text-lowercase mt-3 text-blue">
-                <span class="text-logo-gold">think</span>Wellbeing
-            </h3>
-        </div>
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a
-                href="/benefits"
-                use:viewport
-                on:enterViewport={() => (ben2 = true)}
-                on:click={() => ($travelScroll = "travel")}
-            >
-                <div class="placeholder">
-                    {#if ben2}
-                        <img
-                            transition:fly={{ y: 200, duration: 800 }}
-                            class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/travel_dedeab0486.webp"
-                            alt="travel"
-                        />
-                    {/if}
-                </div>
-            </a>
-            <h3 class="text-lowercase mt-3 text-blue">
-                <span class="text-logo-gold">think</span>Travel
-            </h3>
-        </div>
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a
-                href="/benefits"
-                use:viewport
-                on:enterViewport={() => (ben3 = true)}
-                on:click={() => ($travelScroll = "medical_aid")}
-            >
-                <div class="placeholder">
-                    {#if ben3}
-                        <img
-                            transition:fly={{ y: 200, duration: 1000 }}
-                            class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/health_d3dd30eed4.webp"
-                            alt="medical aid"
-                        />
-                    {/if}
-                </div>
-            </a>
-            <h3 class="text-lowercase mt-3 text-blue">
-                <span class="text-logo-gold">think</span>MedicalAid
-            </h3>
-        </div>
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a
-                href="/benefits"
-                use:viewport
-                on:enterViewport={() => (ben4 = true)}
-                on:click={() => ($travelScroll = "finance")}
-            >
-                <div class="placeholder">
-                    {#if ben4}
-                        <img
-                            transition:fly={{ y: 200, duration: 600 }}
-                            class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/insurance_65016c0e82.webp"
-                            alt="invest"
-                        />
-                    {/if}
-                </div>
-            </a>
-            <h3 class="text-lowercase mt-3 text-blue">
-                <span class="text-logo-gold">think</span>Finance
-            </h3>
-        </div>
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a
-                href="/benefits"
-                use:viewport
-                on:enterViewport={() => (ben5 = true)}
-                on:click={() => ($travelScroll = "legal")}
-            >
-                <div class="placeholder">
-                    {#if ben5}
-                        <img
-                            transition:fly={{ y: 200, duration: 800 }}
-                            class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/legal_9c79c917bb.webp"
-                            alt="legal"
-                        />
-                    {/if}
-                </div>
-            </a>
-            <h3 class="text-lowercase mt-3 text-blue">
-                <span class="text-logo-gold">think</span>Legal
-            </h3>
-        </div>
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a
-                href="/benefits"
-                use:viewport
-                on:enterViewport={() => (ben6 = true)}
-                on:click={() => ($travelScroll = "courses")}
-            >
-                <div class="placeholder">
-                    {#if ben6}
-                        <img
-                            transition:fly={{ y: 200, duration: 1000 }}
-                            class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/courses_d4d4152811.webp"
-                            alt="courses"
-                        />
-                    {/if}
-                </div>
-            </a>
-            <h3 class="text-lowercase mt-3 text-blue">
-                <span class="text-logo-gold">think</span>Courses
-            </h3>
-        </div>
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a
-                href="/benefits"
-                use:viewport
-                on:enterViewport={() => (ben7 = true)}
-                on:click={() => ($travelScroll = "books")}
-            >
-                <div class="placeholder">
-                    {#if ben7}
-                        <img
-                            transition:fly={{ y: 200, duration: 600 }}
-                            class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/bookstore_2e3811bf76.webp"
-                            alt="books"
-                        />
-                    {/if}
-                </div>
-            </a>
-            <h3 class="text-lowercase mt-3 text-blue">
-                <span class="text-logo-gold">think</span>BookStore
-            </h3>
-        </div>
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a
-                href="/benefits"
-                use:viewport
-                on:enterViewport={() => (ben8 = true)}
-                on:click={() => ($travelScroll = "cars")}
-            >
-                <div class="placeholder">
-                    {#if ben8}
-                        <img
-                            transition:fly={{ y: 200, duration: 800 }}
-                            class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/kia_car_2cea78c493.webp"
-                            alt="cars"
-                        />
-                    {/if}
-                </div>
-            </a>
-            <h3 class="text-lowercase mt-3 text-blue">
-                <span class="text-logo-gold">think</span>Wheels
-            </h3>
-        </div>
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a
-                href="/benefits"
-                use:viewport
-                on:enterViewport={() => (ben10 = true)}
-                on:click={() => ($travelScroll = "connect")}
-            >
-                <div class="placeholder">
-                    {#if ben10}
-                        <img
-                            transition:fly={{ y: 200, duration: 1000 }}
-                            class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/connectivity_5c27d7e7c1.webp"
-                            alt="Connect"
-                        />
-                    {/if}
-                </div>
-            </a>
-            <h3 class="text-lowercase mt-3 text-blue">
-                <span class="text-logo-gold">think</span>Connect
-            </h3>
-            <h5 class="text-blue">coming soon</h5>
-        </div>
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a
-                href="/benefits"
-                use:viewport
-                on:enterViewport={() => (ben11 = true)}
-                on:click={() => ($travelScroll = "business")}
-            >
-                <div class="placeholder">
-                    {#if ben11}
-                        <img
-                            transition:fly={{ y: 200, duration: 1000 }}
-                            class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/business_coach_443e1401ca.webp"
-                            alt="Connect"
-                        />
-                    {/if}
-                </div>
-            </a>
-            <h3 class="text-lowercase mt-3 text-blue">
-                <span class="text-logo-gold">think</span>Business
-            </h3>
-            <h5 class="text-blue">coming soon</h5>
-        </div>
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-            <a
-                href="/benefits"
-                use:viewport
-                on:enterViewport={() => (ben12 = true)}
-                on:click={() => ($travelScroll = "jobs")}
-            >
-                <div class="placeholder">
-                    {#if ben12}
-                        <img
-                            transition:fly={{ y: 200, duration: 1000 }}
-                            class="img-fluid offer offer-img"
-                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/jobs_7cacf0d38d.webp"
-                            alt="Connect"
-                        />
-                    {/if}
-                </div>
-            </a>
-            <h3 class="text-lowercase mt-3 text-blue">
-                <span class="text-logo-gold">think</span>Jobs
-            </h3>
-            <h5 class="text-blue">coming soon</h5>
-        </div>
-    </div>
 
     <div class="container text-center mb-4 grey-grad big-gap">
         <h2 class="mb-4">
@@ -601,9 +331,6 @@
         height: 400px;
         padding-top: 5rem;
     }
-    .placeholder {
-        height: 310px;
-    }
     .benefit-list ul li {
         font-size: 1.3em;
         position: relative;
@@ -645,19 +372,6 @@
 
     #welcome {
         margin-top: 0;
-    }
-
-    /* TODO */
-    /* Make max height smaller for smaller screeens */
-    .offer-img {
-        max-height: 300px;
-    }
-    .offer {
-        transition: all 0.5s;
-    }
-    .offer:hover {
-        transform: scale(1.05);
-        cursor: pointer;
     }
     .btn-lg {
         padding: 2rem 1rem 1rem 1rem;

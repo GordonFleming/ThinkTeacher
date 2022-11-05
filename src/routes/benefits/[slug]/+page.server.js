@@ -7,7 +7,7 @@ export async function load({ params }) {
 	const graphqlQuery = {
 		operationName: "fetchPackages",
 		query: `query fetchPackages {     
-            packages (filters: {partner: {category: {name: {eq: "travel"}}}}) {
+            packages (filters: {partner: {category: {name: {eq: "${slug}"}}}}) {
                 data {
                     attributes {
                         name,
@@ -56,7 +56,7 @@ export async function load({ params }) {
     const data = await res.json();
 
     if (res.status === 404 || data.data.packages.data.length === 0) {
-        throw error(404, `No post found, ${slug}`);
+        throw error(404, `Benefits for ${slug}, coming soon`);
     }
 
 	if (res.ok) {

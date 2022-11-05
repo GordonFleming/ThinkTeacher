@@ -1,6 +1,5 @@
 <script>
     import { goto, prefetch } from "$app/navigation";
-    import { travelScroll } from "$lib/stores";
     import Title from "$lib/Components/Title.svelte";
 
     export let data;
@@ -42,10 +41,7 @@
                     <div class="card-footer">
                         <a
                             data-sveltekit-prefetch
-                            href="/benefits"
-                            on:click={() =>
-                                ($travelScroll =
-                                    partner.attributes.category.data.attributes.name.toLowerCase())}
+                            href="/benefits/{partner.attributes.category.data.attributes.name}"
                             ><span class="badge bg-light"
                                 >{partner.attributes.category.data.attributes.name.replace(
                                     "_",

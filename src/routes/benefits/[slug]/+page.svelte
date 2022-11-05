@@ -14,7 +14,7 @@
 </svelte:head>
 
 <div class="container text-center">
-    <Title title={`${slug} benefits`} />
+    <Title title={slug.replace("_", "")} />
 
     <div class="row mt-4 mb-5 justify-content-center">
         <Benefit benefitData={packages} />
