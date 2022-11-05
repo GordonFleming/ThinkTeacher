@@ -1,31 +1,9 @@
 <script>
-    import { onMount } from "svelte";
-    import { goto } from "$app/navigation";
-    import { travelScroll } from "$lib/stores";
-    import Benefit from "$lib/Components/Benefit.svelte";
-    import PartnerBenefit from "$lib/Components/PartnerBenefit.svelte";
     import Title from "$lib/Components/Title.svelte";
-    import SvelteMarkdown from "svelte-markdown";
-
-    let navbar, sticky;
-    onMount(() => {
-        //document.body.scrollTop = 0;
-        function scrollBene() {
-            if ($travelScroll) {
-                console.log("teydbwfvelw ", $travelScroll);
-                document
-                    .getElementById(`${$travelScroll}`)
-                    .scrollIntoView({ behavior: "smooth", block: "start" });
-            }
-        }
-        setTimeout(scrollBene, 150);
-        navbar = document.getElementById("nav-benefits");
-        sticky = navbar.offsetTop;
-    });
 
     export let data;
-    let { travel, wellbeing, health, courses, finance, legal, books, cars, business } = data;
-    //cars, glasses;
+
+    let { benefits } = data;
 </script>
 
 <svelte:head>
@@ -33,222 +11,189 @@
     <meta name="description" content="View the many ThinkTeacher's great benefits!" />
 </svelte:head>
 
-<svelte:window
-    on:scroll={() =>
-        window.pageYOffset >= sticky
-            ? navbar.classList.add("sticky-top")
-            : navbar.classList.remove("sticky-top")}
-/>
+<div class="container mb-5">
+    <Title title={"benefits"} />
 
-<Title title={"benefits"} />
-
-<div class="text-center" id="nav-benefits">
-    <ul class="list-inline">
-        <li class="list-inline-item">
-            <button
-                class="scrl-btn"
-                style="border:none; background-color: transparent;"
-                on:click={() =>
-                    document
-                        .getElementById("travel")
-                        .scrollIntoView({ behavior: "smooth", block: "start" })}
-                ><h4>
-                    Travel <span class="text-logo-gold">-</span>
-                </h4></button
-            >
-        </li>
-        <li class="list-inline-item">
-            <button
-                class="scrl-btn"
-                on:click={() =>
-                    document
-                        .getElementById("wellbeing")
-                        .scrollIntoView({ behavior: "smooth", block: "start" })}
-            >
-                <h4>
-                    Wellbeing <span class="text-logo-gold">-</span>
-                </h4>
-            </button>
-        </li>
-        <li class="list-inline-item">
-            <button
-                class="scrl-btn"
-                on:click={() =>
-                    document
-                        .getElementById("medical_aid")
-                        .scrollIntoView({ behavior: "smooth", block: "start" })}
-            >
-                <h4>
-                    Medical Aid <span class="text-logo-gold">-</span>
-                </h4>
-            </button>
-        </li>
-        <li class="list-inline-item">
-            <button
-                class="scrl-btn"
-                on:click={() =>
-                    document
-                        .getElementById("legal")
-                        .scrollIntoView({ behavior: "smooth", block: "start" })}
-            >
-                <h4>
-                    Legal <span class="text-logo-gold">-</span>
-                </h4>
-            </button>
-        </li>
-        <li class="list-inline-item">
-            <button
-                class="scrl-btn"
-                on:click={() =>
-                    document
-                        .getElementById("courses")
-                        .scrollIntoView({ behavior: "smooth", block: "start" })}
-            >
-                <h4>
-                    Courses <span class="text-logo-gold">-</span>
-                </h4>
-            </button>
-        </li>
-        <li class="list-inline-item">
-            <button
-                class="scrl-btn"
-                on:click={() =>
-                    document
-                        .getElementById("finance")
-                        .scrollIntoView({ behavior: "smooth", block: "start" })}
-            >
-                <h4>
-                    Finance <span class="text-logo-gold">-</span>
-                </h4>
-            </button>
-        </li>
-        <!-- <li class="list-inline-item"><h4 on:click={() => document.getElementById('Books').scrollIntoView({ behavior: 'smooth', block: 'start' })}>Books <span class="text-logo-gold">-</span></h4></li> -->
-        <li class="list-inline-item">
-            <button
-                class="scrl-btn"
-                on:click={() =>
-                    document
-                        .getElementById("books")
-                        .scrollIntoView({ behavior: "smooth", block: "start" })}
-            >
-                <h4>
-                    Book Store <span class="text-logo-gold">-</span>
-                </h4>
-            </button>
-        </li>
-        <li class="list-inline-item">
-            <button
-                class="scrl-btn"
-                on:click={() =>
-                    document
-                        .getElementById("cars")
-                        .scrollIntoView({ behavior: "smooth", block: "start" })}
-            >
-                <h4>Cars</h4>
-            </button>
-        </li>
-    </ul>
-</div>
-
-<div class="container text-center">
-    <div class="row mt-4 mb-5 justify-content-center">
-        <!-- Travel -->
-        <div class="grey-grad row justify-content-center">
-            <h2 id="travel" class="display-3">Travel</h2>
-
-            <Benefit benefitData={travel} />
-
-            <PartnerBenefit partnerData={travel} />
-        </div>
-
-        <!-- Wellbeing -->
-        <div class="grey-grad row justify-content-center" id="wellbeing">
-            <h2 class="display-3">Wellbeing</h2>
-
-            <Benefit benefitData={wellbeing} />
-
-            <PartnerBenefit partnerData={wellbeing} />
-        </div>
-
-        <!-- MedicalAid -->
-        <div class="grey-grad row justify-content-center big-gap" id="medical_aid">
-            <h2 class="display-3">Medical Aid</h2>
-
-            <Benefit benefitData={health} />
-
-            <PartnerBenefit partnerData={health} />
-        </div>
-
-        <!-- Legal -->
-        <div class="grey-grad row justify-content-center big-gap" id="legal">
-            <h2 class="display-3">Legal</h2>
-
-            <Benefit benefitData={legal} />
-
-            <PartnerBenefit partnerData={legal} />
-        </div>
-
-        <!-- Courses -->
-        <div class="grey-grad row justify-content-center big-gap" id="courses">
-            <h2 class="display-3">Courses</h2>
-
-            <Benefit benefitData={courses} />
-
-            <PartnerBenefit partnerData={courses} />
-        </div>
-
-        <!-- Finance -->
-        <div class="grey-grad row justify-content-center big-gap" id="finance">
-            <h2 class="display-3">Finance</h2>
-
-            <Benefit benefitData={finance} />
-
-            <PartnerBenefit partnerData={finance} />
-            <!-- <iframe src="https://retirements.digital.alexanderforbes.co.za/introduction/2/" title="My Retirement Picture" frameborder="0"></iframe> -->
-        </div>
-
-        <!-- Book Store -->
-        <div class="grey-grad row justify-content-center big-gap" id="books">
-            <h2 class="display-3">Book Store</h2>
-            <PartnerBenefit partnerData={books} />
-        </div>
-        <!-- cars -->
-        <div class="grey-grad row justify-content-center big-gap" id="cars">
-            <h2 class="display-3">Cars</h2>
-            <Benefit benefitData={cars} />
-
-            <PartnerBenefit partnerData={cars} />
-        </div>
-        <!-- Business -->
-        <div class="grey-grad row justify-content-center big-gap" id="business">
-            <h2 class="display-3">Business Coach</h2>
-            <Benefit benefitData={business} />
-
-            <PartnerBenefit partnerData={business} />
-        </div>
-        <!-- Connect -->
-        <div class="grey-grad row justify-content-center big-gap" id="connect">
-            <h2 class="display-3">Connect</h2>
-            <h4>Coming soon</h4>
-        </div>
-        <!-- Jobs -->
-        <div class="grey-grad row justify-content-center big-gap" id="jobs">
-            <h2 class="display-3">Jobs</h2>
-            <h4>Coming soon</h4>
-        </div>
+    <div class="row text-center justify-content-center">
+        <h5 class="mb-5">
+            Click on a benefit below to see what our partners can offer you as a ThinkTeacher member
+        </h5>
+        {#each benefits as benefit}
+            <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+                <a href="benefits/{benefit.attributes.name}">
+                    <div class="placeholder">
+                        <img
+                            class="img-fluid offer offer-img"
+                            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/well_being_a72b443d32.webp"
+                            alt="well being"
+                        />
+                    </div>
+                </a>
+                <h3 class="text-lowercase mt-3 text-blue">
+                    <span class="text-logo-gold">think</span>{benefit.attributes.name.replace(
+                        "_",
+                        ""
+                    )}
+                </h3>
+            </div>
+        {/each}
     </div>
 </div>
 
-<style>
-    ul li h4 {
-        transition: 0.3s;
-    }
-    ul li h4:hover {
-        cursor: pointer;
-        font-size: 135%;
-    }
-    .scrl-btn {
-        border: none;
-        background-color: transparent;
-    }
-</style>
+<!-- <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+    <a href="/benefits">
+        <div class="placeholder">
+            <img
+                class="img-fluid offer offer-img"
+                src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/well_being_a72b443d32.webp"
+                alt="well being"
+            />
+        </div>
+    </a>
+    <h3 class="text-lowercase mt-3 text-blue">
+        <span class="text-logo-gold">think</span>Wellbeing
+    </h3>
+</div>
+<div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+    <a href="/benefits">
+        <div class="placeholder">
+            <img
+                class="img-fluid offer offer-img"
+                src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/travel_dedeab0486.webp"
+                alt="travel"
+            />
+        </div>
+    </a>
+    <h3 class="text-lowercase mt-3 text-blue">
+        <span class="text-logo-gold">think</span>Travel
+    </h3>
+</div>
+<div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+    <a href="/benefits">
+        <div class="placeholder">
+            <img
+                class="img-fluid offer offer-img"
+                src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/health_d3dd30eed4.webp"
+                alt="medical aid"
+            />
+        </div>
+    </a>
+    <h3 class="text-lowercase mt-3 text-blue">
+        <span class="text-logo-gold">think</span>MedicalAid
+    </h3>
+</div>
+<div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+    <a href="/benefits">
+        <div class="placeholder">
+            <img
+                class="img-fluid offer offer-img"
+                src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/insurance_65016c0e82.webp"
+                alt="invest"
+            />
+        </div>
+    </a>
+    <h3 class="text-lowercase mt-3 text-blue">
+        <span class="text-logo-gold">think</span>Finance
+    </h3>
+</div>
+<div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+    <a href="/benefits">
+        <div class="placeholder">
+            <img
+                class="img-fluid offer offer-img"
+                src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/legal_9c79c917bb.webp"
+                alt="legal"
+            />
+        </div>
+    </a>
+    <h3 class="text-lowercase mt-3 text-blue">
+        <span class="text-logo-gold">think</span>Legal
+    </h3>
+</div>
+<div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+    <a href="/benefits">
+        <div class="placeholder">
+            <img
+                class="img-fluid offer offer-img"
+                src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/courses_d4d4152811.webp"
+                alt="courses"
+            />
+        </div>
+    </a>
+    <h3 class="text-lowercase mt-3 text-blue">
+        <span class="text-logo-gold">think</span>Courses
+    </h3>
+</div>
+<div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+    <a href="/benefits">
+        <div class="placeholder">
+            <img
+                class="img-fluid offer offer-img"
+                src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/bookstore_2e3811bf76.webp"
+                alt="books"
+            />
+        </div>
+    </a>
+    <h3 class="text-lowercase mt-3 text-blue">
+        <span class="text-logo-gold">think</span>BookStore
+    </h3>
+</div>
+<div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+    <a href="/benefits">
+        <div class="placeholder">
+            <img
+                class="img-fluid offer offer-img"
+                src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/kia_car_2cea78c493.webp"
+                alt="cars"
+            />
+        </div>
+    </a>
+    <h3 class="text-lowercase mt-3 text-blue">
+        <span class="text-logo-gold">think</span>Wheels
+    </h3>
+</div>
+<div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+    <a href="/benefits">
+        <div class="placeholder">
+            <img
+                class="img-fluid offer offer-img"
+                src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/connectivity_5c27d7e7c1.webp"
+                alt="Connect"
+            />
+        </div>
+    </a>
+    <h3 class="text-lowercase mt-3 text-blue">
+        <span class="text-logo-gold">think</span>Connect
+    </h3>
+    <h5 class="text-blue">coming soon</h5>
+</div>
+<div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+    <a href="/benefits">
+        <div class="placeholder">
+            <img
+                class="img-fluid offer offer-img"
+                src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/business_coach_443e1401ca.webp"
+                alt="Connect"
+            />
+        </div>
+    </a>
+    <h3 class="text-lowercase mt-3 text-blue">
+        <span class="text-logo-gold">think</span>Business
+    </h3>
+    <h5 class="text-blue">coming soon</h5>
+</div>
+<div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+    <a href="/benefits">
+        <div class="placeholder">
+            <img
+                class="img-fluid offer offer-img"
+                src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/jobs_7cacf0d38d.webp"
+                alt="Connect"
+            />
+        </div>
+    </a>
+    <h3 class="text-lowercase mt-3 text-blue">
+        <span class="text-logo-gold">think</span>Jobs
+    </h3>
+    <h5 class="text-blue">coming soon</h5>
+</div> -->
