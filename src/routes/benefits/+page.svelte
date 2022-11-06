@@ -29,7 +29,7 @@
                         />
                     </div>
                 </a>
-                <h3 class="text-lowercase mt-3 text-blue">
+                <h3 class="text-lowercase text-blue">
                     <span class="text-logo-gold">think</span>{benefit.attributes.name.replace(
                         "_",
                         ""

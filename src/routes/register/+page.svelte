@@ -9,6 +9,7 @@
     import { onMount } from "svelte";
     import { id } from "$lib/stores";
     import { Jumper } from "svelte-loading-spinners";
+    import * as yup from "yup";
 
     onMount(() => {
         if (sessionStorage.getItem("provider") == "google") {
