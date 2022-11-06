@@ -1,22 +1,27 @@
 <script>
     import axios from "axios";
     import { API_URL } from "$lib/env.js";
+    import { object, string } from "yup";
 
-    let email;
     let errorMsg;
     let res = false;
+
+    let forgotSchema = object({
+        email: string().email().required(),
+    });
+    let val = {};
 
     async function forgotPassword() {
         errorMsg = null;
         await axios
             .post(`${API_URL}/auth/forgot-password`, {
-                email: email,
+                email: val.email,
             })
             .then((response) => {
                 console.log("An email has been sent to you.");
                 console.log(response);
                 res = true;
-                email = "";
+                val.email = "";
             })
             .catch((error) => {
                 console.log("An error occurred:", error.response);
@@ -56,7 +61,7 @@
                                 id="Email"
                                 class="form-control form-control-lg"
                                 placeholder="Enter email"
-                                bind:value={email}
+                                bind:value={val.email}
                                 required
                             />
                         </div>
@@ -64,6 +69,7 @@
                         <button
                             class="btn btn-outline-light btn-lg px-4"
                             type="submit"
+                            disabled={!forgotSchema.isValidSync(val)}
                             on:click|preventDefault={forgotPassword}>Submit</button
                         >
                     </div>

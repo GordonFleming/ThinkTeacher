@@ -9,7 +9,7 @@
     import { onMount } from "svelte";
     import { id } from "$lib/stores";
     import { Jumper } from "svelte-loading-spinners";
-    import * as yup from "yup";
+    import { object, string, number, boolean } from "yup";
 
     onMount(() => {
         if (sessionStorage.getItem("provider") == "google") {
@@ -18,34 +18,49 @@
         }
     });
 
-    // Disable button
-    let buttonNext = true,
-        buttonSubmit = true,
-        loading = false;
-    $: email && username && s ? (buttonNext = false) : (buttonNext = true);
-    $: firstName && lastName && isValidID && cell && eduPhase !== "" && terms
-        ? (buttonSubmit = false)
-        : (buttonSubmit = true);
+    // $: userSchema
+    //     .validate(val, { abortEarly: false })
+    //     .then(function () {
+    //         // Success
+    //     })
+    //     .catch(function (err) {
+    //         console.log(err.inner);
+    //         err.inner.forEach((e) => {
+    //             console.log(e.message);
+    //         });
+    //     });
 
-    let username,
-        email,
+    let loginSchema = object({
+        username: string().required(),
+        email: string().email().required(),
+        s: boolean().required().isTrue(),
+    });
+    let userSchema = object({
+        firstName: string().required(),
+        lastName: string().required(),
+        isValidID: boolean().required().isTrue(),
+        altMail: string().email().nullable(),
+        cell: number().required(),
+        eduPhase: string().required(),
+        qualification: string().nullable(),
+        sace: string().nullable(),
+        workplace: string().nullable(),
+        province: string().nullable(),
+        terms: boolean().required().isTrue(),
+    });
+
+    let val = {};
+
+    // Disable button
+    let loading = false,
+        idNum,
         password = "";
+
     let msg,
         errorMsg = null;
     let registerNext = false,
         registered = false,
-        provider = false,
-        terms = false;
-    let firstName,
-        lastName,
-        idNum,
-        altMail,
-        cell,
-        eduPhase,
-        qualification,
-        sace,
-        workplace,
-        province;
+        provider = false;
 
     // TT Code Gen
     let ttCode = "TT";
@@ -60,14 +75,10 @@
 
     // Password checks
     let barCol = "";
-    $: s = z(password).score > 2;
+    $: val.s = z(password).score > 2;
     $: progress = (z(password).score / 4) * 100;
-    $: s ? (barCol = "bg-success") : (barCol = "bg-danger");
-    $: isValidID = saIdParser.validate(idNum);
-
-    // console.log("This is ID: ", id);
-    // console.log("This is $ID: ", $id);
-    // console.log("This is URL: ", `${API_URL}/users/${$id}`);
+    $: val.s ? (barCol = "bg-success") : (barCol = "bg-danger");
+    $: val.isValidID = saIdParser.validate(idNum);
 
     async function registerUser() {
         if (provider) {
@@ -75,16 +86,16 @@
                 .put(
                     `${API_URL}/users/${$id}`,
                     {
-                        firstName: firstName,
-                        lastName: lastName,
+                        firstName: val.firstName,
+                        lastName: val.lastName,
                         idNum: idNum,
-                        altMail: altMail,
-                        cell: cell,
-                        eduPhase: eduPhase,
-                        qualification: qualification,
-                        sace: sace,
-                        workplace: workplace,
-                        province: province,
+                        altMail: val.altMail,
+                        cell: val.cell,
+                        eduPhase: val.eduPhase,
+                        qualification: val.qualification,
+                        sace: val.sace,
+                        workplace: val.workplace,
+                        province: val.province,
                         ttCode: ttCode,
                     },
                     {
@@ -107,23 +118,23 @@
                     errorMsg = error.response.data.error.message;
                 });
         }
-        if (s && !provider) {
+        if (val.s && !provider) {
             errorMsg = null;
             await axios
                 .post(`${API_URL}/auth/local/register`, {
-                    username: username,
-                    email: email,
+                    username: val.username,
+                    email: val.email,
                     password: password,
-                    firstName: firstName,
-                    lastName: lastName,
+                    firstName: val.firstName,
+                    lastName: val.lastName,
                     idNum: idNum,
-                    altMail: altMail,
-                    cell: cell,
-                    eduPhase: eduPhase,
-                    qualification: qualification,
-                    sace: sace,
-                    workplace: workplace,
-                    province: province,
+                    altMail: val.altMail,
+                    cell: val.cell,
+                    eduPhase: val.eduPhase,
+                    qualification: val.qualification,
+                    sace: val.sace,
+                    workplace: val.workplace,
+                    province: val.province,
                     ttCode: ttCode,
                 })
                 .then((response) => {
@@ -138,7 +149,7 @@
                     console.log("An error occurred:", error.response);
                     errorMsg = error.response.data.error.message;
                 });
-        } else if (!s && !provider) {
+        } else if (!val.s && !provider) {
             errorMsg = "Password not strong enough";
         }
         // Sendgrid
@@ -147,8 +158,8 @@
             document.documentElement.scrollTop = 0;
 
             // Account for missing altMail & province
-            if (!altMail) altMail = "null@null.com";
-            if (!province) province = "NA";
+            if (!val.altMail) val.altMail = "null@null.com";
+            if (!val.province) val.province = "NA";
 
             await axios
                 .put(
@@ -157,12 +168,12 @@
                         list_ids: [sendgridList],
                         contacts: [
                             {
-                                email: email,
-                                alternate_emails: [altMail],
-                                first_name: firstName,
-                                last_name: lastName,
-                                state_province_region: province,
-                                phone_number: cell,
+                                email: val.email,
+                                alternate_emails: [val.altMail],
+                                first_name: val.firstName,
+                                last_name: val.lastName,
+                                state_province_region: val.province,
+                                phone_number: val.cell,
                                 custom_fields: { e1_T: ttCode },
                             },
                         ],
@@ -267,7 +278,7 @@
                                             id="username"
                                             class="form-control form-control-lg"
                                             placeholder="username"
-                                            bind:value={username}
+                                            bind:value={val.username}
                                             required
                                         />
                                     </div>
@@ -278,7 +289,7 @@
                                             id="Email"
                                             class="form-control form-control-lg"
                                             placeholder="email"
-                                            bind:value={email}
+                                            bind:value={val.email}
                                             required
                                         />
                                     </div>
@@ -315,8 +326,8 @@
                                                     aria-valuemax="100"
                                                 />
                                             </div>
-                                            <p style={s || "color:red"}>
-                                                {s
+                                            <p style={val.s || "color:red"}>
+                                                {val.s
                                                     ? "Strong password"
                                                     : "Password not strong enough. Try using a mix of capital letters, numbers and special characters with a length > 8."}
                                             </p>
@@ -326,7 +337,7 @@
                                     <button
                                         class="btn btn-outline-light btn-lg px-4"
                                         on:click|preventDefault={() => (registerNext = true)}
-                                        disabled={buttonNext}>Next</button
+                                        disabled={!loginSchema.isValidSync(val)}>Next</button
                                     >
                                 {:else}
                                     <div class="row">
@@ -338,7 +349,7 @@
                                                 id="name"
                                                 class="form-control form-control-lg"
                                                 placeholder="First Name"
-                                                bind:value={firstName}
+                                                bind:value={val.firstName}
                                                 required
                                             />
                                         </div>
@@ -350,7 +361,7 @@
                                                 id="surname"
                                                 class="form-control form-control-lg"
                                                 placeholder="Surname"
-                                                bind:value={lastName}
+                                                bind:value={val.lastName}
                                                 required
                                             />
                                         </div>
@@ -366,8 +377,8 @@
                                                 required
                                             />
                                             {#if idNum}
-                                                <small style={isValidID || "color:red"}>
-                                                    {isValidID ? "Valid" : "Not a valid"} ID
+                                                <small style={val.isValidID || "color:red"}>
+                                                    {val.isValidID ? "Valid" : "Not a valid"} ID
                                                 </small>
                                             {/if}
                                         </div>
@@ -379,7 +390,7 @@
                                                 id="cell"
                                                 class="form-control form-control-lg"
                                                 placeholder="Cell number"
-                                                bind:value={cell}
+                                                bind:value={val.cell}
                                                 min="0"
                                                 max="9999999999999"
                                                 required
@@ -393,7 +404,7 @@
                                                 class="form-select"
                                                 id="eduPhase"
                                                 aria-label="Education Phase"
-                                                bind:value={eduPhase}
+                                                bind:value={val.eduPhase}
                                                 required
                                             >
                                                 <option value="" selected>choose phase</option>
@@ -426,7 +437,7 @@
                                                 id="sace"
                                                 class="form-control form-control-lg"
                                                 placeholder="SACE number"
-                                                bind:value={sace}
+                                                bind:value={val.sace}
                                             />
                                         </div>
                                         <div class="col-sm-12 col-md-6 mt-3">
@@ -441,7 +452,7 @@
                                                 id="qual"
                                                 class="form-control form-control-lg"
                                                 placeholder="Qualification"
-                                                bind:value={qualification}
+                                                bind:value={val.qualification}
                                             />
                                         </div>
                                         <div class="col-12 mt-3">
@@ -455,7 +466,7 @@
                                                 id="altEmail"
                                                 class="form-control form-control-lg"
                                                 placeholder="alternative email"
-                                                bind:value={altMail}
+                                                bind:value={val.altMail}
                                             />
                                         </div>
                                         <div class="col-12 mt-3">
@@ -470,7 +481,7 @@
                                                 id="school"
                                                 class="form-control form-control-lg"
                                                 placeholder="school or institution"
-                                                bind:value={workplace}
+                                                bind:value={val.workplace}
                                             />
                                         </div>
                                         <div class="col-12 mt-2">
@@ -482,7 +493,7 @@
                                                 class="form-select"
                                                 id="province"
                                                 aria-label="Province"
-                                                bind:value={province}
+                                                bind:value={val.province}
                                             >
                                                 <option value="none" selected
                                                     >choose province</option
@@ -510,7 +521,7 @@
                                             <input
                                                 class="form-check-input"
                                                 type="checkbox"
-                                                bind:checked={terms}
+                                                bind:checked={val.terms}
                                                 value=""
                                                 id="flexCheckDefault"
                                             />
@@ -526,7 +537,7 @@
                                         class="btn btn-outline-light btn-lg px-4 mt-3"
                                         type="submit"
                                         on:click|preventDefault={registerUser}
-                                        disabled={buttonSubmit}>Register</button
+                                        disabled={!userSchema.isValidSync(val)}>Register</button
                                     >
                                 {/if}
                             </form>
