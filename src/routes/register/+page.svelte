@@ -185,6 +185,8 @@
                     document.getElementById("register").reset();
                     password = "";
                     loading = false;
+                    val = {};
+                    idNum = "";
                 })
                 .catch((error) => {
                     console.error(error);
