@@ -37,7 +37,7 @@
     }
 </script>
 
-<nav class="navbar navbar-expand-lg navbar-light">
+<nav class="navbar navbar-expand-lg navbar-light sticky-top">
     <div class="container-fluid">
         <button
             id="burger"
@@ -150,7 +150,7 @@
                 {#if $name}
                     <div class="mt-2">
                         <h6>
-                            Welcome <span class="text-logo-gold">{$name}</span>
+                            <span class="text-logo-gold">{$name}</span>
                             <!-- <a style="text-decoration: none;" href="/" on:click={logoutUser}>
                                 <span id="logout" class="text-logo-gold">Logout</span>
                             </a> -->
@@ -227,7 +227,7 @@
     @media screen and (max-width: 1450px) {
         .nav-item {
             font-size: 1em;
-            font-weight: 460;
+            font-weight: 500;
         }
         .navbar-nav .nav-link {
             line-height: 2.6rem;

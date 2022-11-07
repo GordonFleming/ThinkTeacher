@@ -2,8 +2,22 @@
     import Title from "$lib/Components/Title.svelte";
 
     export let data;
-
     let { webinars } = data;
+    let categories = [
+        ...new Set(webinars.map((w) => w.attributes.webinar_category.data.attributes.category)),
+    ];
+
+    let webCat = "none";
+    function filterWebinars(cat) {
+        webCat = cat;
+        if (cat == "none") {
+            webinars = data.webinars;
+        } else {
+            webinars = data.webinars.filter(
+                (w) => w.attributes.webinar_category.data.attributes.category == cat
+            );
+        }
+    }
 
     function srcDocz(embLink, title) {
         return `<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,
@@ -21,8 +35,32 @@
     <meta name="description" content="View the many ThinkTeacher's great webinars!" />
 </svelte:head>
 
-<div class="container mb-5">
+<div class="container mb-5 text-center justify-content-center">
     <Title title={"webinars"} />
+
+    <div class="row ">
+        <div class="col justify-content-center d-flex">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <button
+                        class:active={webCat == "none"}
+                        class="nav-link text-capitalize"
+                        on:click={() => filterWebinars("none")}>All</button
+                    >
+                </li>
+                {#each categories as category}
+                    <li class="nav-item">
+                        <button
+                            class:active={webCat == category}
+                            class="nav-link text-capitalize"
+                            on:click={() => filterWebinars(category)}>{category}</button
+                        >
+                    </li>
+                {/each}
+            </ul>
+        </div>
+    </div>
+
     <div class="row text-center justify-content-center">
         {#each webinars as webinar}
             <div class="col-lg-6 col-md-12 mt-2">
@@ -80,5 +118,8 @@
         border-radius: 5px;
         border: 3px solid var(--logo-gold);
         height: 100%;
+    }
+    .nav-tabs .nav-link:hover {
+        isolation: auto;
     }
 </style>

@@ -8,6 +8,10 @@
     <meta name="description" content="Read more about what ThinkTeacher is about." />
 </svelte:head>
 
+<!-- <h2 class="mt-5 text-blue text-center">Who we are</h2> -->
+
+<!-- TODO: add bios -->
+
 <h2 class="mt-5 text-blue text-center">
     Why <span class="text-logo-gold">think</span>teacher
 </h2>
@@ -28,6 +32,10 @@
                     type="video/mp4"
                 />
             </video>
+            <h4>
+                View the video above to learn more about <span class="text-logo-gold">think</span
+                >teacher...
+            </h4>
         </div>
     </div>
 </div>
