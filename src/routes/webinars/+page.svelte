@@ -61,7 +61,7 @@
         </div>
     </div>
 
-    <div class="row text-center justify-content-center">
+    <div class="row mt-3 text-center justify-content-center">
         {#each webinars as webinar}
             <div class="col-lg-6 col-md-12 mt-2">
                 <div class="webinar-wrapper">
