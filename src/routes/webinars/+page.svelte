@@ -68,8 +68,11 @@
                     <p class="text-white fw-bold">{webinar.attributes.title}</p>
                     <div class="frame-wrapper">
                         <iframe
-                            src={webinar.attributes.link}
-                            srcdoc={srcDocz(webinar.attributes.link, webinar.attributes.title)}
+                            src="https://www.youtube.com/embed/{webinar.attributes.link}"
+                            srcdoc={srcDocz(
+                                `https://www.youtube.com/embed/${webinar.attributes.link}`,
+                                webinar.attributes.title
+                            )}
                             title="YouTube video player"
                             frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
