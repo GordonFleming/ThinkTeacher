@@ -67,7 +67,8 @@
         errorMsg = null;
     let registerNext = false,
         registered = false,
-        provider = false;
+        provider = false,
+        nationality = true;
 
     // TT Code Gen
     let ttCode = "TT";
@@ -85,7 +86,8 @@
     $: val.s = z(password).score > 2;
     $: progress = (z(password).score / 4) * 100;
     $: val.s ? (barCol = "bg-success") : (barCol = "bg-danger");
-    $: val.isValidID = saIdParser.validate(idNum);
+    // ID check & To account for non SA
+    $: val.isValidID = nationality ? saIdParser.validate(idNum) : true;
 
     async function registerUser() {
         if (provider) {
@@ -375,37 +377,6 @@
                                             />
                                         </div>
                                         <div class="col-sm-12 col-md-6 mt-3">
-                                            <label class="form-label" for="idNum">ID Number</label>
-                                            <input
-                                                type="text"
-                                                name="idNumber"
-                                                id="idNum"
-                                                class="form-control form-control-lg"
-                                                placeholder="ID number"
-                                                bind:value={idNum}
-                                                required
-                                            />
-                                            {#if idNum}
-                                                <small style={val.isValidID || "color:red"}>
-                                                    {val.isValidID ? "Valid" : "Not a valid"} ID
-                                                </small>
-                                            {/if}
-                                        </div>
-                                        <div class="col-sm-12 col-md-6 mt-3">
-                                            <label class="form-label" for="cell">Cell Number</label>
-                                            <input
-                                                type="tel"
-                                                name="cell"
-                                                id="cell"
-                                                class="form-control form-control-lg"
-                                                placeholder="Cell number"
-                                                bind:value={val.cell}
-                                                min="0"
-                                                max="9999999999999"
-                                                required
-                                            />
-                                        </div>
-                                        <div class="col-12 mt-3">
                                             <label class="form-label" for="eduPhase"
                                                 >Education Phase</label
                                             >
@@ -434,6 +405,54 @@
                                                     >Training Phase</option
                                                 >
                                             </select>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6 mt-3">
+                                            <label class="form-label" for="cell">Cell Number</label>
+                                            <input
+                                                type="tel"
+                                                name="cell"
+                                                id="cell"
+                                                class="form-control form-control-lg"
+                                                placeholder="Cell number"
+                                                bind:value={val.cell}
+                                                min="0"
+                                                max="9999999999999"
+                                                required
+                                            />
+                                        </div>
+                                        <div class="col-4 mt-3">
+                                            <label
+                                                class="form-label form-check-label"
+                                                for="nationality">South African</label
+                                            >
+                                            <div class="form-switch d-flex justify-content-center">
+                                                <input
+                                                    class="form-check-input form-control"
+                                                    type="checkbox"
+                                                    role="switch"
+                                                    id="nationality"
+                                                    bind:checked={nationality}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="col-8 mt-3">
+                                            <label class="form-label" for="idNum">ID Number</label>
+                                            <input
+                                                type="text"
+                                                name="idNumber"
+                                                id="idNum"
+                                                class="form-control form-control-lg"
+                                                placeholder={nationality
+                                                    ? "SA ID number"
+                                                    : "Country ID / Passport number"}
+                                                bind:value={idNum}
+                                                required
+                                            />
+                                            {#if idNum && nationality}
+                                                <small style={val.isValidID || "color:red"}>
+                                                    {val.isValidID ? "Valid" : "Not a valid"} ID
+                                                </small>
+                                            {/if}
                                         </div>
                                         <div class="col-sm-12 col-md-6 mt-3">
                                             <label class="form-label" for="sace">SACE Number</label
@@ -571,11 +590,11 @@
     i {
         cursor: pointer;
     }
-    .form-check-input:checked {
+    .form-check .form-check-input:checked {
         background-color: var(--logo-gold);
         border-color: black;
     }
-    .form-check-input {
+    .form-check .form-check-input {
         border-color: black;
         padding: 10px;
     }

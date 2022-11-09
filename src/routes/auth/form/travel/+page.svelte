@@ -192,7 +192,7 @@
             </div>
             <div class="col-sm-12 col-md-6 mt-2">
                 <label class="form-label form-check-label" for="nationality">South African</label>
-                <div class="form-switch mt-1">
+                <div class="form-switch mt-1 d-flex justify-content-center">
                     <input
                         class="form-check-input form-control"
                         type="checkbox"
@@ -248,16 +248,4 @@
 {/if}
 
 <style>
-    .form-check-input {
-        margin: 0 auto !important;
-    }
-    .form-check-input:checked {
-        background-color: var(--logo-gold);
-        border-color: var(--logo-gold);
-    }
-    .form-check-input:focus {
-        border-color: rgba(255, 255, 255, 0.4);
-        outline: 0;
-        box-shadow: 0 0 0 0.25rem rgba(217, 183, 61, 0.055);
-    }
 </style>
