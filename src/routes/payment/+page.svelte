@@ -127,6 +127,7 @@
     $: voucher.length === 8 ? (voucherCheck = false) : (voucherCheck = true);
     async function makeVoucherPayment() {
         voucherCheck = true;
+        loading = true;
         axios
             .post(
                 `${API_URL}/payments`,
@@ -150,6 +151,7 @@
                 }
             )
             .then((response) => {
+                loading = false;
                 successMsg = "Success, payment has been made!";
                 console.log(response);
                 voucherCheck = false;
