@@ -7,11 +7,18 @@
     import z from "zxcvbn";
     import saIdParser from "south-african-id-parser";
     import { onMount } from "svelte";
-    import { id } from "$lib/stores";
+    import { id, name } from "$lib/stores";
     import { Jumper } from "svelte-loading-spinners";
     import { object, string, number, boolean } from "yup";
 
+    function logoutUser() {
+        localStorage.clear();
+        $name = null;
+    }
+
     onMount(() => {
+        logoutUser();
+
         if (sessionStorage.getItem("provider") == "google") {
             registerNext = true;
             provider = true;
