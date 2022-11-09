@@ -39,9 +39,6 @@
         loading = true;
         await axios
             .post(`${API_URL}/partner-forms/custom`, {
-                fullName: fullname,
-                ttNumber: ttNum,
-                email: email,
                 custom: [
                     {
                         __component: "custom-form.medical-aid",

@@ -4,7 +4,6 @@
     import axios from "axios";
     import { Jumper } from "svelte-loading-spinners";
     import { API_URL } from "$lib/env.js";
-    import { id } from "$lib/stores";
 
     let loading = true,
         buttonSubmit = true;
@@ -39,9 +38,6 @@
         loading = true;
         await axios
             .post(`${API_URL}/partner-forms/custom`, {
-                fullName: fullname,
-                ttNumber: ttNum,
-                email: email,
                 custom: [
                     {
                         __component: "custom-form.cars",
