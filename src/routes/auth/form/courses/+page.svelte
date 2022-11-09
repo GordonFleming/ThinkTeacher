@@ -4,7 +4,7 @@
     import axios from "axios";
     import { Jumper } from "svelte-loading-spinners";
     import { API_URL } from "$lib/env.js";
-    import { courseType } from "$lib/stores";
+    import { benType } from "$lib/stores";
 
     let loading = true,
         buttonSubmit = true;
@@ -43,7 +43,7 @@
 
     let province,
         myself = true,
-        field = $courseType,
+        field = $benType,
         message,
         eduPhase,
         workplace;

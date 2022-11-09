@@ -7,10 +7,9 @@ export async function load({ params }) {
 	const graphqlQuery = {
 		operationName: "fetchPackages",
 		query: `query fetchPackages {     
-            packages (filters: {partner: {category: {name: {eq: "${slug}"}}}}) {
+            packages (filters: {partner: {category: {name: {eq: "${slug}"}}}}, sort: "name") {
                 data {
                     attributes {
-                        name,
                         name,
                         description,
                         details,

@@ -5,8 +5,6 @@
 
     export let data;
     let { packages, slug } = data;
-
-    console.log(packages);
 </script>
 
 <svelte:head>

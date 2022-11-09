@@ -1,37 +1,12 @@
 <script>
     import { goto } from "$app/navigation";
-    import { travelType, courseType } from "$lib/stores";
+    import { benType } from "$lib/stores";
 
     export let benefitData;
-
-    function redirectPlusDataCompute(type) {
-        switch (benefitData[0].attributes.partner.data.attributes.company_name.toLowerCase()) {
-            case "cirrus travel":
-                $travelType = type.toLowerCase().replace(" ", "_");
-                goto("/auth/form/travel");
-                break;
-            case "macmillan":
-                $courseType = type;
-                goto("/auth/form/courses");
-                break;
-            case "kim forbes":
-                goto("/auth/form/wellbeing");
-                break;
-            case "sa health brokers (pty) ltd":
-                goto("/auth/form/medical-aid");
-                break;
-            case "alexander forbes":
-                goto("/auth/form/finance");
-                break;
-            case "stephen g. may":
-                goto("/auth/form/legal");
-                break;
-            case "kia":
-                goto("/auth/form/cars");
-                break;
-            default:
-                goto("/");
-        }
+    let category = benefitData[0].attributes.partner.data.attributes.category.data.attributes.name;
+    function redirect(type) {
+        goto(`/auth/form/${category.replace("_", "-")}`);
+        $benType = type;
     }
 </script>
 
@@ -44,8 +19,8 @@
                         class="img-fluid rounded cta"
                         src={benData.attributes.banner.data.attributes.url}
                         alt="cover"
-                        on:click={() => redirectPlusDataCompute(benData.attributes.name)}
-                        on:keydown={() => redirectPlusDataCompute(benData.attributes.name)}
+                        on:click={() => redirect(benData.attributes.name)}
+                        on:keydown={() => redirect(benData.attributes.name)}
                     />
                     <div class="card-body">
                         <h3 class="card-title text-logo-gold text-lowercase">
@@ -58,8 +33,7 @@
                         </p>
                         <button
                             class="btn bg-gold shadow cta text-black fs-5 p-1"
-                            on:click={() => redirectPlusDataCompute(benData.attributes.name)}
-                            >Enquire</button
+                            on:click={() => redirect(benData.attributes.name)}>Enquire</button
                         >
                     </div>
                     <div class="card-footer">

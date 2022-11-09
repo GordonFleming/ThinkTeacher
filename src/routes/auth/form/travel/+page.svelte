@@ -4,7 +4,7 @@
     import axios from "axios";
     import { Jumper } from "svelte-loading-spinners";
     import { API_URL } from "$lib/env.js";
-    import { travelType } from "$lib/stores";
+    import { benType } from "$lib/stores";
 
     let loading = true,
         buttonSubmit = true;
@@ -35,7 +35,7 @@
 
     let startDate,
         endDate,
-        typeHoliday = $travelType,
+        typeHoliday = $benType.toLowerCase().replace(" ", "_"),
         reason,
         where,
         nationality = true,
