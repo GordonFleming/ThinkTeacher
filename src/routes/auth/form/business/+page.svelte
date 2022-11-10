@@ -55,6 +55,7 @@
             })
             .catch((error) => {
                 console.log("An error occurred:", error);
+                errorMsg = error.response.data.error.message;
             });
     }
 

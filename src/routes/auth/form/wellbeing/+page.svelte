@@ -7,7 +7,6 @@
 
     let loading = true,
         buttonSubmit = false;
-    //$: if(typeHoliday !== ''){ buttonSubmit = false }
 
     let fullname, email, ttNum, user;
 
@@ -30,24 +29,22 @@
         ttNum = user.ttCode;
     });
 
-    let lifeCoaching, bereavement, nutrition, wellbeing, other;
+    let obj = {
+        __component: "custom-form.wellbeing",
+        life_coaching: false,
+        bereavement: false,
+        nutrition: false,
+        wellbeing: false,
+        other: "",
+    };
 
     async function submitForm() {
         loading = true;
         await axios
             .post(`${API_URL}/partner-forms`, {
-                custom: [
-                    {
-                        __component: "custom-form.wellbeing",
-                        lifeCoaching: lifeCoaching,
-                        bereavement: bereavement,
-                        nutrition: nutrition,
-                        wellbeing: wellbeing,
-                        other: other,
-                    },
-                ],
-                users_permissions_user: {
-                    id: user.id,
+                data: {
+                    custom: [obj],
+                    users_permissions_user: user.id,
                 },
             })
             .then((response) => {
@@ -56,13 +53,12 @@
                     ", you have successfully made contact with ThinkTeacher's partner. The partner will be in touch with you soon.";
                 console.log(response);
                 loading = false;
-                buttonSubmit = true;
+                obj = {};
             })
             .catch((error) => {
                 console.log("An error occurred:", error.response.data);
                 errorMsg = error.response.data.error.message;
-            })
-            .finally(() => document.getElementById("contactPartner").reset());
+            });
     }
 
     let msg, errorMsg;
@@ -130,7 +126,7 @@
                         type="checkbox"
                         role="switch"
                         id="lifeCoaching"
-                        bind:checked={lifeCoaching}
+                        bind:checked={obj.life_coaching}
                     />
                 </div>
             </div>
@@ -142,7 +138,7 @@
                         type="checkbox"
                         role="switch"
                         id="bereavement"
-                        bind:checked={bereavement}
+                        bind:checked={obj.bereavement}
                     />
                 </div>
             </div>
@@ -154,7 +150,7 @@
                         type="checkbox"
                         role="switch"
                         id="nutrition"
-                        bind:checked={nutrition}
+                        bind:checked={obj.nutrition}
                     />
                 </div>
             </div>
@@ -166,7 +162,7 @@
                         type="checkbox"
                         role="switch"
                         id="wellbeing"
-                        bind:checked={wellbeing}
+                        bind:checked={obj.wellbeing}
                     />
                 </div>
             </div>
@@ -177,15 +173,14 @@
                     name="other"
                     id="other"
                     class="form-control form-control-lg"
-                    bind:value={other}
+                    bind:value={obj.other}
                 />
             </div>
         </div>
         <button
             class="btn btn-outline-light btn-lg px-4 mt-4"
             type="submit"
-            on:click|preventDefault={submitForm}
-            disabled={buttonSubmit}>Submit</button
+            on:click|preventDefault={submitForm}>Submit</button
         >
     </form>
 {/if}

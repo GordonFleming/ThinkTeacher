@@ -8,7 +8,7 @@
 
     let loading = true,
         buttonSubmit = true;
-    $: if (typeHoliday !== "" && reason !== "" && where !== "" && budget !== "") {
+    $: if (obj.type_holiday !== "" && obj.reason !== "" && obj.where !== "" && obj.budget !== "") {
         buttonSubmit = false;
     }
 
@@ -33,36 +33,19 @@
         ttNum = user.ttCode;
     });
 
-    let startDate,
-        endDate,
-        typeHoliday = $benType.toLowerCase().replace(" ", "_"),
-        reason,
-        where,
-        nationality = true,
-        numChild,
-        numAdult,
-        budget;
+    let obj = {
+        __component: "custom-form.travel",
+        type_holiday: $benType.toLowerCase().replace(" ", "_"),
+        nationality: true,
+    };
 
     async function submitForm() {
         loading = true;
         await axios
             .post(`${API_URL}/partner-forms`, {
-                custom: [
-                    {
-                        __component: "custom-form.travel-date",
-                        startDate: startDate,
-                        endDate: endDate,
-                        typeHoliday: typeHoliday,
-                        reason: reason,
-                        where: where,
-                        numChildren: numChild,
-                        numAdults: numAdult,
-                        nationality: nationality,
-                        budget: budget,
-                    },
-                ],
-                users_permissions_user: {
-                    id: user.id,
+                data: {
+                    custom: [obj],
+                    users_permissions_user: user.id,
                 },
             })
             .then((response) => {
@@ -72,12 +55,12 @@
                 console.log(response);
                 loading = false;
                 buttonSubmit = true;
+                obj = {};
             })
             .catch((error) => {
                 console.log("An error occurred:", error);
-                // errorMsg = error.response.data.error.message;
-            })
-            .finally(() => document.getElementById("contactPartner").reset());
+                errorMsg = error.response.data.error.message;
+            });
     }
 
     let msg, errorMsg;
@@ -144,7 +127,7 @@
                     id="startDate"
                     name="startDate"
                     class="form-control form-control-lg"
-                    bind:value={startDate}
+                    bind:value={obj.start_date}
                 />
             </div>
             <div class="col-sm-12 col-md-6 mt-2">
@@ -154,12 +137,12 @@
                     id="endDate"
                     name="endDate"
                     class="form-control form-control-lg"
-                    bind:value={endDate}
+                    bind:value={obj.end_date}
                 />
             </div>
             <div class="col-sm-12 col-md-6 mt-2">
                 <label class="form-label" for="typeHoliday">Type of Holiday</label>
-                <select class="form-select" id="typeHoliday" bind:value={typeHoliday} required>
+                <select class="form-select" id="typeHoliday" bind:value={obj.type_holiday} required>
                     <option value="" selected>choose</option>
                     <option value="beach">Beach</option>
                     <option value="bush">Bush</option>
@@ -174,7 +157,7 @@
             </div>
             <div class="col-sm-12 col-md-6 mt-2">
                 <label class="form-label" for="reason">Reason for Travel</label>
-                <select class="form-select" id="reason" bind:value={reason} required>
+                <select class="form-select" id="reason" bind:value={obj.reason} required>
                     <option value="" selected>choose</option>
                     <option value="leisure">Leisure</option>
                     <option value="business">Business</option>
@@ -183,7 +166,7 @@
             </div>
             <div class="col-sm-12 col-md-6 mt-2">
                 <label class="form-label" for="destination">Destination</label>
-                <select class="form-select" id="destination" bind:value={where} required>
+                <select class="form-select" id="destination" bind:value={obj.where} required>
                     <option value="" selected>choose</option>
                     <option value="domestic">Domestic</option>
                     <option value="international">International</option>
@@ -198,7 +181,7 @@
                         type="checkbox"
                         role="switch"
                         id="nationality"
-                        bind:checked={nationality}
+                        bind:checked={obj.nationality}
                     />
                 </div>
             </div>
@@ -210,7 +193,7 @@
                     id="numChild"
                     class="form-control form-control-lg"
                     placeholder="0"
-                    bind:value={numChild}
+                    bind:value={obj.num_children}
                     min="0"
                     max="100"
                 />
@@ -223,14 +206,14 @@
                     id="numAdult"
                     class="form-control form-control-lg"
                     placeholder="0"
-                    bind:value={numAdult}
+                    bind:value={obj.num_adults}
                     min="0"
                     max="100"
                 />
             </div>
             <div class="col-12 mt-2">
                 <label class="form-label" for="budget">Budget</label>
-                <select class="form-select" id="budget" bind:value={budget} required>
+                <select class="form-select" id="budget" bind:value={obj.budget} required>
                     <option value="" selected>choose</option>
                     <option value="budget">Budget</option>
                     <option value="standard">Standard</option>
