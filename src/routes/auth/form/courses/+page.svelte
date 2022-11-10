@@ -8,7 +8,7 @@
 
     let loading = true,
         buttonSubmit = true;
-    $: if (province) {
+    $: if (obj.province) {
         buttonSubmit = false;
     }
 
@@ -31,40 +31,30 @@
         fullname = user.firstName + " " + user.lastName;
         email = user.email;
         ttNum = user.ttCode;
-        eduPhase = user.eduPhase.replace("_", " ");
+        obj.eduPhase = user.eduPhase.replace("_", " ");
         if (user.workplace) {
-            workplace = user.workplace;
+            obj.workplace = user.workplace;
         }
         console.log(user.province);
         if (user.province !== "none") {
-            province = user.province.replace("_", " ");
+            obj.province = user.province.replace("_", " ");
         }
     });
 
-    let province,
-        myself = true,
-        field = $benType,
-        message,
-        eduPhase,
-        workplace;
+    let obj = {
+        __component: "custom-form.courses",
+        myself: true,
+        field: $benType,
+        message: "",
+    };
 
     async function submitForm() {
         loading = true;
         await axios
-            .post(`${API_URL}/partner-forms/custom`, {
-                custom: [
-                    {
-                        __component: "custom-form.courses",
-                        province: province,
-                        myself: myself,
-                        field: field,
-                        message: message,
-                        eduPhase: eduPhase,
-                        workplace: workplace,
-                    },
-                ],
-                users_permissions_user: {
-                    id: user.id,
+            .post(`${API_URL}/partner-forms`, {
+                data: {
+                    custom: [obj],
+                    users_permissions_user: user.id,
                 },
             })
             .then((response) => {
@@ -73,12 +63,12 @@
                     ", you have successfully made contact with ThinkTeacher's partner. The partner will be in touch with you soon.";
                 loading = false;
                 buttonSubmit = true;
+                obj = {};
             })
             .catch((error) => {
                 console.log("An error occurred:", error.response.data);
                 errorMsg = error.response.data.error.message;
-            })
-            .finally(() => document.getElementById("contactPartner").reset());
+            });
     }
 
     let msg, errorMsg;
@@ -145,7 +135,7 @@
                     name="eduPhase"
                     id="eduPhase"
                     class="form-control form-control-lg"
-                    bind:value={eduPhase}
+                    bind:value={obj.eduPhase}
                     readonly
                     required
                 />
@@ -157,7 +147,7 @@
                     name="institute"
                     id="institute"
                     class="form-control form-control-lg"
-                    bind:value={workplace}
+                    bind:value={obj.workplace}
                     required
                 />
             </div>
@@ -170,7 +160,7 @@
                     name="field"
                     id="field"
                     class="form-control form-control-lg"
-                    bind:value={field}
+                    bind:value={obj.field}
                     required
                 />
             </div>
@@ -181,7 +171,7 @@
                     name="province"
                     id="province"
                     class="form-control form-control-lg"
-                    bind:value={province}
+                    bind:value={obj.province}
                     required
                 />
             </div>
@@ -195,9 +185,9 @@
                         type="checkbox"
                         role="switch"
                         id="myself"
-                        bind:checked={myself}
+                        bind:checked={obj.myself}
                     />
-                    <p>{myself ? "individual" : "group"}</p>
+                    <p>{obj.myself ? "individual" : "group"}</p>
                 </div>
             </div>
             <div class="col-12 mt-2">
@@ -208,7 +198,7 @@
                     class="form-control"
                     rows="3"
                     placeholder="Enter your message"
-                    bind:value={message}
+                    bind:value={obj.message}
                     required
                 />
             </div>

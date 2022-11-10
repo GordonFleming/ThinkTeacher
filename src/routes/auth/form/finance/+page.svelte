@@ -8,7 +8,7 @@
 
     let loading = true,
         buttonSubmit = true;
-    $: if (message) {
+    $: if (obj.message) {
         buttonSubmit = false;
     }
 
@@ -33,20 +33,18 @@
         ttNum = user.ttCode;
     });
 
-    let message;
+    let obj = {
+        __component: "custom-form.finance",
+        message: "",
+    };
 
     async function submitForm() {
         loading = true;
         await axios
-            .post(`${API_URL}/partner-forms/custom`, {
-                custom: [
-                    {
-                        __component: "custom-form.finance",
-                        message: message,
-                    },
-                ],
-                users_permissions_user: {
-                    id: user.id,
+            .post(`${API_URL}/partner-forms`, {
+                data: {
+                    custom: [obj],
+                    users_permissions_user: user.id,
                 },
             })
             .then((response) => {
@@ -56,12 +54,12 @@
                 console.log(response);
                 loading = false;
                 buttonSubmit = true;
+                obj = {};
             })
             .catch((error) => {
                 console.log("An error occurred:", error.response.data);
                 error.response.data.error.message;
-            })
-            .finally(() => document.getElementById("contactPartner").reset());
+            });
     }
 
     let msg, errorMsg;
@@ -129,7 +127,7 @@
                     id="message"
                     placeholder="enter your enquiry here..."
                     class="form-control form-control-lg"
-                    bind:value={message}
+                    bind:value={obj.message}
                     required
                 />
             </div>

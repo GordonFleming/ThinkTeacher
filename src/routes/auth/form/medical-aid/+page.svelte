@@ -8,7 +8,7 @@
 
     let loading = true,
         buttonSubmit = true;
-    $: if (residence) {
+    $: if (obj.residence) {
         buttonSubmit = false;
     }
 
@@ -33,25 +33,20 @@
         ttNum = user.ttCode;
     });
 
-    let residence, chronic, medicalAid, gapcover, dependants, scheme;
+    let obj = {
+        __component: "custom-form.medical-aid",
+        chronic: false,
+        medical_aid: false,
+        gapcover: false,
+    };
 
     async function submitForm() {
         loading = true;
         await axios
-            .post(`${API_URL}/partner-forms/custom`, {
-                custom: [
-                    {
-                        __component: "custom-form.medical-aid",
-                        residence: residence,
-                        chronic: chronic,
-                        medicalAid: medicalAid,
-                        gapcover: gapcover,
-                        dependants: dependants,
-                        scheme: scheme,
-                    },
-                ],
-                users_permissions_user: {
-                    id: user.id,
+            .post(`${API_URL}/partner-forms`, {
+                data: {
+                    custom: [obj],
+                    users_permissions_user: user.id,
                 },
             })
             .then((response) => {
@@ -61,12 +56,12 @@
                 console.log(response);
                 loading = false;
                 buttonSubmit = true;
+                obj = {};
             })
             .catch((error) => {
                 console.log("An error occurred:", error.response.data);
                 errorMsg = error.response.data.error.message;
-            })
-            .finally(() => document.getElementById("contactPartner").reset());
+            });
     }
 
     let msg, errorMsg;
@@ -133,7 +128,7 @@
                     name="residence"
                     id="residence"
                     class="form-control form-control-lg"
-                    bind:value={residence}
+                    bind:value={obj.residence}
                     required
                 />
             </div>
@@ -141,13 +136,13 @@
                 <label class="form-label form-check-label" for="chronic"
                     >Currently on Chronic Medication?</label
                 >
-                <div class="form-switch mt-1">
+                <div class="form-switch justify-content-center d-flex mt-1">
                     <input
                         class="form-check-input form-control"
                         type="checkbox"
                         role="switch"
                         id="chronic"
-                        bind:checked={chronic}
+                        bind:checked={obj.chronic}
                     />
                 </div>
             </div>
@@ -159,7 +154,7 @@
                     id="dependants"
                     class="form-control form-control-lg"
                     placeholder="0"
-                    bind:value={dependants}
+                    bind:value={obj.dependants}
                     min="0"
                     max="100"
                 />
@@ -168,13 +163,13 @@
                 <label class="form-label form-check-label" for="medicalAid"
                     >Currently have Medical Aid?</label
                 >
-                <div class="form-switch mt-1">
+                <div class="form-switch justify-content-center d-flex mt-1">
                     <input
                         class="form-check-input form-control"
                         type="checkbox"
                         role="switch"
                         id="medicalAid"
-                        bind:checked={medicalAid}
+                        bind:checked={obj.medicalAid}
                     />
                 </div>
             </div>
@@ -182,20 +177,20 @@
                 <label class="form-label form-check-label" for="gapcover"
                     >Currently have gapcover?</label
                 >
-                <div class="form-switch mt-1">
+                <div class="form-switch justify-content-center d-flex mt-1">
                     <input
                         class="form-check-input form-control"
                         type="checkbox"
                         role="switch"
                         id="gapcover"
-                        bind:checked={gapcover}
+                        bind:checked={obj.gapcover}
                     />
                 </div>
             </div>
         </div>
         <div class="col-12 mt-2">
             <label class="form-label" for="scheme">What plan would you be interested in?</label>
-            <select class="form-select" id="scheme" bind:value={scheme} required>
+            <select class="form-select" id="scheme" bind:value={obj.scheme} required>
                 <option value="" selected>choose</option>
                 <option value="students">Students</option>
                 <option value="entry_level_options">Entry Level Options</option>
@@ -217,9 +212,6 @@
 {/if}
 
 <style>
-    .form-check-input {
-        margin: 0 auto !important;
-    }
     .form-check-input:checked {
         background-color: var(--logo-gold);
         border-color: var(--logo-gold);

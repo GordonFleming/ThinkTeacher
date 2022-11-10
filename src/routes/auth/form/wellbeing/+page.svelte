@@ -35,7 +35,7 @@
     async function submitForm() {
         loading = true;
         await axios
-            .post(`${API_URL}/partner-forms/custom`, {
+            .post(`${API_URL}/partner-forms`, {
                 custom: [
                     {
                         __component: "custom-form.wellbeing",
