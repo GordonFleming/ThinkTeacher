@@ -7,7 +7,7 @@
 </script>
 
 <svelte:head>
-    <title>Partners</title>
+    <title>Partners | ThinkTeacher</title>
     <meta name="description" content="View ThinkTeacher's great partners!" />
 </svelte:head>
 

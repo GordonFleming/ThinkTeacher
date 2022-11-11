@@ -11,7 +11,7 @@
 </script>
 
 <svelte:head>
-    <title>{partner.name}</title>
+    <title>{partner.name} | ThinkTeacher</title>
 </svelte:head>
 
 <div class="container bg-dark mt-4 border-custom mt-5 mb-5">

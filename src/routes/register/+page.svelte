@@ -217,7 +217,7 @@
 </script>
 
 <svelte:head>
-    <title>Register</title>
+    <title>Register | ThinkTeacher</title>
     <meta name="description" content="Register for ThinkTeacher!" />
 </svelte:head>
 

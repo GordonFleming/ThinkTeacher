@@ -75,7 +75,7 @@
 </script>
 
 <svelte:head>
-    <title>Contact Partner</title>
+    <title>Contact Partner | ThinkTeacher</title>
 </svelte:head>
 
 {#if loading}

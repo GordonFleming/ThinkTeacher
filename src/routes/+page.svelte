@@ -53,7 +53,7 @@
 </script>
 
 <svelte:head>
-    <title>Home</title>
+    <title>Home | ThinkTeacher</title>
     <meta
         name="description"
         content="ThinkTeacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 

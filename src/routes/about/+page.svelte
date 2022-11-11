@@ -4,26 +4,28 @@
 </script>
 
 <svelte:head>
-    <title>About</title>
+    <title>About | ThinkTeacher</title>
     <meta name="description" content="Read more about what ThinkTeacher is about." />
 </svelte:head>
 
-<!-- <h2 class="mt-5 text-blue text-center">Who we are</h2> -->
-
 <!-- TODO: add bios -->
 
-<h2 class="mt-5 text-blue text-center">
-    Why <span class="text-logo-gold">think</span>teacher
-</h2>
+<h1 class="font-exo text-blue text-center">
+    why <span class="text-logo-gold">think</span>teacher
+</h1>
 
 <div class="container mb-4">
     <div class="row text-center mt-4 justify-content-center">
-        <h3 class="read">
+        <p class="fs-2 lh-md">
             ThinkTeacher is an online portal dedicated to the inspiring teachers of South Africa,
             providing access to benefit options, educational opportunities and nurturing networks.
-            ThinkTeacher's vision is to empower teachers to thrive in their role as innovative and
-            sustainable change agents in and for South Africa.
-        </h3>
+            Each teacher cares for a few hundred odd students or learners. If we can care for and
+            promote the teaching profession, we can inspire the youth of South Africa.
+        </p>
+        <p class="fs-2 mt-4">
+            “Education is the most powerful weapon you can use to change the world.” <br /> -
+            <strong>Nelson Mandela.</strong>
+        </p>
         <div class="container text-center mb-4">
             <!-- svelte-ignore a11y-media-has-caption -->
             <video controls playsinline>
@@ -36,6 +38,10 @@
                 View the video above to learn more about <span class="text-logo-gold">think</span
                 >teacher...
             </h4>
+            <p class="fs-2 mt-4">
+                ThinkTeacher&#39;s vision is to empower teachers to thrive in their role as
+                innovative and sustainable change agents in and for South Africa.
+            </p>
         </div>
     </div>
 </div>

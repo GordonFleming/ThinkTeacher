@@ -8,7 +8,7 @@
 </script>
 
 <svelte:head>
-    <title>{slug} benefits</title>
+    <title>{slug} benefits | ThinkTeacher</title>
 </svelte:head>
 
 <div class="container text-center">

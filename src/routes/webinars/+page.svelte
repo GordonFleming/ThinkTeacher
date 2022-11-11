@@ -31,7 +31,7 @@
 </script>
 
 <svelte:head>
-    <title>Webinars</title>
+    <title>Webinars | ThinkTeacher</title>
     <meta name="description" content="View the many ThinkTeacher's great webinars!" />
 </svelte:head>
 

@@ -7,7 +7,7 @@
 </script>
 
 <svelte:head>
-    <title>Benefits</title>
+    <title>Benefits | ThinkTeacher</title>
     <meta name="description" content="View the many ThinkTeacher's great benefits!" />
 </svelte:head>
 

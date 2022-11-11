@@ -68,7 +68,7 @@
 </script>
 
 <svelte:head>
-    <title>Reset Password</title>
+    <title>Reset Password | ThinkTeacher</title>
 </svelte:head>
 
 <section class="vh-50 gradient-custom container mt-4 mb-4">

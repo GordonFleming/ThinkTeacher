@@ -131,7 +131,7 @@
 </script>
 
 <svelte:head>
-    <title>ThinkTeacher Profile</title>
+    <title>Profile | ThinkTeacher</title>
 </svelte:head>
 
 {#if loading}

@@ -71,7 +71,7 @@
 </script>
 
 <svelte:head>
-    <title>Login</title>
+    <title>Login | ThinkTeacher</title>
     <meta name="description" content="ThinkTeacher Login" />
 </svelte:head>
 

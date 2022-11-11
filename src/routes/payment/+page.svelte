@@ -165,7 +165,7 @@
 </script>
 
 <svelte:head>
-    <title>Payment</title>
+    <title>Payment | ThinkTeacher</title>
     <script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js" async defer></script>
 </svelte:head>
 

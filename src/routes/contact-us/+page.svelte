@@ -35,7 +35,7 @@
 </script>
 
 <svelte:head>
-    <title>Contact Us</title>
+    <title>Contact Us | ThinkTeacher</title>
     <meta name="description" content="Contact ThinkTeacher here!" />
 </svelte:head>
 

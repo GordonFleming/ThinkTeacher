@@ -18,7 +18,7 @@
 <svelte:window />
 
 <svelte:head>
-    <title>{post.title}</title>
+    <title>{post.title} | ThinkTeacher</title>
 </svelte:head>
 
 <div class="container">

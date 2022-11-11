@@ -31,7 +31,7 @@
 </script>
 
 <svelte:head>
-    <title>Forgot Password</title>
+    <title>Forgot Password | ThinkTeacher</title>
 </svelte:head>
 
 <section class="vh-50 gradient-custom container mt-4 mb-4">
