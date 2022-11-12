@@ -87,12 +87,82 @@
 </div>
 
 <div class="container text-center mt-5">
-    <p class="fs-2 lh-lg">
-        Why ThinkTeacher? Each teacher cares for a few hundred odd students or learners. If we can
-        care for and promote the teaching profession, we can inspire the youth of South Africa.
-        “Education is the most powerful weapon you can use to change the world.” <br /> Nelson Mandela.
-    </p>
-    <p class="fs-4 text-blue">
+    <div class="row">
+        <div class="col-6 d-flex">
+            <p class="fs-4 lh-base my-auto">
+                Teacher wellbeing is a positive emotional state that combines the personal needs and
+                expectations of both learners and their teachers. Teacher wellbeing and job
+                satisfaction strongly influence teacher behaviour and are positively related to
+                school and classroom climate and pupil achievement.
+            </p>
+        </div>
+        <div class="col-6">
+            <img
+                class="img-fluid"
+                style="max-height: 300px;"
+                src="https://res.cloudinary.com/splyce/image/upload/v1668242850/ThinkTeacher/teachers6_lh2k7r.webp"
+                alt="img"
+            />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <img
+                class="img-fluid"
+                style="max-height: 300px;"
+                src="https://res.cloudinary.com/splyce/image/upload/v1668244333/ThinkTeacher/teachers4_new_q5ujfl.webp"
+                alt="img"
+            />
+        </div>
+        <div class="col-6 d-flex">
+            <p class="fs-4 lh-base my-auto">
+                Teacher wellbeing has a significant impact on schools, teachers and students. Many
+                of the negative effects of low wellbeing are well publicised, with stress or burnout
+                being linked to attrition and the resulting teacher shortages worldwide. This has
+                led to calls for teacher wellbeing to be taken seriously for the long-term
+                sustainability of the profession.
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6 d-flex">
+            <p class="fs-4 lh-base my-auto">
+                When schools prioritise teacher wellbeing and help to ensure that teachers can
+                flourish, this promotes better classroom climates and enables high quality teaching
+                that leads to success for students, and consequently the school.
+            </p>
+        </div>
+        <div class="col-6">
+            <img
+                class="img-fluid"
+                style="max-height: 300px;"
+                src="https://res.cloudinary.com/splyce/image/upload/v1668244333/ThinkTeacher/teachers1_new_jnfexq.webp"
+                alt="img"
+            />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <img
+                class="img-fluid"
+                style="max-height: 300px;"
+                src="https://res.cloudinary.com/splyce/image/upload/v1668244333/ThinkTeacher/teachers7_new_zcr0hp.webp"
+                alt="img"
+            />
+        </div>
+        <div class="col-6 d-flex">
+            <p class="fs-4 lh-base my-auto">
+                Looking after your teachers’ wellbeing is one of the most important things you can
+                do as a school community. The success of your school is dependent on the quality of
+                instruction delivered by your teachers to your students; their wellbeing is crucial
+                to ensuring that their teaching skills are effective and of a high quality.
+            </p>
+        </div>
+    </div>
+    <p class="fs-4 text-blue mt-4">
         <span class="think">think</span>teacher - by teachers for teachers.
     </p>
 </div>
@@ -130,20 +200,6 @@
 
     <!-- Carousel of Webinars -->
     <!-- <WebinarsBar /> -->
-
-    <div class="container text-center mb-4 grey-grad big-gap">
-        <h2 class="mb-4">
-            Why you should become a <span class="text-logo-gold">think</span>teacher member
-        </h2>
-
-        <!-- svelte-ignore a11y-media-has-caption -->
-        <video controls playsinline>
-            <source
-                src="https://res.cloudinary.com/splyce/video/upload/v1662746574/ThinkTeacher/THINK_TEACHER__WHO_we_are_and_WHAT_we_do_ahyxiz.mp4#t=3"
-                type="video/mp4"
-            />
-        </video>
-    </div>
 
     <div class="row grey-grad big-gap">
         <h2>Benefit Details:</h2>
@@ -196,7 +252,21 @@
         </div>
     </div>
 
-    <div class="row mt-5 text-center justify-content-center p-3 logo-box">
+    <div class="container text-center mb-4 grey-grad big-gap">
+        <h2 class="mb-4">
+            Why you should become a <span class="text-logo-gold">think</span>teacher member
+        </h2>
+
+        <!-- svelte-ignore a11y-media-has-caption -->
+        <video controls playsinline>
+            <source
+                src="https://res.cloudinary.com/splyce/video/upload/v1662746574/ThinkTeacher/THINK_TEACHER__WHO_we_are_and_WHAT_we_do_ahyxiz.mp4#t=3"
+                type="video/mp4"
+            />
+        </video>
+    </div>
+
+    <div class="row mt-5 big-gap justify-content-center p-3 logo-box">
         <Splide {options} aria-label="partners carousel">
             <SplideSlide>
                 <div class="slide-content">

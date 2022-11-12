@@ -16,7 +16,7 @@
 
 <div class="container mb-4">
     <div class="row text-center mt-4 justify-content-center">
-        <p class="fs-2 lh-md">
+        <p class="fs-2 lh-base">
             ThinkTeacher is an online portal dedicated to the inspiring teachers of South Africa,
             providing access to benefit options, educational opportunities and nurturing networks.
             Each teacher cares for a few hundred odd students or learners. If we can care for and
