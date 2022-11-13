@@ -107,7 +107,7 @@
     </div>
 
     <div class="row mt-4">
-        <div class="col-6">
+        <div class="col-sm-12 col-md-6">
             <img
                 class="img-fluid"
                 style="max-height: 300px;"
@@ -115,7 +115,7 @@
                 alt="img"
             />
         </div>
-        <div class="col-6 d-flex">
+        <div class="col-sm-12 col-md-6 d-flex">
             <p class="fs-4 lh-base my-auto">
                 Teacher wellbeing has a significant impact on schools, teachers and students. Many
                 of the negative effects of low wellbeing are well publicised, with stress or burnout
