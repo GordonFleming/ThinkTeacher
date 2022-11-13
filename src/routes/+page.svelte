@@ -88,7 +88,7 @@
 
 <div class="container text-center mt-5">
     <div class="row">
-        <div class="col-6 d-flex">
+        <div class="col-sm-12 col-md-6 d-flex">
             <p class="fs-4 lh-base my-auto">
                 Teacher wellbeing is a positive emotional state that combines the personal needs and
                 expectations of both learners and their teachers. Teacher wellbeing and job
@@ -96,7 +96,7 @@
                 school and classroom climate and pupil achievement.
             </p>
         </div>
-        <div class="col-6">
+        <div class="col-sm-12 col-md-6">
             <img
                 class="img-fluid"
                 style="max-height: 300px;"
@@ -106,7 +106,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-6">
             <img
                 class="img-fluid"
@@ -126,7 +126,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-sm-12 col-md-6 d-flex">
             <p class="fs-4 lh-base my-auto">
                 When schools prioritise teacher wellbeing and help to ensure that teachers can
