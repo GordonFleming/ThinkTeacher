@@ -127,14 +127,14 @@
     </div>
 
     <div class="row">
-        <div class="col-6 d-flex">
+        <div class="col-sm-12 col-md-6 d-flex">
             <p class="fs-4 lh-base my-auto">
                 When schools prioritise teacher wellbeing and help to ensure that teachers can
                 flourish, this promotes better classroom climates and enables high quality teaching
                 that leads to success for students, and consequently the school.
             </p>
         </div>
-        <div class="col-6">
+        <div class="col-sm-12 col-md-6">
             <img
                 class="img-fluid"
                 style="max-height: 300px;"
@@ -145,7 +145,7 @@
     </div>
 
     <div class="row">
-        <div class="col-6">
+        <div class="col-sm-12 col-md-6">
             <img
                 class="img-fluid"
                 style="max-height: 300px;"
@@ -153,7 +153,7 @@
                 alt="img"
             />
         </div>
-        <div class="col-6 d-flex">
+        <div class="col-sm-12 col-md-6 d-flex">
             <p class="fs-4 lh-base my-auto">
                 Looking after your teachers’ wellbeing is one of the most important things you can
                 do as a school community. The success of your school is dependent on the quality of
