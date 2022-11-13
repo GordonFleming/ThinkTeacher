@@ -144,7 +144,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-sm-12 col-md-6">
             <img
                 class="img-fluid"
