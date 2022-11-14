@@ -14,6 +14,7 @@
 
     onMount(() => {
         $name = null;
+        $id = localStorage.getItem("id");
 
         if (sessionStorage.getItem("provider") == "google") {
             registerNext = true;
@@ -264,6 +265,7 @@
                                         <button
                                             id="google-sso"
                                             class="Sso__button Sso__googleIdButton"
+                                            type="button"
                                             on:click={() =>
                                                 goto(
                                                     "https://tt-strapi.glass.thinkteacher.co.za/api/connect/google"
