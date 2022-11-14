@@ -11,13 +11,8 @@
     import { Jumper } from "svelte-loading-spinners";
     import { object, string, number, boolean } from "yup";
 
-    function logoutUser() {
-        localStorage.clear();
-        $name = null;
-    }
-
     onMount(() => {
-        logoutUser();
+        $name = null;
 
         if (sessionStorage.getItem("provider") == "google") {
             registerNext = true;
