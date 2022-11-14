@@ -73,7 +73,7 @@
 
 {#if loading}
     <div class="d-flex justify-content-center mt-5">
-        <Jumper size="150" color="#5C677D" unit="px" duration="1s" />
+        <Jumper size="150" color="#5C677D" unit="px" duration="1.4s" />
     </div>
 {:else}
     <h2 class="fw-bold mb-2 text-uppercase">Contact Partner</h2>

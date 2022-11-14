@@ -136,7 +136,7 @@
 
 {#if loading}
     <div class="d-flex justify-content-center mt-5">
-        <Jumper size="150" color="#5C677D" unit="px" duration="1s" />
+        <Jumper size="150" color="#5C677D" unit="px" duration="1.4s" />
     </div>
 {:else}
     <section class="vh-50 gradient-custom container mt-4 mb-4">
