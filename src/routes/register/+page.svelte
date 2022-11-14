@@ -10,6 +10,7 @@
     import { id, name } from "$lib/stores";
     import { Jumper } from "svelte-loading-spinners";
     import { object, string, number, boolean } from "yup";
+    import { toast } from "@zerodevx/svelte-toast";
 
     onMount(() => {
         $name = null;
@@ -19,6 +20,21 @@
             provider = true;
         }
     });
+
+    const toastOpt = {
+        theme: {
+            "--toastColor": "mintcream",
+            "--toastBackground": "rgba(72,187,120,0.9)",
+            "--toastBarBackground": "#2F855A",
+        },
+    };
+
+    function success() {
+        goto("/login");
+        toast.push("Registered successfully!", toastOpt);
+        registerNext = false;
+        registered = true;
+    }
 
     // $: userSchema
     //     .validate(val, { abortEarly: false })
@@ -58,8 +74,7 @@
         idNum,
         password = "";
 
-    let msg,
-        errorMsg = null;
+    let errorMsg = null;
     let registerNext = false,
         registered = false,
         provider = false,
@@ -110,12 +125,8 @@
                 )
                 .then((response) => {
                     console.log("User profile", response.data.user);
-                    msg =
-                        response.data.firstName +
-                        ", you have been successfully registered with ThinkTeacher!";
+                    success();
                     email = response.data.email;
-                    registerNext = false;
-                    registered = true;
                 })
                 .catch((error) => {
                     console.log("An error occurred:", error.response);
@@ -143,11 +154,7 @@
                 })
                 .then((response) => {
                     console.log("User profile", response.data.user);
-                    msg =
-                        response.data.user.firstName +
-                        ", you have been successfully registered with ThinkTeacher!";
-                    registerNext = false;
-                    registered = true;
+                    success();
                 })
                 .catch((error) => {
                     console.log("An error occurred:", error.response);
@@ -238,11 +245,6 @@
                     <div class="card-body p-md-3 p-lg-4 text-center">
                         <div class="mb-md-3">
                             <h2 class="fw-bold mb-2">REGISTER</h2>
-                            {#if errorMsg}
-                                <h4 class="error-col">{errorMsg}</h4>
-                            {:else if msg}
-                                <h4 class="success-col">{msg}</h4>
-                            {/if}
 
                             {#if provider && !registered}
                                 <p>Please complete your registration...</p>

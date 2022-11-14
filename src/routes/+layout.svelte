@@ -3,6 +3,10 @@
     import Footer from "$lib/Footer/index.svelte";
     import "../bootstrap.css";
     import "../app.css";
+    import { SvelteToast } from "@zerodevx/svelte-toast";
+
+    // Optionally set default options here
+    const options = {};
 </script>
 
 <Header />
@@ -12,6 +16,8 @@
 </div>
 
 <Footer />
+
+<SvelteToast {options} />
 
 <style>
 </style>
