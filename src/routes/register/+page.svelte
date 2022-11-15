@@ -22,7 +22,10 @@
     });
 
     onDestroy(() => {
-        localStorage.clear();
+        if (typeof localStorage !== "undefined") {
+            localStorage.clear();
+            sessionStorage.clear();
+        }
         $name = null;
     });
 
