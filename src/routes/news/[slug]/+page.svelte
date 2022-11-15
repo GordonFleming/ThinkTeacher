@@ -15,8 +15,6 @@
     source = post.content;
 </script>
 
-<svelte:window />
-
 <svelte:head>
     <title>{post.title} | ThinkTeacher</title>
 </svelte:head>

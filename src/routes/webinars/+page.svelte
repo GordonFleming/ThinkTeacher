@@ -100,7 +100,7 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 320px;
+        height: 100%;
     }
     p {
         text-align: justify;
@@ -124,5 +124,15 @@
     }
     .nav-tabs .nav-link:hover {
         isolation: auto;
+    }
+
+    @media screen and (max-width: 770px) {
+        .nav-tabs {
+            justify-content: center;
+        }
+        .nav-tabs li button {
+            margin: 2px;
+            border-radius: 0.5rem !important;
+        }
     }
 </style>
