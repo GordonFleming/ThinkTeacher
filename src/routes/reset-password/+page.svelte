@@ -10,7 +10,6 @@
 
     let password = "",
         passwordConfirmation;
-    let errorMsg;
 
     let urlParams;
     let myParam;
@@ -30,22 +29,25 @@
 
     async function resetPassword() {
         if (s) {
-            errorMsg = null;
-            await axios
-                .post(`${API_URL}/auth/reset-password`, {
-                    code: myParam,
-                    password: password,
-                    passwordConfirmation: passwordConfirmation,
-                })
-                .then((response) => {
-                    console.log(response);
-                    toast.push("Password reset!", toastSuc);
-                    goto("login");
-                })
-                .catch((error) => {
-                    console.log("An error occurred:", error.response);
-                    toast.push("Something went wrong", toastErr);
-                });
+            if (password !== passwordConfirmation) {
+                toast.push("Passwords do not match", toastErr);
+            } else {
+                await axios
+                    .post(`${API_URL}/auth/reset-password`, {
+                        code: myParam,
+                        password: password,
+                        passwordConfirmation: passwordConfirmation,
+                    })
+                    .then((response) => {
+                        console.log(response);
+                        toast.push("Password reset!", toastSuc);
+                        goto("login");
+                    })
+                    .catch((error) => {
+                        console.log("An error occurred:", error.response);
+                        toast.push("Something went wrong", toastErr);
+                    });
+            }
         } else {
             toast.push("Password not strong enough", toastErr);
         }
