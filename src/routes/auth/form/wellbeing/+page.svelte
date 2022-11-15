@@ -69,7 +69,7 @@
 </svelte:head>
 
 {#if loading}
-    <div class="d-flex justify-content-center mt-5">
+    <div class="d-flex justify-content-center mt-5 mb-5">
         <Jumper size="150" color="#5C677D" unit="px" duration="1.4s" />
     </div>
 {:else}

@@ -2,10 +2,11 @@
     import { onMount } from "svelte";
     import { goto } from "$app/navigation";
     import axios from "axios";
-    import { API_URL } from "$lib/env.js";
+    import { API_URL, toastSuc, toastErr } from "$lib/env.js";
     import z from "zxcvbn";
     import Icon from "$lib/Icons/icon.svelte";
     import { eye, eyeSlash } from "$lib/Icons/icons";
+    import { toast } from "@zerodevx/svelte-toast";
 
     let password = "",
         passwordConfirmation;
@@ -13,7 +14,6 @@
 
     let urlParams;
     let myParam;
-    let res = false;
     onMount(() => {
         urlParams = new URLSearchParams(window.location.search);
         myParam = urlParams.get("code");
@@ -38,15 +38,16 @@
                     passwordConfirmation: passwordConfirmation,
                 })
                 .then((response) => {
-                    console.log("Your password has been reset.");
-                    res = true;
+                    console.log(response);
+                    toast.push("Password reset!", toastSuc);
+                    goto("login");
                 })
                 .catch((error) => {
                     console.log("An error occurred:", error.response);
-                    errorMsg = error.response.data.error.message;
+                    toast.push("Something went wrong", toastErr);
                 });
         } else {
-            errorMsg = "Password not strong enough";
+            toast.push("Password not strong enough", toastErr);
         }
     }
 
@@ -79,19 +80,6 @@
                     <div class="card-body p-md-4 p-lg-5 text-center">
                         <h2 class="fw-bold mb-2 text-uppercase">Reset Password</h2>
                         <p class="text-white-50 mb-3">Please enter your new password below.</p>
-
-                        {#if errorMsg}
-                            <h4 class="error-col">{errorMsg}</h4>
-                        {/if}
-
-                        {#if res}
-                            <h4 class="success-col">Password Reset</h4>
-                            <button
-                                class="btn btn-secondary mx-auto mt-3 mb-3 fw-bold fs-5"
-                                style="width: 300px;"
-                                on:click={() => goto("/login")}>Login</button
-                            >
-                        {/if}
                         <form>
                             <div class="form-outline form-white mb-2 text-left">
                                 <label class="form-label" for="Password">Password</label>

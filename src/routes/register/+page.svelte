@@ -3,7 +3,7 @@
     import { goto } from "$app/navigation";
     import Icon from "$lib/Icons/icon.svelte";
     import { arrowLeft, eye, eyeSlash } from "$lib/Icons/icons";
-    import { sgKey, sendgridList, API_URL } from "$lib/env.js";
+    import { sgKey, sendgridList, API_URL, toastSuc } from "$lib/env.js";
     import z from "zxcvbn";
     import saIdParser from "south-african-id-parser";
     import { onMount } from "svelte";
@@ -22,17 +22,8 @@
         }
     });
 
-    const toastOpt = {
-        theme: {
-            "--toastColor": "mintcream",
-            "--toastBackground": "rgba(72,187,120,0.9)",
-            "--toastBarBackground": "#2F855A",
-        },
-    };
-
     function success() {
-        goto("/login");
-        toast.push("Registered successfully!", toastOpt);
+        toast.push("Registered successfully!", toastSuc);
         registerNext = false;
         registered = true;
         localStorage.clear();
@@ -200,6 +191,7 @@
                     password = "";
                     loading = false;
                     val = {};
+                    goto("/login");
                     idNum = "";
                 })
                 .catch((error) => {
@@ -227,7 +219,7 @@
 </svelte:head>
 
 {#if loading}
-    <div class="d-flex justify-content-center mt-5">
+    <div class="d-flex justify-content-center mt-5 mb-5">
         <Jumper size="150" color="#5C677D" unit="px" duration="1.4s" />
     </div>
 {:else}
