@@ -27,6 +27,7 @@
     function logoutUser() {
         localStorage.clear();
         $name = null;
+        mustClick();
         goto("/");
     }
 
@@ -106,34 +107,6 @@
                         on:click={mustClick}>Webinars</a
                     >
                 </li>
-                <!-- <li class="nav-item dropdown">
-                    <a
-                        class="nav-link from-left dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        href="/"
-                        role="button"
-                        aria-expanded="false">Webinars</a
-                    >
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a
-                                class="dropdown-item"
-                                data-sveltekit-prefetch
-                                href="/events"
-                                on:click={mustClick}>Events</a
-                            >
-                        </li>
-                        <li>
-                            <a
-                                class="dropdown-item"
-                                data-sveltekit-prefetch
-                                href="/webinars"
-                                on:click={mustClick}>Webinars</a
-                            >
-                        </li>
-                    </ul>
-                </li> -->
-
                 <li class="nav-item">
                     <a
                         class="nav-link fromLeft"
@@ -144,9 +117,9 @@
                 </li>
             </ul>
         </div>
-        <div class="collapse navbar-collapse justify-content-end" id="navbar">
+        <div class="collapse navbar-collapse" id="navbar">
             <!-- Right elements -->
-            <div class="d-flex align-items-center align-top">
+            <div class="d-flex justify-content-end align-items-center align-top">
                 {#if $name}
                     <div class="mt-2">
                         <h6>
@@ -174,7 +147,10 @@
                                 <button
                                     class="dropdown-item"
                                     type="button"
-                                    on:click={() => goto("/auth/profile")}>Profile</button
+                                    on:click={() => {
+                                        goto("/auth/profile");
+                                        mustClick();
+                                    }}>Profile</button
                                 >
                             </li>
                             <li>
