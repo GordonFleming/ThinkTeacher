@@ -117,7 +117,7 @@
                 </li>
             </ul>
         </div>
-        <div class="collapse navbar-collapse" id="navbar">
+        <div class="collapse navbar-collapse justify-content-end" id="navbar">
             <!-- Right elements -->
             <div class="d-flex justify-content-end align-items-center align-top">
                 {#if $name}
