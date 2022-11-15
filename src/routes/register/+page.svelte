@@ -6,7 +6,7 @@
     import { sgKey, sendgridList, API_URL, toastSuc } from "$lib/env.js";
     import z from "zxcvbn";
     import saIdParser from "south-african-id-parser";
-    import { onMount } from "svelte";
+    import { onMount, onDestroy } from "svelte";
     import { id, name } from "$lib/stores";
     import { Jumper } from "svelte-loading-spinners";
     import { object, string, number, boolean } from "yup";
@@ -14,12 +14,16 @@
 
     onMount(() => {
         $id = localStorage.getItem("id");
-        $name = null;
 
         if (sessionStorage.getItem("provider") == "google") {
             registerNext = true;
             provider = true;
         }
+    });
+
+    onDestroy(() => {
+        localStorage.clear();
+        $name = null;
     });
 
     function success() {
