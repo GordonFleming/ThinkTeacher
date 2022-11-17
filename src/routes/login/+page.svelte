@@ -3,10 +3,11 @@
     import axios from "axios";
     import { goto } from "$app/navigation";
     import Icon from "$lib/Icons/icon.svelte";
-    import { name, surname, id, errMsg, ttNum } from "$lib/stores";
+    import { name, surname, id, ttNum } from "$lib/stores";
     import { facebook, twitter, instagram, eye, eyeSlash } from "$lib/Icons/icons";
     import { browserSet, compareTime } from "$lib/re_utils";
-    import { API_URL } from "$lib/env.js";
+    import { API_URL, toastErr } from "$lib/env.js";
+    import { toast } from "@zerodevx/svelte-toast";
 
     let usernameEmail, password;
     let errorMsg;
@@ -18,7 +19,6 @@
 
     onMount(() => {
         logoutUser();
-        $errMsg = "";
     });
 
     async function loginUser() {
@@ -53,7 +53,7 @@
             })
             .catch((error) => {
                 console.log("An error occurred:", error);
-                errorMsg = error.response.data.error.message;
+                toast.push(error.response.data.error.message, toastErr);
             });
     }
 
@@ -83,19 +83,6 @@
                     <div class="card-body p-md-4 p-lg-4 text-center">
                         <div class="mb-md-3">
                             <h2 class="fw-bold mb-2">LOGIN</h2>
-
-                            {#if errorMsg != undefined}
-                                <h4 class="error-col">{errorMsg}</h4>
-                                {#if errorMsg == "Your account email is not confirmed"}
-                                    <a class="fs-4" href="/confirm-email"
-                                        >Resend confirmation email?</a
-                                    >
-                                {/if}
-                            {/if}
-
-                            {#if $errMsg}
-                                <h4 class="error-col">{$errMsg}</h4>
-                            {/if}
 
                             <div class="mt-4 google-box">
                                 <a
