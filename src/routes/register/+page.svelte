@@ -165,6 +165,7 @@
             errorMsg = "Password not strong enough";
         }
         // Sendgrid
+        // TODO: Move this logic to the backend & verify emails are being added to sendgrid mail list
         if (!errorMsg) {
             loading = true;
             document.documentElement.scrollTop = 0;
