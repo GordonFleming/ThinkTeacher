@@ -10,7 +10,6 @@
     import { toast } from "@zerodevx/svelte-toast";
 
     let usernameEmail, password;
-    let errorMsg;
 
     function logoutUser() {
         localStorage.clear();
