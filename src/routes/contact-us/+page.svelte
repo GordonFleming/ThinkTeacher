@@ -58,7 +58,7 @@
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col-12 col-md-8 col-lg-6 col-xl-6">
                         <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                            <div class="card-body p-md-4 p-lg-5 text-center">
+                            <div class="card-body p-md-3 p-lg-4 text-center">
                                 <h2 class="fw-bold mb-2 text-uppercase">Contact Us</h2>
                                 <p class="text-white-50 mb-3">
                                     Please feel free to contact us anytime.
@@ -77,7 +77,7 @@
                                             bind:value={val.name}
                                         />
                                     </div>
-                                    <div class="form-outline form-white mb-4">
+                                    <div class="form-outline form-white mb-2">
                                         <label class="form-label" for="Email">Email</label>
                                         <input
                                             type="email"
