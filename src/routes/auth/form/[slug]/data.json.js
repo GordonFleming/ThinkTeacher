@@ -1,5 +1,4 @@
 // Possible future validation with yup here
-
 export const formOpt = {
     business: {
         business_coaching: false,
@@ -59,6 +58,16 @@ export const formOpt = {
         how_many_under_18: 0,
         how_many_adults: 0,
         budget: 0
+    },
+    courses: {
+        education_phase: "",
+        workplace: "",
+        province: "",
+        for_myself: true,
+        field_of_interest: ""
+    },
+    travelTODO: {
+
     },
     // Forms which just have message and default vals
     finance: {},

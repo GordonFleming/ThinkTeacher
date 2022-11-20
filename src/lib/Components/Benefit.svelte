@@ -5,6 +5,8 @@
     export let benefitData;
     let category = benefitData[0].attributes.partner.data.attributes.category.data.attributes.name;
     function redirect(type) {
+        // reset the benType
+        $benType = "";
         if (category) {
             goto(`/auth/form/${category.replace("_", "-")}`);
             $benType = type;

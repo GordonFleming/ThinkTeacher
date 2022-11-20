@@ -6,20 +6,24 @@
     import { API_URL, toastErr, toastSuc } from "$lib/env.js";
     import { toast } from "@zerodevx/svelte-toast";
     import { formOpt } from "./data.json";
+    import { benType } from "$lib/stores";
+    import { object } from "yup/lib/locale";
 
     let loading = true;
 
     export let data;
     let { type } = data;
 
-    let fullname, email, ttNum, user, message;
+    let user, message;
     let custom, header;
     let obj = {};
+    let userObj = {};
     let typeName = type.name.replace("_", " ");
 
     onMount(async () => {
         if (formOpt.hasOwnProperty(type.name)) {
             custom = formOpt[type.name];
+            Object.assign(obj, custom);
         } else {
             goto("/404");
         }
@@ -36,9 +40,26 @@
         user = res.data;
 
         loading = false;
-        fullname = user.firstName + " " + user.lastName;
-        email = user.email;
-        ttNum = user.ttCode;
+
+        userObj = {
+            fullname: user.firstName + " " + user.lastName,
+            email: user.email,
+            ttNum: user.ttCode,
+        };
+
+        if (custom.for_myself) {
+            obj.education_phase = user.eduPhase.replace("_", " ");
+            if (user.workplace) {
+                obj.workplace = user.workplace;
+            }
+            if (user.province !== "none") {
+                obj.province = user.province.replace("_", " ");
+            }
+            obj.field_of_interest = $benType;
+        }
+        if (custom.type_of_holiday) {
+            obj.type_of_holiday = $benType;
+        }
     });
 
     async function submitForm() {
@@ -89,7 +110,7 @@
                     name="fullname"
                     id="name"
                     class="form-control form-control-lg"
-                    bind:value={fullname}
+                    bind:value={userObj.fullname}
                     readonly
                     required
                 />
@@ -101,7 +122,7 @@
                     name="surname"
                     id="surname"
                     class="form-control form-control-lg"
-                    bind:value={email}
+                    bind:value={userObj.email}
                     readonly
                     required
                 />
@@ -113,7 +134,7 @@
                     name="idNumber"
                     id="idNum"
                     class="form-control form-control-lg"
-                    bind:value={ttNum}
+                    bind:value={userObj.ttNum}
                     readonly
                     required
                 />
