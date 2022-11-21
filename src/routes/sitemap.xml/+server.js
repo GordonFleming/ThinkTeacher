@@ -4,10 +4,12 @@ export const prerender = true;
 const website = 'https://thinkteacher.co.za'
 
 export async function GET() {
-  const res = await axios.get('https://tt-strapi.glass.thinkteacher.co.za/api/partners')
-  const partners = res.data.data
+  const resPartners = await axios.get('https://tt-strapi.glass.thinkteacher.co.za/api/partners')
+  const partners = resPartners.data.data
+  const resBenefits = await axios.get('https://tt-strapi.glass.thinkteacher.co.za/api/categories')
+  const benefits = resBenefits.data.data
   const pages = [`about`, `benefits`, `partners`, `news`, `webinars`, `contact-us`, `login`, `register`]
-  const body = sitemap(partners, pages)
+  const body = sitemap(partners, benefits, pages)
 
   const headers = {
     'Cache-Control': 'max-age=0, s-maxage=3600',
@@ -25,6 +27,7 @@ export async function GET() {
 
 const sitemap = (
   partners,
+  benefits,
   pages
 ) => `<?xml version="1.0" encoding="UTF-8" ?>
 <urlset
@@ -55,11 +58,21 @@ const sitemap = (
     .map(partner => `
   <url>
     <loc>${website}/partners/${partner.attributes.slug}</loc>
-    <lastmod>${partner.attributes.updated_at}</lastmod>
+    <lastmod>${partner.attributes.updatedAt}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   `
     )
     .join('')}
+  ${benefits
+    .map(benefit => `
+  <url>
+    <loc>${website}/benefits/${benefit.attributes.name}</loc>
+    <lastmod>${benefit.attributes.updatedAt}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  `
+    ).join('')}
 </urlset>`
