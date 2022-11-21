@@ -195,7 +195,6 @@
                 )
                 .then((response) => {
                     console.log("SG reponse: ", response.statusText, " ", response.data);
-                    document.getElementById("register").reset();
                     password = "";
                     loading = false;
                     val = {};

@@ -7,7 +7,7 @@
     import { toast } from "@zerodevx/svelte-toast";
     import { formOpt } from "./data.json";
     import { benType } from "$lib/stores";
-    import { object } from "yup/lib/locale";
+    import time_estimates from "zxcvbn/lib/time_estimates";
 
     let loading = true;
 
@@ -24,6 +24,11 @@
         if (formOpt.hasOwnProperty(type.name)) {
             custom = formOpt[type.name];
             Object.assign(obj, custom);
+            Object.keys(obj).forEach((key) => {
+                if (Array.isArray(obj[key])) {
+                    obj[key] = obj[key][0];
+                }
+            });
         } else {
             goto("/404");
         }
@@ -47,7 +52,7 @@
             ttNum: user.ttCode,
         };
 
-        if (custom.for_myself) {
+        if (Object.hasOwn(custom, "for_myself")) {
             obj.education_phase = user.eduPhase.replace("_", " ");
             if (user.workplace) {
                 obj.workplace = user.workplace;
@@ -55,9 +60,11 @@
             if (user.province !== "none") {
                 obj.province = user.province.replace("_", " ");
             }
+        }
+        if (Object.hasOwn(custom, "field_of_interest")) {
             obj.field_of_interest = $benType;
         }
-        if (custom.type_of_holiday) {
+        if (Object.hasOwn(custom, "type_of_holiday")) {
             obj.type_of_holiday = $benType;
         }
     });
@@ -157,6 +164,21 @@
                         />
                     </div>
                 {/if}
+                {#if value == "date"}
+                    <div class="col-12 mt-2">
+                        <label class="form-label text-capitalize" for={key}
+                            >{key.replaceAll("_", " ")}</label
+                        >
+                        <input
+                            type="date"
+                            name={key}
+                            id={key}
+                            class="form-control form-control-lg"
+                            bind:value={obj[key]}
+                            required
+                        />
+                    </div>
+                {/if}
                 {#if typeof value == "number"}
                     <div class="col-12 mt-2">
                         <label class="form-label text-capitalize" for={key}
@@ -193,7 +215,9 @@
                 {/if}
                 {#if Array.isArray(value)}
                     <div class="col-12 mt-2">
-                        <label class="form-label" for={key}>What {key.replaceAll("_", " ")}?</label>
+                        <label class="form-label text-capitalize" for={key}
+                            >{key.replaceAll("_", " ")}?</label
+                        >
                         <select class="form-select" id={key} bind:value={obj[key]} required>
                             {#each value as val}
                                 <option class="text-capitalize" value={val}

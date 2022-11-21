@@ -49,15 +49,38 @@ export const formOpt = {
         workplace: ""
     },
     travel: {
-        start_date: "",
-        end_date: "",
+        start_date: "date",
+        end_date: "date",
         type_of_holiday: "",
-        reason_for_travel: "",
-        destination: "",
+        // [
+        //     "Beach",
+        //     "Bush",
+        //     "Ski",
+        //     "Mountains",
+        //     "City",
+        //     "Adventure",
+        //     "Conference",
+        //     "Sports Tours",
+        //     "Other"
+        // ],
+        reason_for_travel: [
+            "Leisure",
+            "Business",
+            "Sport"
+        ],
+        destination: [
+            "Domestic",
+            "International",
+            "Africa"
+        ],
         south_african: true,
         how_many_under_18: 0,
         how_many_adults: 0,
-        budget: 0
+        budget: [
+            "Budget",
+            "Standard",
+            "Luxury"
+        ]
     },
     courses: {
         education_phase: "",
@@ -66,8 +89,8 @@ export const formOpt = {
         for_myself: true,
         field_of_interest: ""
     },
-    travelTODO: {
-
+    legal: {
+        field_of_interest: ""
     },
     // Forms which just have message and default vals
     finance: {},
