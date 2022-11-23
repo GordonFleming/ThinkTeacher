@@ -1,11 +1,10 @@
 <script>
     import { onMount } from "svelte";
-    import { id, errMsg } from "$lib/stores";
+    import { id } from "$lib/stores";
     import axios from "axios";
-    import { API_URL, yocoPubKey, strapiKey } from "$lib/env.js";
+    import { API_URL, yocoPubKey, strapiKey, toastErr, toastSuc } from "$lib/env.js";
     import { Jumper } from "svelte-loading-spinners";
-    import Icon from "$lib/Icons/icon.svelte";
-    import { checkCircleO } from "$lib/Icons/icons";
+    import { toast } from "@zerodevx/svelte-toast";
 
     let sdk,
         inline,
@@ -15,7 +14,6 @@
         voucher = "",
         submitButton = true,
         amountInCents = 29000,
-        successMsg,
         retireStu = false,
         inlineObj = {
             layout: "basic",
@@ -87,8 +85,6 @@
 
         inline.on("card_tokenized", function (token) {
             console.log("token ", token);
-            $errMsg = "";
-            successMsg = undefined;
             axios
                 .post(
                     `${API_URL}/payments`,
@@ -110,13 +106,14 @@
                     }
                 )
                 .then((response) => {
-                    successMsg = "Success, payment has been made!";
+                    toast.push("Success, payment has been made!", toastSuc);
                     console.log(response);
                     paying = false;
                 })
                 .catch((error) => {
-                    $errMsg = error.response.data.message.error.displayMessage;
+                    toast.push("Something went wrong", toastErr);
                     console.log("An error occurred:", error.response.data);
+
                     paying = false;
                 });
             form.reset();
@@ -152,12 +149,12 @@
             )
             .then((response) => {
                 loading = false;
-                successMsg = "Success, payment has been made!";
+                toast.push("Success, payment has been made!", toastSuc);
                 console.log(response);
                 voucherCheck = false;
             })
             .catch((error) => {
-                $errMsg = error.response.data.error.message;
+                toast.push("Something went wrong", toastErr);
                 console.log("An error occurred:", error.response.data.error.message);
                 voucherCheck = false;
             });
@@ -175,13 +172,6 @@
             <h2 class="mb-4">Membership <span class="text-blue">Payment</span></h2>
             <h6>Pay via EFT, Voucher or by Card payment</h6>
             <h6 class="text-logo-gold">Discounted price for teachers month!</h6>
-            {#if successMsg !== undefined}
-                <h4 class="success-col">{successMsg}</h4>
-                <Icon data={checkCircleO} scale="8" fill="green" />
-            {/if}
-            {#if $errMsg !== "" && !successMsg}
-                <h4 class="error-col">{$errMsg}</h4>
-            {/if}
 
             {#if loading || paying}
                 <div class="d-flex justify-content-center mt-5">

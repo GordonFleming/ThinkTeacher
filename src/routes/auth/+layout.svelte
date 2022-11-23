@@ -4,8 +4,7 @@
     import axios from "axios";
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
-    import { API_URL } from "$lib/env.js";
-    import { errMsg } from "$lib/stores";
+    import { API_URL, toastErr } from "$lib/env.js";
     import { compareTime } from "$lib/re_utils";
 
     onMount(async () => {
@@ -21,31 +20,13 @@
                     if (error.response.data.error == "Unauthorized") {
                         goto("/login");
                         console.log("JWT token invalid: ", error.response.data.message);
-                        $errMsg = "Your session expired, please login again.";
+                        toast.push("Your session expired, please login again", toastErr);
                     }
                 });
-
-            // const paymentFind = await axios
-            // 	.get(`${API_URL}/payments?users_permissions_user.id=${res.data.id}`, {
-            // 		headers: {
-            // 			Authorization: "Bearer " + localStorage.getItem("jwt"),
-            // 		},
-            // 	})
-            // 	.catch(function (error) {
-            // 		console.log(error);
-            // 		$errMsg = "No payment found...";
-            // 	});
 
             const created_at = res.data.createdAt;
 
             let paidMember = res.data.paid;
-            // let payment = paymentFind.data;
-
-            // if (payment.length > 0) {
-            // 	if (payment[0].paid) {
-            // 		paidMember = true;
-            // 	}
-            // }
 
             // Check for those users who are valid free members
             if (paidMember) {
@@ -55,21 +36,8 @@
             } else {
                 goto("/payment");
                 console.log("payment needed");
-                $errMsg = "Payment is due";
+                toast.push("Payment is due", toastErr);
             }
-
-            // Check for if you have paid
-
-            // TODO: use this below to check if it has been a year since a user paid and needs to renew their membership
-
-            // const time_difference = new Date(Date.now()) - new Date(created_at);
-            // const time_difference_days = Math.floor(time_difference / (1000 * 60) / 60 / 24);
-            // if (time_difference > year) {
-            // 	goto("/login");
-            // 	console.log(
-            // 		`Free member! With their time in days since registration currently at: ${time_difference_days}`
-            // 	);
-            // }
         } else {
             goto("/login");
         }

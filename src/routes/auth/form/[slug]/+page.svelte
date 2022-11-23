@@ -7,7 +7,6 @@
     import { toast } from "@zerodevx/svelte-toast";
     import { formOpt } from "./data.json";
     import { benType } from "$lib/stores";
-    import time_estimates from "zxcvbn/lib/time_estimates";
 
     let loading = true;
 

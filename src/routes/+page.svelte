@@ -138,7 +138,7 @@
             <img
                 class="img-fluid"
                 style="max-height: 300px;"
-                src="https://res.cloudinary.com/splyce/image/upload/v1668244333/ThinkTeacher/teachers1_new_jnfexq.webp"
+                src="https://res.cloudinary.com/splyce/image/upload/v1669199557/ThinkTeacher/teachers_8_enc0ld.jpg"
                 alt="img"
             />
         </div>
