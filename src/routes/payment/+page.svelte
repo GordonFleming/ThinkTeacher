@@ -113,7 +113,6 @@
                 .catch((error) => {
                     toast.push("Something went wrong", toastErr);
                     console.log("An error occurred:", error.response.data);
-
                     paying = false;
                 });
             form.reset();
@@ -154,6 +153,7 @@
                 voucherCheck = false;
             })
             .catch((error) => {
+                loading = false;
                 toast.push("Something went wrong", toastErr);
                 console.log("An error occurred:", error.response.data.error.message);
                 voucherCheck = false;
