@@ -154,7 +154,7 @@
             })
             .catch((error) => {
                 loading = false;
-                toast.push("Something went wrong", toastErr);
+                toast.push(error.response.data.error.message, toastErr);
                 console.log("An error occurred:", error.response.data.error.message);
                 voucherCheck = false;
             });
