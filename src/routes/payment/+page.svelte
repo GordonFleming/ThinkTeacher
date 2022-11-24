@@ -172,7 +172,7 @@
             <h2 class="mb-4">Membership <span class="text-blue">Payment</span></h2>
             <h6>Pay via EFT, Voucher or by Card payment</h6>
             <!-- <h6 class="text-logo-gold">Discounted price for teachers month!</h6> -->
-            <h4 class="text-logo-gold">BLACK FRIDAY, Discounted price R180!</h4>
+            <h4 class="text-logo-gold">BLACK FRIDAY, Discounted price 50% off!</h4>
 
             {#if loading || paying}
                 <div class="d-flex justify-content-center mt-5">
