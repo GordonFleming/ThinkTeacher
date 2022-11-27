@@ -13,7 +13,7 @@
         paying = false,
         voucher = "",
         submitButton = true,
-        amountInCents = 18000,
+        amountInCents = 29000,
         retireStu = false,
         inlineObj = {
             layout: "basic",
@@ -27,13 +27,13 @@
     function changePrice() {
         if (!loading) {
             if (!retireStu) {
-                amountInCents = 6000;
-                inlineObj.amountInCents = 6000;
+                amountInCents = 12000;
+                inlineObj.amountInCents = 12000;
                 inline = sdk.inline(inlineObj);
                 inline.mount("#card-frame");
             } else {
-                amountInCents = 18000;
-                inlineObj.amountInCents = 18000;
+                amountInCents = 29000;
+                inlineObj.amountInCents = 29000;
                 inline = sdk.inline(inlineObj);
                 inline.mount("#card-frame");
             }
@@ -171,8 +171,7 @@
         <div class="text-center">
             <h2 class="mb-4">Membership <span class="text-blue">Payment</span></h2>
             <h6>Pay via EFT, Voucher or by Card payment</h6>
-            <!-- <h6 class="text-logo-gold">Discounted price for teachers month!</h6> -->
-            <h4 class="text-logo-gold">BLACK FRIDAY, Discounted price 50% off!</h4>
+            <h6 class="text-logo-gold">Discounted price for teachers month!</h6>
 
             {#if loading || paying}
                 <div class="d-flex justify-content-center mt-5">
