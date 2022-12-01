@@ -20,7 +20,9 @@
 </svelte:head>
 
 <div class="container">
-    <a data-sveltekit-prefetch href="/news"><Icon data={arrowLeft} scale="3" fill="#4F5D89" /></a>
+    <a data-sveltekit-preload-data href="/news"
+        ><Icon data={arrowLeft} scale="3" fill="#4F5D89" /></a
+    >
     <h1 class="text-center mb-4" style="margin-top: 0;">{post.title}</h1>
     <div class="text-center">
         <div class="responsive-iframe-container">

@@ -24,7 +24,7 @@
         <div class="row justify-content-center">
             {#each posts as post}
                 <div class="col-sm-12 col-md-6 col-lg-4 text-center mt-3">
-                    <a data-sveltekit-prefetch href="/news/{post.attributes.slug}">
+                    <a data-sveltekit-preload-data href="/news/{post.attributes.slug}">
                         <div class="news-block bg-dark p-3">
                             <h4 class="font-bold">{post.attributes.title}</h4>
                             <button

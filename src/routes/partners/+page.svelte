@@ -18,7 +18,7 @@
         {#each partners as partner}
             <div class="col-sm-12 col-md-6 col-lg-4">
                 <div class="card bg-dark m-2 shadow-lg">
-                    <a data-sveltekit-prefetch href={`/partners/${partner.attributes.slug}`}>
+                    <a data-sveltekit-preload-data href={`/partners/${partner.attributes.slug}`}>
                         <img
                             class="img-fluid rounded cta"
                             src={partner.attributes.logo.data.attributes.url}
@@ -40,7 +40,7 @@
                     </div>
                     <div class="card-footer">
                         <a
-                            data-sveltekit-prefetch
+                            data-sveltekit-preload-data
                             href="/benefits/{partner.attributes.category.data.attributes.name}"
                             ><span class="badge bg-light"
                                 >{partner.attributes.category.data.attributes.name.replace(

@@ -15,7 +15,7 @@
 </svelte:head>
 
 <div class="container bg-dark mt-4 border-custom mt-5 mb-5">
-    <a data-sveltekit-prefetch href="/partners"><Icon data={arrowLeft} scale="3" /></a>
+    <a data-sveltekit-preload-data href="/partners"><Icon data={arrowLeft} scale="3" /></a>
     <div class="row justify-content-center">
         {#each partner.images.data as img}
             <div class="col-sm-12 col-md-6">

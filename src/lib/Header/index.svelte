@@ -55,14 +55,18 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbar">
             <ul class="navbar-nav">
                 <div class="nav-img mx-auto">
-                    <a class="navbar-brand" data-sveltekit-prefetch href="/" on:click={mustClick}
+                    <a
+                        class="navbar-brand"
+                        data-sveltekit-preload-data
+                        href="/"
+                        on:click={mustClick}
                         ><img src="/thinkteacherlogo-final.png" alt="logo" width="200" /></a
                     >
                 </div>
                 <li class="nav-item">
                     <a
                         class="nav-link fromLeft"
-                        data-sveltekit-prefetch
+                        data-sveltekit-preload-data
                         href="/"
                         on:click={mustClick}>Home</a
                     >
@@ -70,7 +74,7 @@
                 <li class="nav-item">
                     <a
                         class="nav-link fromLeft"
-                        data-sveltekit-prefetch
+                        data-sveltekit-preload-data
                         href="/about"
                         on:click={mustClick}>About</a
                     >
@@ -78,7 +82,7 @@
                 <li class="nav-item">
                     <a
                         class="nav-link fromLeft"
-                        data-sveltekit-prefetch
+                        data-sveltekit-preload-data
                         href="/partners"
                         on:click={mustClick}>Partners</a
                     >
@@ -86,7 +90,7 @@
                 <li class="nav-item">
                     <a
                         class="nav-link fromLeft"
-                        data-sveltekit-prefetch
+                        data-sveltekit-preload-data
                         href="/benefits"
                         on:click={mustClick}>Benefits</a
                     >
@@ -94,7 +98,7 @@
                 <li class="nav-item">
                     <a
                         class="nav-link fromLeft"
-                        data-sveltekit-prefetch
+                        data-sveltekit-preload-data
                         href="/news"
                         on:click={mustClick}>News Flash</a
                     >
@@ -102,7 +106,7 @@
                 <li class="nav-item">
                     <a
                         class="nav-link fromLeft"
-                        data-sveltekit-prefetch
+                        data-sveltekit-preload-data
                         href="/webinars"
                         on:click={mustClick}>Webinars</a
                     >
@@ -110,7 +114,7 @@
                 <li class="nav-item">
                     <a
                         class="nav-link fromLeft"
-                        data-sveltekit-prefetch
+                        data-sveltekit-preload-data
                         href="/contact-us"
                         on:click={mustClick}>Contact</a
                     >

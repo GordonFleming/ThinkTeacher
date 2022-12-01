@@ -112,15 +112,15 @@
 
             <ul class="list-unstyled mb-0">
                 <li>
-                    <a data-sveltekit-prefetch href="/login" class="text-white">Login</a>
+                    <a data-sveltekit-preload-data href="/login" class="text-white">Login</a>
                 </li>
                 <li>
-                    <a data-sveltekit-prefetch href="/forgot-password" class="text-white"
+                    <a data-sveltekit-preload-data href="/forgot-password" class="text-white"
                         >Forgot Password</a
                     >
                 </li>
                 <li>
-                    <a data-sveltekit-prefetch href="/register" class="text-white">Register</a>
+                    <a data-sveltekit-preload-data href="/register" class="text-white">Register</a>
                 </li>
                 <li>
                     <a
@@ -142,7 +142,9 @@
                     >
                 </li>
                 <li>
-                    <a data-sveltekit-prefetch href="/contact-us" class="text-white">Contact Us</a>
+                    <a data-sveltekit-preload-data href="/contact-us" class="text-white"
+                        >Contact Us</a
+                    >
                 </li>
             </ul>
         </div>
