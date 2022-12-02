@@ -7,5 +7,6 @@
 </svelte:head>
 
 <div class="container p-4 text-center">
+    <h2>{$page.status}</h2>
     <h1>{$page.error.message}</h1>
 </div>

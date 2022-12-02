@@ -2,7 +2,6 @@
     import Title from "$lib/Components/Title.svelte";
 
     export let data;
-
     let { benefits } = data;
 </script>
 
