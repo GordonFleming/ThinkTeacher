@@ -13,8 +13,8 @@
         paying = false,
         voucher = "",
         submitButton = true,
-        amountInCents = 29000,
-        retireStu = false,
+        amountInCents = 36000,
+        retireCheck = false,
         inlineObj = {
             layout: "basic",
             amountInCents: amountInCents,
@@ -26,17 +26,10 @@
 
     function changePrice() {
         if (!loading) {
-            if (!retireStu) {
-                amountInCents = 12000;
-                inlineObj.amountInCents = 12000;
-                inline = sdk.inline(inlineObj);
-                inline.mount("#card-frame");
-            } else {
-                amountInCents = 29000;
-                inlineObj.amountInCents = 29000;
-                inline = sdk.inline(inlineObj);
-                inline.mount("#card-frame");
-            }
+            retireCheck ? (amountInCents = 36000) : (amountInCents = 12000);
+            inlineObj.amountInCents = amountInCents;
+            inline = sdk.inline(inlineObj);
+            inline.mount("#card-frame");
         }
     }
 
@@ -53,8 +46,8 @@
             });
 
             inline = sdk.inline(inlineObj);
-
             inline.mount("#card-frame");
+
             form = document.getElementById("payment-form");
             loading = false;
         }, 1500);
@@ -169,10 +162,8 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="text-center">
-            <h2 class="mb-4">Membership <span class="text-blue">Payment</span></h2>
+            <h2 class="mb-2">Membership <span class="text-blue">Payment</span></h2>
             <h6>Pay via EFT, Voucher or by Card payment</h6>
-            <h6 class="text-logo-gold">Discounted price for teachers month!</h6>
-
             {#if loading || paying}
                 <div class="d-flex justify-content-center mt-5">
                     <Jumper size="150" color="#5C677D" unit="px" duration="1.4s" />
@@ -188,19 +179,19 @@
             <form id="payment-form">
                 <div class="form-switch mt-3 text-center">
                     <p>Are you a student or a retired teacher?</p>
-                    {#if retireStu}
-                        <label for="retireStu" class="form-check-label">Yes</label>
-                    {:else if !retireStu}
-                        <label for="retireStu" class="form-check-label">No</label>
-                    {/if}
-                    <input
-                        class="form-check-input form-control mx-auto"
-                        type="checkbox"
-                        role="switch"
-                        id="retireStu"
-                        on:click={changePrice}
-                        bind:checked={retireStu}
-                    />
+                    <label for="retireCheck" class="form-check-label"
+                        >{retireCheck ? "Yes" : "No"}</label
+                    >
+                    {#key retireCheck}
+                        <input
+                            class="form-check-input form-control mx-auto"
+                            type="checkbox"
+                            role="switch"
+                            id="retireCheck"
+                            on:click={changePrice}
+                            bind:checked={retireCheck}
+                        />
+                    {/key}
                 </div>
                 <p class="fw-bold text-center mt-3">Pay with a card:</p>
                 <div id="card-frame" class="mx-auto">
@@ -209,7 +200,7 @@
                 <div class="text-center mt-3 mb-3">
                     <button
                         id="pay-button"
-                        class:bg-blue={submitButton && amountInRands == 290}
+                        class:bg-blue={submitButton && amountInRands == 360}
                         class:bg-gold={submitButton && amountInRands == 120}
                         class:cta={submitButton}
                         class="btn btn-lg shadow"
