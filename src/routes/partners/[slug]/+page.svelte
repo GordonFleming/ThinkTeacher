@@ -53,7 +53,7 @@
     </div>
 
     <div class="text-center mt-4">
-        ><button
+        <button
             class="btn bg-gold shadow cta text-black fs-5 p-1"
             on:click={() => goto(`/benefits/${partner.category.data.attributes.name}`)}
             >Enquire</button
