@@ -4,7 +4,6 @@
 
     export let data;
     let { person } = data;
-    console.log(person);
 </script>
 
 <svelte:head>
@@ -22,7 +21,8 @@
             <img class="img-fluid mb-2" src={person.img_url} alt={person.name} />
         </div>
         <div class="col-sm-12 col-md-6">
-            <h2 class="mt-3">{person.name}</h2>
+            <h2 class="mt-3 mb-0">{person.name}</h2>
+            <p class="text-center fs-4 text-blue">- {person.role}</p>
             <h5>{person.qualifications}</h5>
             <p>{person.description}</p>
         </div>

@@ -88,7 +88,7 @@
 
 <div class="container text-center mt-5">
     <div class="row">
-        <div class="col-sm-12 col-md-6 d-flex">
+        <div class="col-sm-12 col-md-6 d-flex bg-blue text-white rounded-3 p-2">
             <p class="fs-4 lh-base my-auto">
                 Teacher wellbeing is a positive emotional state that combines the personal needs and
                 expectations of both learners and their teachers. Teacher wellbeing and job
@@ -98,7 +98,7 @@
         </div>
         <div class="col-sm-12 col-md-6">
             <img
-                class="img-fluid"
+                class="img-fluid rounded"
                 style="max-height: 300px;"
                 src="https://res.cloudinary.com/splyce/image/upload/v1668242850/ThinkTeacher/teachers6_lh2k7r.webp"
                 alt="img"
@@ -109,13 +109,13 @@
     <div class="row mt-4">
         <div class="col-sm-12 col-md-6">
             <img
-                class="img-fluid"
+                class="img-fluid rounded"
                 style="max-height: 300px;"
                 src="https://res.cloudinary.com/splyce/image/upload/v1668244333/ThinkTeacher/teachers4_new_q5ujfl.webp"
                 alt="img"
             />
         </div>
-        <div class="col-sm-12 col-md-6 d-flex">
+        <div class="col-sm-12 col-md-6 d-flex bg-gold text-white rounded-3 p-2">
             <p class="fs-4 lh-base my-auto">
                 Teacher wellbeing has a significant impact on schools, teachers and students. Many
                 of the negative effects of low wellbeing are well publicised, with stress or burnout
@@ -127,7 +127,7 @@
     </div>
 
     <div class="row mt-4">
-        <div class="col-sm-12 col-md-6 d-flex">
+        <div class="col-sm-12 col-md-6 d-flex bg-blue text-white rounded-3 p-2">
             <p class="fs-4 lh-base my-auto">
                 When schools prioritise teacher wellbeing and help to ensure that teachers can
                 flourish, this promotes better classroom climates and enables high quality teaching
@@ -136,7 +136,7 @@
         </div>
         <div class="col-sm-12 col-md-6">
             <img
-                class="img-fluid"
+                class="img-fluid rounded"
                 style="max-height: 300px;"
                 src="https://res.cloudinary.com/splyce/image/upload/v1669199557/ThinkTeacher/teachers_8_enc0ld.jpg"
                 alt="img"
@@ -147,13 +147,13 @@
     <div class="row mt-4">
         <div class="col-sm-12 col-md-6">
             <img
-                class="img-fluid"
+                class="img-fluid rounded"
                 style="max-height: 300px;"
                 src="https://res.cloudinary.com/splyce/image/upload/v1668244333/ThinkTeacher/teachers7_new_zcr0hp.webp"
                 alt="img"
             />
         </div>
-        <div class="col-sm-12 col-md-6 d-flex">
+        <div class="col-sm-12 col-md-6 d-flex bg-gold text-white rounded-3 p-2">
             <p class="fs-4 lh-base my-auto">
                 Looking after your teachers’ wellbeing is one of the most important things you can
                 do as a school community. The success of your school is dependent on the quality of

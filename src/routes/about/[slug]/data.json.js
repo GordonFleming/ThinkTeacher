@@ -2,7 +2,8 @@
 export const persons = {
     bridget: {
         img_url: "https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/Bridget_new_91ee1bd4f8.webp?updated_at=2022-12-02T09:25:55.009Z",
-        name: "Bridget Fleming - Founding Director",
+        name: "Bridget Fleming",
+        role: "Founding Director",
         qualifications: "MSc | HDE (Wits)",
         description: `Bridget Fleming is a passionate advocate for teacher wellbeing. 
         Having taught secondary school Geography for the past 30 years, primarily in
@@ -18,7 +19,8 @@ export const persons = {
     },
     zani: {
         img_url: "https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/Zani_new_007b9c077f.webp?updated_at=2022-12-02T09:25:54.342Z",
-        name: "Zanele Masuku - General Manager",
+        name: "Zanele Masuku",
+        role: "General Manager",
         qualifications: `Professional Dip in Business Management and Marketing | SAIM Programme in
         Business Management | Higher Dip in Business Management and Marketing | Dip
         in Business Management and Marketing`,
@@ -35,7 +37,8 @@ export const persons = {
     },
     gill: {
         img_url: "https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/Gillian_ef23156492.webp?updated_at=2022-12-02T09:25:54.041Z",
-        name: "Gillian Doig - Head of Operations",
+        name: "Gillian Doig",
+        role: "Head of Operations",
         qualifications: "H Dip Ed (Physical Education)",
         description: `Gillian's  teaching career commenced in 1989 and  she taught Life Sciences and Physical Education 
         from Grade 8 to Matric in a full-time capacity until 1999. Thereafter she taught and coached on a part time basis 
