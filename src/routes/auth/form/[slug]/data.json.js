@@ -95,4 +95,5 @@ export const formOpt = {
     // Forms which just have message and default vals
     finance: {},
     jobs: {},
+    healthy_living: {},
 };
