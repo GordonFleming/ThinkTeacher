@@ -171,7 +171,7 @@
     {#if !$name}
         <div class="row mt-5">
             <div class="row justify-content-center">
-                <h4 class="text-center fs-1 mb-4 col-6">
+                <h4 class="text-center fs-1 mb-4 col-md-6">
                     ☕ A full year's membership of ThinkTeacher for the cost of one cup of coffee a
                     month! ☕
                 </h4>

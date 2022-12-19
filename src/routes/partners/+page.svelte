@@ -1,5 +1,5 @@
 <script>
-    import { goto, prefetch } from "$app/navigation";
+    import { goto, preloadData } from "$app/navigation";
     import Title from "$lib/Components/Title.svelte";
 
     export let data;
@@ -33,7 +33,8 @@
                         </p>
                         <button
                             class="btn-sm btn bg-gold mx-auto shadow cta"
-                            on:mouseenter={() => prefetch(`/partners/${partner.attributes.slug}`)}
+                            on:mouseenter={() =>
+                                preloadData(`/partners/${partner.attributes.slug}`)}
                             on:click={() => goto(`/partners/${partner.attributes.slug}`)}
                             >Read More</button
                         >
