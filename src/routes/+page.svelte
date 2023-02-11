@@ -2,9 +2,8 @@
     import WebinarsBar from "$lib/Components/WebinarsBar.svelte";
     import Logo from "$lib/Components/logo.svelte";
     import { goto } from "$app/navigation";
-    import { onMount, afterUpdate, onDestroy } from "svelte";
-    import { name, firstTime } from "$lib/stores";
-    import { fly } from "svelte/transition";
+    import { afterUpdate } from "svelte";
+    import { name } from "$lib/stores";
     import { Splide, SplideSlide } from "@splidejs/svelte-splide";
     import "@splidejs/svelte-splide/css";
 
@@ -33,22 +32,8 @@
         easing: "linear",
     };
 
-    let intro = null;
-
-    setTimeout(function () {
-        intro = false;
-    }, 2250);
-
-    onMount(() => {
-        intro = true;
-    });
-
     afterUpdate(() => {
         $name = localStorage.getItem("name");
-    });
-
-    onDestroy(() => {
-        $firstTime = false;
     });
 </script>
 
@@ -64,15 +49,7 @@
 <div class="banner-all">
     <div class="bg-overlay" />
     <div class="bg-banner text-center">
-        {#if $firstTime}
-            {#if intro}
-                <h1 id="welcome" in:fly={{ x: -200, duration: 2250 }}>Welcome to</h1>
-            {:else if intro !== null && !intro}
-                <Logo />
-            {/if}
-        {:else}
-            <Logo />
-        {/if}
+        <Logo />
     </div>
 
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">

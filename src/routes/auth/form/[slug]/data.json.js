@@ -6,6 +6,8 @@ export const formOpt = {
         financial_health: false,
     },
     cars: {
+        nearest_kia_dealer: "",
+        cell: "",
         car_options: [
             'picanto',
             'rio',
