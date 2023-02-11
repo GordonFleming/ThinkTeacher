@@ -12,7 +12,7 @@
         //rewind: true,
         type: "loop",
         autoplay: true,
-        perPage: 3,
+        perPage: 4,
         perMove: 1,
         interval: 2600,
         speed: 600,
