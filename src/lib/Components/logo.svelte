@@ -2,7 +2,7 @@
     import { fade } from 'svelte/transition'
 </script>
 
-<div id="logo-box" in:fade="{{duration:2000}}">
+<div id="logo-box" in:fade="{{duration:300}}">
     <svg id="thinkTeacherLogo" viewBox="0 0 2224 527" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g id="final-logo-edited-for-site">
         <g id="main-text">
