@@ -1,5 +1,4 @@
 <script>
-    import WebinarsBar from "$lib/Components/WebinarsBar.svelte";
     import Logo from "$lib/Components/logo.svelte";
     import { goto } from "$app/navigation";
     import { afterUpdate } from "svelte";
