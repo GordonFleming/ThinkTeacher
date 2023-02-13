@@ -94,8 +94,21 @@ export const formOpt = {
     legal: {
         field_of_interest: ""
     },
+    finance: {
+        extraFinInfo : {
+            files: [
+                {
+                    name: "Tax Season",
+                    url: "https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/24609_Tax_Season_2023_01_31_59ca7a2b21.pdf?updated_at=2023-02-13T11:23:40.174Z"
+                },
+                {
+                    name: "Tax Infographic",
+                    url: "https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/24609_Tax_Infographic_2023_01_31_401605fab4.pdf?updated_at=2023-02-13T11:23:39.980Z"
+                },
+            ],
+        }
+    },
     // Forms which just have message and default vals
-    finance: {},
     jobs: {},
     healthy_living: {},
 };
