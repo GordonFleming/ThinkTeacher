@@ -359,6 +359,11 @@
 </div>
 
 <style>
+    h1 {
+        margin-top: 5rem;
+        font-size: 3em;
+        color: var(--logo-grey);
+    }
     h2 {
         color: var(--logo-grey);
         font-size: 2.4em;
@@ -400,6 +405,9 @@
             position: absolute;
         }
     }
+    #welcome {
+            font-size: 8em;
+        }
 
     @media screen and (max-width: 1000px) {
         .bg-banner {
@@ -407,7 +415,9 @@
             padding-top: 2rem;
         }
     }
-
+    #welcome {
+        margin-top: 0;
+    }
     .btn-lg {
         padding: 2rem 1rem 1rem 1rem;
     }
