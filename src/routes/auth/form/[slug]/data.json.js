@@ -106,9 +106,22 @@ export const formOpt = {
                     url: "https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/24609_Tax_Infographic_2023_01_31_401605fab4.pdf?updated_at=2023-02-13T11:23:39.980Z"
                 },
             ],
+        },
+    },
+    healthy_living: {
+        extraNourishInfo : {
+            files: [
+                {
+                    name: "Promotions",
+                    url: "https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/Nourish_Ways_Promos_2023_TT_9f3b6f9f02.pdf?updated_at=2023-02-17T08:13:04.545Z"
+                },
+                {
+                    name: "Pricing",
+                    url: "https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/Nourish_Ways_Pricing_2023_TT_0ee281ae53.pdf?updated_at=2023-02-17T08:13:04.149Z"
+                },
+            ],
         }
     },
     // Forms which just have message and default vals
     jobs: {},
-    healthy_living: {},
 };

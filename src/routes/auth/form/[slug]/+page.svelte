@@ -243,6 +243,23 @@
                         {/each}
                     </div>                        
                 {/if}
+                {#if key == "extraNourishInfo"}
+                    <div class="row mt-3">
+                        <h4 class="text-logo-gold">Promo's are valid now from 1st March 2023 - 2nd June 2023!</h4>
+                        <a href="https://kfta.app.alexanderforbes.co.za/TotalAgility/Forms/digital/frmNewEventSetupRegistration.form?frmEventGroupCode=WORK_N2-C6A">
+                            <input class="btn bg-gold mb-2 fw-bold cta" type="button" value="Click here" />
+                        </a>
+                        <p class="fw-bold">Read more:</p>
+                        {#each value.files as val}
+                                <div class="col">
+                                    <p>{val.name}</p>
+                                    <a href={val.url} target="_blank" rel="noreferrer">
+                                        <img class="mb-2" src="/pdf-icon.svg" alt="pdf">
+                                    </a>
+                                </div>
+                        {/each}
+                    </div>                        
+                {/if}
             {/each}
 
             <div class="col-12 mt-2">
