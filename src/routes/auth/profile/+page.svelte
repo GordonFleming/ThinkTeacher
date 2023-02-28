@@ -3,10 +3,10 @@
     import { goto } from "$app/navigation";
     import axios from "axios";
     import { Jumper } from "svelte-loading-spinners";
-    import { API_URL, sendgridList, sgKey } from "$lib/env.js";
+    import { API_URL, sendgridList, sgKey, toastSuc, toastErr } from "$lib/env.js";
     import { name } from "$lib/stores";
     import { browserSet } from "$lib/re_utils";
-    import { fade } from "svelte/transition";
+    import { toast } from "@zerodevx/svelte-toast";
 
     let loading = true;
 
@@ -54,10 +54,9 @@
 
     async function updateUser() {
         if (eduPhase == "none" || !res.test(String(email).toLowerCase())) {
-            errorMsg = "Email not valid of education phase not selected";
+            toast.push("Email not valid or Education phase not selected!", toastErr);
         } else {
             loading = true;
-            errorMsg = null;
 
             if (!altMail) altMail = "null@null.com";
             if (!province) province = "NA";
@@ -110,23 +109,18 @@
                     }
                 )
                 .then((response) => {
-                    msg = "Success!";
-                    setTimeout(backFalse, 2000);
+                    toast.push("Update successful!", toastSuc);
                     $name = username;
                     browserSet("name", $name);
                     console.log(response);
                 })
                 .catch((error) => {
                     console.error("eee", error.response.data.error.message.replace(".", " "));
-                    errorMsg = error.response.data.error.message.replace(".", " ");
+                    toast.push(error.response.data.error.message.replace(".", " "), toastErr);
                 });
         }
     }
 
-    let errorMsg, msg;
-    function backFalse() {
-        msg = null;
-    }
     let user;
 </script>
 
@@ -153,16 +147,6 @@
                         <div class="card bg-dark text-white" style="border-radius: 1rem;">
                             <div class="card-body p-md-3 p-lg-4 text-center">
                                 <div class="mb-md-3 mt-md-2">
-                                    {#if errorMsg}
-                                        <h4 class="error-col">{errorMsg}</h4>
-                                    {:else if msg}
-                                        <h4
-                                            transition:fade={{ duration: 1000 }}
-                                            class="success-col"
-                                        >
-                                            {msg}
-                                        </h4>
-                                    {/if}
                                     <div class="form-outline form-white mb-2">
                                         <label class="form-label" for="Username">Username</label>
                                         <input
