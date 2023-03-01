@@ -54,13 +54,13 @@ export async function load({ params }) {
 	const res = await apiGraph('POST', endpoint, graphqlQuery);
     const data = await res.json();
 
+
     if (res.status === 404 || data.data.packages.data.length === 0) {
         throw error(404, `Benefits for ${slug}, coming soon`);
+    } else {
+        if (res.ok) {
+            return { packages: data.data.packages.data, slug: slug };
+        }
+        throw error(res.status);
     }
-
-	if (res.ok) {
-		return { packages: data.data.packages.data, slug: slug };
-	}
-
-	throw error(res.status);
 };
