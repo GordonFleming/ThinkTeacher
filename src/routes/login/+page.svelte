@@ -9,7 +9,7 @@
     import { API_URL, toastErr } from "$lib/env.js";
     import { toast } from "@zerodevx/svelte-toast";
 
-    let usernameEmail, password;
+    let email, password;
 
     function logoutUser() {
         localStorage.clear();
@@ -23,7 +23,7 @@
     async function loginUser() {
         await axios
             .post(`${API_URL}/auth/local`, {
-                identifier: usernameEmail,
+                identifier: email,
                 password: password,
             })
             .then((response) => {
@@ -105,8 +105,8 @@
                                         type="email"
                                         id="Email"
                                         class="form-control form-control-lg"
-                                        placeholder="Enter email or username"
-                                        bind:value={usernameEmail}
+                                        placeholder="Enter email"
+                                        bind:value={email}
                                         required
                                     />
                                 </div>

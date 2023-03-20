@@ -4,13 +4,11 @@
     import axios from "axios";
     import { Jumper } from "svelte-loading-spinners";
     import { API_URL, sendgridList, sgKey, toastSuc, toastErr } from "$lib/env.js";
-    import { name } from "$lib/stores";
-    import { browserSet } from "$lib/re_utils";
     import { toast } from "@zerodevx/svelte-toast";
 
     let loading = true;
 
-    let username, email, id;
+    let email, id;
     let altMail,
         cell,
         eduPhase,
@@ -37,7 +35,6 @@
             });
         user = res.data;
         loading = false;
-        username = user.username;
         firstName = user.firstName;
         lastName = user.last_name;
         ttCode = user.ttCode;
@@ -92,7 +89,7 @@
                 .put(
                     `${API_URL}/users/${id}`,
                     {
-                        username: username,
+                        username: email,
                         email: email,
                         qualification: qualification,
                         cell: cell,
@@ -110,8 +107,6 @@
                 )
                 .then((response) => {
                     toast.push("Update successful!", toastSuc);
-                    $name = username;
-                    browserSet("name", $name);
                     console.log(response);
                 })
                 .catch((error) => {
@@ -135,7 +130,7 @@
 {:else}
     <section class="vh-50 gradient-custom container mt-4 mb-4">
         <h3>
-            Hi, <strong>{username}</strong> here you will be able to update your personal details.
+            Hi, <strong>{firstName}</strong> here you will be able to update your personal details.
         </h3>
         <h4>
             Your ThinkTeacher Number: <span class="text-logo-gold">{user.ttCode}</span>
@@ -147,18 +142,6 @@
                         <div class="card bg-dark text-white" style="border-radius: 1rem;">
                             <div class="card-body p-md-3 p-lg-4 text-center">
                                 <div class="mb-md-3 mt-md-2">
-                                    <div class="form-outline form-white mb-2">
-                                        <label class="form-label" for="Username">Username</label>
-                                        <input
-                                            type="text"
-                                            name="username"
-                                            id="username"
-                                            class="form-control form-control-lg"
-                                            placeholder={user.username}
-                                            bind:value={username}
-                                            required
-                                        />
-                                    </div>
                                     <div class="form-outline form-white mb-2">
                                         <label class="form-label" for="Email">Email</label>
                                         <input

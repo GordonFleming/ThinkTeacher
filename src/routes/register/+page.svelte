@@ -50,7 +50,6 @@
     //     });
 
     let loginSchema = object({
-        username: string().required(),
         email: string().email().required(),
         s: boolean().required().isTrue(),
     });
@@ -138,7 +137,7 @@
             errorMsg = null;
             await axios
                 .post(`${API_URL}/auth/local/register`, {
-                    username: val.username,
+                    username: val.email,
                     email: val.email,
                     password: password,
                     firstName: val.firstName,
@@ -281,19 +280,6 @@
                                         </div>
 
                                         <div class="form-outline form-white mb-2">
-                                            <label class="form-label" for="Username">Username</label
-                                            >
-                                            <input
-                                                type="text"
-                                                name="username"
-                                                id="username"
-                                                class="form-control form-control-lg"
-                                                placeholder="username"
-                                                bind:value={val.username}
-                                                required
-                                            />
-                                        </div>
-                                        <div class="form-outline form-white mb-2">
                                             <label class="form-label" for="Email">Email</label>
                                             <input
                                                 type="email"
@@ -359,7 +345,7 @@
                                                 >
                                                 <input
                                                     type="text"
-                                                    name="username"
+                                                    name="firstname"
                                                     id="name"
                                                     class="form-control form-control-lg"
                                                     placeholder="First Name"
