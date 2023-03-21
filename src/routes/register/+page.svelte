@@ -8,7 +8,7 @@
     import { onMount, onDestroy } from "svelte";
     import { id, name } from "$lib/stores";
     import { Jumper } from "svelte-loading-spinners";
-    import { object, string, number, boolean } from "yup";
+    import { object, string, boolean } from "yup";
     import { toast } from "@zerodevx/svelte-toast";
 
     onMount(() => {
@@ -36,18 +36,20 @@
         sessionStorage.clear();
     }
 
-    // $: userSchema
-    //     .validate(val, { abortEarly: false })
-    //     .then(function () {
-    //         // Success
-    //     })
-    //     .catch(function (err) {
-    //         console.log(err.inner);
-    //         err.inner.forEach((e) => {
-    //             console.log(e.message);
-    //         });
-    //     });
+    let cellErr = null;
+    $: userSchema
+        .validateAt('cell', val).then(() => {
+            cellErr = null;
+        })
+        .catch((err) => {
+            cellErr = err.message;
+        });
 
+    // Cell phone validation regex
+    let cellRegex = new RegExp(
+        "^(\\+27|0|27)(1|6|7|8|9)([0-9]{8})$",
+        "g"
+    );
     let loginSchema = object({
         email: string().email().required(),
         s: boolean().required().isTrue(),
@@ -55,9 +57,8 @@
     let userSchema = object({
         firstName: string().required(),
         lastName: string().required(),
-        isValidID: boolean().required().isTrue(),
         altMail: string().email().nullable(),
-        cell: number().required(),
+        cell: string().matches(cellRegex, "Phone number is not valid").required(),
         eduPhase: string().required(),
         qualification: string().nullable(),
         sace: string().nullable(),
@@ -67,7 +68,6 @@
     });
 
     let val = {};
-
     // Disable button
     let loading = false,
         password = "";
@@ -406,6 +406,11 @@
                                                     max="9999999999999"
                                                     required
                                                 />
+                                                {#if cellErr}
+                                                    <small class="text-danger"
+                                                    >{cellErr}</small
+                                                    >
+                                                {/if}
                                             </div>
                                             <div class="col-sm-12 col-md-6 mt-3">
                                                 <label class="form-label" for="sace"
