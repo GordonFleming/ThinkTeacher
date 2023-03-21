@@ -45,7 +45,19 @@
     />
 </svelte:head>
 
-<div class="banner-all">
+
+<header id="banner">
+    <!-- Three words under each other, first is benefits, next support and then care nice and big and to the left -->
+    <section id="banner-words">
+        <h2>
+            <span class="eh eh-b">benefits</span>
+            <span class="eh eh-s">support</span>
+            <span class="eh eh-c">care</span>
+        </h2>
+        <p class="eh-sml">For teachers by teachers</p>
+    </section>
+</header>
+<!-- <div class="banner-all">
     <div class="bg-overlay" />
     <div class="bg-banner text-center">
         <Logo />
@@ -60,7 +72,7 @@
         c21.2-8.1,52.2-18.2,79.7-24.2C399.3,7.9,411.6,7.5,421.9,6.5z"
         />
     </svg>
-</div>
+</div> -->
 
 <div class="container text-center mt-5">
     <div class="row">
@@ -364,14 +376,6 @@
         font-size: 2.4em;
         text-align: center;
     }
-    .banner-all {
-        position: relative;
-    }
-    .bg-banner {
-        background-color: var(--bg-banner);
-        height: 400px;
-        padding-top: 5rem;
-    }
     .benefit-list ul li {
         font-size: 1.3em;
         position: relative;
@@ -385,6 +389,15 @@
         /* list-style: square outside; */
 
         list-style-image: url("https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/m_favicon_08702889be_d8548d4c57.png");
+    }
+    /*
+    .banner-all {
+        position: relative;
+    }
+    .bg-banner {
+        background-color: var(--bg-banner);
+        height: 400px;
+        padding-top: 5rem;
     }
     @media screen and (min-width: 1000px) {
         .bg-overlay {
@@ -406,7 +419,7 @@
             height: 200px;
             padding-top: 2rem;
         }
-    }
+    } */
 
     .btn-lg {
         padding: 2rem 1rem 1rem 1rem;
@@ -420,5 +433,68 @@
     .logo-box {
         border: var(--logo-gold) 3px solid;
         border-radius: 2px;
+    }
+
+    #banner {
+        min-height: 65vh;
+        width: 100%;
+        background-image: url("https://res.cloudinary.com/splyce/image/upload/e_contrast:50/v1679417617/ThinkTeacher/tt-banner-temp_new_vq2oz3.webp");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-bottom: 5px solid var(--logo-grey);
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+    }
+    #banner h2 {
+        line-height: 1.2;
+    }
+    #banner-words {
+        padding: 20vh 8vw 14vh;
+    }
+    @media (max-width: 32em) {
+        #banner-words {
+            padding: 15vh 6vw 8vh;
+        }
+        .eh {
+            max-width: 80%;
+        }
+    }
+    @media (max-width: 60em) {
+        .eh {
+            font-size: 3.2rem !important;
+        }
+    }      
+    .eh {
+        display: block;
+        font-size: 6rem;
+        text-transform: uppercase;
+        color: rgb(0, 0, 0);
+        letter-spacing: 0.04rem;
+        font-weight: 700;
+        text-align: left;
+    }
+    .eh-b {
+        color: var(--logo-gold);
+        font-weight: 700;
+        font-family: 'Exo', sans-serif;
+    }
+    .eh-s {
+        color: var(--logo-grey);
+        font-weight: 600;
+        font-family: 'Exo', sans-serif;
+    }
+    .eh-c {
+        color: #CACFD9;
+        font-weight: 400;
+        font-family: 'Exo', sans-serif;
+    }
+    .eh-sml {
+        font-weight: 500;
+        font-size: 1rem;
+        color: rgb(254, 254, 254);
+        opacity: 0.5;
+        margin: 1.5rem 0px 3rem;
     }
 </style>
