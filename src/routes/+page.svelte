@@ -438,7 +438,7 @@
     #banner {
         min-height: 65vh;
         width: 100%;
-        background-image: url("https://res.cloudinary.com/splyce/image/upload/e_contrast:50/v1679417617/ThinkTeacher/tt-banner-temp_new_vq2oz3.webp");
+        background-image: url("https://res.cloudinary.com/splyce/image/upload/e_contrast:20/v1679424133/ThinkTeacher/banner_latest_new_x2lawp.webp");
         background-position: center center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -474,6 +474,8 @@
         letter-spacing: 0.04rem;
         font-weight: 700;
         text-align: left;
+        /* white glow */
+        text-shadow: 1px 1px white;
     }
     .eh-b {
         color: var(--logo-gold);
