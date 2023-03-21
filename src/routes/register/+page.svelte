@@ -5,7 +5,6 @@
     import { arrowLeft, eye, eyeSlash } from "$lib/Icons/icons";
     import { sgKey, sendgridList, API_URL, toastSuc } from "$lib/env.js";
     import z from "zxcvbn";
-    import saIdParser from "south-african-id-parser";
     import { onMount, onDestroy } from "svelte";
     import { id, name } from "$lib/stores";
     import { Jumper } from "svelte-loading-spinners";
@@ -71,14 +70,12 @@
 
     // Disable button
     let loading = false,
-        idNum,
         password = "";
 
     let errorMsg = null;
     let registerNext = false,
         registered = false,
-        provider = false,
-        nationality = true;
+        provider = false;
 
     // TT Code Gen
     let ttCode = "TT";
@@ -96,8 +93,6 @@
     $: val.s = z(password).score > 2;
     $: progress = (z(password).score / 4) * 100;
     $: val.s ? (barCol = "bg-success") : (barCol = "bg-danger");
-    // ID check & To account for non SA
-    $: val.isValidID = nationality ? saIdParser.validate(idNum) : true;
 
     async function registerUser() {
         if (provider) {
@@ -107,7 +102,6 @@
                     {
                         firstName: val.firstName,
                         lastName: val.lastName,
-                        idNum: idNum,
                         altMail: val.altMail,
                         cell: val.cell,
                         eduPhase: val.eduPhase,
@@ -142,7 +136,6 @@
                     password: password,
                     firstName: val.firstName,
                     lastName: val.lastName,
-                    idNum: idNum,
                     altMail: val.altMail,
                     cell: val.cell,
                     eduPhase: val.eduPhase,
@@ -198,7 +191,6 @@
                     loading = false;
                     val = {};
                     goto("/login");
-                    idNum = "";
                 })
                 .catch((error) => {
                     console.error(error);
@@ -415,44 +407,6 @@
                                                     required
                                                 />
                                             </div>
-                                            <div class="col-4 mt-3">
-                                                <label
-                                                    class="form-label form-check-label"
-                                                    for="nationality">South African</label
-                                                >
-                                                <div
-                                                    class="form-switch d-flex justify-content-center"
-                                                >
-                                                    <input
-                                                        class="form-check-input form-control"
-                                                        type="checkbox"
-                                                        role="switch"
-                                                        id="nationality"
-                                                        bind:checked={nationality}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div class="col-8 mt-3">
-                                                <label class="form-label" for="idNum"
-                                                    >ID Number</label
-                                                >
-                                                <input
-                                                    type="text"
-                                                    name="idNumber"
-                                                    id="idNum"
-                                                    class="form-control form-control-lg"
-                                                    placeholder={nationality
-                                                        ? "SA ID number"
-                                                        : "Country ID / Passport number"}
-                                                    bind:value={idNum}
-                                                    required
-                                                />
-                                                {#if idNum && nationality}
-                                                    <small style={val.isValidID || "color:red"}>
-                                                        {val.isValidID ? "Valid" : "Not a valid"} ID
-                                                    </small>
-                                                {/if}
-                                            </div>
                                             <div class="col-sm-12 col-md-6 mt-3">
                                                 <label class="form-label" for="sace"
                                                     >SACE Number</label
@@ -563,10 +517,11 @@
                                                     id="flexCheckDefault"
                                                 />
                                                 <br />
-                                                <small class="text-danger"
-                                                    >&nbsp;&nbsp;&nbsp;&nbsp;*Please check the T&Cs
-                                                    above</small
-                                                >
+                                                {#if !val.terms}
+                                                    <small class="text-danger"
+                                                        >Please accept the T&Cs above</small
+                                                    >
+                                                {/if}
                                             </div>
                                         </div>
 
