@@ -38,6 +38,10 @@
     onMount(async () => {
         if ($id === undefined) {
             $id = localStorage.getItem("id");
+            // logout if they're not logged in
+            if ($id === null) {
+                window.location.href = "/login";
+            }
         }
 
         setTimeout(() => {
