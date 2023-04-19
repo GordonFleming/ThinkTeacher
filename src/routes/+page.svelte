@@ -207,7 +207,7 @@
                 </li> -->
                 <li class=" fw-bold">
                     Kia Motors Membership Scheme, offering vehicles at cost plus 2% including a
-                    five- year unlimited mileage warranty with financing through MFC (Nedbank)
+                    five- year unlimited mileage warranty with financing through MFC
                 </li>
                 <li class=" fw-bold">
                     Legal advice and access to dedicated lawyers with Stephen May Attorney-at-Law
