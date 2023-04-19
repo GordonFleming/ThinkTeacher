@@ -201,10 +201,10 @@
                     Alexander Forbes Membership Scheme with a range of discounted products, and
                     access to dedicated financial advisors
                 </li>
-                <li class=" fw-bold">
+                <!-- <li class=" fw-bold">
                     Nedbank financial assistance, with the Karri School App and a range of financial
                     banking products for teachers
-                </li>
+                </li> -->
                 <li class=" fw-bold">
                     Kia Motors Membership Scheme, offering vehicles at cost plus 2% including a
                     five- year unlimited mileage warranty with financing through MFC (Nedbank)
@@ -223,7 +223,7 @@
                     Cirrus Travel: specialised and discounted travel packages designed for teachers
                     during school holidays
                 </li>
-                <li class=" fw-bold">Exclusive Books (EB) book club - 10% off at all EB stores</li>
+                <li class=" fw-bold">Exclusive Books (EB) book club</li>
                 <li class=" fw-bold">
                     Wellbeing platform for life coaching, nutritional advice, bereavement and trauma
                     counselling
