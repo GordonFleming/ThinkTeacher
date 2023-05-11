@@ -122,6 +122,10 @@ export const formOpt = {
             ],
         }
     },
+    technology: {
+        deliver: true,
+        delivery_address: "",
+    },
     // Forms which just have message and default vals
     jobs: {},
 };

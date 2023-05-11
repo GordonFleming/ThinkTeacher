@@ -298,15 +298,6 @@
                 <div class="slide-content">
                     <img
                         class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_kim_c21bab4e72_fbacefe335.png"
-                        alt="partner"
-                    />
-                </div>
-            </SplideSlide>
-            <SplideSlide>
-                <div class="slide-content">
-                    <img
-                        class="logo img-fluid"
                         src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_SGM_Logo_b251d32022_ac78ee1ee9.webp"
                         alt="partner"
                     />
@@ -362,6 +353,15 @@
                     <img
                         class="logo img-fluid"
                         src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_Flow_Logo_On_White_cropped_1985224419.jpg"
+                        alt="partner"
+                    />
+                </div>
+            </SplideSlide>
+            <SplideSlide>
+                <div class="slide-content">
+                    <img
+                        class="logo img-fluid"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za:443/strapi/cms/computer_Mania_ebec9c2f87.png"
                         alt="partner"
                     />
                 </div>
