@@ -40,7 +40,10 @@
                 toast.push("Payment is due", toastErr);
             }
         } else {
-            goto("/login");
+            const currentUrl = new URL(window.location.href);
+            const currentPath = currentUrl.pathname;
+            const loginUrl = `/login?r=${encodeURIComponent(currentPath)}`;
+            goto(loginUrl);
         }
     });
 </script>

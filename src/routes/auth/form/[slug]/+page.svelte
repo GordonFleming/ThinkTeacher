@@ -39,7 +39,7 @@
         };
         const res = await axios.get(`${API_URL}/users/me`, header).catch(function (error) {
             console.log("Error", error.message);
-            goto("/login");
+            //goto("/login");
         });
         user = res.data;
 

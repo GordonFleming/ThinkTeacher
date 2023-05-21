@@ -31,7 +31,7 @@
             })
             .catch(function (error) {
                 console.log("Error", error.message);
-                goto("/login");
+                //goto("/login");
             });
         user = res.data;
         loading = false;

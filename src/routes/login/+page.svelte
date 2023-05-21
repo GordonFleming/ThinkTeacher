@@ -8,7 +8,8 @@
     import { browserSet, compareTime } from "$lib/re_utils";
     import { API_URL, toastErr } from "$lib/env.js";
     import { toast } from "@zerodevx/svelte-toast";
-
+    
+    let redirectUrl = null;
     let email, password;
 
     function logoutUser() {
@@ -17,6 +18,8 @@
     }
 
     onMount(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        redirectUrl = urlParams.get('r');
         logoutUser();
     });
 
@@ -39,14 +42,16 @@
                 let created_at = response.data.user.createdAt;
                 let paidMember = response.data.user.paid;
 
-                if (paidMember) {
-                    console.log("you are paid up, payment check");
+                if (redirectUrl) {
+                    goto(redirectUrl);
+                } else if (paidMember) {
+                    //console.log("you are paid up, payment check");
                     goto("/benefits");
                 } else if (compareTime(created_at)) {
-                    console.log("you are paid up, free member");
+                    //console.log("you are paid up, free member");
                     goto("/benefits");
                 } else {
-                    console.log("you are not paid up");
+                    //console.log("you are not paid up");
                     goto("/payment");
                 }
             })

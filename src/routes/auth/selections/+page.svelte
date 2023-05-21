@@ -29,7 +29,7 @@
             })
             .catch(function (error) {
                 console.log("Error", error.message);
-                goto("/login");
+                //goto("/login");
             });
         forms = res.data;
         forms.forEach(seperateForms);
