@@ -4,7 +4,7 @@
     import { goto } from "$app/navigation";
     import Icon from "$lib/Icons/icon.svelte";
     import { name, surname, id, ttNum } from "$lib/stores";
-    import { facebook, twitter, instagram, eye, eyeSlash } from "$lib/Icons/icons";
+    import { facebook, instagram, eye, eyeSlash } from "$lib/Icons/icons";
     import { browserSet, compareTime } from "$lib/re_utils";
     import { API_URL, toastErr } from "$lib/env.js";
     import { toast } from "@zerodevx/svelte-toast";
@@ -150,10 +150,6 @@
                                 <a
                                     href="https://www.facebook.com/thinkteacher"
                                     class="text-white px-2"><Icon data={facebook} scale="2.2" /></a
-                                >
-                                <a
-                                    href="https://twitter.com/thinkteacher_sa"
-                                    class="text-white px-2"><Icon data={twitter} scale="2.2" /></a
                                 >
                                 <a
                                     href="https://www.instagram.com/thinkteacher_rsa"

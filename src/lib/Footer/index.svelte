@@ -1,6 +1,6 @@
 <script>
     import Icon from "$lib/Icons/icon.svelte";
-    import { facebook, twitter, instagram, linkedin, youtube } from "$lib/Icons/icons";
+    import { facebook, instagram, linkedin, youtube } from "$lib/Icons/icons";
 
     function scrollTop() {
         document.body.scrollTop = 0; // For Safari
@@ -10,14 +10,6 @@
 
 <footer style="background-color: var(--default-text);" class="text-center text-black mt-5">
     <section class="mb-2 mt-3">
-        <!-- Twitter -->
-        <a
-            class="btn btn-outline-light btn-floating m-1"
-            href="https://twitter.com/thinkteacher_sa"
-            target="_blank"
-            rel="noopener noreferrer"
-            role="button"><Icon data={twitter} scale="2.5" /></a
-        >
         <!-- Instagram -->
         <a
             class="btn btn-outline-light btn-floating m-1"
@@ -70,14 +62,6 @@
                         target="_blank"
                         rel="noopener noreferrer"
                         class="text-white">Facebook</a
-                    >
-                </li>
-                <li>
-                    <a
-                        href="https://twitter.com/thinkteacher_sa"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="text-white">Twitter</a
                     >
                 </li>
                 <li>
