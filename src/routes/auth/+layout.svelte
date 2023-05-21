@@ -4,6 +4,7 @@
     import axios from "axios";
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
+    import { toast } from "@zerodevx/svelte-toast";
     import { API_URL, toastErr } from "$lib/env.js";
     import { compareTime } from "$lib/re_utils";
 
@@ -17,11 +18,11 @@
                 })
                 .catch(function (error) {
                     console.log(error.response.data);
-                    if (error.response.data.error == "Unauthorized") {
-                        goto("/login");
-                        console.log("JWT token invalid: ", error.response.data.message);
+                    if (error.response.data.error.name == "UnauthorizedError") {
+                        console.log("JWT token invalid: ", error.response.data.error.message);
                         toast.push("Your session expired, please login again", toastErr);
                     }
+                    goto("/login");
                 });
 
             const created_at = res.data.createdAt;
