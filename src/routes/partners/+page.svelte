@@ -21,7 +21,9 @@
                     <a data-sveltekit-preload-data href={`/partners/${partner.attributes.slug}`}>
                         <img
                             class="img-fluid rounded cta"
-                            src={partner.attributes.logo.data.attributes.url}
+                            src={"https://wsrv.glass.thinkteacher.co.za/?url="+
+                            partner.attributes.logo.data.attributes.url+
+                            "&w=400&h=400&output=webp"}
                             alt="cover"
                         />
                     </a>
