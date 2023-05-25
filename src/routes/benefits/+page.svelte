@@ -23,7 +23,10 @@
                     <div class="placeholder">
                         <img
                             class="img-fluid offer offer-img rounded-1"
-                            src={benefit.attributes.img.data.attributes.url}
+                            src={
+                            "https://wsrv.glass.thinkteacher.co.za/?url="+
+                            benefit.attributes.img.data.attributes.url+
+                            "&w=300&h=300&output=webp"}
                             alt="well being"
                         />
                     </div>

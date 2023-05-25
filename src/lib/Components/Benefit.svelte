@@ -23,7 +23,11 @@
                 <div class="card bg-dark m-2 shadow-lg">
                     <img
                         class="img-fluid rounded cta"
-                        src={benData.attributes.banner.data.attributes.url}
+                        src={
+                            "https://wsrv.glass.thinkteacher.co.za/?url="+
+                            benData.attributes.banner.data.attributes.url+
+                            "&w=750&h=750&output=webp"
+                        }
                         alt="cover"
                         on:click={() => redirect(benData.attributes.name)}
                         on:keydown={() => redirect(benData.attributes.name)}
