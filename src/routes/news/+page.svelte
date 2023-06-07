@@ -11,7 +11,7 @@
     <title>News Flash | ThinkTeacher</title>
     <meta
         name="description"
-        content="View all sorts of news flash posts, written by Teachers for teachers!"
+        content="View all sorts of news flash posts, written by teachers for teachers!"
     />
 </svelte:head>
 

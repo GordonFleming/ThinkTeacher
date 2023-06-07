@@ -54,7 +54,7 @@
             <span class="eh eh-s">support</span>
             <span class="eh eh-c">care</span>
         </h2>
-        <p class="eh-sml">For teachers by teachers</p>
+        <p class="eh-sml">by teachers for teachers</p>
     </section>
 </header>
 <!-- <div class="banner-all">
