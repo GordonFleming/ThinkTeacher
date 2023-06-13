@@ -21,7 +21,7 @@
             <div class="col-sm-12 col-md-6">
                 <img
                     class="img-fluid mx-auto d-block mt-2"
-                    src={"https://wsrv.glass.thinkteacher.co.za/?url="+
+                    src={"https://wsrv.muse.splyce.dev/?url="+
                     img.attributes.url+
                     "&w=400&h=400&output=webp"}
                     alt="Partner"

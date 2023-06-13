@@ -24,7 +24,7 @@
                         <img
                             class="img-fluid offer offer-img rounded-1"
                             src={
-                            "https://wsrv.glass.thinkteacher.co.za/?url="+
+                            "https://wsrv.muse.splyce.dev/?url="+
                             benefit.attributes.img.data.attributes.url+
                             "&w=300&h=300&output=webp"}
                             alt="well being"

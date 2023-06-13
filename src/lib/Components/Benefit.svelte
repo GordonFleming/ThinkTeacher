@@ -24,7 +24,7 @@
                     <img
                         class="img-fluid rounded cta"
                         src={
-                            "https://wsrv.glass.thinkteacher.co.za/?url="+
+                            "https://wsrv.muse.splyce.dev/?url="+
                             benData.attributes.banner.data.attributes.url+
                             "&w=750&h=750&output=webp"
                         }
