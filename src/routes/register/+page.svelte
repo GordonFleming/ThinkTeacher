@@ -3,7 +3,7 @@
     import { goto } from "$app/navigation";
     import Icon from "$lib/Icons/icon.svelte";
     import { arrowLeft, eye, eyeSlash } from "$lib/Icons/icons";
-    import { sgKey, sendgridList, API_URL, toastSuc } from "$lib/env.js";
+    import { sgKey, sendgridList, API_URL, toastSuc, toastErr } from "$lib/env.js";
     import z from "zxcvbn";
     import { onMount, onDestroy } from "svelte";
     import { id, name } from "$lib/stores";
@@ -74,6 +74,7 @@
         password = "";
 
     let errorMsg = null;
+    let regError = false;
     let registerNext = false,
         registered = false,
         provider = false;
@@ -125,7 +126,8 @@
                 })
                 .catch((error) => {
                     console.log("An error occurred:", error.response);
-                    errorMsg = error.response.data.error.message;
+                    toast.push(error.response.data.error.message, toastErr);
+                    regError = true;
                 });
         }
         if (val.s && !provider) {
@@ -152,50 +154,54 @@
                 })
                 .catch((error) => {
                     console.log("An error occurred:", error.response);
-                    errorMsg = error.response.data.error.message;
+                    toast.push(error.response.data.error.message, toastErr);
+                    regError = true;
                 });
         } else if (!val.s && !provider) {
             errorMsg = "Password not strong enough";
         }
+
         // Sendgrid
         // TODO: Move this logic to the backend & verify emails are being added to sendgrid mail list
-        if (!errorMsg) {
-            loading = true;
-            document.documentElement.scrollTop = 0;
+        // Currenly not in use, emails can always be added manually in bulk later when used again
 
-            // Account for missing altMail & province
-            if (!val.altMail) val.altMail = "null@null.com";
-            if (!val.province) val.province = "NA";
+        // if (!regError) {
+        //     loading = true;
+        //     document.documentElement.scrollTop = 0;
 
-            await axios
-                .put(
-                    "https://sendgrid.com/v3/marketing/contacts",
-                    {
-                        list_ids: [sendgridList],
-                        contacts: [
-                            {
-                                email: val.email,
-                                alternate_emails: [val.altMail],
-                                first_name: val.firstName,
-                                last_name: val.lastName,
-                                state_province_region: val.province,
-                                phone_number: val.cell,
-                                custom_fields: { e1_T: ttCode },
-                            },
-                        ],
-                    },
-                    { headers: { Authorization: `Bearer ${sgKey}` } }
-                )
-                .then((response) => {
-                    console.log("SG reponse: ", response.statusText, " ", response.data);
-                    password = "";
-                    loading = false;
-                    val = {};
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        }
+        //     // Account for missing altMail & province
+        //     if (!val.altMail) val.altMail = "null@null.com";
+        //     if (!val.province) val.province = "NA";
+
+        //     await axios
+        //         .put(
+        //             "https://sendgrid.com/v3/marketing/contacts",
+        //             {
+        //                 list_ids: [sendgridList],
+        //                 contacts: [
+        //                     {
+        //                         email: val.email,
+        //                         alternate_emails: [val.altMail],
+        //                         first_name: val.firstName,
+        //                         last_name: val.lastName,
+        //                         state_province_region: val.province,
+        //                         phone_number: val.cell,
+        //                         custom_fields: { e1_T: ttCode },
+        //                     },
+        //                 ],
+        //             },
+        //             { headers: { Authorization: `Bearer ${sgKey}` } }
+        //         )
+        //         .then((response) => {
+        //             console.log("SG reponse: ", response.statusText, " ", response.data);
+        //             password = "";
+        //             loading = false;
+        //             val = {};
+        //         })
+        //         .catch((error) => {
+        //             console.error(error);
+        //         });
+        // }
     }
 
     let seePlz = true;
