@@ -76,6 +76,9 @@ body {
 .text-black{
     color: black;
 }
+.text-error{
+    color: red;
+}
 .cta{
     transition: 0.5s;
 }

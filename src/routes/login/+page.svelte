@@ -53,6 +53,7 @@
                 } else {
                     //console.log("you are not paid up");
                     goto("/payment");
+                    toast.push("Payment is needed.", toastErr);
                 }
             })
             .catch((error) => {

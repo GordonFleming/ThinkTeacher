@@ -32,6 +32,7 @@
         toast.push("Registered successfully!", toastSuc);
         registerNext = false;
         registered = true;
+        goto("/payment");
         localStorage.clear();
         sessionStorage.clear();
     }
@@ -190,7 +191,6 @@
                     password = "";
                     loading = false;
                     val = {};
-                    goto("/login");
                 })
                 .catch((error) => {
                     console.error(error);
@@ -242,13 +242,13 @@
                                     <p>Please complete your registration...</p>
                                 {/if}
 
-                                {#if registered}
+                                <!-- {#if registered}
                                     <button
                                         class="btn btn-secondary mx-auto mt-3 mb-3 fw-bold fs-5"
                                         style="width: 300px;"
                                         on:click={() => goto("/login")}>Login Now</button
                                     >
-                                {/if}
+                                {/if} -->
 
                                 <form id="register">
                                     {#if !registerNext}
@@ -406,8 +406,8 @@
                                                     max="9999999999999"
                                                     required
                                                 />
-                                                {#if cellErr}
-                                                    <small class="text-danger"
+                                                {#if cellErr && val.cell && val.cell != ""}
+                                                    <small class="text-error"
                                                     >{cellErr}</small
                                                     >
                                                 {/if}

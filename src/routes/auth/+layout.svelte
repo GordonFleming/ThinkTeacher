@@ -37,7 +37,7 @@
             } else {
                 goto("/payment");
                 console.log("payment needed");
-                toast.push("Payment is due", toastErr);
+                toast.push("Payment is needed.", toastErr);
             }
         } else {
             const currentUrl = new URL(window.location.href);
