@@ -199,7 +199,7 @@
                     <div class="col-sm-12 col-md-6 mt-2">
                         <label
                             class="form-label form-check-label text-capitalize"
-                            for={key.replaceAll("_", " ")}>{key.replace("_", " ")}?</label
+                            for={key.replaceAll("_", " ")}>{key.replaceAll("_", " ")}?</label
                         >
                         <div class="form-switch justify-content-center d-flex mt-1">
                             <input

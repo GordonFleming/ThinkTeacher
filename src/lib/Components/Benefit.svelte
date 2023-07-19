@@ -58,10 +58,3 @@
 {:else}
     <h4>No packages yet.</h4>
 {/if}
-
-<style>
-    .card {
-        height: 92%;
-        padding: 3%;
-    }
-</style>

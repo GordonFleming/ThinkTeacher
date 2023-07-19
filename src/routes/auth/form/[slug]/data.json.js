@@ -126,6 +126,20 @@ export const formOpt = {
         deliver: true,
         delivery_address: "",
     },
+    expidition: {
+        preferred_accommodation: [
+            "Sharing included",
+            "Own room at an additional cost",
+        ],
+        require_extra_equipment: false,
+        join_free_6_week_fitness_program: false,
+        meal_option: [
+            "Vegetarian",
+            "Vegan",
+            "Carnivore",
+        ],
+        any_food_allergies: false,
+    },
     // Forms which just have message and default vals
     jobs: {},
 };

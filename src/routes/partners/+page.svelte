@@ -4,6 +4,7 @@
 
     export let data;
     let { partners } = data;
+
 </script>
 
 <svelte:head>
@@ -62,7 +63,7 @@
                 class="btn btn-lg bg-gold mx-auto shadow-lg cta"
                 style="width: 300px;"
                 on:click={() => goto("/benefits")}
-                ><h4 class="text-black mt-2">Check their benefits</h4></button
+                ><h4 class="text-black mt-2">View their benefits</h4></button
             >
             <p class="mt-3">
                 Interested in being a ThinkTeacher partner? Contact <a
