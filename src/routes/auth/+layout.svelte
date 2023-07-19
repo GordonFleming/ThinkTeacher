@@ -44,6 +44,7 @@
             const currentPath = currentUrl.pathname;
             const loginUrl = `/login?r=${encodeURIComponent(currentPath)}`;
             goto(loginUrl);
+            toast.push("Login required.", toastErr);
         }
     });
 </script>

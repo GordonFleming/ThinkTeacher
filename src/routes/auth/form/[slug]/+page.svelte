@@ -257,6 +257,20 @@
                         {/each}
                     </div>                        
                 {/if}
+                {#if key == "extraJobInfo"}
+                    <div class="row mt-3">
+                        <h4 class="text-logo-gold">View the vacancy below:</h4>
+                        <p class="fw-bold">Read more:</p>
+                        {#each value.files as val}
+                                <div class="col">
+                                    <p>{val.name}</p>
+                                    <a href={val.url} target="_blank" rel="noreferrer">
+                                        <img class="mb-2" src="/pdf-icon.svg" alt="pdf">
+                                    </a>
+                                </div>
+                        {/each}
+                    </div>                        
+                {/if}
             {/each}
 
             <div class="col-12 mt-2">
