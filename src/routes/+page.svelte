@@ -262,7 +262,7 @@
 
                     <img
                         class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_SAHB_LOGO_HIGH_RES_ec14dd3c1d_2635d05c5f.webp"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za:443/strapi/cms/thumbnail_Healthcare_Logo_d6661f2729.png"
                         alt="partner"
                     />
                 </div>
@@ -335,15 +335,6 @@
                     <img
                         class="logo img-fluid"
                         src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_turnberry_6a7f42ce0a_cc802e5705.jpeg"
-                        alt="partner"
-                    />
-                </div>
-            </SplideSlide>
-            <SplideSlide>
-                <div class="slide-content">
-                    <img
-                        class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_raintree_53a2b76328_1a99af7f72.webp"
                         alt="partner"
                     />
                 </div>
