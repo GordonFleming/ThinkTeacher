@@ -215,6 +215,10 @@
             x.type = "password";
         }
     }
+
+    if (provider && !registered){
+        toast.push("Please complete your registration...", toastErr);
+    }
 </script>
 
 <svelte:head>
