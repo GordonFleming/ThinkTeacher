@@ -262,7 +262,7 @@
 
                     <img
                         class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za:443/strapi/cms/thumbnail_Healthcare_Logo_d6661f2729.png"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_White_and_Blue_Healthcare_Logo_5469ff7d7a.png"
                         alt="partner"
                     />
                 </div>
