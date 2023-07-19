@@ -126,7 +126,7 @@ export const formOpt = {
         deliver: true,
         delivery_address: "",
     },
-    expidition: {
+    expedition: {
         preferred_accommodation: [
             "Sharing included",
             "Own room at an additional cost",

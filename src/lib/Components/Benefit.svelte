@@ -19,8 +19,8 @@
 {#if benefitData.length > 0}
     <div class="row mt-2 justify-content-center">
         {#each benefitData as benData}
-            <div class="col-sm-12 col-md-10 col-lg-6">
-                <div class="card bg-dark m-2 shadow-lg">
+            <div class="col-sm-12 col-md-10 col-lg-6 mt-3">
+                <div class="card bg-dark m-2 shadow-lg" style="height: 100%;">
                     <img
                         class="img-fluid rounded cta"
                         src={
@@ -32,24 +32,28 @@
                         on:click={() => redirect(benData.attributes.name)}
                         on:keydown={() => redirect(benData.attributes.name)}
                     />
-                    <div class="card-body">
+                    <div class="card-body d-flex flex-column">
                         <h3 class="card-title text-logo-gold text-lowercase">
-                            think<span class="text-white"
-                                >{benData.attributes.name.replace(" ", "")}</span
+                            think <span class="text-white"
+                                >{benData.attributes.name}</span
                             >
                         </h3>
                         <p class="card-text">
                             {@html benData.attributes.description}
                         </p>
                         <button
-                            class="btn bg-gold shadow cta text-black fs-5 p-1"
+                            class="btn bg-gold shadow cta text-black fs-5 p-1 mt-auto mx-auto"
                             on:click={() => redirect(benData.attributes.name)}>Enquire</button
                         >
                     </div>
                     <div class="card-footer">
-                        <span class="badge bg-light"
-                            >{benData.attributes.partner.data.attributes.company_name}</span
-                        >
+                        <a
+                            data-sveltekit-preload-data
+                            href="/partners/{benData.attributes.partner.data.attributes.slug}"
+                            ><span class="badge bg-light"
+                                >{benData.attributes.partner.data.attributes.company_name}</span
+                            >
+                        </a>
                     </div>
                 </div>
             </div>
