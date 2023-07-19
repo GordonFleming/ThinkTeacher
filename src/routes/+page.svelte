@@ -357,6 +357,15 @@
                     />
                 </div>
             </SplideSlide>
+            <SplideSlide>
+                <div class="slide-content">
+                    <img
+                        class="logo img-fluid"
+                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_TTN_Medium_584ecd4de8.png"
+                        alt="partner"
+                    />
+                </div>
+            </SplideSlide>
         </Splide>
     </div>
 </div>

@@ -18,6 +18,10 @@
             registerNext = true;
             provider = true;
         }
+
+        if (provider && !registered){
+            toast.push("Please complete your registration...", toastErr);
+        }
     });
 
     onDestroy(() => {
@@ -214,10 +218,6 @@
             seePlz = true;
             x.type = "password";
         }
-    }
-
-    if (provider && !registered){
-        toast.push("Please complete your registration...", toastErr);
     }
 </script>
 
