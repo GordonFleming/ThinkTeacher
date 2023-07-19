@@ -37,7 +37,7 @@
             } else {
                 goto("/payment");
                 console.log("payment needed");
-                toast.push("Payment renewal is required.", toastErr);
+                toast.push("Payment is required.", toastErr);
             }
         } else {
             const currentUrl = new URL(window.location.href);

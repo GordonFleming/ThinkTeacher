@@ -54,7 +54,7 @@
 
             form = document.getElementById("payment-form");
             loading = false;
-        }, 1500);
+        }, 2500);
     });
 
     let token;
