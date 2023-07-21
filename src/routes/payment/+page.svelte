@@ -44,7 +44,7 @@
             }
         }
 
-        setTimeout(() => {
+        //setTimeout(() => {
             sdk = new window.YocoSDK({
                 publicKey: yocoPubKey,
             });
@@ -54,7 +54,7 @@
 
             form = document.getElementById("payment-form");
             loading = false;
-        }, 2500);
+        //}, 2500);
     });
 
     let token;
@@ -160,7 +160,7 @@
 
 <svelte:head>
     <title>Payment | ThinkTeacher</title>
-    <script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
+    <script rel="preload" src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
 </svelte:head>
 
 <div class="container mt-5">
