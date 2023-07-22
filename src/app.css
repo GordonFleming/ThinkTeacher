@@ -80,11 +80,11 @@ body {
     color: red;
 }
 .cta{
-    transition: 0.5s;
+    transition: 0.1s;
 }
 .cta:hover{
     cursor: pointer;
-    transform: scale(1.03);
+    transform: scale(1.02);
 }
 .big-gap{
     margin-top: 9rem !important;

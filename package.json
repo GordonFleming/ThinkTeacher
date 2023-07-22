@@ -1,6 +1,7 @@
 {
     "name": "frontend-thinkteacher",
-    "version": "0.9.8",
+    "version": "0.9.85",
+    "author": "Gordon",
     "scripts": {
         "dev": "vite dev",
         "build": "vite build",
@@ -9,10 +10,10 @@
     },
     "devDependencies": {
         "@sveltejs/adapter-auto": "^2.1.0",
-        "@sveltejs/kit": "^1.22.0",
-        "@zerodevx/svelte-toast": "^0.9.3",
-        "svelte": "^3.59.1",
-        "vite": "^4.3.5"
+        "@sveltejs/kit": "^1.22.3",
+        "@zerodevx/svelte-toast": "^0.9.5",
+        "svelte": "^4.1.1",
+        "vite": "^4.4.6"
     },
     "type": "module",
     "dependencies": {

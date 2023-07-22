@@ -237,12 +237,13 @@
                 <div class="col-12 col-md-8 col-lg-6 col-xl-6">
                     <div class="card bg-dark text-white" style="border-radius: 1rem;">
                         {#if registerNext && !provider}
-                            <i
-                                style="padding-top: 1.8rem; padding-left: 1.8rem;"
-                                on:click={() => (registerNext = false)}
-                                on:keydown={() => (registerNext = false)}
-                                ><Icon data={arrowLeft} scale="2" /></i
-                            >
+                            <div style="padding-top: 1.8rem; padding-left: 1.8rem;">
+                                <button class="btn btn-link" on:click={() => (registerNext = false)}>
+                                    <i
+                                        ><Icon data={arrowLeft} scale="2" /></i
+                                    >
+                                </button>
+                            </div>
                         {/if}
                         <div class="card-body p-md-3 p-lg-4 text-center">
                             <div class="mb-md-3">

@@ -21,7 +21,8 @@
         {#each benefitData as benData}
             <div class="col-sm-12 col-md-10 col-lg-6 mt-3">
                 <div class="card bg-dark m-2 shadow-lg" style="height: 100%;">
-                    <img
+                    <button class="btn btn-link p-0" on:click={() => redirect(benData.attributes.name)}>
+                        <img
                         class="img-fluid rounded cta"
                         src={
                             "https://wsrv.muse.splyce.dev/?url="+
@@ -29,9 +30,8 @@
                             "&w=750&h=750&output=webp"
                         }
                         alt="cover"
-                        on:click={() => redirect(benData.attributes.name)}
-                        on:keydown={() => redirect(benData.attributes.name)}
-                    />
+                        />
+                    </button>
                     <div class="card-body d-flex flex-column">
                         <h3 class="card-title text-logo-gold text-lowercase">
                             think <span class="text-white"
