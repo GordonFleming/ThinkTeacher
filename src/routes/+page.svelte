@@ -194,8 +194,7 @@
         <div class="col-md-6 col-sm-12 benefit-list">
             <ul>
                 <li class=" fw-bold">
-                    SA Medical Brokers: group medical aid and gap cover rates with Discovery,
-                    Turnberry and Sirago
+                    Macmillan Teacher Campus: discounted courses from Early Learning to FET phase
                 </li>
                 <li class=" fw-bold">
                     Alexander Forbes Membership Scheme with a range of discounted products, and
@@ -216,9 +215,6 @@
         </div>
         <div class="col-md-6 col-sm-12 benefit-list">
             <ul>
-                <li class=" fw-bold">
-                    Macmillan Teacher Campus: discounted courses from Early Learning to FET phase
-                </li>
                 <li class=" fw-bold">
                     Cirrus Travel: specialised and discounted travel packages designed for teachers
                     during school holidays
