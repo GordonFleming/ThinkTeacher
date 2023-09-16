@@ -147,6 +147,10 @@ export const formOpt = {
                     name: "Vacancy: LIFE ORIENTATION LOCUM TEACHER (Gr 8-12)",
                     url: "https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/LO_1457_MIDLANDS_Think_Teacher_761ce0395d.pdf"
                 },
+                {
+                    name: "Vacancy: LIFE ORIENTATION LOCUM TEACHER (Gr 8-12)",
+                    url: "https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/LO_1457_MIDLANDS_Think_Teacher_761ce0395d.pdf"
+                },
             ],
         }
     },

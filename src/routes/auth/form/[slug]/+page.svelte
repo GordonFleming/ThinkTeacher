@@ -5,13 +5,14 @@
     import { Jumper } from "svelte-loading-spinners";
     import { API_URL, toastErr, toastSuc } from "$lib/env.js";
     import { toast } from "@zerodevx/svelte-toast";
-    import { formOpt } from "./data.json";
+    //import { formOpt } from "./data.json";
     import { benType } from "$lib/stores";
 
     let loading = true;
 
     export let data;
     let { type } = data;
+    let formOpt = type.form_extra;
 
     let user, message;
     let custom, header;
