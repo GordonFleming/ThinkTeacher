@@ -117,7 +117,11 @@
     }
 
     let voucherCheck = true;
-    $: voucher.length === 8 ? (voucherCheck = false) : (voucherCheck = true);
+    $: if (voucher.length == 8 && voucher.startsWith("TT")) {
+      voucherCheck = false 
+    } else {
+      voucherCheck = true
+    };
     async function makeVoucherPayment() {
         voucherCheck = true;
         loading = true;
@@ -193,6 +197,10 @@
                     bind:value={voucher}
                 />
             </div>
+            {#if voucherCheck && voucher.length > 0}
+                <p class="text-error text-center">Please enter a valid voucher code: 
+                <br>Make sure there are no spaces and must start with TT...</p>
+            {/if}
 
             <div class="text-center mt-3 mb-3">
                 <button
