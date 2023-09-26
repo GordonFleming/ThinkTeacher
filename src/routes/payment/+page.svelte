@@ -160,14 +160,14 @@
 
 <svelte:head>
     <title>Payment | ThinkTeacher</title>
-    <script rel="preload" src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
+    <script rel="preload" src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js" onload="initializeYocoSDK()"></script>
 </svelte:head>
 
-<div class="container mt-5">
+<div class="container mt-4">
     <div class="row justify-content-center">
         <div class="text-center">
             <h2 class="mb-2">Membership <span class="text-blue">Payment</span></h2>
-            <h6>Pay via EFT, Voucher or by Card payment</h6>
+            <h6>Pay via Voucher, Card or EFT</h6>
             {#if loading || paying}
                 <div class="d-flex justify-content-center mt-5">
                     <Jumper size="150" color="#5C677D" unit="px" duration="1.4s" />
@@ -180,50 +180,8 @@
         </div>
 
         <div class="col-12 col-sm-12 col-md-8 col-lg-6">
-            <form id="payment-form">
-                <div class="form-switch mt-3 text-center">
-                    <p>Are you a student or a retired teacher?</p>
-                    <label for="retireCheck" class="form-check-label"
-                        >{retireCheck ? "Yes" : "No"}</label
-                    >
-                    {#key retireCheck}
-                        <input
-                            class="form-check-input form-control mx-auto"
-                            type="checkbox"
-                            role="switch"
-                            id="retireCheck"
-                            on:click={changePrice}
-                            bind:checked={retireCheck}
-                        />
-                    {/key}
-                </div>
-                <p class="fw-bold text-center mt-3">Pay with a card:</p>
-                <div id="card-frame" class="mx-auto">
-                    <!-- Yoco Inline form will be added here -->
-                </div>
-                <div class="text-center mt-3 mb-3">
-                    <button
-                        id="pay-button"
-                        class:bg-blue={submitButton && amountInRands == 360}
-                        class:bg-gold={submitButton && amountInRands == 120}
-                        class:cta={submitButton}
-                        class="btn btn-lg shadow"
-                        on:click|preventDefault={makePayment}
-                        disabled={!submitButton}
-                    >
-                        PAY - R {amountInRands}
-                    </button>
-                </div>
-            </form>
-
-            <div class="Sso__divider ">
-                <span class="Sso__dividerLine" />
-                <span class="Sso__dividerText">or</span>
-                <span class="Sso__dividerLine" />
-            </div>
-
             <div class="text-center">
-                <label class="fw-bold mb-2" for="voucher">Pay with a voucher:</label>
+                <label class="fw-bold mb-2" for="voucher"><h5>Pay with a voucher:</h5></label>
                 <input
                     class="form-control mx-auto"
                     placeholder="TT000000"
@@ -247,6 +205,48 @@
                     PAY
                 </button>
             </div>
+
+            <div class="Sso__divider ">
+                <span class="Sso__dividerLine" />
+                <span class="Sso__dividerText">or</span>
+                <span class="Sso__dividerLine" />
+            </div>
+
+            <form id="payment-form">
+                <h5 class="fw-bold text-center mt-3">Pay with a card:</h5>
+                <div class="form-switch mt-3 text-center">
+                    <p>Are you a student or a retired teacher?</p>
+                    <label for="retireCheck" class="form-check-label"
+                        >{retireCheck ? "Yes" : "No"}</label
+                    >
+                    {#key retireCheck}
+                        <input
+                            class="form-check-input form-control mx-auto"
+                            type="checkbox"
+                            role="switch"
+                            id="retireCheck"
+                            on:click={changePrice}
+                            bind:checked={retireCheck}
+                        />
+                    {/key}
+                </div>
+                <div id="card-frame" class="mx-auto">
+                    <!-- Yoco Inline form will be added here -->
+                </div>
+                <div class="text-center mt-3 mb-3">
+                    <button
+                        id="pay-button"
+                        class:bg-blue={submitButton && amountInRands == 360}
+                        class:bg-gold={submitButton && amountInRands == 120}
+                        class:cta={submitButton}
+                        class="btn btn-lg shadow"
+                        on:click|preventDefault={makePayment}
+                        disabled={!submitButton}
+                    >
+                        PAY - R {amountInRands}
+                    </button>
+                </div>
+            </form>
 
             <div class="text-center mb-3">
                 Corporate sponsorship of a school:
@@ -276,7 +276,7 @@
     <hr class="rounded" />
     <div class="row">
         <div class="col text-center mt-4 mb-4">
-            <h5>EFT details:</h5>
+            <h5>Pay with EFT:</h5>
             <p>ThinkTeacher (Pty) LTD</p>
             <p>Nedbank</p>
             <p>Business account: 1217188746</p>
