@@ -11,17 +11,17 @@
         $name = localStorage.getItem("name");
         $ttNum = localStorage.getItem("ttNum");
         $surname = localStorage.getItem("surname");
-        avatar = `https://avatars.dicebear.com/api/initials/${
-            $name + "-" + $surname
-        }.svg?background=%234F5D89&size=40`;
+        avatar = `https://api.dicebear.com/7.x/initials/svg?seed=${
+            $name
+        }&size=40&backgroundColor=4F5D89&chars=1`;
     });
 
     afterUpdate(() => {
         $name = localStorage.getItem("name");
         $surname = localStorage.getItem("surname");
-        avatar = `https://avatars.dicebear.com/api/initials/${
-            $name + "-" + $surname
-        }.svg?background=%234F5D89&size=40`;
+        avatar = `https://api.dicebear.com/7.x/initials/svg?seed=${
+            $name
+        }&size=40&backgroundColor=4F5D89&chars=1`;
     });
 
     function logoutUser() {
