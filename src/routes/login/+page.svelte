@@ -8,7 +8,7 @@
     import { browserSet, compareTime } from "$lib/re_utils";
     import { API_URL, toastErr } from "$lib/env.js";
     import { toast } from "@zerodevx/svelte-toast";
-    
+
     let redirectUrl = null;
     let email, password;
 
@@ -19,7 +19,7 @@
 
     onMount(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        redirectUrl = urlParams.get('r');
+        redirectUrl = urlParams.get("r");
         logoutUser();
     });
 
@@ -40,7 +40,10 @@
                 browserSet("ttNum", response.data.user.ttCode);
                 $ttNum = response.data.user.ttCode;
                 let created_at = response.data.user.createdAt;
-                let paidMember = response.data.user.paid;
+
+                // Remove payment
+                // let paidMember = response.data.user.paid;
+                let paidMember = true;
 
                 if (redirectUrl) {
                     goto(redirectUrl);
@@ -52,8 +55,8 @@
                     goto("/benefits");
                 } else {
                     //console.log("you are not paid up");
-                    goto("/payment");
-                    toast.push("Payment required.", toastErr);
+                    goto("/");
+                    toast.push("Unable to login.", toastErr);
                 }
             })
             .catch((error) => {
@@ -97,7 +100,7 @@
                                         Continue with Google
                                     </div>
                                 </a>
-                                <div class="Sso__divider ">
+                                <div class="Sso__divider">
                                     <span class="Sso__dividerLine" />
                                     <span class="Sso__dividerText">or</span>
                                     <span class="Sso__dividerLine" />
