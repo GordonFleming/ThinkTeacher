@@ -5,7 +5,7 @@ export function load({ params }) {
     const { slug } = params;
 
     if (!persons.hasOwnProperty(slug)) {
-        throw error(404, `Not found, ${slug}`);
+        error(404, `Not found, ${slug}`);
     }
 
 	if (persons.hasOwnProperty(slug)) {
@@ -14,5 +14,5 @@ export function load({ params }) {
 		return { person: data };
 	}
 
-	throw error(res.status);
+	error(res.status);
 };

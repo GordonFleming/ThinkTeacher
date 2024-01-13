@@ -8,12 +8,12 @@ export async function load({ params }) {
     const data = await res.json();
 
     if (res.status === 404 || data.data.length === 0) {
-        throw error(404, `No form found, ${slug}`);
+        error(404, `No form found, ${slug}`);
     }
 
 	if (res.ok) {
 		return { type: data.data[0].attributes };
 	}
 
-	throw error(res.status);
+	error(res.status);
 };

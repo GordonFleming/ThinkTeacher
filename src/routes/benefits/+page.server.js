@@ -9,5 +9,5 @@ export async function load() {
 		return { benefits: data.data };
 	}
 
-	throw error(res.status);
+	error(res.status);
 };
