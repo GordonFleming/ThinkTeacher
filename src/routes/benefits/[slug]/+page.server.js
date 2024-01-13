@@ -56,11 +56,11 @@ export async function load({ params }) {
 
 
     if (res.status === 404 || data.data.packages.data.length === 0) {
-        error(404, `Benefits for ${slug}, coming soon`);
+        throw error(404, `Benefits for ${slug}, coming soon`);
     } else {
         if (res.ok) {
             return { packages: data.data.packages.data, slug: slug };
         }
-        error(res.status);
+        throw error(res.status);
     }
 };

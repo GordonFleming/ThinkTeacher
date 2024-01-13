@@ -30,12 +30,12 @@ export async function load({ params }) {
     const data = await res.json();
 
     if (res.status === 404 || data.data.posts.data.length === 0) {
-        error(404, `No post found, ${slug}`);
+        throw error(404, `No post found, ${slug}`);
     }
 
 	if (res.ok) {
 		return { post: data.data.posts.data[0].attributes };
 	}
 
-	error(res.status);
+	throw error(res.status);
 };

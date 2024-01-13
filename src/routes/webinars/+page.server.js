@@ -9,5 +9,5 @@ export async function load() {
 		return { webinars: data.data };
 	}
 
-	error(res.status);
+	throw error(res.status);
 };

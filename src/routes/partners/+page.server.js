@@ -38,12 +38,12 @@ export async function load() {
     const data = await res.json();
 
     if (res.status === 404 || data.length === 0) {
-        error(404, `No partners found`);
+        throw error(404, `No partners found`);
     }
 
 	if (res.ok) {
 		return { partners: data.data.partners.data };
 	}
 
-	error(res.status);
+	throw error(res.status);
 };
