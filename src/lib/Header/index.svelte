@@ -95,14 +95,14 @@
                         on:click={mustClick}>Benefits</a
                     >
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a
                         class="nav-link fromLeft"
                         data-sveltekit-preload-data
                         href="/news"
                         on:click={mustClick}>News Flash</a
                     >
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a
                         class="nav-link fromLeft"

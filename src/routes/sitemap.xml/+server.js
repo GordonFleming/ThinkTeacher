@@ -8,7 +8,7 @@ export async function GET() {
   const partners = resPartners.data.data
   const resBenefits = await axios.get('https://tt-strapi.glass.thinkteacher.co.za/api/categories')
   const benefits = resBenefits.data.data
-  const pages = [`about`, `benefits`, `partners`, `news`, `webinars`, `contact-us`, `login`, `register`]
+  const pages = [`about`, `benefits`, `partners`, `webinars`, `contact-us`, `login`, `register`]
   const body = sitemap(partners, benefits, pages)
 
   const headers = {
