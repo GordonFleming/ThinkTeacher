@@ -92,6 +92,9 @@ body {
 .bg-dark{
     background-color: var(--default-text) !important;
 }
+.text-justify {
+    text-align: justify;
+}
 #svelte-body {
     display: flex;
     flex-direction: column;

@@ -35,6 +35,8 @@
 
     let refNum = Math.floor(Math.random() * 90000) + 10000;
 
+    let sdkLoaded = false;
+
     onMount(async () => {
         if ($id === undefined) {
             $id = localStorage.getItem("id");
@@ -44,17 +46,27 @@
             }
         }
 
-        //setTimeout(() => {
-            sdk = new window.YocoSDK({
-                publicKey: yocoPubKey,
+        const script = document.getElementById('yoco-sdk-script');
+        script.addEventListener('load', () => {
+            sdkLoaded = true;
+            window.YocoSDK( { publicKey: yocoPubKey } ).then( (yocoSDK) => {
+                sdk = yocoSDK;
+                inline = sdk.inline(inlineObj);
+                inline.mount("#card-frame");
+                form = document.getElementById("payment-form");
+                loading = false;
             });
+        });
 
-            inline = sdk.inline(inlineObj);
-            inline.mount("#card-frame");
+        // sdk = new window.YocoSDK({
+        //     publicKey: yocoPubKey,
+        // });
 
-            form = document.getElementById("payment-form");
-            loading = false;
-        //}, 2500);
+        // inline = sdk.inline(inlineObj);
+        // inline.mount("#card-frame");
+
+        // form = document.getElementById("payment-form");
+        loading = false;
     });
 
     let token;
@@ -164,7 +176,7 @@
 
 <svelte:head>
     <title>Payment | ThinkTeacher</title>
-    <script rel="preload" src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js" onload="initializeYocoSDK()"></script>
+    <script id="yoco-sdk-script" src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
 </svelte:head>
 
 <div class="container mt-4">
