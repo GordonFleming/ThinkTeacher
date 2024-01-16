@@ -36,7 +36,7 @@
         toast.push("Registered successfully!", toastSuc);
         registerNext = false;
         registered = true;
-        goto("/");
+        goto("/payment");
         localStorage.clear();
         sessionStorage.clear();
     }

@@ -27,9 +27,7 @@
 
             const created_at = res.data.createdAt;
 
-            // Remove payment
-            // let paidMember = res.data.paid;
-            let paidMember = true;
+            let paidMember = res.data.paid;
 
             // Check for those users who are valid free members
             if (paidMember) {
