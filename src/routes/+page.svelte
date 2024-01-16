@@ -160,13 +160,12 @@
         <div class="row mt-5">
             <div class="row justify-content-center">
                 <h4 class="text-center fs-1 mb-4 col-md-6">
-                    ☕ A full year's membership of ThinkTeacher for the cost of one cup of coffee a
-                    month! ☕
+                    Once-Off Fee, for life-long membership
                 </h4>
             </div>
             <div class="col-sm-12 col-lg-4">
                 <h4 class="fs-1 mt-2 text-center">
-                    Actively teaching <strong>R360</strong> pa
+                    Actively teaching <strong>R360</strong>
                 </h4>
             </div>
             <div class="col-sm-12 col-lg-4 mt-sm-4 text-center">
@@ -179,10 +178,10 @@
             </div>
             <div class="col-sm-12 col-lg-4">
                 <h4 class="fs-1 mt-2 text-center">
-                    Students and retired teachers <strong>R120</strong> pa
+                    Students and retired teachers <strong>R120</strong>
                 </h4>
             </div>
-            <h4 class="fs-1 mt-5 text-center">Corporate sponsor a school and gift membership</h4>
+            <h4 class="mt-5 text-center">Corporate sponsor a school and gift membership</h4>
         </div>
     {/if}
 
@@ -254,17 +253,6 @@
         <Splide {options} aria-label="partners carousel">
             <SplideSlide>
                 <div class="slide-content">
-                    <!-- thumbnail_ -->
-
-                    <img
-                        class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_White_and_Blue_Healthcare_Logo_5469ff7d7a.png"
-                        alt="partner"
-                    />
-                </div>
-            </SplideSlide>
-            <SplideSlide>
-                <div class="slide-content">
                     <img
                         class="logo img-fluid mt-3"
                         src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_ROARRR_d380578528_f8a05a6049.webp"
@@ -322,24 +310,6 @@
                     <img
                         class="logo img-fluid mt-3"
                         src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_kia_logo_16b0a03857_c412c2856c.webp"
-                        alt="partner"
-                    />
-                </div>
-            </SplideSlide>
-            <SplideSlide>
-                <div class="slide-content">
-                    <img
-                        class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_turnberry_6a7f42ce0a_cc802e5705.jpeg"
-                        alt="partner"
-                    />
-                </div>
-            </SplideSlide>
-            <SplideSlide>
-                <div class="slide-content">
-                    <img
-                        class="logo img-fluid"
-                        src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/thumbnail_Flow_Logo_On_White_cropped_1985224419.jpg"
                         alt="partner"
                     />
                 </div>
