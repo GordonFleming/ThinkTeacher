@@ -148,10 +148,11 @@
                                             type="email"
                                             id="Email"
                                             class="form-control form-control-lg"
-                                            placeholder={user.email}
-                                            bind:value={email}
+                                            value={user.email}
+                                            readonly
                                             required
                                         />
+                                        <small class="text-danger">To update your email, <a href="/contact-us">contact us</a></small>
                                     </div>
                                     <div class="row">
                                         <div class="col-12 mt-2">
@@ -291,6 +292,7 @@
                                 <button
                                     class="btn btn-outline-light btn-lg px-4 mt-2"
                                     type="submit"
+                                    disabled={province == "none"}
                                     on:click|preventDefault={updateUser}>Update</button
                                 >
                             </div>

@@ -160,7 +160,7 @@
         <div class="row mt-5">
             <div class="row justify-content-center">
                 <h4 class="text-center fs-1 mb-4 col-md-6">
-                    Once-Off Fee, for life-long membership
+                    once-off fee, for life-long membership
                 </h4>
             </div>
             <div class="col-sm-12 col-lg-4">

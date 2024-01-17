@@ -67,14 +67,6 @@
                     <a
                         class="nav-link fromLeft"
                         data-sveltekit-preload-data
-                        href="/"
-                        on:click={mustClick}>Home</a
-                    >
-                </li>
-                <li class="nav-item">
-                    <a
-                        class="nav-link fromLeft"
-                        data-sveltekit-preload-data
                         href="/about"
                         on:click={mustClick}>About</a
                     >
