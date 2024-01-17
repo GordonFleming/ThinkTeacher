@@ -23,7 +23,6 @@
         browserSet("id", userData.user.id);
         $id = userData.user.id;
 
-        let created_at = userData.user.createdAt;
         let paidMember = userData.user.paid;
 
         if (!userData.user.idNum || !userData.user.firstName) {

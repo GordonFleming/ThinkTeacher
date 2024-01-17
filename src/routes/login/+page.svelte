@@ -39,7 +39,6 @@
                 $id = response.data.id;
                 browserSet("ttNum", response.data.user.ttCode);
                 $ttNum = response.data.user.ttCode;
-                let created_at = response.data.user.createdAt;
                 let paidMember = response.data.user.paid;
 
                 if (redirectUrl) {

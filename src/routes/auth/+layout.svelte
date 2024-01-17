@@ -24,8 +24,6 @@
                     goto("/login");
                 });
 
-            const created_at = res.data.createdAt;
-
             let paidMember = res.data.paid;
 
             // Check for those users who are valid free members
