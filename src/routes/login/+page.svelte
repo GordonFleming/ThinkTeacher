@@ -5,7 +5,7 @@
     import Icon from "$lib/Icons/icon.svelte";
     import { name, surname, id, ttNum } from "$lib/stores";
     import { facebook, instagram, eye, eyeSlash } from "$lib/Icons/icons";
-    import { browserSet, compareTime } from "$lib/re_utils";
+    import { browserSet } from "$lib/re_utils";
     import { API_URL, toastErr } from "$lib/env.js";
     import { toast } from "@zerodevx/svelte-toast";
     
@@ -46,9 +46,6 @@
                     goto(redirectUrl);
                 } else if (paidMember) {
                     //console.log("you are paid up, payment check");
-                    goto("/benefits");
-                } else if (compareTime(created_at)) {
-                    //console.log("you are paid up, free member");
                     goto("/benefits");
                 } else {
                     //console.log("you are not paid up");

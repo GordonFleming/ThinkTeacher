@@ -6,7 +6,6 @@
     import { onMount } from "svelte";
     import { toast } from "@zerodevx/svelte-toast";
     import { API_URL, toastErr } from "$lib/env.js";
-    import { compareTime } from "$lib/re_utils";
 
     onMount(async () => {
         if (localStorage.getItem("jwt") && localStorage.getItem("ttNum")) {
@@ -32,8 +31,6 @@
             // Check for those users who are valid free members
             if (paidMember) {
                 console.log("you are paid up, payment check");
-            } else if (compareTime(created_at)) {
-                console.log("you are paid up, free member");
             } else {
                 goto("/payment");
                 console.log("payment needed");

@@ -5,7 +5,7 @@
     import { name, surname, id, ttNum } from "$lib/stores";
     import { goto } from "$app/navigation";
     import { Jumper } from "svelte-loading-spinners";
-    import { browserSet, browserSessionSet, compareTime } from "$lib/re_utils";
+    import { browserSet, browserSessionSet } from "$lib/re_utils";
 
     let loading = true,
         errMsg;
@@ -38,9 +38,6 @@
 
             if (paidMember) {
                 console.log("you are paid up, payment check");
-                goto("/benefits");
-            } else if (compareTime(created_at)) {
-                console.log("you are paid up, free member");
                 goto("/benefits");
             } else {
                 console.log("you are not paid up");
