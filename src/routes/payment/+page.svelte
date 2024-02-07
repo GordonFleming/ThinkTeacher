@@ -2,15 +2,12 @@
     import { onMount } from "svelte";
     import { id } from "$lib/stores";
     import axios from "axios";
-    import { API_URL, yocoPubKey, strapiKey, toastErr, toastSuc } from "$lib/env.js";
-    import { Jumper } from "svelte-loading-spinners";
+    import { API_URL, yocoSecKey, strapiKey, toastErr, toastSuc } from "$lib/env.js";
     import { toast } from "@zerodevx/svelte-toast";
 
     let sdk,
         inline,
-        form,
         loading = true,
-        paying = false,
         voucher = "",
         submitButton = true,
         amountInCents = 36000,
@@ -43,74 +40,30 @@
                 window.location.href = "/login";
             }
         }
-
-        sdk = new window.YocoSDK({
-            publicKey: yocoPubKey,
-        });
-
-        inline = sdk.inline(inlineObj);
-        inline.mount("#card-frame");
-
-        form = document.getElementById("payment-form");
-        loading = false;
     });
 
-    let token;
     async function makePayment() {
-        submitButton = false;
-        loading = true;
-        inline
-            .createToken()
-            .then(function (result) {
-                submitButton = true;
-                loading = false;
-                if (result.error) {
-                    const errorMessage = result.error.message;
-                    console.log(errorMessage);
-                } else {
-                    token = result;
-                    paying = true;
-                    console.log("card successfully tokenised: " + token.id);
-                }
-            })
-            .catch(function (error) {
-                submitButton = true;
-                alert("error occured: " + error);
-            });
+        const data = {
+            amount: amountInCents,
+            currency: 'ZAR',
+            cancelUrl: 'https://thinkteacher.co.za/payment',
+            successUrl: 'https://thinkteacher.co.za/benefits',
+        };
 
-        inline.on("card_tokenized", function (token) {
-            console.log("token ", token);
-            axios
-                .post(
-                    `${API_URL}/payments`,
-                    {
-                        data: {
-                            amount_in_cents: amountInCents,
-                            token: token.id,
-                            paid: false,
-                            description: "ThinkTeacher Annual Membership (card)",
-                            reference_number: refNum,
-                            users_permissions_user: $id,
-                        },
-                    },
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: "Bearer " + strapiKey,
-                        },
-                    }
-                )
-                .then((response) => {
-                    toast.push("Success, payment has been made!", toastSuc);
-                    console.log(response);
-                    paying = false;
-                })
-                .catch((error) => {
-                    toast.push("Something went wrong", toastErr);
-                    console.log("An error occurred:", error.response.data);
-                    paying = false;
-                });
-            form.reset();
+        const headers = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + yocoSecKey
+            }
+        };
+
+        axios.post('https://payments.yoco.com/api/checkouts', data, headers)
+        .then(response => {
+            console.log('Response:', response.data);
+            // toast.push("Success, payment has been made!", toastSuc);
+        })
+        .catch(error => {
+            console.error('Error:', error);
         });
     }
 
@@ -162,7 +115,6 @@
 
 <svelte:head>
     <title>Payment | ThinkTeacher</title>
-    <script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
 </svelte:head>
 
 <div class="container mt-4">
@@ -170,15 +122,6 @@
         <div class="text-center">
             <h2 class="mb-2">Membership <span class="text-blue">Payment</span></h2>
             <h6>Pay via Voucher, Card or EFT</h6>
-            {#if loading || paying}
-                <div class="d-flex justify-content-center mt-5">
-                    <Jumper size="150" color="#5C677D" unit="px" duration="1.4s" />
-                </div>
-
-                {#if paying}
-                    <h3 class="text-center">We are busy processing your payment...</h3>
-                {/if}
-            {/if}
         </div>
 
         <div class="col-12 col-sm-12 col-md-8 col-lg-6">
@@ -235,9 +178,6 @@
                             bind:checked={retireCheck}
                         />
                     {/key}
-                </div>
-                <div id="card-frame" class="mx-auto">
-                    <!-- Yoco Inline form will be added here -->
                 </div>
                 <div class="text-center mt-3 mb-3">
                     <button
