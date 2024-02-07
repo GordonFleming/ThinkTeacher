@@ -2,35 +2,8 @@
     import { onMount } from "svelte";
     import { id } from "$lib/stores";
     import axios from "axios";
-    import { API_URL, yocoSecKey, strapiKey, toastErr, toastSuc } from "$lib/env.js";
+    import { API_URL, strapiKey, toastErr, toastSuc } from "$lib/env.js";
     import { toast } from "@zerodevx/svelte-toast";
-
-    let sdk,
-        inline,
-        loading = true,
-        voucher = "",
-        submitButton = true,
-        amountInCents = 36000,
-        retireCheck = false,
-        inlineObj = {
-            layout: "basic",
-            amountInCents: amountInCents,
-            currency: "ZAR",
-            showErrors: true,
-        };
-
-    $: amountInRands = amountInCents / 100;
-
-    function changePrice() {
-        if (!loading) {
-            retireCheck ? (amountInCents = 36000) : (amountInCents = 12000);
-            inlineObj.amountInCents = amountInCents;
-            inline = sdk.inline(inlineObj);
-            inline.mount("#card-frame");
-        }
-    }
-
-    let refNum = Math.floor(Math.random() * 90000) + 10000;
 
     onMount(async () => {
         if ($id === undefined) {
@@ -42,28 +15,41 @@
         }
     });
 
-    async function makePayment() {
-        const data = {
-            amount: amountInCents,
-            currency: 'ZAR',
-            cancelUrl: 'https://thinkteacher.co.za/payment',
-            successUrl: 'https://thinkteacher.co.za/benefits',
-        };
+    let loading = true,
+        voucher = "",
+        amountInCents = 36000,
+        retireCheck = false;
 
-        const headers = {
+    let refNum = Math.floor(Math.random() * 90000) + 10000;
+
+    $: amountInRands = amountInCents / 100;
+
+    function changePrice() {
+        if (retireCheck) {
+            amountInCents = 36000
+        } else {
+            amountInCents = 12000
+        }
+    }
+
+    function makePayment() {
+        const config = {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + yocoSecKey
+                'Authorization': "Bearer " + strapiKey,
             }
         };
 
-        axios.post('https://payments.yoco.com/api/checkouts', data, headers)
+        axios.get(`${API_URL}/yoco?amount=${amountInCents}&reference_number=${refNum}&user_id=${$id}`, config)
         .then(response => {
             console.log('Response:', response.data);
+            // Go to the Yoco payment page
+            window.location.href = response.data.redirectUrl;
             // toast.push("Success, payment has been made!", toastSuc);
         })
         .catch(error => {
             console.error('Error:', error);
+            toast.push("Something went wrong", toastErr);
         });
     }
 
@@ -73,20 +59,16 @@
     } else {
       voucherCheck = true
     };
-    async function makeVoucherPayment() {
-        voucherCheck = true;
+    function makeVoucherPayment() {
         loading = true;
         axios
             .post(
                 `${API_URL}/payments`,
                 {
                     data: {
-                        // Extra voucher value
                         voucher: voucher,
-                        amount_in_cents: amountInCents,
-                        token: null,
-                        paid: false,
-                        description: "ThinkTeacher Annual Membership (voucher)",
+                        amount_in_cents: 0,
+                        description: "ThinkTeacher Lifetime Membership (voucher)",
                         reference_number: refNum,
                         users_permissions_user: $id,
                     },
@@ -99,16 +81,12 @@
                 }
             )
             .then((response) => {
-                loading = false;
                 toast.push("Success, payment has been made!", toastSuc);
                 console.log(response);
-                voucherCheck = false;
             })
             .catch((error) => {
-                loading = false;
                 toast.push(error.response.data.error.message, toastErr);
                 console.log("An error occurred:", error.response.data.error.message);
-                voucherCheck = false;
             });
     }
 </script>
@@ -140,7 +118,7 @@
             </div>
             {#if voucherCheck && voucher.length > 0}
                 <p class="text-error text-center">Please enter a valid voucher code: 
-                <br>Make sure there are no spaces and must start with TT...</p>
+                <br>Make sure there are no spaces and code starts with TT</p>
             {/if}
 
             <div class="text-center mt-3 mb-3">
@@ -182,14 +160,12 @@
                 <div class="text-center mt-3 mb-3">
                     <button
                         id="pay-button"
-                        class:bg-blue={submitButton && amountInRands == 360}
-                        class:bg-gold={submitButton && amountInRands == 120}
-                        class:cta={submitButton}
-                        class="btn btn-lg shadow"
+                        class:bg-blue={amountInRands == 360}
+                        class:bg-gold={amountInRands == 120}
+                        class="cta btn btn-lg shadow"
                         on:click|preventDefault={makePayment}
-                        disabled={!submitButton}
                     >
-                        PAY - R {amountInRands}
+                        Pay R{amountInRands}
                     </button>
                 </div>
             </form>

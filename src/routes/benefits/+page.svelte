@@ -1,5 +1,18 @@
 <script>
     import Title from "$lib/Components/Title.svelte";
+    import { onMount } from "svelte";
+    import { toast } from "@zerodevx/svelte-toast";
+    import { toastSuc } from "$lib/env.js";
+
+    onMount(async () => {
+        // read url params and display toast
+        const urlParams = new URLSearchParams(window.location.search);
+        const payment = urlParams.get("success");
+        if (payment) {
+            toast.push("Payment successful!", toastSuc);
+            window.history.replaceState({}, document.title, "/benefits");
+        }
+    });
 
     export let data;
     let { benefits } = data;
