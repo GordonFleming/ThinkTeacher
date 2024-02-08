@@ -8,7 +8,7 @@
         // read url params and display toast
         const urlParams = new URLSearchParams(window.location.search);
         const payment = urlParams.get("success");
-        if (payment) {
+        if (payment === "true") {
             toast.push("Payment successful!", toastSuc);
             window.history.replaceState({}, document.title, "/benefits");
         }

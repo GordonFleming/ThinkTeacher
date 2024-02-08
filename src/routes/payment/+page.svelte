@@ -14,6 +14,14 @@
                 window.location.href = "/login";
             }
         }
+
+        // read url params and display toast
+        const urlParams = new URLSearchParams(window.location.search);
+        const payment = urlParams.get("success");
+        if (payment === "false") {
+            toast.push("Payment unsuccessful", toastErr);
+            window.history.replaceState({}, document.title, "/benefits");
+        }
     });
 
     let loading = false,
