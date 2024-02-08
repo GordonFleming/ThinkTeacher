@@ -4,6 +4,7 @@
     import axios from "axios";
     import { API_URL, strapiKey, toastErr, toastSuc } from "$lib/env.js";
     import { toast } from "@zerodevx/svelte-toast";
+    import { goto } from "$app/navigation";
 
     onMount(async () => {
         if ($id === undefined) {
@@ -15,7 +16,7 @@
         }
     });
 
-    let loading = true,
+    let loading = false,
         voucher = "",
         amountInCents = 36000,
         retireCheck = false;
@@ -33,6 +34,7 @@
     }
 
     function makePayment() {
+        loading = true;
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -45,6 +47,9 @@
             console.log('Response:', response.data);
             // Go to the Yoco payment page
             window.location.href = response.data.redirectUrl;
+            setTimeout(() => {
+                loading = false;
+            }, 1000);
             // toast.push("Success, payment has been made!", toastSuc);
         })
         .catch(error => {
@@ -60,7 +65,6 @@
       voucherCheck = true
     };
     function makeVoucherPayment() {
-        loading = true;
         axios
             .post(
                 `${API_URL}/payments/voucherPayment`,
@@ -82,6 +86,8 @@
             )
             .then((response) => {
                 toast.push("Success, payment has been made!", toastSuc);
+                voucher = "";
+                goto('/benefits');
                 console.log(response);
             })
             .catch((error) => {
@@ -165,7 +171,11 @@
                         class="cta btn btn-lg shadow"
                         on:click|preventDefault={makePayment}
                     >
-                        Pay R{amountInRands}
+                        {#if loading}
+                            loading...
+                        {:else}
+                            Pay R{amountInRands}
+                        {/if}
                     </button>
                 </div>
             </form>

@@ -4,8 +4,8 @@ export const prod = import.meta.env.VITE_PROD;
 export let strapiKey = import.meta.env.VITE_STRAPI_PUB_KEY_LOCAL;
 export let yocoPubKey = import.meta.env.VITE_YOCO_TEST_PUBLIC_KEY;
 // NOTE: Use 127.0.0.1 instead of localhost to avoid issues
-export let BASE_API_URL = "http://localhost:1337";
-export let API_URL = "http://localhost:1337/api";
+export let BASE_API_URL = "http://127.0.0.1:1337";
+export let API_URL = "http://127.0.0.1:1337/api";
 export let sendgridList = "57df636d-5399-423f-bf72-35424b5644b5";
 
 export const toastSuc = {
