@@ -47,15 +47,15 @@
             console.log('Response:', response.data);
             // Go to the Yoco payment page
             window.location.href = response.data.redirectUrl;
-            setTimeout(() => {
-                loading = false;
-            }, 1000);
             // toast.push("Success, payment has been made!", toastSuc);
         })
         .catch(error => {
             console.error('Error:', error);
             toast.push("Something went wrong", toastErr);
         });
+        setTimeout(() => {
+            loading = false;
+        }, 1000);
     }
 
     let voucherCheck = true;
