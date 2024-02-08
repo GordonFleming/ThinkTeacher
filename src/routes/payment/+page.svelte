@@ -40,7 +40,7 @@
             }
         };
 
-        axios.get(`${API_URL}/yoco?amount=${amountInCents}&reference_number=${refNum}&user_id=${$id}`, config)
+        axios.get(`${API_URL}/payments/yoco?amount=${amountInCents}&reference_number=${refNum}&user_id=${$id}`, config)
         .then(response => {
             console.log('Response:', response.data);
             // Go to the Yoco payment page
@@ -63,7 +63,7 @@
         loading = true;
         axios
             .post(
-                `${API_URL}/payments`,
+                `${API_URL}/payments/voucherPayment`,
                 {
                     data: {
                         voucher: voucher,
@@ -211,9 +211,6 @@
 </div>
 
 <style>
-    #card-frame {
-        max-width: 550px;
-    }
     button {
         background-color: grey;
     }
