@@ -55,8 +55,15 @@
         } else {
             loading = true;
 
-            if (!altMail) altMail = "null@null.com";
-            if (!province) province = "NA";
+            // Since SG does not accept null
+            let altMailSG = "null@null.com"
+            if (altMail) {
+                altMailSG = altMail;
+            }
+            let provinceSG = "NA";
+            if (province) {
+                provinceSG = province;
+            }
 
             await axios
                 .put(
@@ -66,10 +73,10 @@
                         contacts: [
                             {
                                 email: email,
-                                alternate_emails: [altMail],
+                                alternate_emails: [altMailSG],
                                 first_name: firstName,
                                 last_name: lastName,
-                                state_province_region: province,
+                                state_province_region: provinceSG,
                                 phone_number: cell,
                                 custom_fields: { e1_T: ttCode },
                             },

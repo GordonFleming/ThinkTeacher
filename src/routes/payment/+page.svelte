@@ -63,7 +63,7 @@
         });
         setTimeout(() => {
             loading = false;
-        }, 1000);
+        }, 3000);
     }
 
     let voucherCheck = true;
