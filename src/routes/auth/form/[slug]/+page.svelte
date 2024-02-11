@@ -135,11 +135,11 @@
                 />
             </div>
             <div class="col-12 mt-2">
-                <label class="form-label" for="idNum">ThinkTeacher Number</label>
+                <label class="form-label" for="ttNum">ThinkTeacher Number</label>
                 <input
                     type="text"
-                    name="idNumber"
-                    id="idNum"
+                    name="ttNumber"
+                    id="ttNum"
                     class="form-control form-control-lg"
                     bind:value={userObj.ttNum}
                     readonly

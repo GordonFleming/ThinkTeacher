@@ -32,7 +32,7 @@
         </h5>
         {#each benefits as benefit}
             <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-                <a href="benefits/{benefit.attributes.name}">
+                <a href="/benefits/{benefit.attributes.name}">
                     <div class="placeholder">
                         <img
                             class="img-fluid offer offer-img rounded-1"
