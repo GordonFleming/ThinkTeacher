@@ -55,16 +55,6 @@
         } else {
             loading = true;
 
-            // Since SG does not accept null
-            let altMailSG = "null@null.com"
-            if (altMail) {
-                altMailSG = altMail;
-            }
-            let provinceSG = "NA";
-            if (province) {
-                provinceSG = province;
-            }
-
             await axios
                 .put(
                     "https://sendgrid.com/v3/marketing/contacts",
@@ -73,10 +63,10 @@
                         contacts: [
                             {
                                 email: email,
-                                alternate_emails: [altMailSG],
+                                alternate_emails: [altMail ?? "null@null.com"],
                                 first_name: firstName,
                                 last_name: lastName,
-                                state_province_region: provinceSG,
+                                state_province_region: province ?? "NA",
                                 phone_number: cell,
                                 custom_fields: { e1_T: ttCode },
                             },
@@ -86,11 +76,14 @@
                 )
                 .then((response) => {
                     console.log("SG reponse: ", response.statusText, " ", response.data);
-                    loading = false;
                 })
                 .catch((error) => {
                     console.error(error);
                 });
+
+            if (altMail == "") {
+                altMail = null;
+            }
 
             await axios
                 .put(
@@ -114,7 +107,6 @@
                 )
                 .then((response) => {
                     toast.push("Update successful!", toastSuc);
-                    loading = false;
                     console.log(response);
                 })
                 .catch((error) => {
@@ -122,6 +114,7 @@
                     toast.push(error.response.data.error.message.replace(".", " "), toastErr);
                 });
         }
+        loading = false;
     }
 
     let user;
