@@ -94,7 +94,7 @@
                         qualification: qualification,
                         cell: cell,
                         eduPhase: eduPhase,
-                        sace: String(sace),
+                        sace: sace,
                         workplace: workplace,
                         province: province,
                         altMail: altMail,
@@ -204,14 +204,12 @@
                                             <label class="form-label" for="sace">SACE Number</label
                                             ><small class="text-danger">
                                                 <input
-                                                    type="number"
+                                                    type="text"
                                                     name="sace"
                                                     id="sace"
                                                     class="form-control form-control-lg"
                                                     placeholder="SACE number"
                                                     bind:value={sace}
-                                                    min="0"
-                                                    max="999999999"
                                                 />
                                             </small>
                                         </div>
