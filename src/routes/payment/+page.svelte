@@ -213,14 +213,25 @@
             src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/mastercard_colour_446709c296_788c700d60.svg"
             alt="mastercard"
         />
+        <img
+            class="img-fluid payment-logo"
+            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/amex_b67f69fca1.svg"
+            alt="mastercard"
+        />
+        <img
+            class="img-fluid payment-logo-eft"
+            src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/eft_e96e4ee539.svg"
+            alt="mastercard"
+        />
     </div>
     <hr class="rounded" />
     <div class="row">
         <div class="col text-center mt-4 mb-4">
-            <h5>Pay with EFT:</h5>
+            <h5>Pay with EFT via email:</h5>
             <p>ThinkTeacher (Pty) LTD</p>
             <p>Nedbank</p>
             <p>Business account: 1217188746</p>
+            <p class="text-info">Send proof of payment <a href="mailto:zani@thinkteacher.co.za">zani@thinkteacher</a></p>
         </div>
         <div class="mb-4 text-center">
             Contact <strong><a href="mailto:zani@thinkteacher.co.za">Zani</a></strong> if you are having
@@ -237,7 +248,13 @@
         background-color: var(--logo-gold);
     }
     .payment-logo {
-        max-width: 55px;
+        max-width: 70px;
+        margin-right: 20px;
+        margin-left: 20px;
+    }
+    .payment-logo-eft {
+        max-width: 100px;
+        width: 80px;
         margin-right: 20px;
         margin-left: 20px;
     }
