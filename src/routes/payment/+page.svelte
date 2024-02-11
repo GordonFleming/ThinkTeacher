@@ -154,7 +154,8 @@
             </div>
 
             <form id="payment-form">
-                <h5 class="fw-bold text-center mt-3">Pay with a card:</h5>
+                <h5 class="fw-bold text-center mt-3">Pay with Yoco:</h5>
+                <p class="text-center">Card | Apple pay | EFT</p>
                 <div class="form-switch mt-3 text-center">
                     <p>Are you a student or a retired teacher?</p>
                     <label for="retireCheck" class="form-check-label"

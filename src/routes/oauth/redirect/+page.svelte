@@ -25,9 +25,9 @@
 
         let paidMember = userData.user.paid;
 
-        if (!userData.user.idNum || !userData.user.firstName) {
+        if (!userData.user.firstName) {
             goto("/register");
-        } else if (userData.user.idNum) {
+        } else if (userData.user.firstName) {
             browserSet("name", userData.user.firstName);
             $name = userData.user.firstName;
             browserSet("surname", userData.user.lastName);
