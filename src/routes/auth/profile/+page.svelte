@@ -94,7 +94,7 @@
                         qualification: qualification,
                         cell: cell,
                         eduPhase: eduPhase,
-                        sace: sace,
+                        sace: String(sace),
                         workplace: workplace,
                         province: province,
                         altMail: altMail,
@@ -107,6 +107,7 @@
                 )
                 .then((response) => {
                     toast.push("Update successful!", toastSuc);
+                    loading = false;
                     console.log(response);
                 })
                 .catch((error) => {
