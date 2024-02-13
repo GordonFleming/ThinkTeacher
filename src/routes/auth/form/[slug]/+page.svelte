@@ -229,10 +229,6 @@
                 {/if}
                 {#if key == "extraFinInfo"}
                     <div class="row mt-3">
-                        <h4 class="text-logo-gold">Book a free consultation for the 10th or 17th of February!</h4>
-                        <a href="https://kfta.app.alexanderforbes.co.za/TotalAgility/Forms/digital/frmNewEventSetupRegistration.form?frmEventGroupCode=WORK_N2-C6A">
-                            <input class="btn bg-gold mb-2 fw-bold cta" type="button" value="Click here" />
-                        </a>
                         <p class="fw-bold">Read more:</p>
                         {#each value.files as val}
                                 <div class="col">
