@@ -76,7 +76,7 @@
 
 <div class="container text-center mt-5">
     <div class="row">
-        <div class="col-sm-12 col-md-6 d-flex bg-blue text-white rounded-3 px-3">
+        <div class="col-sm-12 col-md-6 d-flex bg-blue text-white rounded-3 px-3 py-1">
             <p class="fs-4 lh-base my-auto text-justify">
                 Teacher wellbeing is a positive emotional state that combines the personal needs and
                 expectations of both learners and their teachers. Teacher wellbeing and job
@@ -103,7 +103,7 @@
                 alt="img"
             />
         </div>
-        <div class="col-sm-12 col-md-6 d-flex bg-gold text-white rounded-3 px-3">
+        <div class="col-sm-12 col-md-6 d-flex bg-gold text-white rounded-3 px-3 py-1">
             <p class="fs-4 lh-base my-auto text-justify">
                 Teacher wellbeing has a significant impact on schools, teachers and students. Many
                 of the negative effects of low wellbeing are well publicised, with stress or burnout
@@ -115,7 +115,7 @@
     </div>
 
     <div class="row mt-4">
-        <div class="col-sm-12 col-md-6 d-flex bg-blue text-white rounded-3 px-3">
+        <div class="col-sm-12 col-md-6 d-flex bg-blue text-white rounded-3 px-3 py-1">
             <p class="fs-4 lh-base my-auto text-justify">
                 When schools prioritise teacher wellbeing and help to ensure that teachers can
                 flourish, this promotes better classroom climates and enables high quality teaching
@@ -141,7 +141,7 @@
                 alt="img"
             />
         </div>
-        <div class="col-sm-12 col-md-6 d-flex bg-gold text-white rounded-3 px-3">
+        <div class="col-sm-12 col-md-6 d-flex bg-gold text-white rounded-3 px-3 py-1">
             <p class="fs-4 lh-base my-auto text-justify">
                 Looking after your teachers’ wellbeing is one of the most important things you can
                 do as a school community. The success of your school is dependent on the quality of

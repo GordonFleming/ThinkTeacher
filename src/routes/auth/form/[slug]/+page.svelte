@@ -106,7 +106,7 @@
         <Jumper size="150" color="#5C677D" unit="px" duration="1.4s" />
     </div>
 {:else}
-    <h2 class="fw-bold mb-2 text-uppercase">Contact {typeName}</h2>
+    <h2 class="fw-bold mb-2 text-uppercase">Contact Partner</h2>
 
     <form id="contactPartner">
         <div class="row justify-content-center">
@@ -227,7 +227,7 @@
                         </select>
                     </div>
                 {/if}
-                {#if key == "extraFinInfo"}
+                {#if key == "extraFileInfo"}
                     <div class="row mt-3">
                         <p class="fw-bold">Read more:</p>
                         {#each value.files as val}
