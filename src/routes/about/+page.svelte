@@ -1,6 +1,4 @@
 <script>
-    import Icon from "$lib/Icons/icon.svelte";
-    import { linkedin } from "$lib/Icons/icons";
     import Title from "$lib/Components/Title.svelte";
 </script>
 
@@ -13,59 +11,18 @@
 
 <div class="container mb-4">
     <div class="row text-center mt-4 justify-content-center">
-        <p class="fs-3 lh-base">
-            ThinkTeacher is an online portal dedicated to the inspiring teachers of South Africa,
-            providing access to benefit options, educational opportunities and nurturing networks.
-            Each teacher cares for a few hundred odd students or learners. If we can care for and
-            promote the teaching profession, we can inspire the youth of South Africa.
+        <p class="fs-3 lh-base text-justify">
+            <strong>ThinkTeacher</strong> is an online platform dedicated to growing, supporting and
+            empowering educators and schools. Our platform provides access to <strong>benefits,
+            educational opportunities, and professional networks</strong>. Each teacher plays a
+            pivotal role in shaping hundreds of students. By investing in and uplifting the
+            teaching profession and providing a georeferenced management tool to schools, we
+            contribute to inspiring and equipping the next generation of South Africans.
         </p>
         <p class="fs-3 mt-4">
             “Education is the most powerful weapon you can use to change the world.” <br /> -
             <strong>Nelson Mandela.</strong>
         </p>
-        <!-- <div class="row">
-            <Title prefix={false} title={"who we are"} />
-
-            <div class="col-sm-12 col-md-4">
-                <img
-                    class="img-fluid about-img"
-                    src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/Bridget_new_91ee1bd4f8.webp?updated_at=2022-12-02T09:25:55.009Z"
-                    alt="profile_img"
-                />
-                <h4>Bridget Fleming</h4>
-                <a
-                    data-sveltekit-preload-data
-                    href="/about/bridget"
-                    class="btn btn-sm bg-gold shadow cta text-black">Read more</a
-                >
-            </div>
-            <div class="col-sm-12 col-md-4">
-                <img
-                    class="img-fluid about-img"
-                    src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/Zani_new_007b9c077f.webp?updated_at=2022-12-02T09:25:54.342Z"
-                    alt="profile_img"
-                />
-                <h4>Zanele Masuku</h4>
-                <a
-                    data-sveltekit-preload-data
-                    href="/about/zani"
-                    class="btn btn-sm bg-gold shadow cta text-black">Read more</a
-                >
-            </div>
-            <div class="col-sm-12 col-md-4">
-                <img
-                    class="img-fluid about-img"
-                    src="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/Gillian_ef23156492.webp?updated_at=2022-12-02T09:25:54.041Z"
-                    alt="profile_img"
-                />
-                <h4>Gillian Doig</h4>
-                <a
-                    data-sveltekit-preload-data
-                    href="/about/gill"
-                    class="btn btn-sm bg-gold shadow cta text-black">Read more</a
-                >
-            </div>
-        </div> -->
 
         <div class="text-center mb-4 mt-5">
             <!-- svelte-ignore a11y-media-has-caption -->

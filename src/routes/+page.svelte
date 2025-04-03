@@ -47,36 +47,17 @@
 
 
 <header id="banner">
-    <!-- Three words under each other, first is benefits, next support and then care nice and big and to the left -->
     <section id="banner-words">
         <h2>
-            <span class="eh eh-b">thinkteacher</span>
-            <span class="eh eh-s">thinkschool</span>
-            <span class="eh eh-c">thinksmart</span>
+            <span class="eh"><span class="text-logo-gold">think</span>teacher</span>
+            <span class="eh"><span class="text-logo-gold">think</span>school</span>
+            <span class="eh"><span class="text-logo-gold">think</span>smart</span>
         </h2>
         <p class="eh-sml">by teachers for teachers</p>
     </section>
 </header>
 
 <div class="container text-center mt-5">
-    <!-- <div class="row">
-        <div class="col-sm-12 col-md-6 d-flex bg-blue text-white rounded-3 px-3 py-1">
-            <p class="fs-4 lh-base my-auto text-justify">
-                Teacher wellbeing is a positive emotional state that combines the personal needs and
-                expectations of both learners and their teachers. Teacher wellbeing and job
-                satisfaction strongly influence teacher behaviour and are positively related to
-                school and classroom climate and pupil achievement.
-            </p>
-        </div>
-        <div class="col-sm-12 col-md-6">
-            <img
-                class="img-fluid rounded"
-                style="max-height: 300px;"
-                src="https://res.cloudinary.com/splyce/image/upload/v1668242850/ThinkTeacher/teachers6_lh2k7r.webp"
-                alt="img"
-            />
-        </div>
-    </div> -->
 
     <div class="row mt-4">
         <div class="col-sm-12 col-md-6">
@@ -116,64 +97,16 @@
             />
         </div>
     </div>
-
-    <div class="row mt-4">
-        <div class="col-sm-12 col-md-6">
-            <img
-                class="img-fluid rounded"
-                style="max-height: 300px;"
-                src="https://res.cloudinary.com/splyce/image/upload/v1668244333/ThinkTeacher/teachers7_new_zcr0hp.webp"
-                alt="img"
-            />
-        </div>
-        <div class="col-sm-12 col-md-6 d-flex bg-gold text-white rounded-3 px-3 py-1">
-            <p class="fs-4 lh-base my-auto text-justify">
-                Looking after your teachers’ wellbeing is one of the most important things you can
-                do as a school community. The success of your school is dependent on the quality of
-                instruction delivered by your teachers to your students; their wellbeing is crucial
-                to ensuring that their teaching skills are effective and of a high quality.
-            </p>
-        </div>
-    </div>
     <p class="fs-4 text-blue mt-4">
         <span class="think">think</span>teacher - by teachers for teachers.
     </p>
 </div>
 
 <div class="container mt-4 mb-5">
-    {#if !$name}
-        <div class="row mt-5">
-            <div class="row justify-content-center">
-                <h4 class="text-center fs-1 mb-4 col-md-6">
-                    once-off fee, for life-long membership
-                </h4>
-            </div>
-            <div class="col-sm-12 col-lg-4">
-                <h4 class="fs-1 mt-2 text-center">
-                    Actively teaching <strong>R360</strong>
-                </h4>
-            </div>
-            <div class="col-sm-12 col-lg-4 mt-sm-4 text-center">
-                <button
-                    class="btn btn-lg bg-gold shadow-lg cta"
-                    style="width: 300px;"
-                    on:click={() => goto("/register")}
-                    ><h4 style="color: black;">Become a member!</h4></button
-                >
-            </div>
-            <div class="col-sm-12 col-lg-4">
-                <h4 class="fs-1 mt-2 text-center">
-                    Students and retired teachers <strong>R120</strong>
-                </h4>
-            </div>
-            <h4 class="mt-5 text-center">Corporate sponsor a school and gift membership</h4>
-        </div>
-    {/if}
-
     <!-- Carousel of Webinars -->
     <!-- <WebinarsBar /> -->
 
-    <div class="row grey-grad big-gap">
+    <!-- <div class="row grey-grad big-gap">
         <h2>Benefit Details:</h2>
         <div class="col-md-6 col-sm-12 benefit-list">
             <ul>
@@ -210,7 +143,7 @@
                 <li class=" fw-bold">Monthly newsletters with the latest ThinkTeacher benefits</li>
             </ul>
         </div>
-    </div>
+    </div> -->
 
     <div class="container text-center mb-4 grey-grad big-gap">
         <h2 class="mb-4">
@@ -333,36 +266,6 @@
 
         list-style-image: url("https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/m_favicon_08702889be_d8548d4c57.png");
     }
-    /*
-    .banner-all {
-        position: relative;
-    }
-    .bg-banner {
-        background-color: var(--bg-banner);
-        height: 400px;
-        padding-top: 5rem;
-    }
-    @media screen and (min-width: 1000px) {
-        .bg-overlay {
-            background-image: url("/shape-overly.png");
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            opacity: 0.15;
-            height: 100%;
-            width: 100%;
-            top: 0;
-            left: 0;
-            position: absolute;
-        }
-    }
-
-    @media screen and (max-width: 1000px) {
-        .bg-banner {
-            height: 200px;
-            padding-top: 2rem;
-        }
-    } */
 
     .btn-lg {
         padding: 2rem 1rem 1rem 1rem;
@@ -406,33 +309,18 @@
     }
     @media (max-width: 60em) {
         .eh {
-            font-size: 3.2rem !important;
+            font-size: 2.5rem !important;
         }
     }      
     .eh {
         display: block;
         font-size: 6rem;
         text-transform: uppercase;
-        color: rgb(0, 0, 0);
         letter-spacing: 0.04rem;
         font-weight: 700;
         text-align: left;
         /* white glow */
         text-shadow: 3px 3px white;
-    }
-    .eh-b {
-        color: var(--logo-gold);
-        font-weight: 700;
-        font-family: 'Exo', sans-serif;
-    }
-    .eh-s {
-        color: var(--logo-grey);
-        font-weight: 600;
-        font-family: 'Exo', sans-serif;
-    }
-    .eh-c {
-        color: #666768;
-        font-weight: 400;
         font-family: 'Exo', sans-serif;
     }
     .eh-sml {
