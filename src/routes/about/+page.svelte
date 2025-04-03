@@ -23,7 +23,7 @@
             “Education is the most powerful weapon you can use to change the world.” <br /> -
             <strong>Nelson Mandela.</strong>
         </p>
-        <div class="row">
+        <!-- <div class="row">
             <Title prefix={false} title={"who we are"} />
 
             <div class="col-sm-12 col-md-4">
@@ -65,7 +65,7 @@
                     class="btn btn-sm bg-gold shadow cta text-black">Read more</a
                 >
             </div>
-        </div>
+        </div> -->
 
         <div class="text-center mb-4 mt-5">
             <!-- svelte-ignore a11y-media-has-caption -->

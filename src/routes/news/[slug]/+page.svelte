@@ -1,7 +1,6 @@
 <script>
     import Icon from "$lib/Icons/icon.svelte";
     import { arrowLeft } from "$lib/Icons/icons";
-    // import SvelteMarkdown from "svelte-markdown";
 
     export let data;
     let { post } = data;

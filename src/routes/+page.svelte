@@ -50,32 +50,16 @@
     <!-- Three words under each other, first is benefits, next support and then care nice and big and to the left -->
     <section id="banner-words">
         <h2>
-            <span class="eh eh-b">benefits</span>
-            <span class="eh eh-s">support</span>
-            <span class="eh eh-c">care</span>
+            <span class="eh eh-b">thinkteacher</span>
+            <span class="eh eh-s">thinkschool</span>
+            <span class="eh eh-c">thinksmart</span>
         </h2>
         <p class="eh-sml">by teachers for teachers</p>
     </section>
 </header>
-<!-- <div class="banner-all">
-    <div class="bg-overlay" />
-    <div class="bg-banner text-center">
-        <Logo />
-    </div>
-
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
-        <path
-            class=""
-            fill="var(--bg-banner)"
-            d="M421.9,6.5c22.6-2.5,51.5,0.4,75.5,5.3c23.6,4.9,70.9,23.5,100.5,35.7c75.8,32.2,133.7,44.5,192.6,49.7
-        c23.6,2.1,48.7,3.5,103.4-2.5c54.7-6,106.2-25.6,106.2-25.6V0H0v30.3c0,0,72,32.6,158.4,30.5c39.2-0.7,92.8-6.7,134-22.4
-        c21.2-8.1,52.2-18.2,79.7-24.2C399.3,7.9,411.6,7.5,421.9,6.5z"
-        />
-    </svg>
-</div> -->
 
 <div class="container text-center mt-5">
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-sm-12 col-md-6 d-flex bg-blue text-white rounded-3 px-3 py-1">
             <p class="fs-4 lh-base my-auto text-justify">
                 Teacher wellbeing is a positive emotional state that combines the personal needs and
@@ -92,7 +76,7 @@
                 alt="img"
             />
         </div>
-    </div>
+    </div> -->
 
     <div class="row mt-4">
         <div class="col-sm-12 col-md-6">
@@ -117,9 +101,10 @@
     <div class="row mt-4">
         <div class="col-sm-12 col-md-6 d-flex bg-blue text-white rounded-3 px-3 py-1">
             <p class="fs-4 lh-base my-auto text-justify">
-                When schools prioritise teacher wellbeing and help to ensure that teachers can
-                flourish, this promotes better classroom climates and enables high quality teaching
-                that leads to success for students, and consequently the school.
+                Looking after your teachers’ wellbeing is one of the most important things you can
+                do as a school community. The success of your school is dependent on the quality of
+                instruction delivered by your teachers to your students; their wellbeing is crucial
+                to ensuring that their teaching skills are effective and of a high quality.
             </p>
         </div>
         <div class="col-sm-12 col-md-6">
@@ -199,10 +184,6 @@
                     Alexander Forbes Membership Scheme with a range of discounted products, and
                     access to dedicated financial advisors
                 </li>
-                <!-- <li class=" fw-bold">
-                    Nedbank financial assistance, with the Karri School App and a range of financial
-                    banking products for teachers
-                </li> -->
                 <li class=" fw-bold">
                     Kia Motors Membership Scheme, offering vehicles at cost plus 2% including a
                     five- year unlimited mileage warranty with financing through MFC
@@ -227,10 +208,6 @@
                     Regular webinars on a range of topics of interest to teachers
                 </li>
                 <li class=" fw-bold">Monthly newsletters with the latest ThinkTeacher benefits</li>
-                <!-- <li class="list-group-item">
-					More partners join us monthly to support the most noble of professions,
-					teaching!
-				</li> -->
             </ul>
         </div>
     </div>
@@ -404,7 +381,7 @@
     #banner {
         min-height: 65vh;
         width: 100%;
-        background-image: url("https://res.cloudinary.com/splyce/image/upload/e_contrast:20/v1679424133/ThinkTeacher/banner_latest_new_x2lawp.webp");
+        background-image: url("https://res.cloudinary.com/splyce/image/upload/v1743700346/ThinkTeacher/thinkteacher2_fnvgfe.jpg");
         background-position: center center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -441,7 +418,7 @@
         font-weight: 700;
         text-align: left;
         /* white glow */
-        text-shadow: 1px 1px white;
+        text-shadow: 3px 3px white;
     }
     .eh-b {
         color: var(--logo-gold);
@@ -454,7 +431,7 @@
         font-family: 'Exo', sans-serif;
     }
     .eh-c {
-        color: #CACFD9;
+        color: #666768;
         font-weight: 400;
         font-family: 'Exo', sans-serif;
     }

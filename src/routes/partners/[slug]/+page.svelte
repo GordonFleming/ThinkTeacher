@@ -1,13 +1,13 @@
 <script>
     import Icon from "$lib/Icons/icon.svelte";
     import { arrowLeft } from "$lib/Icons/icons";
-    import SvelteMarkdown from "svelte-markdown";
+    import showdown from 'showdown';
     import { goto } from "$app/navigation";
 
     export let data;
     let { partner } = data;
-    let source;
-    if (partner) source = partner.bio;
+    let converter = new showdown.Converter();
+    let source = (partner) ? converter.makeHtml(partner.bio) : "";
 </script>
 
 <svelte:head>
@@ -51,7 +51,7 @@
     {/if}
 
     <div id="mark-down">
-        <SvelteMarkdown {source} />
+        <p>{@html source}</p>
     </div>
 
     <div class="text-center mt-4">
