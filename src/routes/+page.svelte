@@ -48,7 +48,7 @@
 
 <header id="banner">
     <section id="banner-words">
-        <h2>
+        <h2 class="header-background">
             <span class="eh"><span class="text-logo-gold">think</span>teacher</span>
             <span class="eh"><span class="text-logo-gold">think</span>school</span>
             <span class="eh"><span class="text-logo-gold">think</span>smart</span>
@@ -252,7 +252,7 @@
         font-size: 2.4em;
         text-align: center;
     }
-    .benefit-list ul li {
+    /* .benefit-list ul li {
         font-size: 1.3em;
         position: relative;
         padding: 1rem 0.3rem;
@@ -262,10 +262,8 @@
         border: 0 solid rgba(255, 255, 255, 0.2);
     }
     .benefit-list ul {
-        /* list-style: square outside; */
-
         list-style-image: url("https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/m_favicon_08702889be_d8548d4c57.png");
-    }
+    } */
 
     .btn-lg {
         padding: 2rem 1rem 1rem 1rem;
@@ -284,7 +282,7 @@
     #banner {
         min-height: 65vh;
         width: 100%;
-        background-image: url("https://res.cloudinary.com/splyce/image/upload/v1743700346/ThinkTeacher/thinkteacher2_fnvgfe.jpg");
+        background-image: url("https://res.cloudinary.com/splyce/image/upload/v1744041087/ThinkTeacher/thinkteacher_header_cropped_fcccvl.webp");
         background-position: center center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -306,6 +304,9 @@
         .eh {
             max-width: 80%;
         }
+        .header-background {
+            padding: 0px;
+        }
     }
     @media (max-width: 60em) {
         .eh {
@@ -320,14 +321,20 @@
         font-weight: 700;
         text-align: left;
         /* white glow */
-        text-shadow: 3px 3px white;
+        text-shadow: 3px 0.2px 1px rgb(122, 118, 118);
         font-family: 'Exo', sans-serif;
+    }
+    .header-background {
+        background-color: rgba(240, 248, 255, 0.705);
+        padding: 8px;
+        border-radius: 15px;
+        width: fit-content;
     }
     .eh-sml {
         font-weight: 500;
         font-size: 1rem;
-        color: rgb(254, 254, 254);
-        opacity: 0.5;
+        color: rgb(0, 0, 0);
+        opacity: 0.9;
         margin: 1.5rem 0px 3rem;
     }
 </style>
