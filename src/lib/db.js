@@ -10,14 +10,3 @@ export function api(method, endpoint, data) {
 		body: data && JSON.stringify(data)
 	});
 }
-
-export function apiGraph(method, endpoint, data) {
-	return fetch(`${BASE_API_URL}/${endpoint}`, {
-		method,
-		headers: {
-			'content-type': 'application/json',
-            'Authorization': 'Bearer ' + strapiKey
-		},
-		body: data && JSON.stringify(data)
-	});
-}
