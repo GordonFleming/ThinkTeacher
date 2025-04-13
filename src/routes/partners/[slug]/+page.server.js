@@ -1,58 +1,23 @@
 import { error } from '@sveltejs/kit';
-import { apiGraph } from '$lib/db';
+import { api } from '$lib/db'; // Assuming you have an 'api' function for REST requests
 
 export async function load({ params }) {
-	const { slug } = params;
-    const endpoint = `graphql`;
-	const graphqlQuery = {
-		operationName: "fetchPartner",
-		query: `query fetchPartner {
-            partners (filters: {slug: {eq: "${slug}"}}) {
-                data {
-                    attributes {
-                        name,
-                        description,
-                        company_name,
-                        bio,
-                        webinar,
-                        logo {
-                            data {
-                                attributes {
-                                    url
-                                }
-                            }
-                        },
-                        images {
-                            data {
-                                attributes {
-                                    url
-                                }
-                            }
-                        },
-                        category {
-                            data {
-                                attributes {
-                                    name
-                                }
-                            }
-                        }
-                    }
-                } 
-            }		
-        }`,
-		variables: {},
-	};
-
-	const res = await apiGraph('POST', endpoint, graphqlQuery);
+    const { slug } = params;
+    
+    // Create the REST endpoint with query parameters for filtering and populating related data
+    const endpoint = `partners?filters[slug][$eq]=${slug}&populate[logo]=*&populate[images]=*&populate[category]=*`;
+    
+    // Make the REST request
+    const res = await api('GET', endpoint);
     const data = await res.json();
-
-    if (res.status === 404 || data.data.partners.data.length === 0) {
+    
+    if (res.status === 404 || data.data.length === 0) {
         throw error(404, `No partner found, ${slug}`);
     }
-
-	if (res.ok) {
-		return { partner: data.data.partners.data[0].attributes };
-	}
-
-	throw error(res.status);
+    
+    if (res.ok) {
+        return { partner: data.data[0].attributes };
+    }
+    
+    throw error(res.status);
 }
