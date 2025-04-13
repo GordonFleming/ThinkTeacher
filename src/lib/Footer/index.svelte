@@ -142,7 +142,7 @@
 
     <!-- Copyright -->
     <div class="text-center p-2" style="background-color: var(--logo-gold);">
-        © 2024 Copyright: ThinkTeacher | 
+        © 2025 Copyright: ThinkTeacher | 
         Built by: <a class="text-white" target="_blank" rel="noreferrer" href="https://splyce.dev">Splyce</a>
     </div>
 </footer>

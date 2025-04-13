@@ -83,7 +83,7 @@
                 <div class="card bg-dark text-white" style="border-radius: 1rem;">
                     <div class="card-body p-md-4 p-lg-4 text-center">
                         <div class="mb-md-3">
-                            <h2 class="fw-bold mb-2">LOGIN</h2>
+                            <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
 
                             <div class="mt-4 google-box">
                                 <a

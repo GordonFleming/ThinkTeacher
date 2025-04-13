@@ -163,7 +163,7 @@
                             href="/register"
                             class="nav-link"
                             style="color: var(--logo-grey); font-size: 1.16em;"
-                            on:click={mustClick}>Register</a
+                            on:click={mustClick}>Create Profile</a
                         >
                     </p>
                 {/if}

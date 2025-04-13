@@ -222,7 +222,7 @@
 </script>
 
 <svelte:head>
-    <title>Register | ThinkTeacher</title>
+    <title>Create Profile | ThinkTeacher</title>
     <meta name="description" content="Register for ThinkTeacher!" />
 </svelte:head>
 
@@ -247,7 +247,7 @@
                         {/if}
                         <div class="card-body p-md-3 p-lg-4 text-center">
                             <div class="mb-md-3">
-                                <h2 class="fw-bold mb-2">REGISTER</h2>
+                                <h2 class="fw-bold mb-2 text-uppercase">Create Profile</h2>
 
                                 {#if provider && !registered}
                                     <p>Please complete your registration...</p>
