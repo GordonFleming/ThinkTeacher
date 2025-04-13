@@ -98,9 +98,83 @@
         </div>
     </div>
     <p class="fs-4 text-blue mt-4">
-        <span class="think">think</span>teacher - by teachers for teachers.
+        <strong><span class="think">think</span>teacher</strong> - by teachers for teachers.
     </p>
 </div>
+
+<div class="container py-5">
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-blue text-white text-center">
+            <h2 class="my-2 text-white">Teacher Sign-up</h2>
+            </div>
+            <div class="card-body">
+            <ul class="fs-5 list-unstyled text-dark">
+                <li><strong>Step 1:</strong> Create your profile (5 min). Your online CV will not be disclosed publicly.</li>
+                <li><strong>Step 2:</strong> Set up the calendar if you are available for locums.</li>
+                <li><strong>Step 3:</strong> We will connect your skills with our partner schools.</li>
+            </ul>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <h2 class="text-center mb-4">School Sign-up Tiers</h2>
+    <div class="row g-4">
+      <!-- Tier 1 -->
+      <div class="col-md-4">
+        <div class="card h-100">
+          <div class="card-header bg-blue text-center">
+            <h4 class="my-1 text-white">Tier 1</h4>
+            <p>R4 500 per annum</p>
+          </div>
+          <div class="card-body">
+            <ul class="tick-list">
+              <li>Access to SACE registered retired teacher database for locums</li>
+              <li>Access to support webinars</li>
+              <li>Wellbeing benefits for staff</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tier 2 -->
+      <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-header bg-blue text-center">
+            <h4 class="my-1 text-white">Tier 2</h4>
+            <p>R14 000 per annum</p>
+          </div>
+          <div class="card-body">
+            <ul class="tick-list">
+              <li>All Tier 1 benefits</li>
+              <li>Access to new teachers database for internships</li>
+              <li>All benefits for staff</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tier 3 -->
+      <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-header bg-blue text-center">
+            <h4 class="my-1 text-white">Tier 3</h4>
+            <p>R35 000 per annum</p>
+          </div>
+          <div class="card-body">
+            <ul class="tick-list">
+              <li>All Tier 1 and 2 benefits</li>
+              <li>Mentorship for new staff with retired master teachers</li>
+              <li>Management mentorship</li>
+              <li>GIS support for feeder catchment area</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <div class="container mt-4 mb-5">
     <!-- Carousel of Webinars -->
@@ -145,7 +219,7 @@
         </div>
     </div> -->
 
-    <div class="container text-center mb-4 grey-grad big-gap">
+    <div class="container text-center mb-4 grey-grad">
         <h2 class="mb-4">
             Why you should become a <span class="text-logo-gold">think</span>teacher member
         </h2>
@@ -264,7 +338,19 @@
     .benefit-list ul {
         list-style-image: url("https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/m_favicon_08702889be_d8548d4c57.png");
     } */
-
+    .tick-list {
+      list-style: none;
+      padding-left: 1.2em;
+      color: #000;
+    }
+    .tick-list li::before {
+      content: "✔";
+      color: var(--logo-gold);
+      font-weight: bold;
+      display: inline-block;
+      width: 1em;
+      margin-left: -1.2em;
+    }
     .btn-lg {
         padding: 2rem 1rem 1rem 1rem;
     }
