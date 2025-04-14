@@ -105,8 +105,8 @@
         qualifications: string().required('Qualification is required'),
         references: string().required('Reference is required'),
         languages: object({
-            afrikaans: boolean().required(),
             english: boolean().required(),
+            afrikaans: boolean().required(),
             isi_ndebele: boolean().required(),
             isi_xhosa: boolean().required(),
             isi_zulu: boolean().required(),
@@ -135,8 +135,8 @@
             mentor: false,
         },
         languages: {
-            afrikaans: false,
             english: false,
+            afrikaans: false,
             isi_ndebele: false,
             isi_xhosa: false,
             isi_zulu: false,
@@ -677,12 +677,12 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-check text-start ms-4">
-                                                            <input class="form-check-input" type="checkbox" bind:checked={val.languages.afrikaans} id="afrikaans">
-                                                            <label class="form-check-label" for="afrikaans">Afrikaans</label>
-                                                        </div>
-                                                        <div class="form-check text-start ms-4">
                                                             <input class="form-check-input" type="checkbox" bind:checked={val.languages.english} id="english">
                                                             <label class="form-check-label" for="english">English</label>
+                                                        </div>
+                                                        <div class="form-check text-start ms-4">
+                                                            <input class="form-check-input" type="checkbox" bind:checked={val.languages.afrikaans} id="afrikaans">
+                                                            <label class="form-check-label" for="afrikaans">Afrikaans</label>
                                                         </div>
                                                         <div class="form-check text-start ms-4">
                                                             <input class="form-check-input" type="checkbox" bind:checked={val.languages.isi_ndebele} id="isiNdebele">
