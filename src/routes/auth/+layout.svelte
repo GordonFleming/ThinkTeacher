@@ -27,13 +27,13 @@
             let paidMember = res.data.paid;
 
             // Check for those users who are valid free members
-            if (paidMember) {
-                console.log("you are paid up, payment check");
-            } else {
-                goto("/payment");
-                console.log("payment needed");
-                toast.push("Payment is required.", toastErr);
-            }
+            // if (paidMember) {
+            //     console.log("you are paid up, payment check");
+            // } else {
+            //     goto("/payment");
+            //     console.log("payment needed");
+            //     toast.push("Payment is required.", toastErr);
+            // }
         } else {
             const currentUrl = new URL(window.location.href);
             const currentPath = currentUrl.pathname;
