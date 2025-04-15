@@ -142,6 +142,7 @@
     });
 
     let val = {
+        looking: true,
         teachingPhase: {
             early_learning: false,
             foundation: false,
@@ -216,6 +217,7 @@
                         sace: val.sace,
                         ttCode: ttCode,
                         // New fields
+                        looking: val.looking,
                         idNumber: val.idNumber,
                         teachingPhase: val.teachingPhase,
                         subjects: val.subjects,
@@ -257,6 +259,7 @@
                     sace: val.sace,
                     ttCode: ttCode,
                     // New fields
+                    looking: val.looking,
                     idNumber: val.idNumber,
                     teachingPhase: val.teachingPhase,
                     subjects: val.subjects,
@@ -452,11 +455,16 @@
                                                     id="sace"
                                                     class="form-control form-control-lg"
                                                     placeholder="SACE number"
+                                                    maxlength="7"
                                                     bind:value={val.sace}
                                                 />
                                             </div>
 
                                             <!-- TODO: activley looking togle yes/no -->
+                                            <div class="form-check form-switch mt-3">
+                                                <label class="form-check-label" for="flexSwitchCheckDefault">Actively Looking?</label><small class="text-danger">&nbsp;*</small>
+                                                <input style="width: 3rem; height: 1.2rem;" bind:checked={val.looking} class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                              </div>
 
                                             <!-- Position - New field -->
                                             <div class="col-sm-12 col-md-6 mt-3">
