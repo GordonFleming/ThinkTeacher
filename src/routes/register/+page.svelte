@@ -59,19 +59,44 @@
         email: string().email().required(),
         s: boolean().required().isTrue(),
     });
+
     let userSchema = object({
         firstName: string().required(),
         lastName: string().required(),
         cell: string().matches(cellRegex, "Phone number is not valid").required(),
-        eduPhase: string().required(),
-        qualification: string().nullable(),
-        sace: string().nullable(),
-        workplace: string().nullable(),
-        province: string().nullable(),
+        sace: string().test(
+                'conditional-sace-requirement',
+                'SACE number is required (7 digits)',
+                function(sace) {
+                const { idNumber } = this.parent;
+                
+                // If ID is valid, SACE is optional
+                if (idNumber && idNumber.length === 13) {
+                    return true;
+                }
+                
+                // Otherwise, SACE must be valid
+                return sace && sace.length === 7;
+                }
+            ),
         terms: boolean().required().isTrue(),
 
         // New
-        idNumber: string().length(13, 'ID Number must be exactly 13 characters').required('ID Number is required'),
+        idNumber: string().test(
+            'conditional-id-requirement',
+            'ID Number is required (13 digits)',
+            function(idNumber) {
+            const { sace } = this.parent;
+            
+            // If SACE is valid, ID is optional
+            if (sace && sace.length === 7) {
+                return true;
+            }
+            
+            // Otherwise, ID must be valid
+            return idNumber && idNumber.length === 13;
+            }
+        ),
         teachingPhase: object({
             early_learning: boolean().required(),
             foundation: boolean().required(),
@@ -92,15 +117,12 @@
             tutor: boolean().required(),
             mentor: boolean().required(),
         }),
-        address: object().when('position', {
-            is: (val) => val.locum,
-            then: () => object({
-                street: string().required(),
-                city: string().required(),
-                postalCode: string().required(),
-            }),
-            otherwise: () => object().nullable(),
-        }),
+        address: object({
+            street: string().required(),
+            city: string().required(),
+            postalCode: string().required(),
+            province: string().oneOf(['gauteng', 'free_state', 'western_cape', 'north_west', 'northern_cape', 'limpopo', 'kwazulu_natal', 'mpumalanga', 'eastern_cape']).required(),
+        }).required(),
         teachingPreference: string().oneOf(['in_person', 'online', 'hybrid'], 'Invalid preference').required('Preference is required'),
         qualifications: string().required('Qualification is required'),
         references: string().required('Reference is required'),
@@ -191,11 +213,7 @@
                         firstName: val.firstName,
                         lastName: val.lastName,
                         cell: val.cell,
-                        eduPhase: val.eduPhase,
-                        qualification: val.qualification,
                         sace: val.sace,
-                        workplace: val.workplace,
-                        province: val.province,
                         ttCode: ttCode,
                         // New fields
                         idNumber: val.idNumber,
@@ -203,7 +221,7 @@
                         subjects: val.subjects,
                         experience: val.experience,
                         position: val.position,
-                        address: val.position.locum ? val.address : null,
+                        address: val.address,
                         teachingPreference: val.teachingPreference,
                         qualifications: val.qualifications,
                         references: val.references,
@@ -236,11 +254,7 @@
                     firstName: val.firstName,
                     lastName: val.lastName,
                     cell: val.cell,
-                    eduPhase: val.eduPhase,
-                    qualification: val.qualification,
                     sace: val.sace,
-                    workplace: val.workplace,
-                    province: val.province,
                     ttCode: ttCode,
                     // New fields
                     idNumber: val.idNumber,
@@ -248,7 +262,7 @@
                     subjects: val.subjects,
                     experience: val.experience,
                     position: val.position,
-                    address: val.position.locum ? val.address : null,
+                    address: val.address,
                     teachingPreference: val.teachingPreference,
                     qualifications: val.qualifications,
                     references: val.references,
@@ -306,9 +320,10 @@
                         <div class="card-body p-md-3 p-lg-4 text-center">
                             <div class="mb-md-3">
                                 <h2 class="fw-bold mb-2 text-uppercase">Create Profile</h2>
+                                <h3>Your digital CV</h3>
 
                                 {#if provider && !registered}
-                                    <p>Please complete your registration...</p>
+                                    <p>Please complete your profile...</p>
                                 {/if}
 
                                 <form id="register">
@@ -390,7 +405,7 @@
                                     {:else}
                                         <div class="row">
                                             <div class="col-sm-12 col-md-6">
-                                                <label class="form-label" for="name">First Name</label>
+                                                <label class="form-label" for="name">First Name</label><small class="text-danger">&nbsp;*</small>
                                                 <input
                                                     type="text"
                                                     name="firstname"
@@ -402,7 +417,7 @@
                                                 />
                                             </div>
                                             <div class="col-sm-12 col-md-6">
-                                                <label class="form-label" for="surname">Surname</label>
+                                                <label class="form-label" for="surname">Surname</label><small class="text-danger">&nbsp;*</small>
                                                 <input
                                                     type="text"
                                                     name="surname"
@@ -416,7 +431,7 @@
                                             
                                             <!-- ID Number - New field -->
                                             <div class="col-sm-12 col-md-6 mt-3">
-                                                <label class="form-label" for="idNumber">ID Number</label>
+                                                <label class="form-label" for="idNumber">ID Number</label><small class="text-danger">&nbsp;&nbsp;*required if no SACE number</small>
                                                 <input
                                                     type="text"
                                                     name="idNumber"
@@ -428,101 +443,24 @@
                                                     required
                                                 />
                                             </div>
-                                            
+
                                             <div class="col-sm-12 col-md-6 mt-3">
-                                                <label class="form-label" for="eduPhase">Education Phase</label>
-                                                <select
-                                                    class="form-select"
-                                                    id="eduPhase"
-                                                    aria-label="Education Phase"
-                                                    bind:value={val.eduPhase}
-                                                    required
-                                                >
-                                                    <option value="" selected>choose phase</option>
-                                                    <option value="early_childhood_development">Early Childhood Development</option>
-                                                    <option value="foundation_phase">Foundation Phase</option>
-                                                    <option value="intermediate_phase">Intermediate Phase</option>
-                                                    <option value="senior_phase">Senior Phase</option>
-                                                    <option value="further_education">Further Education</option>
-                                                    <option value="training_phase">Training Phase</option>
-                                                </select>
-                                            </div>
-                                            
-                                            <!-- Teaching Phases - New field -->
-                                            <div class="col-12 mt-3">
-                                                <label class="form-label">Teaching Phases</label>
-                                                <div class="form-check text-start ms-4">
-                                                    <input class="form-check-input" type="checkbox" bind:checked={val.teachingPhase.early_learning} id="earlyLearning">
-                                                    <label class="form-check-label" for="earlyLearning">Early Learning</label>
-                                                </div>
-                                                <div class="form-check text-start ms-4">
-                                                    <input class="form-check-input" type="checkbox" bind:checked={val.teachingPhase.foundation} id="foundation">
-                                                    <label class="form-check-label" for="foundation">Foundation</label>
-                                                </div>
-                                                <div class="form-check text-start ms-4">
-                                                    <input class="form-check-input" type="checkbox" bind:checked={val.teachingPhase.intermediate} id="intermediate">
-                                                    <label class="form-check-label" for="intermediate">Intermediate</label>
-                                                </div>
-                                                <div class="form-check text-start ms-4">
-                                                    <input class="form-check-input" type="checkbox" bind:checked={val.teachingPhase.get} id="get">
-                                                    <label class="form-check-label" for="get">GET (General Education and Training)</label>
-                                                </div>
-                                                <div class="form-check text-start ms-4">
-                                                    <input class="form-check-input" type="checkbox" bind:checked={val.teachingPhase.fet} id="fet">
-                                                    <label class="form-check-label" for="fet">FET (Further Education and Training)</label>
-                                                </div>
-                                            </div>
-                                            
-                                            <!-- Subjects - New field (conditional) -->
-                                            {#if val.teachingPhase.get || val.teachingPhase.fet}
-                                                <div class="col-12 mt-3">
-                                                    <label class="form-label" for="subjects">Subjects/Learning Areas</label>
-                                                    <textarea 
-                                                        id="subjects" 
-                                                        class="form-control form-control-lg" 
-                                                        placeholder="Enter subjects or learning areas you teach" 
-                                                        bind:value={val.subjects}
-                                                        required
-                                                    ></textarea>
-                                                </div>
-                                            {/if}
-                                            
-                                            <!-- Experience - New field -->
-                                            <div class="col-sm-12 col-md-6 mt-3">
-                                                <label class="form-label" for="experience">Years of Experience</label>
+                                                <label class="form-label" for="sace">SACE Number</label><small class="text-danger">&nbsp;&nbsp;*required if no ID number</small>
                                                 <input
-                                                    type="number"
-                                                    name="experience"
-                                                    id="experience"
+                                                    type="text"
+                                                    name="sace"
+                                                    id="sace"
                                                     class="form-control form-control-lg"
-                                                    placeholder="Years of experience"
-                                                    bind:value={val.experience}
-                                                    min="0"
-                                                    required
+                                                    placeholder="SACE number"
+                                                    bind:value={val.sace}
                                                 />
                                             </div>
 
-                                            <div class="col-sm-12 col-md-6 mt-3">
-                                                <label class="form-label" for="cell">Cell Number</label>
-                                                <input
-                                                    type="tel"
-                                                    name="cell"
-                                                    id="cell"
-                                                    class="form-control form-control-lg"
-                                                    placeholder="Cell number"
-                                                    bind:value={val.cell}
-                                                    min="0"
-                                                    max="9999999999999"
-                                                    required
-                                                />
-                                                {#if cellErr && val.cell && val.cell != ""}
-                                                    <small class="text-error">{cellErr}</small>
-                                                {/if}
-                                            </div>
-                                            
+                                            <!-- TODO: activley looking togle yes/no -->
+
                                             <!-- Position - New field -->
-                                            <div class="col-12 mt-3">
-                                                <label class="form-label">Position</label>
+                                            <div class="col-sm-12 col-md-6 mt-3">
+                                                <label class="form-label">Position you are interested in:</label><small class="text-danger">&nbsp;*</small>
                                                 <div class="form-check text-start ms-4">
                                                     <input class="form-check-input" type="checkbox" bind:checked={val.position.intern} id="intern">
                                                     <label class="form-check-label" for="intern">Intern</label>
@@ -545,70 +483,137 @@
                                                 </div>
                                             </div>
                                             
-                                            <!-- Address - New field (conditional on locum) -->
-                                            {#if val.position.locum}
+                                            <div class="col-sm-12 col-md-6 mt-3">
+                                                <label class="form-label">Education Phase</label><small class="text-danger">&nbsp;*</small>
+                                                <div class="form-check text-start ms-4">
+                                                    <input class="form-check-input" type="checkbox" bind:checked={val.teachingPhase.early_learning} id="earlyLearning">
+                                                    <label class="form-check-label" for="earlyLearning">Early Learning</label>
+                                                </div>
+                                                <div class="form-check text-start ms-4">
+                                                    <input class="form-check-input" type="checkbox" bind:checked={val.teachingPhase.foundation} id="foundation">
+                                                    <label class="form-check-label" for="foundation">Foundation</label>
+                                                </div>
+                                                <div class="form-check text-start ms-4">
+                                                    <input class="form-check-input" type="checkbox" bind:checked={val.teachingPhase.intermediate} id="intermediate">
+                                                    <label class="form-check-label" for="intermediate">Intermediate</label>
+                                                </div>
+                                                <div class="form-check text-start ms-4">
+                                                    <input class="form-check-input" type="checkbox" bind:checked={val.teachingPhase.get} id="get">
+                                                    <label class="form-check-label" for="get">GET (General Education and Training)</label>
+                                                </div>
+                                                <div class="form-check text-start ms-4">
+                                                    <input class="form-check-input" type="checkbox" bind:checked={val.teachingPhase.fet} id="fet">
+                                                    <label class="form-check-label" for="fet">FET (Further Education and Training)</label>
+                                                </div> 
+                                            </div>
+                                            
+                                            <!-- Subjects - New field (conditional) -->
+                                            {#if val.teachingPhase.get || val.teachingPhase.fet}
                                                 <div class="col-12 mt-3">
-                                                    <label class="form-label" for="street">Street Address</label>
-                                                    <input
-                                                        type="text"
-                                                        name="street"
-                                                        id="street"
-                                                        class="form-control form-control-lg"
-                                                        placeholder="Street address"
-                                                        bind:value={val.address.street}
+                                                    <label class="form-label" for="subjects">Subjects/Learning Areas</label><small class="text-danger">&nbsp;*</small>
+                                                    <textarea 
+                                                        id="subjects" 
+                                                        class="form-control form-control-lg" 
+                                                        placeholder="Enter subjects or learning areas you teach" 
+                                                        bind:value={val.subjects}
                                                         required
-                                                    />
-                                                </div>
-                                                <div class="col-sm-12 col-md-6 mt-3">
-                                                    <label class="form-label" for="city">City</label>
-                                                    <input
-                                                        type="text"
-                                                        name="city"
-                                                        id="city"
-                                                        class="form-control form-control-lg"
-                                                        placeholder="City"
-                                                        bind:value={val.address.city}
-                                                        required
-                                                    />
-                                                </div>
-                                                <div class="col-sm-12 col-md-6 mt-3">
-                                                    <label class="form-label" for="addressProvince">Province</label>
-                                                    <select
-                                                        class="form-select"
-                                                        id="addressProvince"
-                                                        aria-label="Address Province"
-                                                        bind:value={val.address.province}
-                                                        required
-                                                    >
-                                                        <option value="" selected>choose province</option>
-                                                        <option value="gauteng">Gauteng</option>
-                                                        <option value="free_state">Free State</option>
-                                                        <option value="western_cape">Western Cape</option>
-                                                        <option value="north_west">North West</option>
-                                                        <option value="northern_cape">Northern Cape</option>
-                                                        <option value="limpopo">Limpopo</option>
-                                                        <option value="kwazulu_natal">KwaZulu-Natal</option>
-                                                        <option value="mpumalanga">Mpumalanga</option>
-                                                        <option value="eastern_cape">Eastern Cape</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-12 col-md-6 mt-3">
-                                                    <label class="form-label" for="postalCode">Postal Code</label>
-                                                    <input
-                                                        type="text"
-                                                        name="postalCode"
-                                                        id="postalCode"
-                                                        class="form-control form-control-lg"
-                                                        placeholder="Postal code"
-                                                        bind:value={val.address.postalCode}
-                                                        required
-                                                    />
+                                                    ></textarea>
                                                 </div>
                                             {/if}
                                             
-                                            <!-- Teaching Preference - New field -->
+                                            <!-- Experience - New field -->
+                                            <div class="col-sm-12 col-md-6 mt-3">
+                                                <label class="form-label" for="experience">Years of Experience</label><small class="text-danger">&nbsp;*</small>
+                                                <input
+                                                    type="number"
+                                                    name="experience"
+                                                    id="experience"
+                                                    class="form-control form-control-lg"
+                                                    placeholder="Years of experience"
+                                                    bind:value={val.experience}
+                                                    min="0"
+                                                    required
+                                                />
+                                            </div>
+
+                                            <div class="col-sm-12 col-md-6 mt-3">
+                                                <label class="form-label" for="cell">Cell Number</label><small class="text-danger">&nbsp;*</small>
+                                                <input
+                                                    type="tel"
+                                                    name="cell"
+                                                    id="cell"
+                                                    class="form-control form-control-lg"
+                                                    placeholder="Cell number"
+                                                    bind:value={val.cell}
+                                                    min="0"
+                                                    max="9999999999999"
+                                                    required
+                                                />
+                                                {#if cellErr && val.cell && val.cell != ""}
+                                                    <small class="text-error">{cellErr}</small>
+                                                {/if}
+                                            </div>      
+
                                             <div class="col-12 mt-3">
-                                                <label class="form-label" for="teachingPreference">Teaching Preference</label>
+                                                <label class="form-label" for="street">Street Address</label><small class="text-danger">&nbsp;*</small>
+                                                <input
+                                                    type="text"
+                                                    name="street"
+                                                    id="street"
+                                                    class="form-control form-control-lg"
+                                                    placeholder="Street address"
+                                                    bind:value={val.address.street}
+                                                    required
+                                                />
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 mt-3">
+                                                <label class="form-label" for="city">City</label><small class="text-danger">&nbsp;*</small>
+                                                <input
+                                                    type="text"
+                                                    name="city"
+                                                    id="city"
+                                                    class="form-control form-control-lg"
+                                                    placeholder="City"
+                                                    bind:value={val.address.city}
+                                                    required
+                                                />
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 mt-3">
+                                                <label class="form-label" for="addressProvince">Province</label><small class="text-danger">&nbsp;*</small>
+                                                <select
+                                                    class="form-select"
+                                                    id="addressProvince"
+                                                    aria-label="Address Province"
+                                                    bind:value={val.address.province}
+                                                    required
+                                                >
+                                                    <option value="" selected>choose province</option>
+                                                    <option value="gauteng">Gauteng</option>
+                                                    <option value="free_state">Free State</option>
+                                                    <option value="western_cape">Western Cape</option>
+                                                    <option value="north_west">North West</option>
+                                                    <option value="northern_cape">Northern Cape</option>
+                                                    <option value="limpopo">Limpopo</option>
+                                                    <option value="kwazulu_natal">KwaZulu-Natal</option>
+                                                    <option value="mpumalanga">Mpumalanga</option>
+                                                    <option value="eastern_cape">Eastern Cape</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 mt-3">
+                                                <label class="form-label" for="postalCode">Postal Code</label><small class="text-danger">&nbsp;*</small>
+                                                <input
+                                                    type="text"
+                                                    name="postalCode"
+                                                    id="postalCode"
+                                                    class="form-control form-control-lg"
+                                                    placeholder="Postal code"
+                                                    bind:value={val.address.postalCode}
+                                                    required
+                                                />
+                                            </div>
+                                            
+                                            <div class="col-12 mt-3">
+                                                <label class="form-label" for="teachingPreference">Teaching Preference</label><small class="text-danger">&nbsp;*</small>
                                                 <select
                                                     class="form-select"
                                                     id="teachingPreference"
@@ -623,21 +628,9 @@
                                                 </select>
                                             </div>
                                             
-                                            <div class="col-sm-12 col-md-6 mt-3">
-                                                <label class="form-label" for="sace">SACE Number</label><small class="text-danger">&nbsp;&nbsp;&nbsp;&nbsp;*optional</small>
-                                                <input
-                                                    type="text"
-                                                    name="sace"
-                                                    id="sace"
-                                                    class="form-control form-control-lg"
-                                                    placeholder="SACE number"
-                                                    bind:value={val.sace}
-                                                />
-                                            </div>
-                                            
                                             <!-- Qualifications - New field -->
                                             <div class="col-12 mt-3">
-                                                <label class="form-label" for="qualifications">Qualifications</label>
+                                                <label class="form-label" for="qualifications">Qualification/s (Date awarded or predicted finishing date; Name of institution)</label><small class="text-danger">&nbsp;*</small>
                                                 <textarea 
                                                     id="qualifications" 
                                                     class="form-control form-control-lg" 
@@ -646,22 +639,10 @@
                                                     required
                                                 ></textarea>
                                             </div>
-
-                                            <div class="col-sm-12 col-md-6 mt-3">
-                                                <label class="form-label" for="qual">Qualification Type</label><small class="text-danger">&nbsp;&nbsp;&nbsp;&nbsp;*optional</small>
-                                                <input
-                                                    type="text"
-                                                    name="qual"
-                                                    id="qual"
-                                                    class="form-control form-control-lg"
-                                                    placeholder="Qualification"
-                                                    bind:value={val.qualification}
-                                                />
-                                            </div>
                                             
                                             <!-- References - New field -->
                                             <div class="col-12 mt-3">
-                                                <label class="form-label" for="references">References</label>
+                                                <label class="form-label" for="references">References (Name of person; position they hold; contact number) Please give three.</label><small class="text-danger">&nbsp;*</small>
                                                 <textarea 
                                                     id="references" 
                                                     class="form-control form-control-lg" 
@@ -673,7 +654,7 @@
                                             
                                             <!-- Languages - New field -->
                                             <div class="col-12 mt-3">
-                                                <label class="form-label">Languages</label>
+                                                <label class="form-label">Language Proficiency</label><small class="text-danger">&nbsp;*</small>
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-check text-start ms-4">
@@ -724,37 +705,6 @@
                                                 </div>
                                             </div>
                                             
-                                            <div class="col-12 mt-3">
-                                                <label class="form-label" for="school">School / Institution</label><small class="text-danger">&nbsp;&nbsp;&nbsp;&nbsp;*optional</small>
-                                                <input
-                                                    type="text"
-                                                    name="school"
-                                                    id="school"
-                                                    class="form-control form-control-lg"
-                                                    placeholder="school or institution"
-                                                    bind:value={val.workplace}
-                                                />
-                                            </div>
-                                            <div class="col-12 mt-2">
-                                                <label class="form-label" for="province">Province</label><small class="text-danger">&nbsp;&nbsp;&nbsp;&nbsp;*optional</small>
-                                                <select
-                                                    class="form-select"
-                                                    id="province"
-                                                    aria-label="Province"
-                                                    bind:value={val.province}
-                                                >
-                                                    <option value="none" selected>choose province</option>
-                                                    <option value="gauteng">Gauteng</option>
-                                                    <option value="free_state">Free State</option>
-                                                    <option value="western_cape">Western Cape</option>
-                                                    <option value="north_west">North West</option>
-                                                    <option value="northern_cape">Northern Cape</option>
-                                                    <option value="limpopo">Limpopo</option>
-                                                    <option value="kwazulu_natal">KwaZulu-Natal</option>
-                                                    <option value="mpumalanga">Mpumalanga</option>
-                                                    <option value="eastern_cape">Eastern Cape</option>
-                                                </select>
-                                            </div>
                                             <div class="form-check text-center mt-3 col-12">
                                                 <label for="flexCheckDefault">
                                                     Terms and Conditions, available <a
@@ -781,7 +731,7 @@
                                             class="btn btn-outline-light btn-lg px-4 mt-3"
                                             type="submit"
                                             on:click|preventDefault={registerUser}
-                                            disabled={!userSchema.isValidSync(val)}>Register</button>
+                                            disabled={!userSchema.isValidSync(val)}>Submit</button>
                                     {/if}
                                 </form>
                             </div>
