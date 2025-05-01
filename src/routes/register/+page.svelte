@@ -730,7 +730,7 @@
                                                 />
                                                 <br />
                                                 {#if !val.terms}
-                                                    <small class="text-danger">Please accept the T&Cs above</small>
+                                                    <small class="text-danger">Please accept the terms and conditions above</small>
                                                 {/if}
                                             </div>
                                         </div>

@@ -107,14 +107,17 @@
         <div class="col-md-8">
         <div class="card shadow">
             <div class="card-header bg-blue text-white text-center">
-            <h2 class="my-2 text-white">Teacher Sign-up</h2>
+            <h2 class="my-2 text-white">Create Your Profile</h2>
             </div>
             <div class="card-body">
-            <ul class="fs-5 list-unstyled text-dark">
-                <li><strong>Step 1:</strong> Create your profile (5 min). Your online CV will not be disclosed publicly.</li>
-                <li><strong>Step 2:</strong> Set up the calendar if you are available for locums.</li>
-                <li><strong>Step 3:</strong> We will connect your skills with our partner schools.</li>
-            </ul>
+                <ul class="fs-5 list-unstyled text-dark">
+                    <li><strong>Step 1:</strong> Create your profile (5 min). Your online CV will not be disclosed publicly.</li>
+                    <li><strong>Step 2:</strong> Set up the calendar if you are available for locums.</li>
+                    <li><strong>Step 3:</strong> We will connect your skills with our partner schools.</li>
+                </ul>
+                <div class="text-center pt-2">
+                    <a href="/register"><button class="btn btn-outline bg-blue">Create profile now</button></a>
+                </div>
             </div>
         </div>
         </div>
