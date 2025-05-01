@@ -495,7 +495,7 @@
                                                 <label class="form-label">Education Phase</label><small class="text-danger">&nbsp;*</small>
                                                 <div class="form-check text-start ms-4">
                                                     <input class="form-check-input" type="checkbox" bind:checked={val.teachingPhase.early_learning} id="earlyLearning">
-                                                    <label class="form-check-label" for="earlyLearning">Early Learning</label>
+                                                    <label class="form-check-label" for="earlyLearning">Early Learning Development</label>
                                                 </div>
                                                 <div class="form-check text-start ms-4">
                                                     <input class="form-check-input" type="checkbox" bind:checked={val.teachingPhase.foundation} id="foundation">
