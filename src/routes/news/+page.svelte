@@ -28,7 +28,7 @@
                         <div class="news-block bg-dark p-3">
                             <h4 class="font-bold">{post.attributes.title}</h4>
                             <button
-                                class="btn btn-sm bg-gold  shadow cta text-black"
+                                class="btn btn-sm bg-gold shadow cta text-black"
                                 on:click={() => goto(`/news/${post.attributes.slug}`)}
                                 >Read More</button
                             >
@@ -53,6 +53,6 @@
     }
     .news-block:hover {
         cursor: pointer;
-        border: 3px solid var(--logo-grey);
+        border: 3px solid var(--logo-blue);
     }
 </style>

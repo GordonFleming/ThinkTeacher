@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Exo:wght@400;600;700&display=swap');
 :root {
     --logo-gold: #D9B73D;
-    --logo-grey: #4F5D89;
+    --logo-blue: #4F5D89;
     --text: rgb(36, 34, 34);
     --bg-primary: #FEFEFF;
     --default-text: #333C51;
@@ -62,13 +62,13 @@ body {
     background-color: var(--bg-other);
 }
 .bg-blue{
-    background-color: var(--logo-grey) !important;
+    background-color: var(--logo-blue) !important;
 }
 .bg-gold{
     background-color: var(--logo-gold);
 }
 .text-blue{
-    color: var(--logo-grey);
+    color: var(--logo-blue);
 }
 .text-logo-gold{
     color: var(--logo-gold)
@@ -128,7 +128,7 @@ body {
 }
 h1 {
     font-size: 3em;
-    color: var(--logo-grey);
+    color: var(--logo-blue);
 }
 
 h2 {
@@ -141,7 +141,7 @@ h3{
 }
 
 h4, h6 {
-    color: var(--logo-grey);
+    color: var(--logo-blue);
 }
 video {
     max-width: 750px;
@@ -334,7 +334,7 @@ select option{
     -moz-transform-origin: left center;
     -o-transform-origin: left center;
     transform-origin: left center;
-    background: var(--logo-grey);
+    background: var(--logo-blue);
 }
     
 .animated-icon3 span:nth-child(3) {
@@ -368,5 +368,5 @@ select option{
     transform: rotate(-45deg);
     top: 21px;
     left: 8px;
-    background: var(--logo-grey);
+    background: var(--logo-blue);
 }

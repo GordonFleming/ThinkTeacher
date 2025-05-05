@@ -52,11 +52,53 @@
             <span class="eh"><span class="text-logo-gold">think</span>school</span>
             <span class="eh"><span class="text-logo-gold">think</span>smart</span>
         </h2>
-        <p class="eh-sml">by teachers for teachers</p>
     </section>
 </header>
 
-<div class="container text-center mt-5">
+<div class="container mt-4">
+    <div class="row align-items-center">
+        <!-- Image Column -->
+        <div class="col-md-5 mb-4 mb-md-0">
+            <img
+                src="https://res.cloudinary.com/splyce/image/upload/v1746365739/ThinkTeacher/TT_website_home_page_cropped_jedwjd.webp"
+                class="img-fluid rounded shadow"
+                alt="ThinkTeacher Network"
+            />
+        </div>
+
+        <!-- Content Column -->
+        <div class="col-md-7">
+            <h1 class="main-heading">Ready for your next teaching opportunity?</h1>
+
+            <div class="feature-item d-flex align-items-start">
+                <div class="feature-icon">✨</div>
+                <div class="feature-text">Grow your skills</div>
+            </div>
+
+            <div class="feature-item d-flex align-items-start">
+                <div class="feature-icon">✨</div>
+                <div class="feature-text">Build your professional profile</div>
+            </div>
+
+            <div class="feature-item d-flex align-items-start">
+                <div class="feature-icon">✨</div>
+                <div class="feature-text">Access exclusive benefits</div>
+            </div>
+
+            <div class="feature-item d-flex align-items-start">
+                <div class="feature-icon">✨</div>
+                <div class="feature-text">
+                    Connect with top schools through the ThinkTeacher Network
+                </div>
+            </div>
+        </div>
+        <p class="text-center fw-bold mt-3 fs-4">
+            No cost. Just 5 minutes of your time. Join today!
+        </p>
+    </div>
+</div>
+
+<div class="container text-center mt-3">
     <div class="row mt-4">
         <div class="col-sm-12 col-md-6">
             <img
@@ -122,74 +164,11 @@
                     </ul>
                     <div class="text-center pt-2">
                         <a href="/register"
-                            ><button class="btn btn-outline bg-blue">Create profile now</button></a
+                            ><button class="btn btn-outline bg-gold fw-bold"
+                                >Create profile now</button
+                            ></a
                         >
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <h2 class="text-center mb-4">School Sign-up Tiers</h2>
-    <div class="row g-4">
-        <!-- Tier 1 -->
-        <div class="col-md-4">
-            <div class="card h-100">
-                <div class="card-header bg-blue text-center">
-                    <h4 class="my-1 text-white">Tier 1</h4>
-                    <p>R4 500 per annum</p>
-                </div>
-                <div class="card-body">
-                    <ul class="tick-list">
-                        <li>
-                            Access to a database of retired SACE-registered teachers for locum
-                            positions
-                        </li>
-                        <li>Wellbeing benefits for school staff</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tier 2 -->
-        <div class="col-md-4">
-            <div class="card h-100">
-                <div class="card-header bg-blue text-center">
-                    <h4 class="my-1 text-white">Tier 2</h4>
-                    <p>R14 000 per annum</p>
-                </div>
-                <div class="card-body">
-                    <p class="text-black">Includes all <strong>Tier 1</strong> benefits, plus:</p>
-                    <ul class="tick-list">
-                        <li>
-                            Access to a database of newly qualified teachers for internships and
-                            full-time positions
-                        </li>
-                        <li>Access to endorsed professional development courses for your staff</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tier 3 -->
-        <div class="col-md-4">
-            <div class="card h-100">
-                <div class="card-header bg-blue text-center">
-                    <h4 class="my-1 text-white">Tier 3</h4>
-                    <p>R35 000 per annum</p>
-                </div>
-                <div class="card-body">
-                    <p class="text-black">
-                        Includes all <strong>Tier 1 and 2</strong> benefits, plus:
-                    </p>
-                    <ul class="tick-list">
-                        <li>Personalised mentorship for new staff by retired master teachers</li>
-                        <li>Leadership and management mentorship for school leaders</li>
-                        <li>
-                            Access to a geo-referenced feeder area management tool to support
-                            strategic planning
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>
@@ -342,7 +321,7 @@
 
 <style>
     h2 {
-        color: var(--logo-grey);
+        color: var(--logo-blue);
         font-size: 2.4em;
         text-align: center;
     }
@@ -358,19 +337,6 @@
     .benefit-list ul {
         list-style-image: url("https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/m_favicon_08702889be_d8548d4c57.png");
     } */
-    .tick-list {
-        list-style: none;
-        padding-left: 1.2em;
-        color: #000;
-    }
-    .tick-list li::before {
-        content: "✔";
-        color: var(--logo-gold);
-        font-weight: bold;
-        display: inline-block;
-        width: 1em;
-        margin-left: -1.2em;
-    }
     .btn-lg {
         padding: 2rem 1rem 1rem 1rem;
     }
@@ -392,7 +358,7 @@
         background-position: center center;
         background-repeat: no-repeat;
         background-size: cover;
-        border-bottom: 5px solid var(--logo-grey);
+        border-bottom: 5px solid var(--logo-blue);
         display: flex;
         flex-direction: column;
         padding: 0;
@@ -442,5 +408,25 @@
         color: rgb(0, 0, 0);
         opacity: 0.9;
         margin: 1.5rem 0px 3rem;
+    }
+
+    .feature-item {
+        margin-bottom: 1rem;
+    }
+    .feature-icon {
+        margin-right: 10px;
+        font-size: 1.8em;
+    }
+    .container {
+        padding: 2rem 1rem;
+    }
+    .main-heading {
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #333;
+    }
+    .feature-text {
+        font-size: 1.5rem;
+        color: #555;
     }
 </style>

@@ -38,7 +38,7 @@
 <div class="container mb-5 text-center justify-content-center">
     <Title title={"webinars"} />
 
-    <div class="row ">
+    <div class="row">
         <div class="col justify-content-center d-flex">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
@@ -117,7 +117,7 @@
     .webinar-wrapper {
         padding: 3%;
         position: relative;
-        background-color: var(--logo-grey);
+        background-color: var(--logo-blue);
         border-radius: 5px;
         border: 3px solid var(--logo-gold);
         height: 100%;

@@ -1,13 +1,13 @@
 <script>
     import Icon from "$lib/Icons/icon.svelte";
     import { arrowLeft } from "$lib/Icons/icons";
-    import showdown from 'showdown';
+    import showdown from "showdown";
     import { goto } from "$app/navigation";
 
     export let data;
     let { partner } = data;
     let converter = new showdown.Converter();
-    let source = (partner) ? converter.makeHtml(partner.bio) : "";
+    let source = partner ? converter.makeHtml(partner.bio) : "";
 </script>
 
 <svelte:head>
@@ -21,9 +21,9 @@
             <div class="col-sm-12 col-md-6">
                 <img
                     class="img-fluid mx-auto d-block mt-2"
-                    src={"https://wsrv.muse.splyce.dev/?url="+
-                    img.attributes.url+
-                    "&w=400&h=400&output=webp"}
+                    src={"https://wsrv.muse.splyce.dev/?url=" +
+                        img.attributes.url +
+                        "&w=400&h=400&output=webp"}
                     alt="Partner"
                 />
             </div>
@@ -105,7 +105,7 @@
     .webinar-wrapper {
         padding: 3%;
         position: relative;
-        background-color: var(--logo-grey);
+        background-color: var(--logo-blue);
         border-radius: 5px;
         border: 3px solid var(--logo-gold);
         height: 100%;

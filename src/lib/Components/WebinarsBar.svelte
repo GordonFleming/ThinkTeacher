@@ -83,7 +83,7 @@
 
 <style>
     .frame-wrapper {
-        background-color: var(--logo-grey);
+        background-color: var(--logo-blue);
         width: 100%;
         height: 100%;
         border-radius: 5px;

@@ -75,6 +75,14 @@
                     <a
                         class="nav-link fromLeft"
                         data-sveltekit-preload-data
+                        href="/schools"
+                        on:click={mustClick}>Schools</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a
+                        class="nav-link fromLeft"
+                        data-sveltekit-preload-data
                         href="/about"
                         on:click={mustClick}>About</a
                     >
@@ -170,7 +178,7 @@
                         <a
                             href="/register"
                             class="nav-link"
-                            style="color: var(--logo-grey); font-size: 1.16em;"
+                            style="color: var(--logo-blue); font-size: 1.16em;"
                             on:click={mustClick}>Create Profile</a
                         >
                     </p>
@@ -253,7 +261,7 @@
         transition: 0.3s;
     } */
     h6 {
-        color: var(--logo-grey);
+        color: var(--logo-blue);
         margin-right: 1rem;
     }
     /* #logout:hover {

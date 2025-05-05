@@ -35,9 +35,9 @@
 
     function changePrice() {
         if (retireCheck) {
-            amountInCents = 36000
+            amountInCents = 36000;
         } else {
-            amountInCents = 12000
+            amountInCents = 12000;
         }
     }
 
@@ -45,22 +45,26 @@
         loading = true;
         const config = {
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': "Bearer " + strapiKey,
-            }
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + strapiKey,
+            },
         };
 
-        axios.get(`${API_URL}/payments/yoco?amount=${amountInCents}&reference_number=${refNum}&user_id=${$id}`, config)
-        .then(response => {
-            console.log('Response:', response.data);
-            // Go to the Yoco payment page
-            window.location.href = response.data.redirectUrl;
-            // toast.push("Success, payment has been made!", toastSuc);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            toast.push("Something went wrong", toastErr);
-        });
+        axios
+            .get(
+                `${API_URL}/payments/yoco?amount=${amountInCents}&reference_number=${refNum}&user_id=${$id}`,
+                config
+            )
+            .then((response) => {
+                console.log("Response:", response.data);
+                // Go to the Yoco payment page
+                window.location.href = response.data.redirectUrl;
+                // toast.push("Success, payment has been made!", toastSuc);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                toast.push("Something went wrong", toastErr);
+            });
         setTimeout(() => {
             loading = false;
         }, 3000);
@@ -68,10 +72,10 @@
 
     let voucherCheck = true;
     $: if (voucher.length == 8 && voucher.startsWith("TT")) {
-      voucherCheck = false 
+        voucherCheck = false;
     } else {
-      voucherCheck = true
-    };
+        voucherCheck = true;
+    }
     function makeVoucherPayment() {
         axios
             .post(
@@ -95,7 +99,7 @@
             .then((response) => {
                 toast.push("Success, payment has been made!", toastSuc);
                 voucher = "";
-                goto('/benefits');
+                goto("/benefits");
                 console.log(response);
             })
             .catch((error) => {
@@ -131,8 +135,10 @@
                 />
             </div>
             {#if voucherCheck && voucher.length > 0}
-                <p class="text-error text-center">Please enter a valid voucher code: 
-                <br>Make sure there are no spaces and code starts with TT</p>
+                <p class="text-error text-center">
+                    Please enter a valid voucher code:
+                    <br />Make sure there are no spaces and code starts with TT
+                </p>
             {/if}
 
             <div class="text-center mt-3 mb-3">
@@ -147,7 +153,7 @@
                 </button>
             </div>
 
-            <div class="Sso__divider ">
+            <div class="Sso__divider">
                 <span class="Sso__dividerLine" />
                 <span class="Sso__dividerText">or</span>
                 <span class="Sso__dividerLine" />
@@ -231,7 +237,9 @@
             <p>ThinkTeacher (Pty) LTD</p>
             <p>Nedbank</p>
             <p>Business account: 1217188746</p>
-            <p class="text-info">Send proof of payment <a href="mailto:zani@thinkteacher.co.za">zani@thinkteacher</a></p>
+            <p class="text-info">
+                Send proof of payment <a href="mailto:zani@thinkteacher.co.za">zani@thinkteacher</a>
+            </p>
         </div>
         <div class="mb-4 text-center">
             Contact <strong><a href="mailto:zani@thinkteacher.co.za">Zani</a></strong> if you are having
@@ -272,7 +280,7 @@
     }
     .form-check-input {
         /* margin: 0 auto !important; */
-        background-color: var(--logo-grey);
+        background-color: var(--logo-blue);
     }
     .form-check-input:checked {
         background-color: var(--logo-gold);

@@ -40,7 +40,7 @@
         border-radius: 20px;
     }
     h2 {
-        color: var(--logo-grey);
+        color: var(--logo-blue);
     }
     h5 {
         color: var(--logo-gold);
