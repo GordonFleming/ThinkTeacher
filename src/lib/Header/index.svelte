@@ -200,7 +200,7 @@
         .navbar-nav .nav-link {
             margin-right: 15px;
             margin-left: 15px;
-            line-height: 2.8rem;
+            line-height: 2rem;
         }
     }
 
@@ -210,7 +210,7 @@
             font-weight: 500;
         }
         .navbar-nav .nav-link {
-            line-height: 2.6rem;
+            line-height: 2rem;
         }
     }
 
@@ -221,7 +221,7 @@
         }
         .navbar-nav .nav-link {
             font-size: 1.14em;
-            line-height: 3rem;
+            line-height: 2rem;
             text-align: center;
         }
         .nav-item {
@@ -229,7 +229,7 @@
         }
     }
     nav {
-        border-bottom: var(--logo-gold) 4px solid;
+        border-bottom: var(--logo-gold) 3px solid;
     }
     /* .navbar-light .navbar-nav .nav-link {
         color: #fff;
