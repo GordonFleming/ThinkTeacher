@@ -1,123 +1,22 @@
 <script>
-    import axios from "axios";
-    import { goto } from "$app/navigation";
-    import { API_URL, toastSuc, toastErr } from "$lib/env.js";
-    import { id } from "$lib/stores";
+    import { toastSuc, toastErr } from "$lib/env.js";
     import { Jumper } from "svelte-loading-spinners";
-    import { object, string, boolean, number } from "yup";
+    import { object, string } from "yup";
     import { toast } from "@zerodevx/svelte-toast";
     import { onMount } from "svelte";
+    import { enhance } from "$app/forms";
+    import { id as userId } from "$lib/stores";
 
-    // Cell phone validation regex
-    let cellRegex = new RegExp("^(\\+27|0|27)(1|6|7|8|9)([0-9]{8})$", "g");
+    // Form will only be needed from props as this is create-only now
+    const { form } = $props();
 
-    // Profile schema definition
-    let profileSchema = object({
-        // Schema remains the same as in the original code
-        firstName: string().required(),
-        lastName: string().required(),
-        cell: string().matches(cellRegex, "Phone number is not valid").required(),
-        sace: string().test(
-            "conditional-sace-requirement",
-            "SACE number is required (7 digits)",
-            function (sace) {
-                const { idNumber } = this.parent;
-
-                // If ID is valid, SACE is optional
-                if (idNumber && idNumber.length === 13) {
-                    return true;
-                }
-
-                // Otherwise, SACE must be valid
-                return sace && sace.length === 7;
-            }
-        ),
-        terms: boolean().required().isTrue(),
-        idNumber: string().test(
-            "conditional-id-requirement",
-            "ID Number is required (13 digits)",
-            function (idNumber) {
-                const { sace } = this.parent;
-
-                // If SACE is valid, ID is optional
-                if (sace && sace.length === 7) {
-                    return true;
-                }
-
-                // Otherwise, ID must be valid
-                return idNumber && idNumber.length === 13;
-            }
-        ),
-        teachingPhases: object({
-            earlyLearning: boolean().required(),
-            foundation: boolean().required(),
-            intermediate: boolean().required(),
-            get: boolean().required(),
-            fet: boolean().required(),
-        }),
-        subjects: string().when("teachingPhases", {
-            is: (val) => val.get || val.fet,
-            then: () => string().required("At least one subject/learning area is required"),
-            otherwise: () => string().nullable(),
-        }),
-        experience: number().integer().required(),
-        position: object({
-            intern: boolean().required(),
-            locum: boolean().required(),
-            full_time: boolean().required(),
-            tutor: boolean().required(),
-            mentor: boolean().required(),
-        }),
-        address: object({
-            street: string().required(),
-            city: string().required(),
-            postalCode: string().required(),
-            province: string()
-                .oneOf([
-                    "gauteng",
-                    "free_state",
-                    "western_cape",
-                    "north_west",
-                    "northern_cape",
-                    "limpopo",
-                    "kwazulu_natal",
-                    "mpumalanga",
-                    "eastern_cape",
-                ])
-                .required(),
-        }).required(),
-        teachingPreference: string()
-            .oneOf(["in_person", "online", "hybrid"], "Invalid preference")
-            .required("Preference is required"),
-        qualifications: string().required("Qualification is required"),
-        references: string().required("Reference is required"),
-        languages: object({
-            english: boolean().required(),
-            afrikaans: boolean().required(),
-            isi_ndebele: boolean().required(),
-            isi_xhosa: boolean().required(),
-            isi_zulu: boolean().required(),
-            sesotho: boolean().required(),
-            setswana: boolean().required(),
-            sepedi: boolean().required(),
-            si_swati: boolean().required(),
-            tshivenda: boolean().required(),
-            xitsonga: boolean().required(),
-        }),
-    });
-
-    let cellErr = null;
-    $: profileSchema
-        .validateAt("cell", val)
-        .then(() => {
-            cellErr = null;
-        })
-        .catch((err) => {
-            cellErr = err.message;
-        });
-
-    // Form data
-    let val = {
+    // Initial profile data
+    let initialProfileData = {
+        firstName: "",
+        lastName: "",
+        cell: "",
+        sace: "",
+        idNumber: "",
         looking: true,
         teachingPhases: {
             earlyLearning: false,
@@ -126,6 +25,8 @@
             get: false,
             fet: false,
         },
+        subjects: "",
+        experience: 0,
         position: {
             intern: false,
             locum: false,
@@ -133,6 +34,10 @@
             tutor: false,
             mentor: false,
         },
+        address: { street: "", city: "", postalCode: "", province: "" },
+        teachingPreference: "",
+        qualifications: "",
+        references: "",
         languages: {
             english: false,
             afrikaans: false,
@@ -146,182 +51,103 @@
             tshivenda: false,
             xitsonga: false,
         },
-        address: {
-            street: "",
-            city: "",
-            province: "",
-            postalCode: "",
-        },
+        terms: false,
+        ttCode: "", // Will be generated
     };
 
-    // Flag to track if profile exists
-    let profileExists = false;
+    let val = $state(initialProfileData);
+    let loadingForm = $state(false);
+    let clientErrors = $state({});
+    let cellErr = $state(null);
+    let currentUserId = $state(null); // To store the current user ID
 
-    // Status flags
-    let loading = false;
-    let errorMsg = null;
-    let regError = false;
-    let email = "";
-
-    // TT Code Gen
-    let ttCode = "TT";
-    var dateObj = new Date();
-    var dateNow = dateObj.toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-    });
-    ttCode += dateNow.replace(new RegExp("/", "g"), "");
-    ttCode += Math.floor(Math.random() * 899 + 100);
-
-    // Function to fetch user profile
-    async function fetchUserProfile() {
-        loading = true;
-        try {
-            const response = await axios.get(
-                `${API_URL}/users/me?populate[profile][populate]=address,teachingPhases`,
-                {
-                    headers: {
-                        Authorization: "Bearer " + localStorage.getItem("jwt"),
-                    },
-                }
-            );
-
-            // Check if user has a profile
-            if (response.data && response.data.profile) {
-                profileExists = true;
-
-                // Populate form with existing data
-                const profile = response.data.profile;
-
-                // Update form values with existing profile data
-                val = {
-                    firstName: profile.firstName || "",
-                    lastName: profile.lastName || "",
-                    cell: profile.cell || "",
-                    sace: profile.sace || "",
-                    idNumber: profile.idNumber || "",
-                    looking: profile.looking !== undefined ? profile.looking : true,
-                    teachingPhases: profile.teachingPhases || val.teachingPhases,
-                    subjects: profile.subjects || "",
-                    experience: profile.experience || 0,
-                    position: profile.position || val.position,
-                    address: profile.address || val.address,
-                    teachingPreference: profile.teachingPreference || "",
-                    qualifications: profile.qualifications || "",
-                    references: profile.references || "",
-                    languages: profile.languages || val.languages,
-                    terms: true, // Assume terms already accepted if profile exists
-                };
-
-                console.log("Existing profile loaded:", profile);
-            } else {
-                console.log("No existing profile found, will create new one");
-                profileExists = false;
-            }
-        } catch (error) {
-            console.log("Error fetching user profile:", error);
-            toast.push(
-                "Error loading profile: " + (error.response?.data?.error?.message || error.message),
-                toastErr
-            );
-        } finally {
-            loading = false;
-        }
-    }
-
-    // Function to save profile (handles both create and update)
-    async function saveProfile() {
-        if (!profileSchema.isValidSync(val)) {
-            toast.push("Please fix form errors before submitting", toastErr);
-            return;
-        }
-
-        loading = true;
-
-        const profileData = {
-            firstName: val.firstName,
-            lastName: val.lastName,
-            cell: val.cell,
-            sace: val.sace,
-            ttCode: ttCode,
-            looking: val.looking,
-            idNumber: val.idNumber,
-            teachingPhases: val.teachingPhases,
-            subjects: val.subjects,
-            experience: val.experience,
-            position: val.position,
-            address: val.address,
-            teachingPreference: val.teachingPreference,
-            qualifications: val.qualifications,
-            references: val.references,
-            languages: val.languages,
-        };
-
-        try {
-            let response;
-
-            if (profileExists) {
-                // Update existing profile
-                response = await axios.put(
-                    `${API_URL}/profiles/2`,
-                    {
-                        data: {
-                            ...profileData,
-                        },
-                    },
-                    {
-                        headers: {
-                            Authorization: "Bearer " + localStorage.getItem("jwt"),
-                        },
-                    }
-                );
-                console.log("Profile updated:", response.data);
-            } else {
-                // Create new profile
-                response = await axios.post(
-                    `${API_URL}/profiles`,
-                    {
-                        data: {
-                            ...profileData,
-                            user: $id, // Link to user
-                        },
-                    },
-                    {
-                        headers: {
-                            Authorization: "Bearer " + localStorage.getItem("jwt"),
-                        },
-                    }
-                );
-                console.log("Profile created:", response.data);
-            }
-
-            // Success handling
-            toast.push(`Profile ${profileExists ? "updated" : "created"} successfully!`, toastSuc);
-            email = response.data.email;
-
-            // Clear local storage and redirect
-            localStorage.clear();
-            sessionStorage.clear();
-            goto("/benefits");
-        } catch (error) {
-            console.log("An error occurred:", error.response);
-            toast.push(error.response?.data?.error?.message || "Error saving profile", toastErr);
-            regError = true;
-        } finally {
-            loading = false;
-        }
-    }
-
-    // Load profile data when component mounts
+    // Subscribe to the userId store
     onMount(() => {
-        fetchUserProfile();
+        // Get the user ID from the store or localStorage
+        const unsubscribe = userId.subscribe((value) => {
+            if (value) {
+                currentUserId = value;
+                console.log("User ID from store:", currentUserId);
+            } else {
+                // Fallback to localStorage if store is empty
+                const localId = localStorage.getItem("id");
+                if (localId) {
+                    currentUserId = localId;
+                    console.log("User ID from localStorage:", currentUserId);
+                }
+            }
+        });
+        console.log("Current User ID:", currentUserId);
+
+        // Generate TT code if not already set
+        if (!val.ttCode) {
+            val.ttCode = generateTtCode();
+        }
+
+        return unsubscribe; // Clean up the subscription
+    });
+
+    // Generate TTCode for new profile
+    function generateTtCode() {
+        let code = "TT";
+        const dateObj = new Date();
+        const dateNow = dateObj
+            .toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+            })
+            .replace(/\//g, "");
+        code += dateNow;
+        code += Math.floor(Math.random() * 899 + 100);
+        return code;
+    }
+
+    // Initialize form values
+    $effect(() => {
+        if (form?.data) {
+            // If form was submitted and there were errors, repopulate with submitted values
+            console.log("Repopulating form with data from failed submission:", form.data);
+            val = {
+                ...initialProfileData,
+                ...form.data,
+                // Ensure nested objects are properly merged
+                address: { ...initialProfileData.address, ...form.data.address },
+                teachingPhases: {
+                    ...initialProfileData.teachingPhases,
+                    ...form.data.teachingPhases,
+                },
+                position: { ...initialProfileData.position, ...form.data.position },
+                languages: { ...initialProfileData.languages, ...form.data.languages },
+                // Preserve ttCode if it exists
+                ttCode: form.data.ttCode || val.ttCode || generateTtCode(),
+            };
+        } else {
+            // New profile initialization
+            val = { ...initialProfileData, ttCode: generateTtCode() };
+            console.log("New profile form initialized");
+        }
+    });
+
+    // Client-side validation for immediate feedback
+    let cellRegex = new RegExp("^(\\+27|0|27)(1|6|7|8|9)([0-9]{8})$", "g");
+
+    // Validate cell number as user types
+    $effect(() => {
+        if (val.cell) {
+            object({ cell: string().matches(cellRegex, "Phone number is not valid") })
+                .validateAt("cell", { cell: val.cell })
+                .then(() => (cellErr = null))
+                .catch((err) => (cellErr = err.message));
+        } else {
+            cellErr = null;
+        }
     });
 </script>
 
 <svelte:head>
     <title>Create Profile | ThinkTeacher</title>
-    <meta name="description" content="Create profile for ThinkTeacher!" />
+    <meta name="description" content="Create your ThinkTeacher profile!" />
 </svelte:head>
 
 <section class="vh-50 gradient-custom container mt-4 mb-4">
@@ -334,36 +160,87 @@
                             <h2 class="fw-bold mb-2 text-uppercase">Create Profile</h2>
                             <h3>Your digital CV</h3>
 
-                            <form id="register">
+                            {#if form?.message}
+                                <div class="alert alert-danger" role="alert">
+                                    {form.message}
+                                </div>
+                            {/if}
+                            {#if clientErrors.form}
+                                <div class="alert alert-warning" role="alert">
+                                    {clientErrors.form}
+                                </div>
+                            {/if}
+
+                            <form
+                                method="POST"
+                                use:enhance={() => {
+                                    loadingForm = true;
+                                    return async ({ result, update }) => {
+                                        loadingForm = false;
+                                        if (
+                                            result.type === "success" ||
+                                            result.type === "redirect"
+                                        ) {
+                                            toast.push("Profile created successfully!", toastSuc);
+                                        } else if (result.type === "failure") {
+                                            toast.push(
+                                                result.data?.message ||
+                                                    "Error saving profile. Please check errors.",
+                                                toastErr
+                                            );
+                                        }
+                                        await update();
+                                    };
+                                }}
+                            >
+                                <!-- Hidden field for ttCode -->
+                                <input type="hidden" name="ttCode" bind:value={val.ttCode} />
+
+                                <!-- Hidden field for user ID from store -->
+                                {#if currentUserId}
+                                    <input type="hidden" name="userId" value={currentUserId} />
+                                {/if}
+
                                 <div class="row">
+                                    <!-- First Name -->
                                     <div class="col-sm-12 col-md-6">
                                         <label class="form-label" for="name">First Name</label
                                         ><small class="text-danger">&nbsp;*</small>
                                         <input
                                             type="text"
-                                            name="firstname"
+                                            name="firstName"
                                             id="name"
                                             class="form-control form-control-lg"
                                             placeholder="First Name"
                                             bind:value={val.firstName}
                                             required
                                         />
+                                        {#if form?.errors?.firstName}<small class="text-danger"
+                                                >{form.errors.firstName}</small
+                                            >{/if}
+                                        {#if clientErrors.firstName}<small class="text-warning"
+                                                >{clientErrors.firstName}</small
+                                            >{/if}
                                     </div>
+                                    <!-- Last Name -->
                                     <div class="col-sm-12 col-md-6">
                                         <label class="form-label" for="surname">Surname</label
                                         ><small class="text-danger">&nbsp;*</small>
                                         <input
                                             type="text"
-                                            name="surname"
+                                            name="lastName"
                                             id="surname"
                                             class="form-control form-control-lg"
                                             placeholder="Surname"
                                             bind:value={val.lastName}
                                             required
                                         />
+                                        {#if form?.errors?.lastName}<small class="text-danger"
+                                                >{form.errors.lastName}</small
+                                            >{/if}
                                     </div>
 
-                                    <!-- ID Number - New field -->
+                                    <!-- ID Number -->
                                     <div class="col-sm-12 col-md-6 mt-3">
                                         <label class="form-label" for="idNumber">ID Number</label
                                         ><small class="text-danger"
@@ -377,10 +254,12 @@
                                             placeholder="ID Number"
                                             bind:value={val.idNumber}
                                             maxlength="13"
-                                            required
                                         />
+                                        {#if form?.errors?.idNumber}<small class="text-danger"
+                                                >{form.errors.idNumber}</small
+                                            >{/if}
                                     </div>
-
+                                    <!-- SACE Number -->
                                     <div class="col-sm-12 col-md-6 mt-3">
                                         <label class="form-label" for="sace">SACE Number</label
                                         ><small class="text-danger"
@@ -395,31 +274,40 @@
                                             maxlength="7"
                                             bind:value={val.sace}
                                         />
+                                        {#if form?.errors?.sace}<small class="text-danger"
+                                                >{form.errors.sace}</small
+                                            >{/if}
                                     </div>
 
-                                    <!-- TODO: activley looking togle yes/no -->
-                                    <div class="form-check form-switch mt-3">
-                                        <label class="form-check-label" for="flexSwitchCheckDefault"
+                                    <!-- Actively Looking -->
+                                    <div class="form-check form-switch mt-3 col-12">
+                                        <label class="form-check-label" for="lookingSwitch"
                                             >Actively Looking?</label
                                         ><small class="text-danger">&nbsp;*</small>
                                         <input
                                             style="width: 3rem; height: 1.2rem;"
+                                            name="looking"
                                             bind:checked={val.looking}
                                             class="form-check-input"
                                             type="checkbox"
-                                            id="flexSwitchCheckDefault"
+                                            id="lookingSwitch"
                                         />
+                                        {#if form?.errors?.looking}<small class="text-danger"
+                                                >{form.errors.looking}</small
+                                            >{/if}
                                     </div>
 
-                                    <!-- Position - New field -->
+                                    <!-- Position -->
                                     <div class="col-sm-12 col-md-6 mt-3">
                                         <label class="form-label"
                                             >Position you are interested in:</label
                                         ><small class="text-danger">&nbsp;*</small>
+                                        <!-- Add name attributes like name="position.intern" -->
                                         <div class="form-check text-start ms-4">
                                             <input
                                                 class="form-check-input"
                                                 type="checkbox"
+                                                name="position.intern"
                                                 bind:checked={val.position.intern}
                                                 id="intern"
                                             />
@@ -431,6 +319,7 @@
                                             <input
                                                 class="form-check-input"
                                                 type="checkbox"
+                                                name="position.locum"
                                                 bind:checked={val.position.locum}
                                                 id="locum"
                                             />
@@ -441,6 +330,7 @@
                                             <input
                                                 class="form-check-input"
                                                 type="checkbox"
+                                                name="position.full_time"
                                                 bind:checked={val.position.full_time}
                                                 id="fullTime"
                                             />
@@ -452,6 +342,7 @@
                                             <input
                                                 class="form-check-input"
                                                 type="checkbox"
+                                                name="position.tutor"
                                                 bind:checked={val.position.tutor}
                                                 id="tutor"
                                             />
@@ -462,6 +353,7 @@
                                             <input
                                                 class="form-check-input"
                                                 type="checkbox"
+                                                name="position.mentor"
                                                 bind:checked={val.position.mentor}
                                                 id="mentor"
                                             />
@@ -469,16 +361,24 @@
                                                 >Mentor</label
                                             >
                                         </div>
+                                        {#if form?.errors?.position}<small class="text-danger"
+                                                >{typeof form.errors.position === "string"
+                                                    ? form.errors.position
+                                                    : "Error in position section"}</small
+                                            >{/if}
                                     </div>
 
+                                    <!-- Education Phase -->
                                     <div class="col-sm-12 col-md-6 mt-3">
                                         <label class="form-label">Education Phase</label><small
                                             class="text-danger">&nbsp;*</small
                                         >
+                                        <!-- Add name attributes like name="teachingPhases.earlyLearning" -->
                                         <div class="form-check text-start ms-4">
                                             <input
                                                 class="form-check-input"
                                                 type="checkbox"
+                                                name="teachingPhases.earlyLearning"
                                                 bind:checked={val.teachingPhases.earlyLearning}
                                                 id="earlyLearning"
                                             />
@@ -490,6 +390,7 @@
                                             <input
                                                 class="form-check-input"
                                                 type="checkbox"
+                                                name="teachingPhases.foundation"
                                                 bind:checked={val.teachingPhases.foundation}
                                                 id="foundation"
                                             />
@@ -501,6 +402,7 @@
                                             <input
                                                 class="form-check-input"
                                                 type="checkbox"
+                                                name="teachingPhases.intermediate"
                                                 bind:checked={val.teachingPhases.intermediate}
                                                 id="intermediate"
                                             />
@@ -512,27 +414,30 @@
                                             <input
                                                 class="form-check-input"
                                                 type="checkbox"
+                                                name="teachingPhases.get"
                                                 bind:checked={val.teachingPhases.get}
                                                 id="get"
                                             />
-                                            <label class="form-check-label" for="get"
-                                                >GET (General Education and Training)</label
-                                            >
+                                            <label class="form-check-label" for="get">GET</label>
                                         </div>
                                         <div class="form-check text-start ms-4">
                                             <input
                                                 class="form-check-input"
                                                 type="checkbox"
+                                                name="teachingPhases.fet"
                                                 bind:checked={val.teachingPhases.fet}
                                                 id="fet"
                                             />
-                                            <label class="form-check-label" for="fet"
-                                                >FET (Further Education and Training)</label
-                                            >
+                                            <label class="form-check-label" for="fet">FET</label>
                                         </div>
+                                        {#if form?.errors?.teachingPhases}<small class="text-danger"
+                                                >{typeof form.errors.teachingPhases === "string"
+                                                    ? form.errors.teachingPhases
+                                                    : "Error in teaching phases"}</small
+                                            >{/if}
                                     </div>
 
-                                    <!-- Subjects - New field (conditional) -->
+                                    <!-- Subjects (conditional) -->
                                     {#if val.teachingPhases.get || val.teachingPhases.fet}
                                         <div class="col-12 mt-3">
                                             <label class="form-label" for="subjects"
@@ -540,15 +445,18 @@
                                             ><small class="text-danger">&nbsp;*</small>
                                             <textarea
                                                 id="subjects"
+                                                name="subjects"
                                                 class="form-control form-control-lg"
-                                                placeholder="Enter subjects or learning areas you teach"
+                                                placeholder="Enter subjects"
                                                 bind:value={val.subjects}
-                                                required
                                             ></textarea>
+                                            {#if form?.errors?.subjects}<small class="text-danger"
+                                                    >{form.errors.subjects}</small
+                                                >{/if}
                                         </div>
                                     {/if}
 
-                                    <!-- Experience - New field -->
+                                    <!-- Experience -->
                                     <div class="col-sm-12 col-md-6 mt-3">
                                         <label class="form-label" for="experience"
                                             >Years of Experience</label
@@ -564,8 +472,11 @@
                                             max="60"
                                             required
                                         />
+                                        {#if form?.errors?.experience}<small class="text-danger"
+                                                >{form.errors.experience}</small
+                                            >{/if}
                                     </div>
-
+                                    <!-- Cell Number -->
                                     <div class="col-sm-12 col-md-6 mt-3">
                                         <label class="form-label" for="cell">Cell Number</label
                                         ><small class="text-danger">&nbsp;*</small>
@@ -576,27 +487,33 @@
                                             class="form-control form-control-lg"
                                             placeholder="Cell number"
                                             bind:value={val.cell}
-                                            min="0"
-                                            max="9999999999999"
                                             required
                                         />
-                                        {#if cellErr && val.cell && val.cell != ""}
-                                            <small class="text-error">{cellErr}</small>
-                                        {/if}
+                                        {#if cellErr && val.cell}<small class="text-warning"
+                                                >{cellErr}</small
+                                            >{/if}
+                                        {#if form?.errors?.cell}<small class="text-danger"
+                                                >{form.errors.cell}</small
+                                            >{/if}
                                     </div>
 
+                                    <!-- Address Fields: Add name attributes like name="address.street" -->
                                     <div class="col-12 mt-3">
                                         <label class="form-label" for="street">Street Address</label
                                         ><small class="text-danger">&nbsp;*</small>
                                         <input
                                             type="text"
-                                            name="street"
+                                            name="address.street"
                                             id="street"
                                             class="form-control form-control-lg"
                                             placeholder="Street address"
                                             bind:value={val.address.street}
                                             required
                                         />
+                                        {#if form?.errors?.["address.street"]}<small
+                                                class="text-danger"
+                                                >{form.errors["address.street"]}</small
+                                            >{/if}
                                     </div>
                                     <div class="col-sm-12 col-md-6 mt-3">
                                         <label class="form-label" for="city">City</label><small
@@ -604,13 +521,17 @@
                                         >
                                         <input
                                             type="text"
-                                            name="city"
+                                            name="address.city"
                                             id="city"
                                             class="form-control form-control-lg"
                                             placeholder="City"
                                             bind:value={val.address.city}
                                             required
                                         />
+                                        {#if form?.errors?.["address.city"]}<small
+                                                class="text-danger"
+                                                >{form.errors["address.city"]}</small
+                                            >{/if}
                                     </div>
                                     <div class="col-sm-12 col-md-6 mt-3">
                                         <label class="form-label" for="addressProvince"
@@ -618,12 +539,12 @@
                                         ><small class="text-danger">&nbsp;*</small>
                                         <select
                                             class="form-select"
+                                            name="address.province"
                                             id="addressProvince"
-                                            aria-label="Address Province"
                                             bind:value={val.address.province}
                                             required
                                         >
-                                            <option value="" selected>choose province</option>
+                                            <option value="" disabled>choose province</option>
                                             <option value="gauteng">Gauteng</option>
                                             <option value="free_state">Free State</option>
                                             <option value="western_cape">Western Cape</option>
@@ -634,6 +555,10 @@
                                             <option value="mpumalanga">Mpumalanga</option>
                                             <option value="eastern_cape">Eastern Cape</option>
                                         </select>
+                                        {#if form?.errors?.["address.province"]}<small
+                                                class="text-danger"
+                                                >{form.errors["address.province"]}</small
+                                            >{/if}
                                     </div>
                                     <div class="col-sm-12 col-md-6 mt-3">
                                         <label class="form-label" for="postalCode"
@@ -641,64 +566,78 @@
                                         ><small class="text-danger">&nbsp;*</small>
                                         <input
                                             type="text"
-                                            name="postalCode"
+                                            name="address.postalCode"
                                             id="postalCode"
                                             class="form-control form-control-lg"
                                             placeholder="Postal code"
                                             bind:value={val.address.postalCode}
                                             required
                                         />
+                                        {#if form?.errors?.["address.postalCode"]}<small
+                                                class="text-danger"
+                                                >{form.errors["address.postalCode"]}</small
+                                            >{/if}
                                     </div>
 
+                                    <!-- Teaching Preference -->
                                     <div class="col-12 mt-3">
                                         <label class="form-label" for="teachingPreference"
                                             >Teaching Preference</label
                                         ><small class="text-danger">&nbsp;*</small>
                                         <select
                                             class="form-select"
+                                            name="teachingPreference"
                                             id="teachingPreference"
-                                            aria-label="Teaching Preference"
                                             bind:value={val.teachingPreference}
                                             required
                                         >
-                                            <option value="" selected>choose preference</option>
+                                            <option value="" disabled>choose preference</option>
                                             <option value="in_person">In Person</option>
                                             <option value="online">Online</option>
                                             <option value="hybrid">Hybrid</option>
                                         </select>
+                                        {#if form?.errors?.teachingPreference}<small
+                                                class="text-danger"
+                                                >{form.errors.teachingPreference}</small
+                                            >{/if}
                                     </div>
 
-                                    <!-- Qualifications - New field -->
+                                    <!-- Qualifications -->
                                     <div class="col-12 mt-3">
                                         <label class="form-label" for="qualifications"
-                                            >Qualification/s (Date awarded or predicted finishing
-                                            date; Name of institution)</label
+                                            >Qualifications...</label
                                         ><small class="text-danger">&nbsp;*</small>
                                         <textarea
                                             id="qualifications"
+                                            name="qualifications"
                                             class="form-control form-control-lg"
-                                            placeholder="List your qualifications"
+                                            placeholder="List qualifications"
                                             bind:value={val.qualifications}
                                             required
                                         ></textarea>
+                                        {#if form?.errors?.qualifications}<small class="text-danger"
+                                                >{form.errors.qualifications}</small
+                                            >{/if}
                                     </div>
-
-                                    <!-- References - New field -->
+                                    <!-- References -->
                                     <div class="col-12 mt-3">
                                         <label class="form-label" for="references"
-                                            >References (Name of person; position they hold; contact
-                                            number) Please give three.</label
+                                            >References...</label
                                         ><small class="text-danger">&nbsp;*</small>
                                         <textarea
                                             id="references"
+                                            name="references"
                                             class="form-control form-control-lg"
                                             placeholder="Enter reference details"
                                             bind:value={val.references}
                                             required
                                         ></textarea>
+                                        {#if form?.errors?.references}<small class="text-danger"
+                                                >{form.errors.references}</small
+                                            >{/if}
                                     </div>
 
-                                    <!-- Languages - New field -->
+                                    <!-- Languages -->
                                     <div class="col-12 mt-3">
                                         <label class="form-label">Language Proficiency</label><small
                                             class="text-danger">&nbsp;*</small
@@ -709,6 +648,7 @@
                                                     <input
                                                         class="form-check-input"
                                                         type="checkbox"
+                                                        name="languages.english"
                                                         bind:checked={val.languages.english}
                                                         id="english"
                                                     />
@@ -720,6 +660,7 @@
                                                     <input
                                                         class="form-check-input"
                                                         type="checkbox"
+                                                        name="languages.afrikaans"
                                                         bind:checked={val.languages.afrikaans}
                                                         id="afrikaans"
                                                     />
@@ -731,6 +672,7 @@
                                                     <input
                                                         class="form-check-input"
                                                         type="checkbox"
+                                                        name="languages.isi_ndebele"
                                                         bind:checked={val.languages.isi_ndebele}
                                                         id="isiNdebele"
                                                     />
@@ -742,6 +684,7 @@
                                                     <input
                                                         class="form-check-input"
                                                         type="checkbox"
+                                                        name="languages.isi_xhosa"
                                                         bind:checked={val.languages.isi_xhosa}
                                                         id="isiXhosa"
                                                     />
@@ -753,6 +696,7 @@
                                                     <input
                                                         class="form-check-input"
                                                         type="checkbox"
+                                                        name="languages.isi_zulu"
                                                         bind:checked={val.languages.isi_zulu}
                                                         id="isiZulu"
                                                     />
@@ -760,10 +704,13 @@
                                                         >isiZulu</label
                                                     >
                                                 </div>
+                                            </div>
+                                            <div class="col-md-6">
                                                 <div class="form-check text-start ms-4">
                                                     <input
                                                         class="form-check-input"
                                                         type="checkbox"
+                                                        name="languages.sesotho"
                                                         bind:checked={val.languages.sesotho}
                                                         id="sesotho"
                                                     />
@@ -775,6 +722,7 @@
                                                     <input
                                                         class="form-check-input"
                                                         type="checkbox"
+                                                        name="languages.setswana"
                                                         bind:checked={val.languages.setswana}
                                                         id="setswana"
                                                     />
@@ -786,6 +734,7 @@
                                                     <input
                                                         class="form-check-input"
                                                         type="checkbox"
+                                                        name="languages.sepedi"
                                                         bind:checked={val.languages.sepedi}
                                                         id="sepedi"
                                                     />
@@ -797,6 +746,7 @@
                                                     <input
                                                         class="form-check-input"
                                                         type="checkbox"
+                                                        name="languages.si_swati"
                                                         bind:checked={val.languages.si_swati}
                                                         id="siSwati"
                                                     />
@@ -808,6 +758,7 @@
                                                     <input
                                                         class="form-check-input"
                                                         type="checkbox"
+                                                        name="languages.tshivenda"
                                                         bind:checked={val.languages.tshivenda}
                                                         id="tshivenda"
                                                     />
@@ -819,6 +770,7 @@
                                                     <input
                                                         class="form-check-input"
                                                         type="checkbox"
+                                                        name="languages.xitsonga"
                                                         bind:checked={val.languages.xitsonga}
                                                         id="xitsonga"
                                                     />
@@ -828,10 +780,16 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        {#if form?.errors?.languages}<small class="text-danger"
+                                                >{typeof form.errors.languages === "string"
+                                                    ? form.errors.languages
+                                                    : "Error in languages"}</small
+                                            >{/if}
                                     </div>
 
+                                    <!-- Terms and Conditions -->
                                     <div class="form-check text-center mt-3 col-12">
-                                        <label for="flexCheckDefault">
+                                        <label for="terms">
                                             Terms and Conditions, available <a
                                                 target="_blank"
                                                 rel="noopener noreferrer"
@@ -842,20 +800,21 @@
                                         <input
                                             class="form-check-input"
                                             type="checkbox"
+                                            name="terms"
                                             bind:checked={val.terms}
-                                            value=""
-                                            id="flexCheckDefault"
+                                            id="terms"
                                         />
                                         <br />
-                                        {#if !val.terms}
-                                            <small class="text-danger"
-                                                >Please accept the terms and conditions above</small
-                                            >
-                                        {/if}
+                                        {#if !val.terms && (form?.errors?.terms || clientErrors.terms)}<small
+                                                class="text-danger"
+                                                >{form?.errors?.terms ||
+                                                    clientErrors.terms ||
+                                                    "Please accept the terms"}</small
+                                            >{/if}
                                     </div>
                                 </div>
 
-                                {#if loading}
+                                {#if loadingForm}
                                     <div class="d-flex justify-content-center mt-5 mb-5">
                                         <Jumper
                                             size="150"
@@ -868,9 +827,10 @@
                                     <button
                                         class="btn btn-outline-light btn-lg px-4 mt-3"
                                         type="submit"
-                                        on:click|preventDefault={saveProfile}
-                                        disabled={!profileSchema.isValidSync(val)}>Submit</button
+                                        disabled={loadingForm || !val.terms || cellErr}
                                     >
+                                        Submit
+                                    </button>
                                 {/if}
                             </form>
                         </div>
@@ -897,12 +857,15 @@
         float: none;
         margin-left: 1.5em;
     }
-
-    /* Additional styling for the new form fields */
     .text-error {
         color: #f8d7da;
-    }
-
+    } /* Original style, maybe use Bootstrap's text-danger */
+    .text-danger {
+        color: #dc3545;
+    } /* Bootstrap's danger color for server errors */
+    .text-warning {
+        color: #ffc107;
+    } /* Bootstrap's warning for client errors */
     .form-check.text-start .form-check-input {
         float: left;
         margin-left: -1.5em;
