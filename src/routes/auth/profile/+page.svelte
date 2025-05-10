@@ -5,10 +5,9 @@
     import { toast } from "@zerodevx/svelte-toast";
     import { onMount } from "svelte";
     import { enhance } from "$app/forms";
-    import { goto } from "$app/navigation";
     import { languages } from "$lib/data.js";
     // Form will only be needed from props as this is create-only now
-    const { form } = $props();
+    const { form, data } = $props();
 
     // Initial profile data
     let initialProfileData = {
@@ -60,42 +59,8 @@
     let loadingForm = $state(false);
     let clientErrors = $state({});
     let cellErr = $state(null);
-    let currentUserId = $state(null); // To store the current user ID
 
     onMount(async () => {
-        currentUserId = localStorage.getItem("id");
-        console.log("User ID from localStorage:", currentUserId);
-
-        // Check if user already has a profile
-        if (currentUserId) {
-            try {
-                const response = await fetch(
-                    `${API_URL}/profiles?filters[user][id][$eq]=${currentUserId}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-                        },
-                    }
-                );
-
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.data && data.data.length > 0) {
-                        // User already has a profile, redirect to update page
-                        goto("/auth/profile/update");
-                        toast.push(
-                            "You already have a profile. Redirecting to update page.",
-                            toastSuc
-                        );
-                        // window.location.href = "/auth/profile/update";
-                        return;
-                    }
-                }
-            } catch (error) {
-                console.error("Error checking for existing profile:", error);
-            }
-        }
-
         // Generate TT code if not already set
         if (!val.ttCode) {
             val.ttCode = generateTtCode();
@@ -227,11 +192,6 @@
                             >
                                 <!-- Hidden field for ttCode -->
                                 <input type="hidden" name="ttCode" bind:value={val.ttCode} />
-
-                                <!-- Hidden field for user ID from store -->
-                                {#if currentUserId}
-                                    <input type="hidden" name="userId" value={currentUserId} />
-                                {/if}
 
                                 <div class="row">
                                     <!-- First Name -->

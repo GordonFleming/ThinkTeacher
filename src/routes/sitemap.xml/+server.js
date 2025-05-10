@@ -1,6 +1,5 @@
 import axios from 'axios'
 //TODO add news posts
-// export const prerender = true;
 const website = 'https://thinkteacher.co.za'
 
 export async function GET() {

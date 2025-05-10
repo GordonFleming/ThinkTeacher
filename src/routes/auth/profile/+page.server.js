@@ -120,45 +120,47 @@ const profileSchema = object({
     ttCode: string().required(),
 });
 
-// /** @type {import('./$types').PageServerLoad} */
-// export const load = async ({ locals, fetch }) => {
-//     if (!VITE_STRAPI_PUB_KEY_LOCAL) {
-//         throw error(500, "API key is not configured");
-//     }
+/** @type {import('./$types').PageServerLoad} */
+export const load = async ({ locals, fetch }) => {
+    if (!VITE_STRAPI_PUB_KEY_LOCAL) {
+        throw error(500, "API key is not configured");
+    }
 
-//     // Get user ID from locals
-//     const userId = locals.user?.id;
-//     if (!userId) {
-//         throw error(401, "User not authenticated");
-//     }
+    // TODO: Update below to get user ID from locals & make function work
+    // Get user ID from locals
+    // const userId = locals.user?.id;
+    const userId = 99999;
+    if (!userId) {
+        throw error(401, "User not authenticated");
+    }
 
-//     try {
-//         // Check if user already has a profile
-//         const response = await fetch(`${API_URL}/profiles?filters[user][id][$eq]=${userId}`, {
-//             headers: {
-//                 'Authorization': `Bearer ${VITE_STRAPI_PUB_KEY_LOCAL}`
-//             }
-//         });
+    try {
+        // Check if user already has a profile
+        const response = await fetch(`${API_URL}/profiles?filters[user][id][$eq]=${userId}`, {
+            headers: {
+                'Authorization': `Bearer ${VITE_STRAPI_PUB_KEY_LOCAL}`
+            }
+        });
 
-//         if (!response.ok) {
-//             throw error(response.status, "Failed to check for existing profile");
-//         }
+        if (!response.ok) {
+            throw error(response.status, "Failed to check for existing profile");
+        }
 
-//         const data = await response.json();
+        const data = await response.json();
         
-//         // If user has a profile, redirect to update page
-//         if (data.data && data.data.length > 0) {
-//             throw redirect(303, '/auth/profile/update');
-//         }
+        // If user has a profile, redirect to update page
+        if (data.data && data.data.length > 0) {
+            throw redirect(303, '/auth/profile/update');
+        }
 
-//         return {};
-//     } catch (err) {
-//         if (err.status === 303) {
-//             throw err;
-//         }
-//         throw error(500, "Failed to check for existing profile");
-//     }
-// };
+        return {};
+    } catch (err) {
+        if (err.status === 303) {
+            throw err;
+        }
+        throw error(500, "Failed to check for existing profile");
+    }
+};
 
 /** @type {import('./$types').Actions} */
 export const actions = {

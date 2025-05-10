@@ -1,6 +1,5 @@
-<script>
+<!-- <script>
     import { onMount } from "svelte";
-    import { id } from "$lib/stores";
     import axios from "axios";
     import { API_URL, strapiKey, toastErr, toastSuc } from "$lib/env.js";
     import { toast } from "@zerodevx/svelte-toast";
@@ -298,4 +297,4 @@
         color: #000;
         font-weight: 500;
     }
-</style>
+</style> -->

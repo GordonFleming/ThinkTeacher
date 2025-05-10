@@ -1,35 +1,21 @@
 <script>
-    import { onMount, afterUpdate } from "svelte";
-    import { name, surname, ttNum } from "$lib/stores";
+    import { onMount } from "svelte";
     import { goto } from "$app/navigation";
+    import { logoutUser } from "$lib/utils";
+    import { userState } from "$lib/stores/userState.svelte.js";
 
-    let avatar = "";
+    let avatar = $state("");
+    $effect(() => {
+        if (userState.user) {
+            avatar = `https://api.dicebear.com/7.x/initials/svg?seed=${userState.user.firstName}&size=40&backgroundColor=4F5D89&chars=1`;
+        }
+    });
+
     onMount(() => {
         document.querySelector(".third-button").addEventListener("click", function () {
             document.querySelector(".animated-icon3").classList.toggle("open");
         });
-        $name = localStorage.getItem("name");
-        $ttNum = localStorage.getItem("ttNum");
-        $surname = localStorage.getItem("surname");
-        avatar = `https://api.dicebear.com/7.x/initials/svg?seed=${
-            $name
-        }&size=40&backgroundColor=4F5D89&chars=1`;
     });
-
-    afterUpdate(() => {
-        $name = localStorage.getItem("name");
-        $surname = localStorage.getItem("surname");
-        avatar = `https://api.dicebear.com/7.x/initials/svg?seed=${
-            $name
-        }&size=40&backgroundColor=4F5D89&chars=1`;
-    });
-
-    function logoutUser() {
-        localStorage.clear();
-        $name = null;
-        mustClick();
-        goto("/");
-    }
 
     function mustClick() {
         if (window.innerWidth <= 992) {
@@ -38,7 +24,7 @@
     }
 </script>
 
-<nav class="navbar navbar-expand-lg navbar-light sticky-top">
+<nav class="navbar navbar-expand-lg navbar-light sticky-top pb-2">
     <div class="container-fluid">
         <button
             id="burger"
@@ -55,11 +41,7 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbar">
             <ul class="navbar-nav">
                 <div class="nav-img mx-auto">
-                    <a
-                        class="navbar-brand"
-                        data-sveltekit-preload-data
-                        href="/"
-                        on:click={mustClick}
+                    <a class="navbar-brand" data-sveltekit-preload-data href="/" onclick={mustClick}
                         ><img src="/thinkteacherlogo-final.png" alt="logo" width="200" /></a
                     >
                 </div>
@@ -68,7 +50,7 @@
                         class="nav-link fromLeft"
                         data-sveltekit-preload-data
                         href="/"
-                        on:click={mustClick}>Home</a
+                        onclick={mustClick}>Home</a
                     >
                 </li>
                 <li class="nav-item">
@@ -76,7 +58,7 @@
                         class="nav-link fromLeft"
                         data-sveltekit-preload-data
                         href="/schools"
-                        on:click={mustClick}>Schools</a
+                        onclick={mustClick}>Schools</a
                     >
                 </li>
                 <li class="nav-item">
@@ -84,7 +66,7 @@
                         class="nav-link fromLeft"
                         data-sveltekit-preload-data
                         href="/about"
-                        on:click={mustClick}>About</a
+                        onclick={mustClick}>About</a
                     >
                 </li>
                 <li class="nav-item">
@@ -92,7 +74,7 @@
                         class="nav-link fromLeft"
                         data-sveltekit-preload-data
                         href="/partners"
-                        on:click={mustClick}>Partners</a
+                        onclick={mustClick}>Partners</a
                     >
                 </li>
                 <li class="nav-item">
@@ -100,7 +82,7 @@
                         class="nav-link fromLeft"
                         data-sveltekit-preload-data
                         href="/benefits"
-                        on:click={mustClick}>Benefits</a
+                        onclick={mustClick}>Benefits</a
                     >
                 </li>
                 <li class="nav-item">
@@ -108,7 +90,7 @@
                         class="nav-link fromLeft"
                         data-sveltekit-preload-data
                         href="/webinars"
-                        on:click={mustClick}>Webinars</a
+                        onclick={mustClick}>Webinars</a
                     >
                 </li>
                 <li class="nav-item">
@@ -116,23 +98,22 @@
                         class="nav-link fromLeft"
                         data-sveltekit-preload-data
                         href="/contact-us"
-                        on:click={mustClick}>Contact</a
+                        onclick={mustClick}>Contact</a
                     >
                 </li>
             </ul>
         </div>
         <div class="collapse navbar-collapse justify-content-end" id="navbar">
             <!-- Right elements -->
-            <div class="d-flex justify-content-end align-items-center align-top">
-                {#if $name}
+            <div class="d-flex justify-content-end align-items-center">
+                {#if userState.user}
                     <div class="mt-2">
                         <h6>
-                            <span class="text-logo-gold">{$name}</span>
-                            <!-- <a style="text-decoration: none;" href="/" on:click={logoutUser}>
-                                <span id="logout" class="text-logo-gold">Logout</span>
-                            </a> -->
+                            <span class="text-logo-gold">{userState.user.firstName}</span>
                             <br />
-                            <small class="text-blue" style="font-size: 0.75em;">{$ttNum}</small>
+                            <small class="text-blue" style="font-size: 0.75em;"
+                                >{userState.user.ttCode}</small
+                            >
                         </h6>
                     </div>
                     <div class="dropdown" style="margin-right: 1rem;">
@@ -151,37 +132,35 @@
                                 <button
                                     class="dropdown-item"
                                     type="button"
-                                    on:click={() => {
+                                    onclick={() => {
                                         goto("/auth/profile");
                                         mustClick();
                                     }}>Profile</button
                                 >
                             </li>
                             <li>
-                                <button class="dropdown-item" type="button" on:click={logoutUser}
+                                <button class="dropdown-item" type="button" onclick={logoutUser}
                                     >Logout</button
                                 >
                             </li>
                         </ul>
                     </div>
                 {:else}
-                    <p>
+                    <div class="d-flex align-items-center">
                         <a
                             href="/login"
-                            class="nav-link align-top"
+                            class="nav-link text-right"
                             style="color: var(--logo-gold); font-size: 1.16em;"
-                            on:click={mustClick}>Login</a
+                            onclick={mustClick}>Login</a
                         >
-                    </p>
-                    <h5>/</h5>
-                    <p>
+                        <h5 class="mb-0">/</h5>
                         <a
                             href="/register"
                             class="nav-link"
                             style="color: var(--logo-blue); font-size: 1.16em;"
-                            on:click={mustClick}>Create Profile</a
+                            onclick={mustClick}>Create Profile</a
                         >
-                    </p>
+                    </div>
                 {/if}
             </div>
         </div>

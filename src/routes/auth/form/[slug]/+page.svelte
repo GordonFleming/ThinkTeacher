@@ -5,20 +5,21 @@
     import { Jumper } from "svelte-loading-spinners";
     import { API_URL, toastErr, toastSuc } from "$lib/env.js";
     import { toast } from "@zerodevx/svelte-toast";
-    //import { formOpt } from "./data.json";
     import { benType } from "$lib/stores";
 
-    let loading = true;
+    let loading = $state(true);
 
-    export let data;
-    let { type } = data;
+    const { data } = $props();
+    const { type, user } = data;
+    console.log(user);
     let formOpt = type.form_extra;
 
-    let user, message;
-    let custom, header;
-    let obj = {};
-    let userObj = {};
-    let typeName = type.name.replace("_", " ");
+    let message = $state("");
+    let custom = $state({});
+    let header = $state({});
+    let obj = $state({});
+    let userObj = $state({});
+    let typeName = $state(type.name.replace("_", " "));
 
     onMount(async () => {
         if (formOpt.hasOwnProperty(type.name)) {
@@ -32,17 +33,6 @@
         } else {
             goto("/404");
         }
-
-        header = {
-            headers: {
-                Authorization: "Bearer " + localStorage.getItem("jwt"),
-            },
-        };
-        const res = await axios.get(`${API_URL}/users/me`, header).catch(function (error) {
-            console.log("Error", error.message);
-            //goto("/login");
-        });
-        user = res.data;
 
         loading = false;
 
@@ -231,42 +221,44 @@
                     <div class="row mt-3">
                         <p class="fw-bold">Read more:</p>
                         {#each value.files as val}
-                                <div class="col">
-                                    <p>{val.name}</p>
-                                    <a href={val.url} target="_blank" rel="noreferrer">
-                                        <img class="mb-2" src="/pdf-icon.svg" alt="pdf">
-                                    </a>
-                                </div>
+                            <div class="col">
+                                <p>{val.name}</p>
+                                <a href={val.url} target="_blank" rel="noreferrer">
+                                    <img class="mb-2" src="/pdf-icon.svg" alt="pdf" />
+                                </a>
+                            </div>
                         {/each}
-                    </div>                        
+                    </div>
                 {/if}
                 {#if key == "extraNourishInfo"}
                     <div class="row mt-3">
-                        <h4 class="text-logo-gold">Promo's are valid now from 1st March 2023 - 2nd June 2023!</h4>
+                        <h4 class="text-logo-gold">
+                            Promo's are valid now from 1st March 2023 - 2nd June 2023!
+                        </h4>
                         <p class="fw-bold">Read more:</p>
                         {#each value.files as val}
-                                <div class="col">
-                                    <p>{val.name}</p>
-                                    <a href={val.url} target="_blank" rel="noreferrer">
-                                        <img class="mb-2" src="/pdf-icon.svg" alt="pdf">
-                                    </a>
-                                </div>
+                            <div class="col">
+                                <p>{val.name}</p>
+                                <a href={val.url} target="_blank" rel="noreferrer">
+                                    <img class="mb-2" src="/pdf-icon.svg" alt="pdf" />
+                                </a>
+                            </div>
                         {/each}
-                    </div>                        
+                    </div>
                 {/if}
                 {#if key == "extraJobInfo"}
                     <div class="row mt-3">
                         <h4 class="text-logo-gold">View the vacancy below:</h4>
                         <p class="fw-bold">Read more:</p>
                         {#each value.files as val}
-                                <div class="col">
-                                    <p>{val.name}</p>
-                                    <a href={val.url} target="_blank" rel="noreferrer">
-                                        <img class="mb-2" src="/pdf-icon.svg" alt="pdf">
-                                    </a>
-                                </div>
+                            <div class="col">
+                                <p>{val.name}</p>
+                                <a href={val.url} target="_blank" rel="noreferrer">
+                                    <img class="mb-2" src="/pdf-icon.svg" alt="pdf" />
+                                </a>
+                            </div>
                         {/each}
-                    </div>                        
+                    </div>
                 {/if}
             {/each}
 
@@ -280,13 +272,11 @@
                     class="form-control form-control-lg"
                     bind:value={message}
                     required
-                />
+                ></textarea>
             </div>
         </div>
-        <button
-            class="btn btn-outline-light btn-lg px-4 mt-4"
-            type="submit"
-            on:click|preventDefault={submitForm}>Submit</button
+        <button class="btn btn-outline-light btn-lg px-4 mt-4" type="submit" onclick={submitForm}
+            >Submit</button
         >
     </form>
 {/if}

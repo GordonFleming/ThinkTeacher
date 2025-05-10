@@ -1,4 +1,6 @@
-<script>
+<!-- Create page server side to set cookies or a +page.server ... -->
+
+<!-- <script>
     import { onMount } from "svelte";
     import axios from "axios";
     import { API_URL } from "$lib/env.js";
@@ -62,4 +64,4 @@
             <h2>{errMsg}</h2>
         {/if}
     </div>
-</div>
+</div> -->

@@ -3,24 +3,28 @@
     import axios from "axios";
     import { goto } from "$app/navigation";
     import Icon from "$lib/Icons/icon.svelte";
-    import { name, surname, id, ttNum } from "$lib/stores";
     import { facebook, instagram, eye, eyeSlash } from "$lib/Icons/icons";
-    import { browserSet } from "$lib/re_utils";
     import { API_URL, toastErr } from "$lib/env.js";
     import { toast } from "@zerodevx/svelte-toast";
-    
+    import { logoutUser } from "$lib/utils";
+    import { setUser, clearUser } from "$lib/stores/userState.svelte.js";
+
     let redirectUrl = null;
     let email, password;
 
-    function logoutUser() {
-        localStorage.clear();
-        $name = null;
-    }
-
     onMount(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        redirectUrl = urlParams.get('r');
-        logoutUser();
+        redirectUrl = urlParams.get("r");
+
+        // Check if user is already logged in via JWT cookie
+        const cookies = document.cookie.split(";");
+        const jwtCookie = cookies.find((cookie) => cookie.trim().startsWith("jwt="));
+
+        if (jwtCookie) {
+            // User is logged in, so log them out first
+            logoutUser();
+            clearUser();
+        }
     });
 
     async function loginUser() {
@@ -30,24 +34,20 @@
                 password: password,
             })
             .then((response) => {
-                browserSet("jwt", response.data.jwt);
-                browserSet("name", response.data.user.firstName);
-                $name = response.data.firstName;
-                browserSet("surname", response.data.user.lastName);
-                $surname = response.data.lastName;
-                browserSet("id", response.data.user.id);
-                $id = response.data.id;
-                browserSet("ttNum", response.data.user.ttCode);
-                $ttNum = response.data.user.ttCode;
+                // Store the JWT token in cookies
+                const jwt = response.data.jwt;
+                document.cookie = `jwt=${jwt}; path=/;`;
+
+                // Update the user state
+                setUser(response.data.user);
+
                 let paidMember = response.data.user.paid;
 
                 if (redirectUrl) {
                     goto(redirectUrl);
                 } else if (paidMember) {
-                    //console.log("you are paid up, payment check");
                     goto("/benefits");
                 } else {
-                    //console.log("you are not paid up");
                     goto("/payment");
                     toast.push("Payment required.", toastErr);
                 }
@@ -93,7 +93,7 @@
                                         Continue with Google
                                     </div>
                                 </a>
-                                <div class="Sso__divider ">
+                                <div class="Sso__divider">
                                     <span class="Sso__dividerLine" />
                                     <span class="Sso__dividerText">or</span>
                                     <span class="Sso__dividerLine" />

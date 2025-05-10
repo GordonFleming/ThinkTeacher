@@ -1,8 +1,4 @@
 <script>
-    import Logo from "$lib/Components/logo.svelte";
-    import { goto } from "$app/navigation";
-    import { afterUpdate } from "svelte";
-    import { name } from "$lib/stores";
     import { Splide, SplideSlide } from "@splidejs/svelte-splide";
     import "@splidejs/svelte-splide/css";
 
@@ -30,10 +26,6 @@
         pagination: false,
         easing: "linear",
     };
-
-    afterUpdate(() => {
-        $name = localStorage.getItem("name");
-    });
 </script>
 
 <svelte:head>
