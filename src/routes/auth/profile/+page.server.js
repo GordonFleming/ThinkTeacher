@@ -1,6 +1,6 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import { API_URL } from '$lib/env.js';
-import { VITE_STRAPI_PUB_KEY_LOCAL } from '$env/static/private';
+import { STRAPI_PUB_KEY_LOCAL } from '$env/static/private';
 import { object, string, boolean, number, array } from 'yup';
 import dayjs from 'dayjs';
 
@@ -122,7 +122,7 @@ const profileSchema = object({
 
 /** @type {import('./$types').PageServerLoad} */
 export const load = async ({ locals, fetch }) => {
-    if (!VITE_STRAPI_PUB_KEY_LOCAL) {
+    if (!STRAPI_PUB_KEY_LOCAL) {
         throw error(500, "API key is not configured");
     }
 
@@ -138,7 +138,7 @@ export const load = async ({ locals, fetch }) => {
         // Check if user already has a profile
         const response = await fetch(`${API_URL}/profiles?filters[user][id][$eq]=${userId}`, {
             headers: {
-                'Authorization': `Bearer ${VITE_STRAPI_PUB_KEY_LOCAL}`
+                'Authorization': `Bearer ${STRAPI_PUB_KEY_LOCAL}`
             }
         });
 
@@ -165,7 +165,7 @@ export const load = async ({ locals, fetch }) => {
 /** @type {import('./$types').Actions} */
 export const actions = {
     default: async ({ request, fetch }) => {
-        if (!VITE_STRAPI_PUB_KEY_LOCAL) {
+        if (!STRAPI_PUB_KEY_LOCAL) {
             return fail(500, { message: "API key is not configured. Profile cannot be saved." });
         }
 
@@ -262,7 +262,7 @@ export const actions = {
                 method,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${VITE_STRAPI_PUB_KEY_LOCAL}`,
+                    Authorization: `Bearer ${STRAPI_PUB_KEY_LOCAL}`,
                 },
                 body: JSON.stringify(dataPayload),
             });

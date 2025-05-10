@@ -1,12 +1,12 @@
-export const sgKey = import.meta.env.VITE_SENDGRID_API_KEY;
-export const prod = import.meta.env.VITE_PROD;
+// export const sgKey = import.meta.env.PUBLIC_SENDGRID_API_KEY;
+export const PUBLIC_PROD = import.meta.env.PUBLIC_PROD;
 
-export let strapiKey = import.meta.env.VITE_STRAPI_PUB_KEY_LOCAL;
-export let yocoPubKey = import.meta.env.VITE_YOCO_TEST_PUBLIC_KEY;
+export let strapiKey = import.meta.env.PUBLIC_STRAPI_PUB_KEY_LOCAL;
+export let yocoPubKey = import.meta.env.PUBLIC_YOCO_TEST_PUBLIC_KEY;
 // NOTE: Use 127.0.0.1 instead of localhost to avoid issues
 export let BASE_API_URL = "http://127.0.0.1:1337";
 export let API_URL = "http://127.0.0.1:1337/api";
-export let sendgridList = "57df636d-5399-423f-bf72-35424b5644b5";
+// export let sendgridList = "57df636d-5399-423f-bf72-35424b5644b5";
 
 export const toastSuc = {
     theme: {
@@ -24,10 +24,10 @@ export const toastErr = {
     },
 };
 
-if (prod == "true"){
-    strapiKey = import.meta.env.VITE_STRAPI_PUB_KEY;
+if (PUBLIC_PROD == "true"){
+    strapiKey = import.meta.env.PUBLIC_STRAPI_PUB_KEY;
     BASE_API_URL = "https://tt-strapi.glass.thinkteacher.co.za";
     API_URL = "https://tt-strapi.glass.thinkteacher.co.za/api";
     sendgridList = "75b1cd1c-6bb0-406b-bc94-d7c2f04bc9f8";
-    yocoPubKey = import.meta.env.VITE_YOCO_LIVE_PUBLIC_KEY;
+    yocoPubKey = import.meta.env.PUBLIC_YOCO_LIVE_PUBLIC_KEY;
 } 
