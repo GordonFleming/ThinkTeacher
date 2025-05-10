@@ -19,6 +19,7 @@
     "dependencies": {
         "@splidejs/svelte-splide": "^0.2.9",
         "axios": "^1.8.4",
+        "dayjs": "^1.11.13",
         "showdown": "^2.1.0",
         "svelte-loading-spinners": "^0.3.6",
         "yup": "^1.6.1",

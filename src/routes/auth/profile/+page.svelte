@@ -5,8 +5,8 @@
     import { toast } from "@zerodevx/svelte-toast";
     import { onMount } from "svelte";
     import { enhance } from "$app/forms";
-    import { id as userId } from "$lib/stores";
-
+    import { goto } from "$app/navigation";
+    import { languages } from "$lib/data.js";
     // Form will only be needed from props as this is create-only now
     const { form } = $props();
 
@@ -17,6 +17,7 @@
         cell: "",
         sace: "",
         idNumber: "",
+        dateOfBirth: "",
         looking: true,
         teachingPhases: {
             earlyLearning: false,
@@ -36,20 +37,20 @@
         },
         address: { street: "", city: "", postalCode: "", province: "" },
         teachingPreference: "",
-        qualifications: "",
+        qualifications: [
+            {
+                title: "",
+                organisation: "",
+                nqf: "",
+                from: "",
+                to: "",
+                ongoing: false,
+            },
+        ],
         references: "",
         languages: {
-            english: false,
-            afrikaans: false,
-            isi_ndebele: false,
-            isi_xhosa: false,
-            isi_zulu: false,
-            sesotho: false,
-            setswana: false,
-            sepedi: false,
-            si_swati: false,
-            tshivenda: false,
-            xitsonga: false,
+            motherTongue: "",
+            additional: [],
         },
         terms: false,
         ttCode: "", // Will be generated
@@ -61,30 +62,44 @@
     let cellErr = $state(null);
     let currentUserId = $state(null); // To store the current user ID
 
-    // Subscribe to the userId store
-    onMount(() => {
-        // Get the user ID from the store or localStorage
-        const unsubscribe = userId.subscribe((value) => {
-            if (value) {
-                currentUserId = value;
-                console.log("User ID from store:", currentUserId);
-            } else {
-                // Fallback to localStorage if store is empty
-                const localId = localStorage.getItem("id");
-                if (localId) {
-                    currentUserId = localId;
-                    console.log("User ID from localStorage:", currentUserId);
+    onMount(async () => {
+        currentUserId = localStorage.getItem("id");
+        console.log("User ID from localStorage:", currentUserId);
+
+        // Check if user already has a profile
+        if (currentUserId) {
+            try {
+                const response = await fetch(
+                    `${API_URL}/profiles?filters[user][id][$eq]=${currentUserId}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+                        },
+                    }
+                );
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.data && data.data.length > 0) {
+                        // User already has a profile, redirect to update page
+                        goto("/auth/profile/update");
+                        toast.push(
+                            "You already have a profile. Redirecting to update page.",
+                            toastSuc
+                        );
+                        // window.location.href = "/auth/profile/update";
+                        return;
+                    }
                 }
+            } catch (error) {
+                console.error("Error checking for existing profile:", error);
             }
-        });
-        console.log("Current User ID:", currentUserId);
+        }
 
         // Generate TT code if not already set
         if (!val.ttCode) {
             val.ttCode = generateTtCode();
         }
-
-        return unsubscribe; // Clean up the subscription
     });
 
     // Generate TTCode for new profile
@@ -106,7 +121,6 @@
     // Initialize form values
     $effect(() => {
         if (form?.data) {
-            // If form was submitted and there were errors, repopulate with submitted values
             console.log("Repopulating form with data from failed submission:", form.data);
             val = {
                 ...initialProfileData,
@@ -119,6 +133,13 @@
                 },
                 position: { ...initialProfileData.position, ...form.data.position },
                 languages: { ...initialProfileData.languages, ...form.data.languages },
+                // Ensure qualifications are properly handled
+                qualifications:
+                    form.data.qualifications?.map((qual) => ({
+                        ...qual,
+                        nqf: qual.nqf?.toString() || "", // Convert to string for select binding
+                        ongoing: Boolean(qual.ongoing),
+                    })) || initialProfileData.qualifications,
                 // Preserve ttCode if it exists
                 ttCode: form.data.ttCode || val.ttCode || generateTtCode(),
             };
@@ -143,6 +164,17 @@
             cellErr = null;
         }
     });
+
+    // Functions to manage qualifications array
+    function addQualification() {
+        val.qualifications = [
+            ...val.qualifications,
+            { title: "", organisation: "", nqf: "", from: "", to: "", ongoing: false },
+        ];
+    }
+    function removeQualification(idx) {
+        val.qualifications = val.qualifications.filter((_, i) => i !== idx);
+    }
 </script>
 
 <svelte:head>
@@ -272,10 +304,53 @@
                                             class="form-control form-control-lg"
                                             placeholder="SACE number"
                                             maxlength="7"
+                                            minlength="7"
                                             bind:value={val.sace}
                                         />
                                         {#if form?.errors?.sace}<small class="text-danger"
                                                 >{form.errors.sace}</small
+                                            >{/if}
+                                    </div>
+
+                                    <!-- Date of Birth -->
+                                    <div class="col-sm-12 col-md-6 mt-3">
+                                        <label class="form-label" for="dateOfBirth"
+                                            >Date of Birth</label
+                                        ><small class="text-danger"
+                                            >&nbsp;&nbsp;*required if no ID number</small
+                                        >
+                                        <input
+                                            type="date"
+                                            name="dateOfBirth"
+                                            id="dateOfBirth"
+                                            class="form-control form-control-lg mx-auto"
+                                            style="width: auto;"
+                                            bind:value={val.dateOfBirth}
+                                        />
+                                        {#if form?.errors?.dateOfBirth}<small class="text-danger"
+                                                >{form.errors.dateOfBirth}</small
+                                            >{/if}
+                                    </div>
+
+                                    <!-- Experience -->
+                                    <div class="col-sm-12 col-md-6 mt-3">
+                                        <label class="form-label" for="experience"
+                                            >Years of Experience</label
+                                        ><small class="text-danger">&nbsp;*</small>
+                                        <input
+                                            type="number"
+                                            name="experience"
+                                            id="experience"
+                                            class="form-control form-control-lg mx-auto"
+                                            style="width: auto;"
+                                            placeholder="Years of experience"
+                                            bind:value={val.experience}
+                                            min="0"
+                                            max="60"
+                                            required
+                                        />
+                                        {#if form?.errors?.experience}<small class="text-danger"
+                                                >{form.errors.experience}</small
                                             >{/if}
                                     </div>
 
@@ -285,7 +360,7 @@
                                             >Actively Looking?</label
                                         ><small class="text-danger">&nbsp;*</small>
                                         <input
-                                            style="width: 3rem; height: 1.2rem;"
+                                            style="width: 3rem; height: 1.4rem;"
                                             name="looking"
                                             bind:checked={val.looking}
                                             class="form-check-input"
@@ -456,48 +531,251 @@
                                         </div>
                                     {/if}
 
-                                    <!-- Experience -->
-                                    <div class="col-sm-12 col-md-6 mt-3">
-                                        <label class="form-label" for="experience"
-                                            >Years of Experience</label
+                                    <!-- Teaching Preference -->
+                                    <div class="col-12 mt-3">
+                                        <label class="form-label" for="teachingPreference"
+                                            >Teaching Preference</label
                                         ><small class="text-danger">&nbsp;*</small>
-                                        <input
-                                            type="number"
-                                            name="experience"
-                                            id="experience"
-                                            class="form-control form-control-lg"
-                                            placeholder="Years of experience"
-                                            bind:value={val.experience}
-                                            min="0"
-                                            max="60"
+                                        <select
+                                            class="form-select"
+                                            name="teachingPreference"
+                                            id="teachingPreference"
+                                            bind:value={val.teachingPreference}
                                             required
-                                        />
-                                        {#if form?.errors?.experience}<small class="text-danger"
-                                                >{form.errors.experience}</small
-                                            >{/if}
-                                    </div>
-                                    <!-- Cell Number -->
-                                    <div class="col-sm-12 col-md-6 mt-3">
-                                        <label class="form-label" for="cell">Cell Number</label
-                                        ><small class="text-danger">&nbsp;*</small>
-                                        <input
-                                            type="tel"
-                                            name="cell"
-                                            id="cell"
-                                            class="form-control form-control-lg"
-                                            placeholder="Cell number"
-                                            bind:value={val.cell}
-                                            required
-                                        />
-                                        {#if cellErr && val.cell}<small class="text-warning"
-                                                >{cellErr}</small
-                                            >{/if}
-                                        {#if form?.errors?.cell}<small class="text-danger"
-                                                >{form.errors.cell}</small
+                                        >
+                                            <option value="" disabled>choose preference</option>
+                                            <option value="in_person">In Person</option>
+                                            <option value="online">Online</option>
+                                            <option value="hybrid">Hybrid</option>
+                                        </select>
+                                        {#if form?.errors?.teachingPreference}<small
+                                                class="text-danger"
+                                                >{form.errors.teachingPreference}</small
                                             >{/if}
                                     </div>
 
-                                    <!-- Address Fields: Add name attributes like name="address.street" -->
+                                    <!-- Qualifications -->
+                                    <div class="col-12 mt-3">
+                                        <label class="form-label">Qualifications</label>
+                                        <small class="text-danger">&nbsp;*</small>
+                                        <div>
+                                            {#each val.qualifications as qual, idx (idx)}
+                                                <div class="card mb-3 p-3 text-white">
+                                                    <div class="row g-2 align-items-end">
+                                                        <div class="col-md-4">
+                                                            <label class="form-label">Title</label>
+                                                            <input
+                                                                type="text"
+                                                                class="form-control"
+                                                                name={`qualifications[${idx}].title`}
+                                                                bind:value={qual.title}
+                                                                required
+                                                            />
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label class="form-label"
+                                                                >Organisation</label
+                                                            >
+                                                            <input
+                                                                type="text"
+                                                                class="form-control"
+                                                                name={`qualifications[${idx}].organisation`}
+                                                                bind:value={qual.organisation}
+                                                                required
+                                                            />
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label class="form-label"
+                                                                >NQF Level</label
+                                                            >
+                                                            <select
+                                                                class="form-select"
+                                                                name={`qualifications[${idx}].nqf`}
+                                                                bind:value={qual.nqf}
+                                                                required
+                                                            >
+                                                                <option value="" disabled
+                                                                    >Select</option
+                                                                >
+                                                                <option value="4"
+                                                                    >NSC/Matric (NQF 4)</option
+                                                                >
+                                                                <option value="6"
+                                                                    >Honours/PGCE (NQF 6)</option
+                                                                >
+                                                                <option value="7"
+                                                                    >Masters/Bachelors (NQF 7)</option
+                                                                >
+                                                                <option value="8"
+                                                                    >Doctorate (NQF 8)</option
+                                                                >
+                                                            </select>
+                                                        </div>
+                                                        <div
+                                                            class="col-md-2 d-flex align-items-end"
+                                                        >
+                                                            {#if val.qualifications.length > 1}
+                                                                <button
+                                                                    type="button"
+                                                                    class="btn btn-danger btn-sm ms-2"
+                                                                    on:click={() =>
+                                                                        removeQualification(idx)}
+                                                                    >remove</button
+                                                                >
+                                                            {/if}
+                                                        </div>
+                                                        <div class="col-md-3 mt-2">
+                                                            <label class="form-label">From</label>
+                                                            <input
+                                                                type="date"
+                                                                class="form-control"
+                                                                name={`qualifications[${idx}].from`}
+                                                                bind:value={qual.from}
+                                                                required
+                                                            />
+                                                        </div>
+                                                        <div class="col-md-3 mt-2">
+                                                            {#if !qual.ongoing}
+                                                                <label class="form-label">To</label>
+                                                                <input
+                                                                    type="date"
+                                                                    class="form-control"
+                                                                    name={`qualifications[${idx}].to`}
+                                                                    bind:value={qual.to}
+                                                                    disabled={qual.ongoing}
+                                                                    required={!qual.ongoing}
+                                                                />
+                                                            {/if}
+                                                        </div>
+                                                        <div
+                                                            class="col-md-2 mt-2 d-flex align-items-center"
+                                                        >
+                                                            <input
+                                                                type="checkbox"
+                                                                name={`qualifications[${idx}].ongoing`}
+                                                                bind:checked={qual.ongoing}
+                                                                id={`ongoing-${idx}`}
+                                                                class="form-check-input p-1"
+                                                            />
+                                                            <label
+                                                                for={`ongoing-${idx}`}
+                                                                class="ms-2">Ongoing</label
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {/each}
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-light btn-sm p-1 mt-2"
+                                                on:click={addQualification}
+                                                >+ Add Qualification</button
+                                            >
+                                        </div>
+                                        {#if form?.errors?.qualifications}<small class="text-danger"
+                                                >{form.errors.qualifications}</small
+                                            >{/if}
+                                    </div>
+                                    <!-- References -->
+                                    <div class="col-12 mt-3">
+                                        <label class="form-label" for="references"
+                                            >References...</label
+                                        ><small class="text-danger">&nbsp;*</small>
+                                        <textarea
+                                            id="references"
+                                            name="references"
+                                            class="form-control form-control-lg"
+                                            placeholder="Enter reference details"
+                                            bind:value={val.references}
+                                            required
+                                        ></textarea>
+                                        {#if form?.errors?.references}<small class="text-danger"
+                                                >{form.errors.references}</small
+                                            >{/if}
+                                    </div>
+
+                                    <!-- Languages -->
+                                    <div class="col-12 mt-3">
+                                        <label class="form-label">Language Proficiency</label><small
+                                            class="text-danger">&nbsp;*</small
+                                        >
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Mother Tongue</label>
+                                                <select
+                                                    class="form-select"
+                                                    name="languages.motherTongue"
+                                                    bind:value={val.languages.motherTongue}
+                                                    required
+                                                >
+                                                    <option value="">Select mother tongue</option>
+                                                    {#each languages as lang}
+                                                        <option value={lang.code}
+                                                            >{lang.name}</option
+                                                        >
+                                                    {/each}
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label"
+                                                    >Additional Languages</label
+                                                >
+                                                <div class="additional-languages-container">
+                                                    {#each languages as lang}
+                                                        {#if lang.code !== val.languages.motherTongue}
+                                                            <div class="form-check language-option">
+                                                                <label
+                                                                    class="form-check-label"
+                                                                    for={`lang-${lang.code}`}
+                                                                >
+                                                                    {lang.name}
+                                                                </label>
+                                                                <input
+                                                                    class="form-check-input"
+                                                                    type="checkbox"
+                                                                    id={`lang-${lang.code}`}
+                                                                    value={lang.code}
+                                                                    checked={val.languages.additional.includes(
+                                                                        lang.code
+                                                                    )}
+                                                                    on:change={(e) => {
+                                                                        if (e.target.checked) {
+                                                                            val.languages.additional =
+                                                                                [
+                                                                                    ...val.languages
+                                                                                        .additional,
+                                                                                    lang.code,
+                                                                                ];
+                                                                        } else {
+                                                                            val.languages.additional =
+                                                                                val.languages.additional.filter(
+                                                                                    (code) =>
+                                                                                        code !==
+                                                                                        lang.code
+                                                                                );
+                                                                        }
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                        {/if}
+                                                    {/each}
+                                                </div>
+                                                <small class="text-muted mt-2 d-block">
+                                                    Selected: {val.languages.additional.length} additional
+                                                    {val.languages.additional.length === 1
+                                                        ? "language"
+                                                        : "languages"}
+                                                </small>
+                                            </div>
+                                        </div>
+                                        {#if form?.errors?.languages}<small class="text-danger"
+                                                >{typeof form.errors.languages === "string"
+                                                    ? form.errors.languages
+                                                    : "Error in languages"}</small
+                                            >{/if}
+                                    </div>
+
+                                    <!-- Address Fields: -->
                                     <div class="col-12 mt-3">
                                         <label class="form-label" for="street">Street Address</label
                                         ><small class="text-danger">&nbsp;*</small>
@@ -579,211 +857,24 @@
                                             >{/if}
                                     </div>
 
-                                    <!-- Teaching Preference -->
-                                    <div class="col-12 mt-3">
-                                        <label class="form-label" for="teachingPreference"
-                                            >Teaching Preference</label
+                                    <!-- Cell Number -->
+                                    <div class="col-sm-12 col-md-6 mt-3">
+                                        <label class="form-label" for="cell">Cell Number</label
                                         ><small class="text-danger">&nbsp;*</small>
-                                        <select
-                                            class="form-select"
-                                            name="teachingPreference"
-                                            id="teachingPreference"
-                                            bind:value={val.teachingPreference}
-                                            required
-                                        >
-                                            <option value="" disabled>choose preference</option>
-                                            <option value="in_person">In Person</option>
-                                            <option value="online">Online</option>
-                                            <option value="hybrid">Hybrid</option>
-                                        </select>
-                                        {#if form?.errors?.teachingPreference}<small
-                                                class="text-danger"
-                                                >{form.errors.teachingPreference}</small
-                                            >{/if}
-                                    </div>
-
-                                    <!-- Qualifications -->
-                                    <div class="col-12 mt-3">
-                                        <label class="form-label" for="qualifications"
-                                            >Qualifications...</label
-                                        ><small class="text-danger">&nbsp;*</small>
-                                        <textarea
-                                            id="qualifications"
-                                            name="qualifications"
+                                        <input
+                                            type="tel"
+                                            name="cell"
+                                            id="cell"
                                             class="form-control form-control-lg"
-                                            placeholder="List qualifications"
-                                            bind:value={val.qualifications}
+                                            placeholder="Cell number"
+                                            bind:value={val.cell}
                                             required
-                                        ></textarea>
-                                        {#if form?.errors?.qualifications}<small class="text-danger"
-                                                >{form.errors.qualifications}</small
+                                        />
+                                        {#if cellErr && val.cell}<small class="text-warning"
+                                                >{cellErr}</small
                                             >{/if}
-                                    </div>
-                                    <!-- References -->
-                                    <div class="col-12 mt-3">
-                                        <label class="form-label" for="references"
-                                            >References...</label
-                                        ><small class="text-danger">&nbsp;*</small>
-                                        <textarea
-                                            id="references"
-                                            name="references"
-                                            class="form-control form-control-lg"
-                                            placeholder="Enter reference details"
-                                            bind:value={val.references}
-                                            required
-                                        ></textarea>
-                                        {#if form?.errors?.references}<small class="text-danger"
-                                                >{form.errors.references}</small
-                                            >{/if}
-                                    </div>
-
-                                    <!-- Languages -->
-                                    <div class="col-12 mt-3">
-                                        <label class="form-label">Language Proficiency</label><small
-                                            class="text-danger">&nbsp;*</small
-                                        >
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-check text-start ms-4">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        name="languages.english"
-                                                        bind:checked={val.languages.english}
-                                                        id="english"
-                                                    />
-                                                    <label class="form-check-label" for="english"
-                                                        >English</label
-                                                    >
-                                                </div>
-                                                <div class="form-check text-start ms-4">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        name="languages.afrikaans"
-                                                        bind:checked={val.languages.afrikaans}
-                                                        id="afrikaans"
-                                                    />
-                                                    <label class="form-check-label" for="afrikaans"
-                                                        >Afrikaans</label
-                                                    >
-                                                </div>
-                                                <div class="form-check text-start ms-4">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        name="languages.isi_ndebele"
-                                                        bind:checked={val.languages.isi_ndebele}
-                                                        id="isiNdebele"
-                                                    />
-                                                    <label class="form-check-label" for="isiNdebele"
-                                                        >isiNdebele</label
-                                                    >
-                                                </div>
-                                                <div class="form-check text-start ms-4">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        name="languages.isi_xhosa"
-                                                        bind:checked={val.languages.isi_xhosa}
-                                                        id="isiXhosa"
-                                                    />
-                                                    <label class="form-check-label" for="isiXhosa"
-                                                        >isiXhosa</label
-                                                    >
-                                                </div>
-                                                <div class="form-check text-start ms-4">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        name="languages.isi_zulu"
-                                                        bind:checked={val.languages.isi_zulu}
-                                                        id="isiZulu"
-                                                    />
-                                                    <label class="form-check-label" for="isiZulu"
-                                                        >isiZulu</label
-                                                    >
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-check text-start ms-4">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        name="languages.sesotho"
-                                                        bind:checked={val.languages.sesotho}
-                                                        id="sesotho"
-                                                    />
-                                                    <label class="form-check-label" for="sesotho"
-                                                        >Sesotho</label
-                                                    >
-                                                </div>
-                                                <div class="form-check text-start ms-4">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        name="languages.setswana"
-                                                        bind:checked={val.languages.setswana}
-                                                        id="setswana"
-                                                    />
-                                                    <label class="form-check-label" for="setswana"
-                                                        >Setswana</label
-                                                    >
-                                                </div>
-                                                <div class="form-check text-start ms-4">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        name="languages.sepedi"
-                                                        bind:checked={val.languages.sepedi}
-                                                        id="sepedi"
-                                                    />
-                                                    <label class="form-check-label" for="sepedi"
-                                                        >Sepedi</label
-                                                    >
-                                                </div>
-                                                <div class="form-check text-start ms-4">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        name="languages.si_swati"
-                                                        bind:checked={val.languages.si_swati}
-                                                        id="siSwati"
-                                                    />
-                                                    <label class="form-check-label" for="siSwati"
-                                                        >siSwati</label
-                                                    >
-                                                </div>
-                                                <div class="form-check text-start ms-4">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        name="languages.tshivenda"
-                                                        bind:checked={val.languages.tshivenda}
-                                                        id="tshivenda"
-                                                    />
-                                                    <label class="form-check-label" for="tshivenda"
-                                                        >Tshivenda</label
-                                                    >
-                                                </div>
-                                                <div class="form-check text-start ms-4">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        name="languages.xitsonga"
-                                                        bind:checked={val.languages.xitsonga}
-                                                        id="xitsonga"
-                                                    />
-                                                    <label class="form-check-label" for="xitsonga"
-                                                        >Xitsonga</label
-                                                    >
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {#if form?.errors?.languages}<small class="text-danger"
-                                                >{typeof form.errors.languages === "string"
-                                                    ? form.errors.languages
-                                                    : "Error in languages"}</small
+                                        {#if form?.errors?.cell}<small class="text-danger"
+                                                >{form.errors.cell}</small
                                             >{/if}
                                     </div>
 
@@ -864,10 +955,40 @@
         color: #dc3545;
     } /* Bootstrap's danger color for server errors */
     .text-warning {
-        color: #ffc107;
+        color: #dfc148;
     } /* Bootstrap's warning for client errors */
     .form-check.text-start .form-check-input {
         float: left;
         margin-left: -1.5em;
+    }
+    .additional-languages-container {
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        padding: 0.5rem;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    .language-option {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+    }
+    .language-option:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+    .language-option .form-check-label {
+        margin: 0;
+        flex-grow: 1;
+    }
+    .language-option .form-check-input {
+        margin: 0;
+        float: none;
+    }
+    .language-option:last-child {
+        margin-bottom: 0;
     }
 </style>

@@ -31,7 +31,7 @@ const profileSchema = object({
             return age >= 18;
         }
     ),
-    sace: string().nullable().test(
+    sace: string().test(
         "conditional-sace-requirement",
         "SACE number is required (7 digits)",
         function (sace) {
@@ -104,67 +104,73 @@ const profileSchema = object({
     ).min(1, "At least one qualification is required").required(),
     references: string().required("Reference is required"),
     languages: object({
-        motherTongue: string().required("Mother tongue is required"),
-        additional: array().of(string()).default([])
+        english: boolean().required(),
+        afrikaans: boolean().required(),
+        isi_ndebele: boolean().required(),
+        isi_xhosa: boolean().required(),
+        isi_zulu: boolean().required(),
+        sesotho: boolean().required(),
+        setswana: boolean().required(),
+        sepedi: boolean().required(),
+        si_swati: boolean().required(),
+        tshivenda: boolean().required(),
+        xitsonga: boolean().required(),
     }).test(
-        'valid-languages',
-        'Invalid language selection',
-        (languages) => {
-            if (!languages.motherTongue) return false;
-            // Check that additional languages don't include mother tongue
-            if (languages.additional.includes(languages.motherTongue)) return false;
-            return true;
-        }
+        'at-least-one-language',
+        'At least one language must be selected',
+        (languages) => Object.values(languages).some(val => val === true)
     ),
     looking: boolean().required(),
     ttCode: string().required(),
 });
 
-// /** @type {import('./$types').PageServerLoad} */
-// export const load = async ({ locals, fetch }) => {
-//     if (!VITE_STRAPI_PUB_KEY_LOCAL) {
-//         throw error(500, "API key is not configured");
-//     }
+/** @type {import('./$types').PageServerLoad} */
+export const load = async ({ locals, fetch }) => {
+    if (!VITE_STRAPI_PUB_KEY_LOCAL) {
+        throw error(500, "API key is not configured");
+    }
 
-//     // Get user ID from locals
-//     const userId = locals.user?.id;
-//     if (!userId) {
-//         throw error(401, "User not authenticated");
-//     }
+    // Get user ID from locals
+    const userId = locals.user?.id;
+    if (!userId) {
+        throw error(401, "User not authenticated");
+    }
 
-//     try {
-//         // Check if user already has a profile
-//         const response = await fetch(`${API_URL}/profiles?filters[user][id][$eq]=${userId}`, {
-//             headers: {
-//                 'Authorization': `Bearer ${VITE_STRAPI_PUB_KEY_LOCAL}`
-//             }
-//         });
+    try {
+        // Get user's existing profile
+        const response = await fetch(`${API_URL}/profiles?filters[user][id][$eq]=${userId}`, {
+            headers: {
+                'Authorization': `Bearer ${VITE_STRAPI_PUB_KEY_LOCAL}`
+            }
+        });
 
-//         if (!response.ok) {
-//             throw error(response.status, "Failed to check for existing profile");
-//         }
+        if (!response.ok) {
+            throw error(response.status, "Failed to fetch profile");
+        }
 
-//         const data = await response.json();
+        const data = await response.json();
         
-//         // If user has a profile, redirect to update page
-//         if (data.data && data.data.length > 0) {
-//             throw redirect(303, '/auth/profile/update');
-//         }
+        // If user doesn't have a profile, redirect to create page
+        if (!data.data || data.data.length === 0) {
+            throw redirect(303, '/auth/profile');
+        }
 
-//         return {};
-//     } catch (err) {
-//         if (err.status === 303) {
-//             throw err;
-//         }
-//         throw error(500, "Failed to check for existing profile");
-//     }
-// };
+        return {
+            profile: data.data[0]
+        };
+    } catch (err) {
+        if (err.status === 303) {
+            throw err;
+        }
+        throw error(500, "Failed to fetch profile");
+    }
+};
 
 /** @type {import('./$types').Actions} */
 export const actions = {
     default: async ({ request, fetch }) => {
         if (!VITE_STRAPI_PUB_KEY_LOCAL) {
-            return fail(500, { message: "API key is not configured. Profile cannot be saved." });
+            return fail(500, { message: "API key is not configured. Profile cannot be updated." });
         }
 
         const formData = await request.formData();
@@ -174,7 +180,7 @@ export const actions = {
         // Get user ID from form data
         const userId = formData.get('userId');
         if (!userId) {
-            return fail(400, { message: "User ID is required to create a profile." });
+            return fail(400, { message: "User ID is required to update profile." });
         }
 
         const val = {
@@ -213,11 +219,10 @@ export const actions = {
                 const quals = [];
                 let idx = 0;
                 while (formData.has(`qualifications[${idx}].title`)) {
-                    const nqfValue = formData.get(`qualifications[${idx}].nqf`);
                     quals.push({
                         title: formData.get(`qualifications[${idx}].title`),
                         organisation: formData.get(`qualifications[${idx}].organisation`),
-                        nqf: nqfValue ? parseInt(nqfValue, 10) : null,
+                        nqf: formData.get(`qualifications[${idx}].nqf`) ? parseInt(formData.get(`qualifications[${idx}].nqf`), 10) : null,
                         from: formData.get(`qualifications[${idx}].from`),
                         to: formData.get(`qualifications[${idx}].to`),
                         ongoing: formData.get(`qualifications[${idx}].ongoing`) === 'on' || formData.get(`qualifications[${idx}].ongoing`) === 'true',
@@ -228,12 +233,20 @@ export const actions = {
             })(),
             references: formData.get('references'),
             languages: {
-                motherTongue: formData.get('languages.motherTongue'),
-                additional: formData.getAll('languages.additional')
+                english: getBool('languages.english'),
+                afrikaans: getBool('languages.afrikaans'),
+                isi_ndebele: getBool('languages.isi_ndebele'),
+                isi_xhosa: getBool('languages.isi_xhosa'),
+                isi_zulu: getBool('languages.isi_zulu'),
+                sesotho: getBool('languages.sesotho'),
+                setswana: getBool('languages.setswana'),
+                sepedi: getBool('languages.sepedi'),
+                si_swati: getBool('languages.si_swati'),
+                tshivenda: getBool('languages.tshivenda'),
+                xitsonga: getBool('languages.xitsonga'),
             },
             terms: getBool('terms'),
-            ttCode: formData.get('ttCode'), 
-            // Add the user field for Strapi to link the profile to the user
+            ttCode: formData.get('ttCode'),
             user: userId
         };
 
@@ -249,15 +262,18 @@ export const actions = {
             }
             return fail(400, { data: val, errors });
         }
+
+        // Get the profile ID from the form data
+        const profileId = formData.get('profileId');
+        if (!profileId) {
+            return fail(400, { message: "Profile ID is required to update profile." });
+        }
         
         const dataPayload = { data: { ...val } };
 
-        const method = 'POST';
-        const url = `${API_URL}/profiles`;
-
         try {
-            const response = await fetch(url, {
-                method,
+            const response = await fetch(`${API_URL}/profiles/${profileId}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${VITE_STRAPI_PUB_KEY_LOCAL}`,
@@ -269,7 +285,7 @@ export const actions = {
 
             if (!response.ok) {
                 console.error("Strapi API Error:", responseData);
-                let message = "Failed to save profile.";
+                let message = "Failed to update profile.";
                 if (responseData.error?.message) {
                     message = responseData.error.message;
                 } else if (typeof responseData.message === 'string') {
@@ -289,11 +305,11 @@ export const actions = {
             if (err.status && err.location) { 
                 throw err;
             }
-            console.error("Exception saving profile:", err);
+            console.error("Exception updating profile:", err);
             return fail(500, { 
-                message: err.message || "Server error saving profile.",
+                message: err.message || "Server error updating profile.",
                 data: val
             });
         }
     },
-};
+}; 
