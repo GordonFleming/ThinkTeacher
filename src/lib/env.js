@@ -1,5 +1,5 @@
 // export const sgKey = import.meta.env.PUBLIC_SENDGRID_API_KEY;
-export const PUBLIC_PROD = import.meta.env.VITE_PUBLIC_PROD === true || import.meta.env.VITE_PUBLIC_PROD === 'true';
+export const PUBLIC_PROD = import.meta.env.PUBLIC_PROD === true || import.meta.env.PUBLIC_PROD === 'true';
 
 // API Configuration
 export const BASE_API_URL = PUBLIC_PROD 
@@ -17,8 +17,6 @@ export const YOCO_PUB_KEY = PUBLIC_PROD
   ? import.meta.env.VITE_YOCO_LIVE_PUBLIC_KEY
   : import.meta.env.VITE_YOCO_TEST_PUBLIC_KEY;
 
-// export let sendgridList = "57df636d-5399-423f-bf72-35424b5644b5";
-
 export const toastSuc = {
     theme: {
         "--toastColor": "mintcream",
@@ -34,7 +32,3 @@ export const toastErr = {
         "--toastBarBackground": "#332307",
     },
 };
-
-if (PUBLIC_PROD == "true"){
-    sendgridList = "75b1cd1c-6bb0-406b-bc94-d7c2f04bc9f8";
-} 
