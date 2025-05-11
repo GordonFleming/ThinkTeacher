@@ -46,7 +46,14 @@
                 ongoing: false,
             },
         ],
-        references: "",
+        references: [
+            {
+                name: "",
+                email: "",
+                phone: "",
+                reference: "",
+            },
+        ],
         languages: {
             motherTongue: "",
             additional: [],
@@ -139,6 +146,14 @@
     }
     function removeQualification(idx) {
         val.qualifications = val.qualifications.filter((_, i) => i !== idx);
+    }
+
+    // Add these functions after removeQualification:
+    function addReference() {
+        val.references = [...val.references, { name: "", email: "", phone: "", reference: "" }];
+    }
+    function removeReference(idx) {
+        val.references = val.references.filter((_, i) => i !== idx);
     }
 </script>
 
@@ -578,7 +593,7 @@
                                                                 <button
                                                                     type="button"
                                                                     class="btn btn-danger btn-sm ms-2"
-                                                                    on:click={() =>
+                                                                    onclick={() =>
                                                                         removeQualification(idx)}
                                                                     >remove</button
                                                                 >
@@ -628,7 +643,7 @@
                                             <button
                                                 type="button"
                                                 class="btn btn-outline-light btn-sm p-1 mt-2"
-                                                on:click={addQualification}
+                                                onclick={addQualification}
                                                 >+ Add Qualification</button
                                             >
                                         </div>
@@ -638,17 +653,77 @@
                                     </div>
                                     <!-- References -->
                                     <div class="col-12 mt-3">
-                                        <label class="form-label" for="references"
-                                            >References...</label
-                                        ><small class="text-danger">&nbsp;*</small>
-                                        <textarea
-                                            id="references"
-                                            name="references"
-                                            class="form-control form-control-lg"
-                                            placeholder="Enter reference details"
-                                            bind:value={val.references}
-                                            required
-                                        ></textarea>
+                                        <label class="form-label">References</label>
+                                        <small class="text-danger">&nbsp;*</small>
+                                        <div>
+                                            {#each val.references as ref, idx (idx)}
+                                                <div class="card mb-3 p-3 text-white">
+                                                    <div class="row g-2 align-items-end">
+                                                        <div class="col-md-4">
+                                                            <label class="form-label">Name</label>
+                                                            <input
+                                                                type="text"
+                                                                class="form-control"
+                                                                name={`references[${idx}].name`}
+                                                                bind:value={ref.name}
+                                                                required
+                                                            />
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label class="form-label">Email</label>
+                                                            <input
+                                                                type="email"
+                                                                class="form-control"
+                                                                name={`references[${idx}].email`}
+                                                                bind:value={ref.email}
+                                                                required
+                                                            />
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label class="form-label"
+                                                                >Phone (Optional)</label
+                                                            >
+                                                            <input
+                                                                type="tel"
+                                                                class="form-control"
+                                                                name={`references[${idx}].phone`}
+                                                                bind:value={ref.phone}
+                                                            />
+                                                        </div>
+                                                        <div class="col-md-12 mt-2">
+                                                            <label class="form-label"
+                                                                >Reference</label
+                                                            >
+                                                            <textarea
+                                                                class="form-control"
+                                                                name={`references[${idx}].reference`}
+                                                                bind:value={ref.reference}
+                                                                required
+                                                                rows="3"
+                                                            ></textarea>
+                                                        </div>
+                                                        <div
+                                                            class="col-md-2 mt-2 d-flex align-items-center justify-content-end"
+                                                        >
+                                                            {#if val.references.length > 1}
+                                                                <button
+                                                                    type="button"
+                                                                    class="btn btn-danger btn-sm ms-2"
+                                                                    onclick={() =>
+                                                                        removeReference(idx)}
+                                                                    >remove</button
+                                                                >
+                                                            {/if}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {/each}
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-light btn-sm p-1 mt-2"
+                                                onclick={addReference}>+ Add Reference</button
+                                            >
+                                        </div>
                                         {#if form?.errors?.references}<small class="text-danger"
                                                 >{form.errors.references}</small
                                             >{/if}
@@ -693,12 +768,13 @@
                                                                 <input
                                                                     class="form-check-input"
                                                                     type="checkbox"
+                                                                    name={`languages.additional`}
                                                                     id={`lang-${lang.code}`}
                                                                     value={lang.code}
                                                                     checked={val.languages.additional.includes(
                                                                         lang.code
                                                                     )}
-                                                                    on:change={(e) => {
+                                                                    onchange={(e) => {
                                                                         if (e.target.checked) {
                                                                             val.languages.additional =
                                                                                 [

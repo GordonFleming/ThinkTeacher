@@ -102,7 +102,14 @@ const profileSchema = object({
             ongoing: boolean().required(),
         })
     ).min(1, "At least one qualification is required").required(),
-    references: string().required("Reference is required"),
+    references: array().of(
+        object({
+            name: string().required("Reference name is required"),
+            email: string().email("Invalid email").required("Reference email is required"),
+            phone: string().nullable(),
+            reference: string().required("Reference description is required"),
+        })
+    ).min(1, "At least one reference is required").required(),
     languages: object({
         motherTongue: string().required("Mother tongue is required"),
         additional: array().of(string()).default([])
@@ -128,8 +135,8 @@ export const load = async ({ locals, fetch }) => {
 
     // TODO: Update below to get user ID from locals & make function work
     // Get user ID from locals
-    // const userId = locals.user?.id;
-    const userId = 99999;
+    const userId = locals.user?.id;
+    // const userId = 99999;
     if (!userId) {
         throw error(401, "User not authenticated");
     }
@@ -147,6 +154,7 @@ export const load = async ({ locals, fetch }) => {
         }
 
         const data = await response.json();
+        console.log(data);
         
         // If user has a profile, redirect to update page
         if (data.data && data.data.length > 0) {
@@ -164,7 +172,7 @@ export const load = async ({ locals, fetch }) => {
 
 /** @type {import('./$types').Actions} */
 export const actions = {
-    default: async ({ request, fetch }) => {
+    default: async ({ request, fetch, locals }) => {
         if (!STRAPI_KEY) {
             return fail(500, { message: "API key is not configured. Profile cannot be saved." });
         }
@@ -174,7 +182,7 @@ export const actions = {
         const getBool = (key) => formData.has(key) && formData.get(key) !== 'false';
 
         // Get user ID from form data
-        const userId = formData.get('userId');
+        const userId = locals.user?.id;
         if (!userId) {
             return fail(400, { message: "User ID is required to create a profile." });
         }
@@ -228,7 +236,21 @@ export const actions = {
                 }
                 return quals;
             })(),
-            references: formData.get('references'),
+            references: (() => {
+                // Parse references array from formData
+                const refs = [];
+                let idx = 0;
+                while (formData.has(`references[${idx}].name`)) {
+                    refs.push({
+                        name: formData.get(`references[${idx}].name`),
+                        email: formData.get(`references[${idx}].email`),
+                        phone: formData.get(`references[${idx}].phone`) || null,
+                        reference: formData.get(`references[${idx}].reference`),
+                    });
+                    idx++;
+                }
+                return refs;
+            })(),
             languages: {
                 motherTongue: formData.get('languages.motherTongue'),
                 additional: formData.getAll('languages.additional')
