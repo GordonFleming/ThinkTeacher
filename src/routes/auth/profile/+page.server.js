@@ -124,7 +124,6 @@ const profileSchema = object({
         }
     ),
     looking: boolean().required(),
-    ttCode: string().required(),
 });
 
 /** @type {import('./$types').PageServerLoad} */
@@ -256,7 +255,6 @@ export const actions = {
                 additional: formData.getAll('languages.additional')
             },
             terms: getBool('terms'),
-            ttCode: formData.get('ttCode'), 
             // Add the user field for Strapi to link the profile to the user
             user: userId
         };

@@ -58,6 +58,7 @@
                     username: val.email,
                     email: val.email,
                     password: password,
+                    ttCode: ttCode,
                 })
                 .then((response) => {
                     console.log("User profile", response.data.user);

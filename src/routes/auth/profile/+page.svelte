@@ -59,36 +59,12 @@
             additional: [],
         },
         terms: false,
-        ttCode: "", // Will be generated
     };
 
     let val = $state(initialProfileData);
     let loadingForm = $state(false);
     let clientErrors = $state({});
     let cellErr = $state(null);
-
-    onMount(async () => {
-        // Generate TT code if not already set
-        if (!val.ttCode) {
-            val.ttCode = generateTtCode();
-        }
-    });
-
-    // Generate TTCode for new profile
-    function generateTtCode() {
-        let code = "TT";
-        const dateObj = new Date();
-        const dateNow = dateObj
-            .toLocaleDateString("en-GB", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-            })
-            .replace(/\//g, "");
-        code += dateNow;
-        code += Math.floor(Math.random() * 899 + 100);
-        return code;
-    }
 
     // Initialize form values
     $effect(() => {
@@ -112,12 +88,10 @@
                         nqf: qual.nqf?.toString() || "", // Convert to string for select binding
                         ongoing: Boolean(qual.ongoing),
                     })) || initialProfileData.qualifications,
-                // Preserve ttCode if it exists
-                ttCode: form.data.ttCode || val.ttCode || generateTtCode(),
             };
         } else {
             // New profile initialization
-            val = { ...initialProfileData, ttCode: generateTtCode() };
+            val = { ...initialProfileData };
             console.log("New profile form initialized");
         }
     });
@@ -205,9 +179,6 @@
                                     };
                                 }}
                             >
-                                <!-- Hidden field for ttCode -->
-                                <input type="hidden" name="ttCode" bind:value={val.ttCode} />
-
                                 <div class="row">
                                     <!-- First Name -->
                                     <div class="col-sm-12 col-md-6">
