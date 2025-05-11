@@ -1,5 +1,6 @@
 import { error, fail, redirect } from '@sveltejs/kit';
-import { API_URL, STRAPI_KEY } from '$lib/env.js';
+import { API_URL } from '$lib/env.js';
+import { STRAPI_KEY } from '$env/static/private';
 import { object, string, boolean, number, array } from 'yup';
 import dayjs from 'dayjs';
 

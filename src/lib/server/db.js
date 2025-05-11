@@ -1,4 +1,5 @@
-import { API_URL, BASE_API_URL, STRAPI_KEY } from "$lib/env.js";
+import { API_URL } from "$lib/env.js";
+import { STRAPI_KEY } from '$env/static/private';
 
 export function api(method, endpoint, data) {
 	return fetch(`${API_URL}/${endpoint}`, {

@@ -1,11 +1,10 @@
 import { error } from '@sveltejs/kit';
-import { api } from '$lib/db'
+import { api } from '$lib/server/db'
 import { API_URL } from '$lib/env.js';
 
 export async function load({ params, locals }) {
     const { slug } = params;
 	const res = await api('GET', `categories?filters[name][$eqi]=${slug.replace("-", "_")}`);
-
 
     // call users/me
     const resUser = await fetch(`${API_URL}/users/me`, {

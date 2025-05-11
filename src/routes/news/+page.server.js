@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { api } from '$lib/db'
+import { api } from '$lib/server/db'
 
 export async function load() {
 	const res = await api('GET', `posts?sort=updatedAt:desc`);

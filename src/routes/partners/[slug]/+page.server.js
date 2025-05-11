@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { api } from '$lib/db'; // Assuming you have an 'api' function for REST requests
+import { api } from '$lib/server/db'; // Assuming you have an 'api' function for REST requests
 
 export async function load({ params }) {
     const { slug } = params;
