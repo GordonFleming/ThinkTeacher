@@ -124,7 +124,6 @@ const profileSchema = object({
         }
     ),
     looking: boolean().required(),
-    ttCode: string().required(),
 });
 
 // Schema for updating profile - excludes non-editable fields and terms
@@ -213,7 +212,7 @@ const profileUpdateSchema = object({
         }
     ),
     looking: boolean().required(),
-    // ttCode, firstName, lastName, idNumber, dateOfBirth, terms are excluded
+    // firstName, lastName, idNumber, dateOfBirth, terms are excluded
 });
 
 /** @type {import('./$types').PageServerLoad} */
@@ -252,11 +251,8 @@ export const load = async ({ locals, fetch }) => {
                 userId: userId // Pass userId for the form action if needed
             };
         } else {
-            // No profile found for the user, redirect to a create page or show a message
-            // For an update page, this typically means something is wrong or the user should create one first.
-            // For now, let's redirect to a hypothetical creation page or show an error.
-            // throw redirect(303, '/auth/profile/create'); // Or handle as an error
-            throw error(404, "Profile not found. Please create a profile first.");
+            throw redirect(303, '/auth/profile/create'); // Or handle as an error
+            // throw error(404, "Profile not found. Please create a profile first.");
         }
 
     } catch (err) {
@@ -296,7 +292,7 @@ export const actions = {
 
         // Construct the object with only updatable fields
         const val = {
-            // Non-editable fields like firstName, lastName, idNumber, dateOfBirth, ttCode are NOT included
+            // Non-editable fields like firstName, lastName, idNumber, dateOfBirth are NOT included
             cell: formData.get('cell'),
             sace: formData.get('sace') || null,
             looking: getBool('looking'),
