@@ -4,7 +4,6 @@
 
     export let data;
     let { post } = data;
-    console.log(data);
     let date;
     let publish;
     let source;

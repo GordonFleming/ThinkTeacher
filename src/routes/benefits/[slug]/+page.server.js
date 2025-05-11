@@ -3,7 +3,6 @@ import { api } from '$lib/server/db'; // Assuming you have an 'api' function for
 
 export async function load({ params }) {
     const { slug } = params;
-    console.log(slug)
     
     // Create the REST endpoint with query parameters for filtering and sorting
     const endpoint = `packages?filters[partner][category][name][$eq]=${slug}&sort=name&populate[banner]=*&populate[partner][populate][category]=*&populate[partner][populate][logo]=*`;

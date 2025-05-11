@@ -3,69 +3,59 @@
     import { goto } from "$app/navigation";
     import Icon from "$lib/Icons/icon.svelte";
     import { facebook, instagram, eye, eyeSlash } from "$lib/Icons/icons";
-    import { API_URL, toastErr } from "$lib/env.js";
+    import { toastErr } from "$lib/env.js";
     import { toast } from "@zerodevx/svelte-toast";
-    import { logoutUser } from "$lib/utils";
+    import { getContext } from "svelte";
 
-    let redirectUrl = null;
-    let email, password;
+    let redirectUrl = $state(null);
+    let email = $state("");
+    let password = $state("");
+    let seePlz = $state(true);
+    let isLoading = $state(false);
+
+    // Get the user store from context
+    const userStore = getContext("user");
+    console.log("userStore:", userStore);
 
     onMount(() => {
         const urlParams = new URLSearchParams(window.location.search);
         redirectUrl = urlParams.get("r");
 
-        // Check if user is already logged in via JWT cookie
-        const cookies = document.cookie.split(";");
-        const jwtCookie = cookies.find((cookie) => cookie.trim().startsWith("jwt="));
-
-        if (jwtCookie) {
-            logoutUser();
+        // Check if user is already logged in
+        if (userStore.isLoggedIn()) {
+            userStore.logout();
         }
     });
 
     async function loginUser() {
+        if (!email || !password) {
+            toast.push("Please enter your email and password", toastErr);
+            return;
+        }
+
+        isLoading = true;
+
         try {
-            const response = await fetch(`${API_URL}/auth/local`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    identifier: email,
-                    password: password,
-                }),
-            });
+            const result = await userStore.login(email, password);
 
-            const data = await response.json();
-
-            if (!response.ok) {
-                console.log("An error occurred:", data);
-                toast.push(data.error.message, toastErr);
+            if (!result.success) {
+                toast.push(result.error, toastErr);
                 return;
             }
-
-            // Store the JWT token in cookies
-            const jwt = data.jwt;
-            document.cookie = `jwt=${jwt}; path=/;`;
-
-            let paidMember = data.user.paid;
 
             if (redirectUrl) {
                 goto(redirectUrl);
             } else {
                 goto("/benefits");
             }
-            // } else {
-            //     goto("/payment");
-            //     toast.push("Payment required.", toastErr);
-            // }
         } catch (error) {
             console.log("An error occurred:", error);
             toast.push("An unexpected error occurred. Please try again.", toastErr);
+        } finally {
+            isLoading = false;
         }
     }
 
-    let seePlz = true;
     function seePassword() {
         var x = document.getElementById("Password");
         if (x.type === "password") {
@@ -133,7 +123,7 @@
                                         <button
                                             type="button"
                                             class="input-group-text"
-                                            on:click={seePassword}
+                                            onclick={seePassword}
                                             ><Icon
                                                 data={seePlz ? eye : eyeSlash}
                                                 scale="1.8"
@@ -151,8 +141,20 @@
                                 <button
                                     class="btn btn-outline-light btn-lg px-4"
                                     type="submit"
-                                    on:click|preventDefault={loginUser}>Login</button
+                                    disabled={isLoading}
+                                    onclick={loginUser}
                                 >
+                                    {#if isLoading}
+                                        <span
+                                            class="spinner-border spinner-border-sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        ></span>
+                                        Loading...
+                                    {:else}
+                                        Login
+                                    {/if}
+                                </button>
                             </form>
 
                             <div class="mt-2 pt-1">

@@ -1,14 +1,22 @@
 <script>
-    import { onMount } from "svelte";
+    import { onMount, getContext } from "svelte";
     import { goto } from "$app/navigation";
-    import { logoutUser } from "$lib/utils";
 
     let avatar = $state("");
 
-    let { user } = $props();
+    // Get userStore from context
+    const userStore = getContext("user");
+
+    // Create a reactive variable that updates when userStore changes
+    let user = $derived($userStore);
+
+    $effect(() => {
+        // Update avatar whenever user data changes
+        const displayName = user ? userStore.getFullName() : "Guest";
+        avatar = `https://api.dicebear.com/7.x/initials/svg?seed=${displayName}&size=40&backgroundColor=4F5D89&chars=${displayName !== "Guest" ? 1 : 0}`;
+    });
 
     onMount(() => {
-        avatar = `https://api.dicebear.com/7.x/initials/svg?seed=${user.firstName}&size=40&backgroundColor=4F5D89&chars=${user.firstName ? 1 : 0}`;
         document.querySelector(".third-button").addEventListener("click", function () {
             document.querySelector(".animated-icon3").classList.toggle("open");
         });
@@ -106,14 +114,15 @@
                 {#if user}
                     <div class="mt-2">
                         <h6>
-                            {#if user.firstName}
-                                <span class="text-logo-gold">{user.firstName}</span>
+                            {#if userStore.hasProfile()}
+                                <span class="text-logo-gold">{userStore.getFullName()}</span>
                             {:else}
                                 <span class="text-logo-gold">Please complete profile</span>
                             {/if}
                             <br />
-                            <small class="text-blue" style="font-size: 0.75em;">{user.ttCode}</small
-                            >
+                            <small class="text-blue" style="font-size: 0.75em;">
+                                {user.ttCode}
+                            </small>
                         </h6>
                     </div>
                     <div class="dropdown" style="margin-right: 1rem;">
@@ -139,8 +148,10 @@
                                 >
                             </li>
                             <li>
-                                <button class="dropdown-item" type="button" onclick={logoutUser}
-                                    >Logout</button
+                                <button
+                                    class="dropdown-item"
+                                    type="button"
+                                    onclick={() => userStore.logout()}>Logout</button
                                 >
                             </li>
                         </ul>

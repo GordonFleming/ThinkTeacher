@@ -153,7 +153,6 @@ export const load = async ({ locals, fetch }) => {
         }
 
         const data = await response.json();
-        console.log(data);
         
         // If user has a profile, redirect to update page
         if (data.data && data.data.length > 0) {

@@ -11,7 +11,6 @@
 
     const { data } = $props();
     const { type, user } = data;
-    console.log(user);
     let formOpt = type.form_extra;
 
     let message = $state("");

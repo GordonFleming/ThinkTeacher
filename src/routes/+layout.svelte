@@ -1,17 +1,27 @@
 <script>
+    import { setContext, onMount } from "svelte";
+    import { writable } from "svelte/store";
     import Header from "$lib/Header/index.svelte";
     import Footer from "$lib/Footer/index.svelte";
     import "../bootstrap.css";
     import "../app.css";
     import { SvelteToast } from "@zerodevx/svelte-toast";
+    import { createUserStore } from "$lib/stores/userStore";
 
     const { data, children } = $props();
-    let user = data.user;
+
+    // Create user store with initial data from server
+    const userStore = createUserStore(data.user);
+
+    // Make user store available throughout the app via context
+    setContext("user", userStore);
+
+    // Update store when server data changes during navigatio
 
     const options = {};
 </script>
 
-<Header {user} />
+<Header />
 
 <div class="container-fluid">
     {@render children()}

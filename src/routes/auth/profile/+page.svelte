@@ -5,12 +5,17 @@
     import { toast } from "@zerodevx/svelte-toast";
     import { onMount } from "svelte";
     import { enhance } from "$app/forms";
+    import { getContext } from "svelte";
     import { languages } from "$lib/data.js";
+
     // Form will only be needed from props as this is create-only now
     const { form, data } = $props();
 
+    // Get user from context if needed
+    const userStore = getContext("user");
+
     // Initial profile data
-    let initialProfileData = {
+    const initialProfileData = {
         firstName: "",
         lastName: "",
         cell: "",
@@ -66,12 +71,12 @@
     let clientErrors = $state({});
     let cellErr = $state(null);
 
-    // Initialize form values
+    // Initialize form values reactively
     $effect(() => {
         if (form?.data) {
             console.log("Repopulating form with data from failed submission:", form.data);
             val = {
-                ...initialProfileData,
+                ...structuredClone(initialProfileData),
                 ...form.data,
                 // Ensure nested objects are properly merged
                 address: { ...initialProfileData.address, ...form.data.address },
@@ -91,15 +96,15 @@
             };
         } else {
             // New profile initialization
-            val = { ...initialProfileData };
+            val = structuredClone(initialProfileData);
             console.log("New profile form initialized");
         }
     });
 
     // Client-side validation for immediate feedback
-    let cellRegex = new RegExp("^(\\+27|0|27)(1|6|7|8|9)([0-9]{8})$", "g");
+    const cellRegex = new RegExp("^(\\+27|0|27)(1|6|7|8|9)([0-9]{8})$", "g");
 
-    // Validate cell number as user types
+    // Validate cell number reactively as user types
     $effect(() => {
         if (val.cell) {
             object({ cell: string().matches(cellRegex, "Phone number is not valid") })
@@ -111,6 +116,9 @@
         }
     });
 
+    // Create derived values for form validation state
+    let isFormValid = $derived(val.terms && !cellErr);
+
     // Functions to manage qualifications array
     function addQualification() {
         val.qualifications = [
@@ -118,6 +126,7 @@
             { title: "", organisation: "", nqf: "", from: "", to: "", ongoing: false },
         ];
     }
+
     function removeQualification(idx) {
         val.qualifications = val.qualifications.filter((_, i) => i !== idx);
     }
@@ -126,6 +135,7 @@
     function addReference() {
         val.references = [...val.references, { name: "", email: "", phone: "", reference: "" }];
     }
+
     function removeReference(idx) {
         val.references = val.references.filter((_, i) => i !== idx);
     }

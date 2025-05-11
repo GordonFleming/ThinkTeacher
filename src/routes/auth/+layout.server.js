@@ -2,7 +2,6 @@ import { redirect } from '@sveltejs/kit';
 
 export function load({ locals, url }) {
     // If no user, redirect to login with return URL
-    console.log(locals.user)
     if (!locals.user) {
         const currentPath = url.pathname;
         throw redirect(302, `/login?r=${encodeURIComponent(currentPath)}`);
