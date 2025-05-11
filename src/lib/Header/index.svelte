@@ -7,7 +7,7 @@
     let avatar = $state("");
     $effect(() => {
         if (userState.user) {
-            avatar = `https://api.dicebear.com/7.x/initials/svg?seed=${userState.user.firstName}&size=40&backgroundColor=4F5D89&chars=1`;
+            avatar = `https://api.dicebear.com/7.x/initials/svg?seed=${userState.user.firstName}&size=40&backgroundColor=4F5D89&chars=${!userState.user.name ? 1 : 0}`;
         }
     });
 
@@ -114,6 +114,9 @@
                             <small class="text-blue" style="font-size: 0.75em;"
                                 >{userState.user.ttCode}</small
                             >
+                            {#if !userState.user.name}
+                                <span class="text-logo-gold">Please complete your profile</span>
+                            {/if}
                         </h6>
                     </div>
                     <div class="dropdown" style="margin-right: 1rem;">

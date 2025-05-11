@@ -251,7 +251,7 @@ export const load = async ({ locals, fetch }) => {
                 userId: userId // Pass userId for the form action if needed
             };
         } else {
-            throw redirect(303, '/auth/profile/create'); // Or handle as an error
+            throw redirect(303, '/auth/profile'); // Or handle as an error
             // throw error(404, "Profile not found. Please create a profile first.");
         }
 
