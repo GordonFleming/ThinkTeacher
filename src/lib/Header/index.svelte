@@ -109,10 +109,10 @@
                 {#if userState.user}
                     <div class="mt-2">
                         <h6>
-                            {#if !userState.user.firstName}
-                                <span class="text-logo-gold">Please complete your profile</span>
-                            {:else}
+                            {#if userState.user.firstName}
                                 <span class="text-logo-gold">{userState.user.firstName}</span>
+                            {:else}
+                                <span class="text-logo-gold">Please complete your profile</span>
                             {/if}
                             <br />
                             <small class="text-blue" style="font-size: 0.75em;"
@@ -229,6 +229,7 @@
     }
     .dropdown-item:hover {
         color: rgb(78, 75, 75);
+        background-color: #e9ecef;
     }
     .dropdown-item:active {
         color: #fff;
