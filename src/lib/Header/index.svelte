@@ -7,7 +7,7 @@
     let avatar = $state("");
     $effect(() => {
         if (userState.user) {
-            avatar = `https://api.dicebear.com/7.x/initials/svg?seed=${userState.user.firstName}&size=40&backgroundColor=4F5D89&chars=${!userState.user.name ? 1 : 0}`;
+            avatar = `https://api.dicebear.com/7.x/initials/svg?seed=${userState.user.firstName}&size=40&backgroundColor=4F5D89&chars=${userState.user.name ? 1 : 0}`;
         }
     });
 
