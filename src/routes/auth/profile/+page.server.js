@@ -1,5 +1,5 @@
 import { error, fail, redirect } from '@sveltejs/kit';
-import { API_URL, strapiKey } from '$lib/env.js';
+import { API_URL, STRAPI_KEY } from '$lib/env.js';
 import { object, string, boolean, number, array } from 'yup';
 import dayjs from 'dayjs';
 
@@ -121,7 +121,7 @@ const profileSchema = object({
 
 /** @type {import('./$types').PageServerLoad} */
 export const load = async ({ locals, fetch }) => {
-    if (!strapiKey) {
+    if (!STRAPI_KEY) {
         throw error(500, "API key is not configured");
     }
 
@@ -137,7 +137,7 @@ export const load = async ({ locals, fetch }) => {
         // Check if user already has a profile
         const response = await fetch(`${API_URL}/profiles?filters[user][id][$eq]=${userId}`, {
             headers: {
-                'Authorization': `Bearer ${strapiKey}`
+                'Authorization': `Bearer ${STRAPI_KEY}`
             }
         });
 
@@ -164,7 +164,7 @@ export const load = async ({ locals, fetch }) => {
 /** @type {import('./$types').Actions} */
 export const actions = {
     default: async ({ request, fetch }) => {
-        if (!strapiKey) {
+        if (!STRAPI_KEY) {
             return fail(500, { message: "API key is not configured. Profile cannot be saved." });
         }
 
@@ -261,7 +261,7 @@ export const actions = {
                 method,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${strapiKey}`,
+                    Authorization: `Bearer ${STRAPI_KEY}`,
                 },
                 body: JSON.stringify(dataPayload),
             });

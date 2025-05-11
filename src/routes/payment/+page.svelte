@@ -1,7 +1,7 @@
 <!-- <script>
     import { onMount } from "svelte";
     import axios from "axios";
-    import { API_URL, strapiKey, toastErr, toastSuc } from "$lib/env.js";
+    import { API_URL, STRAPI_KEY, toastErr, toastSuc } from "$lib/env.js";
     import { toast } from "@zerodevx/svelte-toast";
     import { goto } from "$app/navigation";
 
@@ -45,7 +45,7 @@
         const config = {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer " + strapiKey,
+                Authorization: "Bearer " + STRAPI_KEY,
             },
         };
 
@@ -91,7 +91,7 @@
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: "Bearer " + strapiKey,
+                        Authorization: "Bearer " + STRAPI_KEY,
                     },
                 }
             )
