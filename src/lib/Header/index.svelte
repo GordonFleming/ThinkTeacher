@@ -109,14 +109,15 @@
                 {#if userState.user}
                     <div class="mt-2">
                         <h6>
-                            <span class="text-logo-gold">{userState.user.firstName}</span>
+                            {#if !userState.user.name}
+                                <span class="text-logo-gold">Please complete your profile</span>
+                            {:else}
+                                <span class="text-logo-gold">{userState.user.firstName}</span>
+                            {/if}
                             <br />
                             <small class="text-blue" style="font-size: 0.75em;"
                                 >{userState.user.ttCode}</small
                             >
-                            {#if !userState.user.name}
-                                <span class="text-logo-gold">Please complete your profile</span>
-                            {/if}
                         </h6>
                     </div>
                     <div class="dropdown" style="margin-right: 1rem;">

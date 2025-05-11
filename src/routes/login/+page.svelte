@@ -45,12 +45,13 @@
 
                 if (redirectUrl) {
                     goto(redirectUrl);
-                } else if (paidMember) {
-                    goto("/benefits");
                 } else {
-                    goto("/payment");
-                    toast.push("Payment required.", toastErr);
+                    goto("/benefits");
                 }
+                // } else {
+                //     goto("/payment");
+                //     toast.push("Payment required.", toastErr);
+                // }
             })
             .catch((error) => {
                 console.log("An error occurred:", error);
