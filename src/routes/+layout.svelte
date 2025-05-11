@@ -4,22 +4,14 @@
     import "../bootstrap.css";
     import "../app.css";
     import { SvelteToast } from "@zerodevx/svelte-toast";
-    import { userState } from "$lib/stores/userState.svelte.js";
 
     const { data, children } = $props();
-
-    // Update user state when data changes
-    $effect(() => {
-        if (data.user) {
-            userState.user = data.user;
-            userState.isAuthenticated = true;
-        }
-    });
+    let user = data.user;
 
     const options = {};
 </script>
 
-<Header />
+<Header {user} />
 
 <div class="container-fluid">
     {@render children()}

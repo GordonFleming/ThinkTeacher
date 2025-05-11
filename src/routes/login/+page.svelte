@@ -1,13 +1,11 @@
 <script>
     import { onMount } from "svelte";
-    import axios from "axios";
     import { goto } from "$app/navigation";
     import Icon from "$lib/Icons/icon.svelte";
     import { facebook, instagram, eye, eyeSlash } from "$lib/Icons/icons";
     import { API_URL, toastErr } from "$lib/env.js";
     import { toast } from "@zerodevx/svelte-toast";
     import { logoutUser } from "$lib/utils";
-    import { setUser, clearUser } from "$lib/stores/userState.svelte.js";
 
     let redirectUrl = null;
     let email, password;
@@ -21,42 +19,50 @@
         const jwtCookie = cookies.find((cookie) => cookie.trim().startsWith("jwt="));
 
         if (jwtCookie) {
-            // User is logged in, so log them out first
             logoutUser();
-            clearUser();
         }
     });
 
     async function loginUser() {
-        await axios
-            .post(`${API_URL}/auth/local`, {
-                identifier: email,
-                password: password,
-            })
-            .then((response) => {
-                // Store the JWT token in cookies
-                const jwt = response.data.jwt;
-                document.cookie = `jwt=${jwt}; path=/;`;
-
-                // Update the user state
-                setUser(response.data.user);
-
-                let paidMember = response.data.user.paid;
-
-                if (redirectUrl) {
-                    goto(redirectUrl);
-                } else {
-                    goto("/benefits");
-                }
-                // } else {
-                //     goto("/payment");
-                //     toast.push("Payment required.", toastErr);
-                // }
-            })
-            .catch((error) => {
-                console.log("An error occurred:", error);
-                toast.push(error.response.data.error.message, toastErr);
+        try {
+            const response = await fetch(`${API_URL}/auth/local`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    identifier: email,
+                    password: password,
+                }),
             });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                console.log("An error occurred:", data);
+                toast.push(data.error.message, toastErr);
+                return;
+            }
+
+            // Store the JWT token in cookies
+            const jwt = data.jwt;
+            document.cookie = `jwt=${jwt}; path=/;`;
+
+            let paidMember = data.user.paid;
+
+            if (redirectUrl) {
+                goto(redirectUrl);
+            } else {
+                goto("/benefits");
+            }
+            // } else {
+            //     goto("/payment");
+            //     toast.push("Payment required.", toastErr);
+            // }
+        } catch (error) {
+            console.log("An error occurred:", error);
+            toast.push("An unexpected error occurred. Please try again.", toastErr);
+        }
     }
 
     let seePlz = true;

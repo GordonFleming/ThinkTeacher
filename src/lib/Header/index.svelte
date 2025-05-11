@@ -2,16 +2,13 @@
     import { onMount } from "svelte";
     import { goto } from "$app/navigation";
     import { logoutUser } from "$lib/utils";
-    import { userState } from "$lib/stores/userState.svelte.js";
 
     let avatar = $state("");
-    $effect(() => {
-        if (userState.user) {
-            avatar = `https://api.dicebear.com/7.x/initials/svg?seed=${userState.user.firstName}&size=40&backgroundColor=4F5D89&chars=${userState.user.firstName ? 1 : 0}`;
-        }
-    });
+
+    let { user } = $props();
 
     onMount(() => {
+        avatar = `https://api.dicebear.com/7.x/initials/svg?seed=${user.firstName}&size=40&backgroundColor=4F5D89&chars=${user.firstName ? 1 : 0}`;
         document.querySelector(".third-button").addEventListener("click", function () {
             document.querySelector(".animated-icon3").classList.toggle("open");
         });
@@ -106,17 +103,16 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbar">
             <!-- Right elements -->
             <div class="d-flex justify-content-end align-items-center">
-                {#if userState.user}
+                {#if user}
                     <div class="mt-2">
                         <h6>
-                            {#if userState.user.firstName}
-                                <span class="text-logo-gold">{userState.user.firstName}</span>
+                            {#if user.firstName}
+                                <span class="text-logo-gold">{user.firstName}</span>
                             {:else}
-                                <span class="text-logo-gold">Please complete your profile</span>
+                                <span class="text-logo-gold">Please complete profile</span>
                             {/if}
                             <br />
-                            <small class="text-blue" style="font-size: 0.75em;"
-                                >{userState.user.ttCode}</small
+                            <small class="text-blue" style="font-size: 0.75em;">{user.ttCode}</small
                             >
                         </h6>
                     </div>

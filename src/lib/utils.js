@@ -1,5 +1,4 @@
 import { goto } from "$app/navigation";
-import { clearUser } from "$lib/stores/userState.svelte.js";
 export async function logoutUser() {
     // Clear client-side cookie
     document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -7,11 +6,11 @@ export async function logoutUser() {
     // Clear server-side session
     try {
         await fetch("/api/auth/logout", { method: "POST" });
-        clearUser();
     } catch (error) {
         console.error("Logout error:", error);
     } finally {
         // Always redirect to home page
-        goto("/");
+        goto("/", { invalidateAll: true });
+        // window.location.href = "/";
     }
 } 
