@@ -1,6 +1,5 @@
 <script>
-    import { setContext, onMount } from "svelte";
-    import { writable } from "svelte/store";
+    import { setContext } from "svelte";
     import Header from "$lib/Header/index.svelte";
     import Footer from "$lib/Footer/index.svelte";
     import "../bootstrap.css";
@@ -16,7 +15,12 @@
     // Make user store available throughout the app via context
     setContext("user", userStore);
 
-    // Update store when server data changes during navigatio
+    // Update store when server data changes during navigation
+    $effect(() => {
+        if (data.user) {
+            userStore.set(data.user);
+        }
+    });
 
     const options = {};
 </script>

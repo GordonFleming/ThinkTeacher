@@ -17,9 +17,13 @@
     });
 
     onMount(() => {
-        document.querySelector(".third-button").addEventListener("click", function () {
-            document.querySelector(".animated-icon3").classList.toggle("open");
-        });
+        document
+            .querySelector(".third-button")
+            .addEventListener("click", function () {
+                document
+                    .querySelector(".animated-icon3")
+                    .classList.toggle("open");
+            });
     });
 
     function mustClick() {
@@ -46,8 +50,16 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbar">
             <ul class="navbar-nav">
                 <div class="nav-img mx-auto">
-                    <a class="navbar-brand" data-sveltekit-preload-data href="/" onclick={mustClick}
-                        ><img src="/thinkteacherlogo-final.png" alt="logo" width="200" /></a
+                    <a
+                        class="navbar-brand"
+                        data-sveltekit-preload-data
+                        href="/"
+                        onclick={mustClick}
+                        ><img
+                            src="/thinkteacherlogo-final.png"
+                            alt="logo"
+                            width="200"
+                        /></a
                     >
                 </div>
                 <li class="nav-item">
@@ -115,9 +127,16 @@
                     <div class="mt-2">
                         <h6>
                             {#if userStore.hasProfile()}
-                                <span class="text-logo-gold">{userStore.getFullName()}</span>
+                                <span class="text-logo-gold"
+                                    >{userStore.getFullName()}</span
+                                >
                             {:else}
-                                <span class="text-logo-gold">Please complete profile</span>
+                                <a
+                                    href="/auth/profile"
+                                    class="btn btn-sm btn-outline-dark"
+                                >
+                                    <span class="">Complete profile</span></a
+                                >
                             {/if}
                             <br />
                             <small class="text-blue" style="font-size: 0.75em;">
@@ -151,7 +170,8 @@
                                 <button
                                     class="dropdown-item"
                                     type="button"
-                                    onclick={() => userStore.logout()}>Logout</button
+                                    onclick={() => userStore.logout()}
+                                    >Logout</button
                                 >
                             </li>
                         </ul>

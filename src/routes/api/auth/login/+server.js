@@ -35,21 +35,21 @@ export async function POST({ request, cookies }) {
         // Get the JWT token
         const jwt = data.jwt;
         
-        // Fetch complete user data with profile
-        const profileResponse = await fetch(`${API_URL}/profiles?filters[user][id][$eq]=${data.user.id}`, {
+        // Fetch complete user data with populated profile
+        const userResponse = await fetch(`${API_URL}/users/${data.user.id}?populate=profile`, {
             headers: {
                 'Authorization': `Bearer ${STRAPI_KEY}`
             }
         });
         
-        if (!profileResponse.ok) {
+        if (!userResponse.ok) {
             return json({ 
                 success: false, 
                 error: 'Failed to fetch user data' 
-            }, { status: profileResponse.status });
+            }, { status: userResponse.status });
         }
         
-        const profileDate = await profileResponse.json();
+        const userData = await userResponse.json();
         
         // Set the JWT as a cookie
         cookies.set('jwt', jwt, {
@@ -64,8 +64,7 @@ export async function POST({ request, cookies }) {
         return json({
             success: true,
             user: {
-                ...data.user,
-                ...profileDate.data[0].attributes,
+                ...userData,
                 jwt
             }
         });

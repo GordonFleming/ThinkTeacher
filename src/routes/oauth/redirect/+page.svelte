@@ -1,67 +1,70 @@
-<!-- Create page server side to set cookies or a +page.server ... -->
-
-<!-- <script>
+<script>
     import { onMount } from "svelte";
-    import axios from "axios";
-    import { API_URL } from "$lib/env.js";
-    import { name, surname, id, ttNum } from "$lib/stores";
+    import { invalidate } from "$app/navigation";
     import { goto } from "$app/navigation";
-    import { Jumper } from "svelte-loading-spinners";
-    import { browserSet, browserSessionSet } from "$lib/re_utils";
+    import { getContext } from "svelte";
 
-    let loading = true,
-        errMsg;
-    let urlParams;
-    let myParam, userData;
+    export let data;
+
+    // Get user store from context
+    const userStore = getContext("user");
+
     onMount(async () => {
-        urlParams = new URLSearchParams(window.location.search);
-        myParam = urlParams.get("access_token");
+        try {
+            console.log("OAuth redirect data:", data);
 
-        const res = await axios.get(`${API_URL}/auth/google/callback?access_token=${myParam}`);
-
-        userData = res.data;
-        browserSessionSet("provider", userData.user.provider);
-        browserSet("jwt", userData.jwt);
-        browserSet("id", userData.user.id);
-        $id = userData.user.id;
-
-        let paidMember = userData.user.paid;
-
-        if (!userData.user.firstName) {
-            goto("/register");
-        } else if (userData.user.firstName) {
-            browserSet("name", userData.user.firstName);
-            $name = userData.user.firstName;
-            browserSet("surname", userData.user.lastName);
-            $surname = userData.user.lastName;
-            browserSet("ttNum", userData.user.ttCode);
-            $ttNum = userData.user.ttCode;
-
-            if (paidMember) {
-                console.log("you are paid up, payment check");
-                goto("/benefits");
-            } else {
-                console.log("you are not paid up");
-                goto("/payment");
+            // Force update of user state if we have user data
+            if (data.success && data.user) {
+                userStore.set(data.user);
+                console.log("User store updated with:", data.user);
             }
-        } else {
-            errMsg = "Something went wrong...";
+
+            // Invalidate all data to refresh user state throughout the app
+            await invalidate("app:user");
+
+            // Short delay to ensure store updates propagate
+            await new Promise((resolve) => setTimeout(resolve, 300));
+
+            // Use the redirect path from the server if available
+            if (data.success && data.redirect) {
+                // Log before navigation
+                console.log("Redirecting to:", data.redirect);
+                console.log(
+                    "Current user state:",
+                    userStore.isLoggedIn() ? "Logged in" : "Not logged in",
+                );
+
+                // Use SvelteKit navigation instead of raw location change
+                // This ensures the layout data is refreshed properly
+                goto(data.redirect);
+            } else if (data.error) {
+                // Handle error case
+                console.error("Authentication error:", data.error);
+                goto("/login?error=" + encodeURIComponent(data.error));
+            } else {
+                // Default fallback
+                goto("/auth/profile");
+            }
+        } catch (error) {
+            console.error("Error during redirect:", error);
+            // Fallback to direct navigation if something goes wrong
+            window.location.href = "/auth/profile";
         }
-        loading = false;
     });
 </script>
 
-<div class="container mt-5 mb-5">
-    <div class="row text-center justify-content-center">
-        {#if loading}
-            <div class="d-flex justify-content-center mt-5">
-                <Jumper size="150" color="#5C677D" unit="px" duration="1.4s" />
-            </div>
-            <p>Redirecting you...</p>
-        {/if}
-
-        {#if errMsg}
-            <h2>{errMsg}</h2>
-        {/if}
-    </div>
-</div> -->
+<div class="container text-center my-5">
+    {#if data.error}
+        <div class="alert alert-danger" role="alert">
+            <h2>Authentication Error</h2>
+            <p>{data.error}</p>
+            <a href="/login" class="btn bg-gold mt-3">Return to Login</a>
+        </div>
+    {:else}
+        <h2>Authentication successful</h2>
+        <p>Redirecting you to {data.redirect || "/auth/profile"}...</p>
+        <div class="spinner-border mt-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    {/if}
+</div>

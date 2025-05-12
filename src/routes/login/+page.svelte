@@ -6,6 +6,7 @@
     import { toastErr } from "$lib/env.js";
     import { toast } from "@zerodevx/svelte-toast";
     import { getContext } from "svelte";
+    import { PUBLIC_PROD } from "$env/static/public";
 
     let redirectUrl = $state(null);
     let email = $state("");
@@ -15,7 +16,6 @@
 
     // Get the user store from context
     const userStore = getContext("user");
-    console.log("userStore:", userStore);
 
     onMount(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -50,7 +50,10 @@
             }
         } catch (error) {
             console.log("An error occurred:", error);
-            toast.push("An unexpected error occurred. Please try again.", toastErr);
+            toast.push(
+                "An unexpected error occurred. Please try again.",
+                toastErr,
+            );
         } finally {
             isLoading = false;
         }
@@ -77,16 +80,24 @@
     <div class="py-3 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-6">
-                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                <div
+                    class="card bg-dark text-white"
+                    style="border-radius: 1rem;"
+                >
                     <div class="card-body p-md-4 p-lg-4 text-center">
                         <div class="mb-md-3">
                             <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
 
                             <div class="mt-4 google-box">
                                 <a
-                                    href="https://tt-strapi.glass.thinkteacher.co.za/api/connect/google"
+                                    href={PUBLIC_PROD === "true"
+                                        ? "https://tt-strapi.glass.thinkteacher.co.za/api/connect/google"
+                                        : "http://localhost:1337/api/connect/google"}
                                 >
-                                    <div id="google-sso" class="Sso__button Sso__googleIdButton">
+                                    <div
+                                        id="google-sso"
+                                        class="Sso__button Sso__googleIdButton"
+                                    >
                                         Continue with Google
                                     </div>
                                 </a>
@@ -96,10 +107,14 @@
                                     <span class="Sso__dividerLine" />
                                 </div>
                             </div>
-                            <p class="text-white-50 mb-3">Please enter your email and password</p>
+                            <p class="text-white-50 mb-3">
+                                Please enter your email and password
+                            </p>
                             <form name="login">
                                 <div class="form-outline form-white mb-2 mt-3">
-                                    <label class="form-label" for="Email">Email</label>
+                                    <label class="form-label" for="Email"
+                                        >Email</label
+                                    >
                                     <input
                                         type="email"
                                         id="Email"
@@ -110,7 +125,9 @@
                                     />
                                 </div>
                                 <div class="form-outline form-white mb-4">
-                                    <label class="form-label" for="Password">Password</label>
+                                    <label class="form-label" for="Password"
+                                        >Password</label
+                                    >
                                     <div class="input-group mb-3">
                                         <input
                                             type="password"
@@ -133,7 +150,9 @@
                                 </div>
 
                                 <p class="small mb-3 pb-lg-2">
-                                    <a class="text-white-50" href="/forgot-password"
+                                    <a
+                                        class="text-white-50"
+                                        href="/forgot-password"
                                         >Forgot password?</a
                                     >
                                 </p>
@@ -160,11 +179,13 @@
                             <div class="mt-2 pt-1">
                                 <a
                                     href="https://www.facebook.com/thinkteacher"
-                                    class="text-white px-2"><Icon data={facebook} scale="2.2" /></a
+                                    class="text-white px-2"
+                                    ><Icon data={facebook} scale="2.2" /></a
                                 >
                                 <a
                                     href="https://www.instagram.com/thinkteacher_rsa"
-                                    class="text-white px-2"><Icon data={instagram} scale="2.2" /></a
+                                    class="text-white px-2"
+                                    ><Icon data={instagram} scale="2.2" /></a
                                 >
                             </div>
                         </div>
