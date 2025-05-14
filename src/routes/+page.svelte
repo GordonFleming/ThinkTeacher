@@ -32,7 +32,7 @@
     <title>Home | ThinkTeacher</title>
     <meta
         name="description"
-        content="ThinkTeacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities 
+        content="ThinkTeacher is an online portal dedicated to the inspiring teachers of South Africa, providing access to benefit options, educational opportunities
                 and nurturing networks. ThinkTeacher's vision is to empower teachers to thrive in their role as innovative and sustainable change agents in and for South Africa."
     />
 </svelte:head>
@@ -40,19 +40,25 @@
 <header id="banner">
     <section id="banner-words">
         <h2 class="header-background">
-            <span class="eh"><span class="text-logo-gold">think</span>teacher</span>
-            <span class="eh"><span class="text-logo-gold">think</span>school</span>
-            <span class="eh"><span class="text-logo-gold">think</span>smart</span>
+            <span class="eh"
+                ><span class="text-logo-gold">think</span>teacher</span
+            >
+            <span class="eh"
+                ><span class="text-logo-gold">think</span>school</span
+            >
+            <span class="eh"
+                ><span class="text-logo-gold">think</span>smart</span
+            >
         </h2>
     </section>
 </header>
 
-<div class="container mt-4">
+<div class="container mt-5">
     <div class="row align-items-center">
         <!-- Image Column -->
         <div class="col-md-5 mb-4 mb-md-0">
             <img
-                src="https://res.cloudinary.com/splyce/image/upload/v1746365739/ThinkTeacher/TT_website_home_page_cropped_jedwjd.webp"
+                src="https://res.cloudinary.com/splyce/image/upload/v1747250055/ThinkTeacher/Young_teacher_image_cropped_geu3yx.webp"
                 class="img-fluid rounded shadow"
                 alt="ThinkTeacher Network"
             />
@@ -60,7 +66,9 @@
 
         <!-- Content Column -->
         <div class="col-md-7">
-            <h1 class="main-heading">Ready for your next teaching opportunity?</h1>
+            <h1 class="main-heading">
+                Ready for your next teaching opportunity?
+            </h1>
 
             <div class="feature-item d-flex align-items-start">
                 <div class="feature-icon">✨</div>
@@ -84,9 +92,59 @@
                 </div>
             </div>
         </div>
-        <p class="text-center fw-bold mt-3 fs-4">
+        <p class="text-center fw-bold mt-3 mb-4 fs-4">
             No cost. Just 5 minutes of your time. Join today!
         </p>
+
+        <div class="row mt-5">
+            <h2 class="mb-3 text-center">
+                ThinkTeacher: Where Teachers Come First
+            </h2>
+            <div class="col-md-8">
+                <div class="teacher-info">
+                    <h4 class="text-start mb-3 text-logo-gold">
+                        For Teachers at Every Stage
+                    </h4>
+                    <p class="fs-5">
+                        From student teachers seeking placement to experienced
+                        educators ready for their next chapter—ThinkTeacher
+                        supports you all the way.
+                    </p>
+
+                    <h4 class="text-start mb-3 text-logo-blue mt-4">
+                        Join a Network That Works for You
+                    </h4>
+                    <p class="fs-5">
+                        Get matched with schools, access locum opportunities,
+                        and connect with mentoring roles across South Africa.
+                    </p>
+
+                    <h4 class="text-start mb-3 text-logo-gold mt-4">
+                        Grow Your Skills
+                    </h4>
+                    <p class="fs-5">
+                        Enjoy exclusive webinars, expert insights, and
+                        professional development designed just for educators.
+                    </p>
+
+                    <h4 class="text-start mb-3 text-logo-blue mt-4">
+                        Build Your Profile, Unlock Opportunities
+                    </h4>
+                    <p class="fs-5">
+                        Complete your ThinkTeacher profile to join our national
+                        database and connect with a growing community of
+                        subscribing schools.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 d-flex align-items-center">
+                <img
+                    src="https://res.cloudinary.com/splyce/image/upload/v1746365739/ThinkTeacher/TT_website_home_page_cropped_jedwjd.webp"
+                    alt="ThinkTeacher"
+                    class="img-fluid rounded shadow"
+                />
+            </div>
+        </div>
     </div>
 </div>
 
@@ -100,24 +158,31 @@
                 alt="img"
             />
         </div>
-        <div class="col-sm-12 col-md-6 d-flex bg-gold text-white rounded-3 px-3 py-1">
+        <div
+            class="col-sm-12 col-md-6 d-flex bg-gold text-white rounded-3 px-3 py-1"
+        >
             <p class="fs-4 lh-base my-auto text-justify">
-                Teacher wellbeing has a significant impact on schools, teachers and students. Many
-                of the negative effects of low wellbeing are well publicised, with stress or burnout
-                being linked to attrition and the resulting teacher shortages worldwide. This has
-                led to calls for teacher wellbeing to be taken seriously for the long-term
-                sustainability of the profession.
+                Teacher wellbeing has a significant impact on schools, teachers
+                and students. Many of the negative effects of low wellbeing are
+                well publicised, with stress or burnout being linked to
+                attrition and the resulting teacher shortages worldwide. This
+                has led to calls for teacher wellbeing to be taken seriously for
+                the long-term sustainability of the profession.
             </p>
         </div>
     </div>
 
     <div class="row mt-4">
-        <div class="col-sm-12 col-md-6 d-flex bg-blue text-white rounded-3 px-3 py-1">
+        <div
+            class="col-sm-12 col-md-6 d-flex bg-blue text-white rounded-3 px-3 py-1"
+        >
             <p class="fs-4 lh-base my-auto text-justify">
-                Looking after your teachers’ wellbeing is one of the most important things you can
-                do as a school community. The success of your school is dependent on the quality of
-                instruction delivered by your teachers to your students; their wellbeing is crucial
-                to ensuring that their teaching skills are effective and of a high quality.
+                Looking after your teachers’ wellbeing is one of the most
+                important things you can do as a school community. The success
+                of your school is dependent on the quality of instruction
+                delivered by your teachers to your students; their wellbeing is
+                crucial to ensuring that their teaching skills are effective and
+                of a high quality.
             </p>
         </div>
         <div class="col-sm-12 col-md-6">
@@ -130,12 +195,13 @@
         </div>
     </div>
     <p class="fs-4 text-blue mt-4">
-        <strong><span class="think">think</span>teacher</strong> - by teachers for teachers.
+        <strong><span class="think">think</span>teacher</strong> - by teachers for
+        teachers.
     </p>
 </div>
 
-<div class="container py-5">
-    <div class="row justify-content-center mb-5">
+<div class="container py-4">
+    <div class="row justify-content-center mb-4">
         <div class="col-md-8">
             <div class="card shadow">
                 <div class="card-header bg-blue text-white text-center">
@@ -144,14 +210,16 @@
                 <div class="card-body">
                     <ul class="fs-5 list-unstyled text-dark">
                         <li>
-                            <strong>Step 1:</strong> Create your profile (5 min). Your online CV will
-                            not be disclosed publicly.
+                            <strong>Step 1:</strong> Create your profile (5 min).
+                            Your online CV will not be disclosed publicly.
                         </li>
                         <li>
-                            <strong>Step 2:</strong> Set up the calendar if you are available for locums.
+                            <strong>Step 2:</strong> Set up the calendar if you are
+                            available for locums.
                         </li>
                         <li>
-                            <strong>Step 3:</strong> We will connect your skills with our partner schools.
+                            <strong>Step 3:</strong> We will connect your skills
+                            with our partner schools.
                         </li>
                     </ul>
                     <div class="text-center pt-2">
@@ -167,7 +235,7 @@
     </div>
 </div>
 
-<div class="container mt-4 mb-5">
+<div class="container mb-5">
     <!-- Carousel of Webinars -->
     <!-- <WebinarsBar /> -->
 
@@ -212,7 +280,8 @@
 
     <div class="container text-center mb-4 grey-grad">
         <h2 class="mb-4">
-            Why you should become a <span class="text-logo-gold">think</span>teacher member
+            Why you should become a <span class="text-logo-gold">think</span
+            >teacher member
         </h2>
 
         <!-- svelte-ignore a11y-media-has-caption -->

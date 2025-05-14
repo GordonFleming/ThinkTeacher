@@ -74,16 +74,24 @@
                     <a
                         class="nav-link fromLeft"
                         data-sveltekit-preload-data
-                        href="/schools"
-                        onclick={mustClick}>Schools</a
+                        href="/about"
+                        onclick={mustClick}>About</a
                     >
                 </li>
                 <li class="nav-item">
                     <a
                         class="nav-link fromLeft"
                         data-sveltekit-preload-data
-                        href="/about"
-                        onclick={mustClick}>About</a
+                        href="/teachers"
+                        onclick={mustClick}>Teachers</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a
+                        class="nav-link fromLeft"
+                        data-sveltekit-preload-data
+                        href="/schools"
+                        onclick={mustClick}>Schools</a
                     >
                 </li>
                 <li class="nav-item">
