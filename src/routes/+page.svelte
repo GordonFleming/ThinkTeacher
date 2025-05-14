@@ -139,7 +139,7 @@
             </div>
             <div class="col-md-4 d-flex align-items-center">
                 <img
-                    src="https://res.cloudinary.com/splyce/image/upload/v1746365739/ThinkTeacher/TT_website_home_page_cropped_jedwjd.webp"
+                    src="https://res.cloudinary.com/splyce/image/upload/v1747254268/ThinkTeacher/tt-hp-lady-teacher_cropped_krhthn.webp"
                     alt="ThinkTeacher"
                     class="img-fluid rounded shadow"
                 />
