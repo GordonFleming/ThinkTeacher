@@ -209,15 +209,16 @@
                 </div>
                 <div class="card-body">
                     <ul class="fs-5 list-unstyled text-dark">
-                        <li>
+                        <li class="my-2">
                             <strong>Step 1:</strong> Create your profile (5 min).
                             Your online CV will not be disclosed publicly.
                         </li>
-                        <li>
-                            <strong>Step 2:</strong> Set up the calendar if you are
-                            available for locums.
+                        <li class="my-2">
+                            <strong>Step 2:</strong> Indicate if you are interested
+                            in mentoring, tutoring, internship, locum, or permanent
+                            teaching positions.
                         </li>
-                        <li>
+                        <li class="my-2">
                             <strong>Step 3:</strong> We will connect your skills
                             with our partner schools.
                         </li>
