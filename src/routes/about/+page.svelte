@@ -4,36 +4,68 @@
 
 <svelte:head>
     <title>About | ThinkTeacher</title>
-    <meta name="description" content="Read more about what ThinkTeacher is about." />
+    <meta
+        name="description"
+        content="Read more about what ThinkTeacher is about."
+    />
 </svelte:head>
 
-<Title prefix={false} title={"why <span class='text-logo-gold'>think</span>teacher"} />
+<Title
+    prefix={false}
+    title={"why <span class='text-logo-gold'>think</span>teacher"}
+/>
 
 <div class="container mb-4">
     <div class="row text-center mt-4 justify-content-center">
         <p class="fs-3 lh-base text-justify">
-            <strong>ThinkTeacher</strong> is an online platform dedicated to growing, supporting and
-            empowering educators and schools. Our platform provides access to <strong>benefits,
-            educational opportunities, and professional networks</strong>. Each teacher plays a
-            pivotal role in shaping hundreds of students. By investing in and uplifting the
-            teaching profession and providing a georeferenced management tool to schools, we
-            contribute to inspiring and equipping the next generation of South Africans.
+            <strong>ThinkTeacher</strong> is an online platform dedicated to
+            growing, supporting and empowering educators and schools. Our
+            platform provides access to
+            <strong
+                >benefits, educational opportunities, and professional networks</strong
+            >. Each teacher plays a pivotal role in shaping hundreds of
+            students. By investing in and uplifting the teaching profession and
+            providing a georeferenced management tool to schools, we contribute
+            to inspiring and equipping the next generation of South Africans.
         </p>
 
         <p class="fs-3 mt-4">
-            “Education is the most powerful weapon you can use to change the world.” <br /> -
+            “Education is the most powerful weapon you can use to change the
+            world.” <br /> -
             <strong>Nelson Mandela.</strong>
         </p>
 
-        <p class="fs-4 text-justify mt-4"><strong>ThinkTeacher: Supporting Teachers at Every Stage</strong></p>
-        <p class="fs-4 text-justify">South Africa is home to a wealth of passionate educators—from fresh graduates
-            eager to gain experience, to skilled teachers seeking new opportunities, and
-            seasoned professionals ready to mentor or take on locum roles.</p>
-        <p class="fs-4 text-justify">By creating a ThinkTeacher profile, educators gain access to a supportive
-            community, professional development webinars, valuable resources, and a direct
-            connection to our growing network of partner schools.</p>
-        <p class="fs-4 text-justify"><strong>ThinkTeacher puts teachers first—because great teaching starts with great
-            teachers.</strong></p>
+        <div class="col-md-8 col-sm-12">
+            <p class="fs-4 text-justify mt-4">
+                <strong>ThinkTeacher: Supporting Teachers at Every Stage</strong
+                >
+            </p>
+            <p class="fs-4 text-justify">
+                South Africa is home to a wealth of passionate educators—from
+                fresh graduates eager to gain experience, to skilled teachers
+                seeking new opportunities, and seasoned professionals ready to
+                mentor or take on locum roles.
+            </p>
+            <p class="fs-4 text-justify">
+                By creating a ThinkTeacher profile, educators gain access to a
+                supportive community, professional development webinars,
+                valuable resources, and a direct connection to our growing
+                network of partner schools.
+            </p>
+            <p class="fs-4 text-justify">
+                <strong
+                    >ThinkTeacher puts teachers first—because great teaching
+                    starts with great teachers.</strong
+                >
+            </p>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <img
+                class="img-fluid mt-3 p-3"
+                src="https://res.cloudinary.com/splyce/image/upload/v1747939417/ThinkTeacher/about_page_image_cropped_hacyf7.webp"
+                alt="about-img"
+            />
+        </div>
 
         <div class="text-center mb-4 mt-4">
             <!-- svelte-ignore a11y-media-has-caption -->
@@ -44,12 +76,14 @@
                 />
             </video>
             <h4>
-                View the video above to learn more about <span class="text-logo-gold">think</span
+                View the video above to learn more about <span
+                    class="text-logo-gold">think</span
                 >teacher...
             </h4>
             <p class="fs-3 mt-4">
-                ThinkTeacher&#39;s vision is to empower teachers to thrive in their role as
-                innovative and sustainable change agents in and for South Africa.
+                ThinkTeacher&#39;s vision is to empower teachers to thrive in
+                their role as innovative and sustainable change agents in and
+                for South Africa.
             </p>
         </div>
     </div>
