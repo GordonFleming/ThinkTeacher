@@ -74,18 +74,30 @@
     // Initialize form values reactively
     $effect(() => {
         if (form?.data) {
-            console.log("Repopulating form with data from failed submission:", form.data);
+            console.log(
+                "Repopulating form with data from failed submission:",
+                form.data,
+            );
             val = {
                 ...structuredClone(initialProfileData),
                 ...form.data,
                 // Ensure nested objects are properly merged
-                address: { ...initialProfileData.address, ...form.data.address },
+                address: {
+                    ...initialProfileData.address,
+                    ...form.data.address,
+                },
                 teachingPhases: {
                     ...initialProfileData.teachingPhases,
                     ...form.data.teachingPhases,
                 },
-                position: { ...initialProfileData.position, ...form.data.position },
-                languages: { ...initialProfileData.languages, ...form.data.languages },
+                position: {
+                    ...initialProfileData.position,
+                    ...form.data.position,
+                },
+                languages: {
+                    ...initialProfileData.languages,
+                    ...form.data.languages,
+                },
                 // Ensure qualifications are properly handled
                 qualifications:
                     form.data.qualifications?.map((qual) => ({
@@ -107,7 +119,9 @@
     // Validate cell number reactively as user types
     $effect(() => {
         if (val.cell) {
-            object({ cell: string().matches(cellRegex, "Phone number is not valid") })
+            object({
+                cell: string().matches(cellRegex, "Phone number is not valid"),
+            })
                 .validateAt("cell", { cell: val.cell })
                 .then(() => (cellErr = null))
                 .catch((err) => (cellErr = err.message));
@@ -123,7 +137,14 @@
     function addQualification() {
         val.qualifications = [
             ...val.qualifications,
-            { title: "", organisation: "", nqf: "", from: "", to: "", ongoing: false },
+            {
+                title: "",
+                organisation: "",
+                nqf: "",
+                from: "",
+                to: "",
+                ongoing: false,
+            },
         ];
     }
 
@@ -133,7 +154,10 @@
 
     // Add these functions after removeQualification:
     function addReference() {
-        val.references = [...val.references, { name: "", email: "", phone: "", reference: "" }];
+        val.references = [
+            ...val.references,
+            { name: "", email: "", phone: "", reference: "" },
+        ];
     }
 
     function removeReference(idx) {
@@ -150,10 +174,15 @@
     <div class="py-3 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-10 col-lg-10 col-xl-10">
-                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                <div
+                    class="card bg-dark text-white"
+                    style="border-radius: 1rem;"
+                >
                     <div class="card-body p-md-3 p-lg-4 text-center">
                         <div class="mb-md-3">
-                            <h2 class="fw-bold mb-2 text-uppercase">Create Profile</h2>
+                            <h2 class="fw-bold mb-2 text-uppercase">
+                                Create Profile
+                            </h2>
                             <h3>Your digital CV</h3>
 
                             {#if form?.message}
@@ -177,12 +206,15 @@
                                             result.type === "success" ||
                                             result.type === "redirect"
                                         ) {
-                                            toast.push("Profile created successfully!", toastSuc);
+                                            toast.push(
+                                                "Profile created successfully!",
+                                                toastSuc,
+                                            );
                                         } else if (result.type === "failure") {
                                             toast.push(
                                                 result.data?.message ||
                                                     "Error saving profile. Please check errors.",
-                                                toastErr
+                                                toastErr,
                                             );
                                         }
                                         await update();
@@ -192,28 +224,36 @@
                                 <div class="row">
                                     <!-- First Name -->
                                     <div class="col-sm-12 col-md-6">
-                                        <label class="form-label" for="name">First Name</label
-                                        ><small class="text-danger">&nbsp;*</small>
+                                        <label class="form-label" for="name"
+                                            >First Name/s</label
+                                        ><small class="text-danger"
+                                            >&nbsp;*</small
+                                        >
                                         <input
                                             type="text"
                                             name="firstName"
                                             id="name"
                                             class="form-control form-control-lg"
-                                            placeholder="First Name"
+                                            placeholder="First Name/s"
                                             bind:value={val.firstName}
                                             required
                                         />
-                                        {#if form?.errors?.firstName}<small class="text-danger"
+                                        {#if form?.errors?.firstName}<small
+                                                class="text-danger"
                                                 >{form.errors.firstName}</small
                                             >{/if}
-                                        {#if clientErrors.firstName}<small class="text-warning"
+                                        {#if clientErrors.firstName}<small
+                                                class="text-warning"
                                                 >{clientErrors.firstName}</small
                                             >{/if}
                                     </div>
                                     <!-- Last Name -->
                                     <div class="col-sm-12 col-md-6">
-                                        <label class="form-label" for="surname">Surname</label
-                                        ><small class="text-danger">&nbsp;*</small>
+                                        <label class="form-label" for="surname"
+                                            >Surname</label
+                                        ><small class="text-danger"
+                                            >&nbsp;*</small
+                                        >
                                         <input
                                             type="text"
                                             name="lastName"
@@ -223,16 +263,19 @@
                                             bind:value={val.lastName}
                                             required
                                         />
-                                        {#if form?.errors?.lastName}<small class="text-danger"
+                                        {#if form?.errors?.lastName}<small
+                                                class="text-danger"
                                                 >{form.errors.lastName}</small
                                             >{/if}
                                     </div>
 
                                     <!-- ID Number -->
                                     <div class="col-sm-12 col-md-6 mt-3">
-                                        <label class="form-label" for="idNumber">ID Number</label
+                                        <label class="form-label" for="idNumber"
+                                            >ID Number</label
                                         ><small class="text-danger"
-                                            >&nbsp;&nbsp;*required if no SACE number</small
+                                            >&nbsp;&nbsp;*required if no SACE
+                                            number</small
                                         >
                                         <input
                                             type="text"
@@ -243,15 +286,18 @@
                                             bind:value={val.idNumber}
                                             maxlength="13"
                                         />
-                                        {#if form?.errors?.idNumber}<small class="text-danger"
+                                        {#if form?.errors?.idNumber}<small
+                                                class="text-danger"
                                                 >{form.errors.idNumber}</small
                                             >{/if}
                                     </div>
                                     <!-- SACE Number -->
                                     <div class="col-sm-12 col-md-6 mt-3">
-                                        <label class="form-label" for="sace">SACE Number</label
+                                        <label class="form-label" for="sace"
+                                            >SACE Number</label
                                         ><small class="text-danger"
-                                            >&nbsp;&nbsp;*required if no ID number</small
+                                            >&nbsp;&nbsp;*required if no ID
+                                            number</small
                                         >
                                         <input
                                             type="text"
@@ -259,21 +305,25 @@
                                             id="sace"
                                             class="form-control form-control-lg"
                                             placeholder="SACE number"
-                                            maxlength="7"
+                                            maxlength="8"
                                             minlength="7"
                                             bind:value={val.sace}
                                         />
-                                        {#if form?.errors?.sace}<small class="text-danger"
+                                        {#if form?.errors?.sace}<small
+                                                class="text-danger"
                                                 >{form.errors.sace}</small
                                             >{/if}
                                     </div>
 
                                     <!-- Date of Birth -->
                                     <div class="col-sm-12 col-md-6 mt-3">
-                                        <label class="form-label" for="dateOfBirth"
+                                        <label
+                                            class="form-label"
+                                            for="dateOfBirth"
                                             >Date of Birth</label
                                         ><small class="text-danger"
-                                            >&nbsp;&nbsp;*required if no ID number</small
+                                            >&nbsp;&nbsp;*required if no ID
+                                            number</small
                                         >
                                         <input
                                             type="date"
@@ -283,16 +333,22 @@
                                             style="width: auto;"
                                             bind:value={val.dateOfBirth}
                                         />
-                                        {#if form?.errors?.dateOfBirth}<small class="text-danger"
-                                                >{form.errors.dateOfBirth}</small
+                                        {#if form?.errors?.dateOfBirth}<small
+                                                class="text-danger"
+                                                >{form.errors
+                                                    .dateOfBirth}</small
                                             >{/if}
                                     </div>
 
                                     <!-- Experience -->
                                     <div class="col-sm-12 col-md-6 mt-3">
-                                        <label class="form-label" for="experience"
+                                        <label
+                                            class="form-label"
+                                            for="experience"
                                             >Years of Experience</label
-                                        ><small class="text-danger">&nbsp;*</small>
+                                        ><small class="text-danger"
+                                            >&nbsp;*</small
+                                        >
                                         <input
                                             type="number"
                                             name="experience"
@@ -305,16 +361,23 @@
                                             max="60"
                                             required
                                         />
-                                        {#if form?.errors?.experience}<small class="text-danger"
+                                        {#if form?.errors?.experience}<small
+                                                class="text-danger"
                                                 >{form.errors.experience}</small
                                             >{/if}
                                     </div>
 
                                     <!-- Actively Looking -->
-                                    <div class="form-check form-switch mt-3 col-12">
-                                        <label class="form-check-label" for="lookingSwitch"
+                                    <div
+                                        class="form-check form-switch mt-3 col-12"
+                                    >
+                                        <label
+                                            class="form-check-label"
+                                            for="lookingSwitch"
                                             >Actively Looking?</label
-                                        ><small class="text-danger">&nbsp;*</small>
+                                        ><small class="text-danger"
+                                            >&nbsp;*</small
+                                        >
                                         <input
                                             style="width: 3rem; height: 1.4rem;"
                                             name="looking"
@@ -323,7 +386,8 @@
                                             type="checkbox"
                                             id="lookingSwitch"
                                         />
-                                        {#if form?.errors?.looking}<small class="text-danger"
+                                        {#if form?.errors?.looking}<small
+                                                class="text-danger"
                                                 >{form.errors.looking}</small
                                             >{/if}
                                     </div>
@@ -332,18 +396,23 @@
                                     <div class="col-sm-12 col-md-6 mt-3">
                                         <label class="form-label"
                                             >Position you are interested in:</label
-                                        ><small class="text-danger">&nbsp;*</small>
+                                        ><small class="text-danger"
+                                            >&nbsp;*</small
+                                        >
                                         <!-- Add name attributes like name="position.intern" -->
                                         <div class="form-check text-start ms-4">
                                             <input
                                                 class="form-check-input"
                                                 type="checkbox"
                                                 name="position.intern"
-                                                bind:checked={val.position.intern}
+                                                bind:checked={
+                                                    val.position.intern
+                                                }
                                                 id="intern"
                                             />
-                                            <label class="form-check-label" for="intern"
-                                                >Intern</label
+                                            <label
+                                                class="form-check-label"
+                                                for="intern">Intern</label
                                             >
                                         </div>
                                         <div class="form-check text-start ms-4">
@@ -351,10 +420,14 @@
                                                 class="form-check-input"
                                                 type="checkbox"
                                                 name="position.locum"
-                                                bind:checked={val.position.locum}
+                                                bind:checked={
+                                                    val.position.locum
+                                                }
                                                 id="locum"
                                             />
-                                            <label class="form-check-label" for="locum">Locum</label
+                                            <label
+                                                class="form-check-label"
+                                                for="locum">Locum</label
                                             >
                                         </div>
                                         <div class="form-check text-start ms-4">
@@ -362,11 +435,14 @@
                                                 class="form-check-input"
                                                 type="checkbox"
                                                 name="position.full_time"
-                                                bind:checked={val.position.full_time}
+                                                bind:checked={
+                                                    val.position.full_time
+                                                }
                                                 id="fullTime"
                                             />
-                                            <label class="form-check-label" for="fullTime"
-                                                >Full Time</label
+                                            <label
+                                                class="form-check-label"
+                                                for="fullTime">Full Time</label
                                             >
                                         </div>
                                         <div class="form-check text-start ms-4">
@@ -374,10 +450,14 @@
                                                 class="form-check-input"
                                                 type="checkbox"
                                                 name="position.tutor"
-                                                bind:checked={val.position.tutor}
+                                                bind:checked={
+                                                    val.position.tutor
+                                                }
                                                 id="tutor"
                                             />
-                                            <label class="form-check-label" for="tutor">Tutor</label
+                                            <label
+                                                class="form-check-label"
+                                                for="tutor">Tutor</label
                                             >
                                         </div>
                                         <div class="form-check text-start ms-4">
@@ -385,15 +465,20 @@
                                                 class="form-check-input"
                                                 type="checkbox"
                                                 name="position.mentor"
-                                                bind:checked={val.position.mentor}
+                                                bind:checked={
+                                                    val.position.mentor
+                                                }
                                                 id="mentor"
                                             />
-                                            <label class="form-check-label" for="mentor"
-                                                >Mentor</label
+                                            <label
+                                                class="form-check-label"
+                                                for="mentor">Mentor</label
                                             >
                                         </div>
-                                        {#if form?.errors?.position}<small class="text-danger"
-                                                >{typeof form.errors.position === "string"
+                                        {#if form?.errors?.position}<small
+                                                class="text-danger"
+                                                >{typeof form.errors
+                                                    .position === "string"
                                                     ? form.errors.position
                                                     : "Error in position section"}</small
                                             >{/if}
@@ -401,8 +486,10 @@
 
                                     <!-- Education Phase -->
                                     <div class="col-sm-12 col-md-6 mt-3">
-                                        <label class="form-label">Education Phase</label><small
-                                            class="text-danger">&nbsp;*</small
+                                        <label class="form-label"
+                                            >Education Phase</label
+                                        ><small class="text-danger"
+                                            >&nbsp;*</small
                                         >
                                         <!-- Add name attributes like name="teachingPhases.earlyLearning" -->
                                         <div class="form-check text-start ms-4">
@@ -410,10 +497,15 @@
                                                 class="form-check-input"
                                                 type="checkbox"
                                                 name="teachingPhases.earlyLearning"
-                                                bind:checked={val.teachingPhases.earlyLearning}
+                                                bind:checked={
+                                                    val.teachingPhases
+                                                        .earlyLearning
+                                                }
                                                 id="earlyLearning"
                                             />
-                                            <label class="form-check-label" for="earlyLearning"
+                                            <label
+                                                class="form-check-label"
+                                                for="earlyLearning"
                                                 >Early Learning Development</label
                                             >
                                         </div>
@@ -422,10 +514,15 @@
                                                 class="form-check-input"
                                                 type="checkbox"
                                                 name="teachingPhases.foundation"
-                                                bind:checked={val.teachingPhases.foundation}
+                                                bind:checked={
+                                                    val.teachingPhases
+                                                        .foundation
+                                                }
                                                 id="foundation"
                                             />
-                                            <label class="form-check-label" for="foundation"
+                                            <label
+                                                class="form-check-label"
+                                                for="foundation"
                                                 >Foundation</label
                                             >
                                         </div>
@@ -434,10 +531,15 @@
                                                 class="form-check-input"
                                                 type="checkbox"
                                                 name="teachingPhases.intermediate"
-                                                bind:checked={val.teachingPhases.intermediate}
+                                                bind:checked={
+                                                    val.teachingPhases
+                                                        .intermediate
+                                                }
                                                 id="intermediate"
                                             />
-                                            <label class="form-check-label" for="intermediate"
+                                            <label
+                                                class="form-check-label"
+                                                for="intermediate"
                                                 >Intermediate</label
                                             >
                                         </div>
@@ -446,23 +548,35 @@
                                                 class="form-check-input"
                                                 type="checkbox"
                                                 name="teachingPhases.get"
-                                                bind:checked={val.teachingPhases.get}
+                                                bind:checked={
+                                                    val.teachingPhases.get
+                                                }
                                                 id="get"
                                             />
-                                            <label class="form-check-label" for="get">GET</label>
+                                            <label
+                                                class="form-check-label"
+                                                for="get">GET</label
+                                            >
                                         </div>
                                         <div class="form-check text-start ms-4">
                                             <input
                                                 class="form-check-input"
                                                 type="checkbox"
                                                 name="teachingPhases.fet"
-                                                bind:checked={val.teachingPhases.fet}
+                                                bind:checked={
+                                                    val.teachingPhases.fet
+                                                }
                                                 id="fet"
                                             />
-                                            <label class="form-check-label" for="fet">FET</label>
+                                            <label
+                                                class="form-check-label"
+                                                for="fet">FET</label
+                                            >
                                         </div>
-                                        {#if form?.errors?.teachingPhases}<small class="text-danger"
-                                                >{typeof form.errors.teachingPhases === "string"
+                                        {#if form?.errors?.teachingPhases}<small
+                                                class="text-danger"
+                                                >{typeof form.errors
+                                                    .teachingPhases === "string"
                                                     ? form.errors.teachingPhases
                                                     : "Error in teaching phases"}</small
                                             >{/if}
@@ -471,9 +585,13 @@
                                     <!-- Subjects (conditional) -->
                                     {#if val.teachingPhases.get || val.teachingPhases.fet}
                                         <div class="col-12 mt-3">
-                                            <label class="form-label" for="subjects"
+                                            <label
+                                                class="form-label"
+                                                for="subjects"
                                                 >Subjects/Learning Areas</label
-                                            ><small class="text-danger">&nbsp;*</small>
+                                            ><small class="text-danger"
+                                                >&nbsp;*</small
+                                            >
                                             <textarea
                                                 id="subjects"
                                                 name="subjects"
@@ -481,17 +599,23 @@
                                                 placeholder="Enter subjects"
                                                 bind:value={val.subjects}
                                             ></textarea>
-                                            {#if form?.errors?.subjects}<small class="text-danger"
-                                                    >{form.errors.subjects}</small
+                                            {#if form?.errors?.subjects}<small
+                                                    class="text-danger"
+                                                    >{form.errors
+                                                        .subjects}</small
                                                 >{/if}
                                         </div>
                                     {/if}
 
                                     <!-- Teaching Preference -->
                                     <div class="col-12 mt-3">
-                                        <label class="form-label" for="teachingPreference"
+                                        <label
+                                            class="form-label"
+                                            for="teachingPreference"
                                             >Teaching Preference</label
-                                        ><small class="text-danger">&nbsp;*</small>
+                                        ><small class="text-danger"
+                                            >&nbsp;*</small
+                                        >
                                         <select
                                             class="form-select"
                                             name="teachingPreference"
@@ -499,71 +623,112 @@
                                             bind:value={val.teachingPreference}
                                             required
                                         >
-                                            <option value="" disabled>choose preference</option>
-                                            <option value="in_person">In Person</option>
-                                            <option value="online">Online</option>
-                                            <option value="hybrid">Hybrid</option>
+                                            <option value="" disabled
+                                                >choose preference</option
+                                            >
+                                            <option value="in_person"
+                                                >In Person</option
+                                            >
+                                            <option value="online"
+                                                >Online</option
+                                            >
+                                            <option value="hybrid"
+                                                >Hybrid</option
+                                            >
                                         </select>
                                         {#if form?.errors?.teachingPreference}<small
                                                 class="text-danger"
-                                                >{form.errors.teachingPreference}</small
+                                                >{form.errors
+                                                    .teachingPreference}</small
                                             >{/if}
                                     </div>
 
                                     <!-- Qualifications -->
                                     <div class="col-12 mt-3">
-                                        <label class="form-label">Qualifications</label>
-                                        <small class="text-danger">&nbsp;*</small>
+                                        <label class="form-label"
+                                            >Qualifications</label
+                                        >
+                                        <small class="text-danger"
+                                            >&nbsp;*</small
+                                        >
                                         <div>
                                             {#each val.qualifications as qual, idx (idx)}
-                                                <div class="card mb-3 p-3 text-white">
-                                                    <div class="row g-2 align-items-end">
+                                                <div
+                                                    class="card mb-3 p-3 text-white"
+                                                >
+                                                    <div
+                                                        class="row g-2 align-items-end"
+                                                    >
                                                         <div class="col-md-4">
-                                                            <label class="form-label">Title</label>
+                                                            <label
+                                                                class="form-label"
+                                                                >Name of Degree/
+                                                                Diploma</label
+                                                            >
                                                             <input
                                                                 type="text"
                                                                 class="form-control"
+                                                                placeholder="e.g. (BA/ Hon/ MSc/ PGCE)"
                                                                 name={`qualifications[${idx}].title`}
-                                                                bind:value={qual.title}
+                                                                bind:value={
+                                                                    qual.title
+                                                                }
                                                                 required
                                                             />
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <label class="form-label"
-                                                                >Organisation</label
+                                                            <label
+                                                                class="form-label"
+                                                                >Academic
+                                                                Institution</label
                                                             >
                                                             <input
                                                                 type="text"
                                                                 class="form-control"
                                                                 name={`qualifications[${idx}].organisation`}
-                                                                bind:value={qual.organisation}
+                                                                bind:value={
+                                                                    qual.organisation
+                                                                }
                                                                 required
                                                             />
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <label class="form-label"
+                                                            <label
+                                                                class="form-label"
                                                                 >NQF Level</label
                                                             >
                                                             <select
                                                                 class="form-select"
                                                                 name={`qualifications[${idx}].nqf`}
-                                                                bind:value={qual.nqf}
+                                                                bind:value={
+                                                                    qual.nqf
+                                                                }
                                                                 required
                                                             >
-                                                                <option value="" disabled
+                                                                <option
+                                                                    value=""
+                                                                    disabled
                                                                     >Select</option
                                                                 >
-                                                                <option value="4"
-                                                                    >NSC/Matric (NQF 4)</option
+                                                                <option
+                                                                    value="4"
+                                                                    >NSC/Matric
+                                                                    (NQF 4)</option
                                                                 >
-                                                                <option value="6"
-                                                                    >Honours/PGCE (NQF 6)</option
+                                                                <option
+                                                                    value="6"
+                                                                    >Honours/PGCE
+                                                                    (NQF 6)</option
                                                                 >
-                                                                <option value="7"
-                                                                    >Masters/Bachelors (NQF 7)</option
+                                                                <option
+                                                                    value="7"
+                                                                    >Masters/Bachelors
+                                                                    (NQF 7)</option
                                                                 >
-                                                                <option value="8"
-                                                                    >Doctorate (NQF 8)</option
+                                                                <option
+                                                                    value="8"
+                                                                    >Doctorate
+                                                                    (NQF 8)</option
                                                                 >
                                                             </select>
                                                         </div>
@@ -575,29 +740,45 @@
                                                                     type="button"
                                                                     class="btn btn-danger btn-sm ms-2"
                                                                     onclick={() =>
-                                                                        removeQualification(idx)}
+                                                                        removeQualification(
+                                                                            idx,
+                                                                        )}
                                                                     >remove</button
                                                                 >
                                                             {/if}
                                                         </div>
-                                                        <div class="col-md-3 mt-2">
-                                                            <label class="form-label">From</label>
+                                                        <div
+                                                            class="col-md-3 mt-2"
+                                                        >
+                                                            <label
+                                                                class="form-label"
+                                                                >From</label
+                                                            >
                                                             <input
                                                                 type="date"
                                                                 class="form-control"
                                                                 name={`qualifications[${idx}].from`}
-                                                                bind:value={qual.from}
+                                                                bind:value={
+                                                                    qual.from
+                                                                }
                                                                 required
                                                             />
                                                         </div>
-                                                        <div class="col-md-3 mt-2">
+                                                        <div
+                                                            class="col-md-3 mt-2"
+                                                        >
                                                             {#if !qual.ongoing}
-                                                                <label class="form-label">To</label>
+                                                                <label
+                                                                    class="form-label"
+                                                                    >To</label
+                                                                >
                                                                 <input
                                                                     type="date"
                                                                     class="form-control"
                                                                     name={`qualifications[${idx}].to`}
-                                                                    bind:value={qual.to}
+                                                                    bind:value={
+                                                                        qual.to
+                                                                    }
                                                                     disabled={qual.ongoing}
                                                                     required={!qual.ongoing}
                                                                 />
@@ -609,13 +790,16 @@
                                                             <input
                                                                 type="checkbox"
                                                                 name={`qualifications[${idx}].ongoing`}
-                                                                bind:checked={qual.ongoing}
+                                                                bind:checked={
+                                                                    qual.ongoing
+                                                                }
                                                                 id={`ongoing-${idx}`}
                                                                 class="form-check-input p-1"
                                                             />
                                                             <label
                                                                 for={`ongoing-${idx}`}
-                                                                class="ms-2">Ongoing</label
+                                                                class="ms-2"
+                                                                >Ongoing</label
                                                             >
                                                         </div>
                                                     </div>
@@ -628,60 +812,89 @@
                                                 >+ Add Qualification</button
                                             >
                                         </div>
-                                        {#if form?.errors?.qualifications}<small class="text-danger"
-                                                >{form.errors.qualifications}</small
+                                        {#if form?.errors?.qualifications}<small
+                                                class="text-danger"
+                                                >{form.errors
+                                                    .qualifications}</small
                                             >{/if}
                                     </div>
                                     <!-- References -->
                                     <div class="col-12 mt-3">
-                                        <label class="form-label">References</label>
-                                        <small class="text-danger">&nbsp;*</small>
+                                        <label class="form-label"
+                                            >References</label
+                                        >
+                                        <small class="text-danger"
+                                            >&nbsp;*</small
+                                        >
                                         <div>
                                             {#each val.references as ref, idx (idx)}
-                                                <div class="card mb-3 p-3 text-white">
-                                                    <div class="row g-2 align-items-end">
+                                                <div
+                                                    class="card mb-3 p-3 text-white"
+                                                >
+                                                    <div
+                                                        class="row g-2 align-items-end"
+                                                    >
                                                         <div class="col-md-4">
-                                                            <label class="form-label">Name</label>
+                                                            <label
+                                                                class="form-label"
+                                                                >Name</label
+                                                            >
                                                             <input
                                                                 type="text"
                                                                 class="form-control"
                                                                 name={`references[${idx}].name`}
-                                                                bind:value={ref.name}
+                                                                bind:value={
+                                                                    ref.name
+                                                                }
                                                                 required
                                                             />
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <label class="form-label">Email</label>
+                                                            <label
+                                                                class="form-label"
+                                                                >Email</label
+                                                            >
                                                             <input
                                                                 type="email"
                                                                 class="form-control"
                                                                 name={`references[${idx}].email`}
-                                                                bind:value={ref.email}
+                                                                bind:value={
+                                                                    ref.email
+                                                                }
                                                                 required
                                                             />
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <label class="form-label"
-                                                                >Phone (Optional)</label
+                                                            <label
+                                                                class="form-label"
+                                                                >Phone
+                                                                (Optional)</label
                                                             >
                                                             <input
                                                                 type="tel"
                                                                 class="form-control"
                                                                 name={`references[${idx}].phone`}
-                                                                bind:value={ref.phone}
+                                                                bind:value={
+                                                                    ref.phone
+                                                                }
                                                             />
                                                         </div>
-                                                        <div class="col-md-12 mt-2">
-                                                            <label class="form-label"
-                                                                >Reference</label
+                                                        <div
+                                                            class="col-md-12 mt-2"
+                                                        >
+                                                            <label
+                                                                class="form-label"
+                                                                >Professional
+                                                                relationship</label
                                                             >
-                                                            <textarea
+                                                            <input
                                                                 class="form-control"
                                                                 name={`references[${idx}].reference`}
-                                                                bind:value={ref.reference}
+                                                                bind:value={
+                                                                    ref.reference
+                                                                }
                                                                 required
-                                                                rows="3"
-                                                            ></textarea>
+                                                            />
                                                         </div>
                                                         <div
                                                             class="col-md-2 mt-2 d-flex align-items-center justify-content-end"
@@ -691,7 +904,9 @@
                                                                     type="button"
                                                                     class="btn btn-danger btn-sm ms-2"
                                                                     onclick={() =>
-                                                                        removeReference(idx)}
+                                                                        removeReference(
+                                                                            idx,
+                                                                        )}
                                                                     >remove</button
                                                                 >
                                                             {/if}
@@ -702,31 +917,43 @@
                                             <button
                                                 type="button"
                                                 class="btn btn-outline-light btn-sm p-1 mt-2"
-                                                onclick={addReference}>+ Add Reference</button
+                                                onclick={addReference}
+                                                >+ Add Reference</button
                                             >
                                         </div>
-                                        {#if form?.errors?.references}<small class="text-danger"
+                                        {#if form?.errors?.references}<small
+                                                class="text-danger"
                                                 >{form.errors.references}</small
                                             >{/if}
                                     </div>
 
                                     <!-- Languages -->
                                     <div class="col-12 mt-3">
-                                        <label class="form-label">Language Proficiency</label><small
-                                            class="text-danger">&nbsp;*</small
+                                        <label class="form-label"
+                                            >Language Proficiency</label
+                                        ><small class="text-danger"
+                                            >&nbsp;*</small
                                         >
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <label class="form-label">Mother Tongue</label>
+                                                <label class="form-label"
+                                                    >Home Language</label
+                                                >
                                                 <select
                                                     class="form-select"
                                                     name="languages.motherTongue"
-                                                    bind:value={val.languages.motherTongue}
+                                                    bind:value={
+                                                        val.languages
+                                                            .motherTongue
+                                                    }
                                                     required
                                                 >
-                                                    <option value="">Select mother tongue</option>
+                                                    <option value=""
+                                                        >Select mother tongue</option
+                                                    >
                                                     {#each languages as lang}
-                                                        <option value={lang.code}
+                                                        <option
+                                                            value={lang.code}
                                                             >{lang.name}</option
                                                         >
                                                     {/each}
@@ -736,10 +963,14 @@
                                                 <label class="form-label"
                                                     >Additional Languages</label
                                                 >
-                                                <div class="additional-languages-container">
+                                                <div
+                                                    class="additional-languages-container"
+                                                >
                                                     {#each languages as lang}
                                                         {#if lang.code !== val.languages.motherTongue}
-                                                            <div class="form-check language-option">
+                                                            <div
+                                                                class="form-check language-option"
+                                                            >
                                                                 <label
                                                                     class="form-check-label"
                                                                     for={`lang-${lang.code}`}
@@ -753,22 +984,31 @@
                                                                     id={`lang-${lang.code}`}
                                                                     value={lang.code}
                                                                     checked={val.languages.additional.includes(
-                                                                        lang.code
+                                                                        lang.code,
                                                                     )}
-                                                                    onchange={(e) => {
-                                                                        if (e.target.checked) {
+                                                                    onchange={(
+                                                                        e,
+                                                                    ) => {
+                                                                        if (
+                                                                            e
+                                                                                .target
+                                                                                .checked
+                                                                        ) {
                                                                             val.languages.additional =
                                                                                 [
-                                                                                    ...val.languages
+                                                                                    ...val
+                                                                                        .languages
                                                                                         .additional,
                                                                                     lang.code,
                                                                                 ];
                                                                         } else {
                                                                             val.languages.additional =
                                                                                 val.languages.additional.filter(
-                                                                                    (code) =>
+                                                                                    (
+                                                                                        code,
+                                                                                    ) =>
                                                                                         code !==
-                                                                                        lang.code
+                                                                                        lang.code,
                                                                                 );
                                                                         }
                                                                     }}
@@ -777,16 +1017,22 @@
                                                         {/if}
                                                     {/each}
                                                 </div>
-                                                <small class="text-muted mt-2 d-block">
-                                                    Selected: {val.languages.additional.length} additional
-                                                    {val.languages.additional.length === 1
+                                                <small
+                                                    class="text-muted mt-2 d-block"
+                                                >
+                                                    Selected: {val.languages
+                                                        .additional.length} additional
+                                                    {val.languages.additional
+                                                        .length === 1
                                                         ? "language"
                                                         : "languages"}
                                                 </small>
                                             </div>
                                         </div>
-                                        {#if form?.errors?.languages}<small class="text-danger"
-                                                >{typeof form.errors.languages === "string"
+                                        {#if form?.errors?.languages}<small
+                                                class="text-danger"
+                                                >{typeof form.errors
+                                                    .languages === "string"
                                                     ? form.errors.languages
                                                     : "Error in languages"}</small
                                             >{/if}
@@ -794,8 +1040,11 @@
 
                                     <!-- Address Fields: -->
                                     <div class="col-12 mt-3">
-                                        <label class="form-label" for="street">Street Address</label
-                                        ><small class="text-danger">&nbsp;*</small>
+                                        <label class="form-label" for="street"
+                                            >Street Address</label
+                                        ><small class="text-danger"
+                                            >&nbsp;*</small
+                                        >
                                         <input
                                             type="text"
                                             name="address.street"
@@ -807,12 +1056,16 @@
                                         />
                                         {#if form?.errors?.["address.street"]}<small
                                                 class="text-danger"
-                                                >{form.errors["address.street"]}</small
+                                                >{form.errors[
+                                                    "address.street"
+                                                ]}</small
                                             >{/if}
                                     </div>
                                     <div class="col-sm-12 col-md-6 mt-3">
-                                        <label class="form-label" for="city">City</label><small
-                                            class="text-danger">&nbsp;*</small
+                                        <label class="form-label" for="city"
+                                            >City</label
+                                        ><small class="text-danger"
+                                            >&nbsp;*</small
                                         >
                                         <input
                                             type="text"
@@ -825,13 +1078,19 @@
                                         />
                                         {#if form?.errors?.["address.city"]}<small
                                                 class="text-danger"
-                                                >{form.errors["address.city"]}</small
+                                                >{form.errors[
+                                                    "address.city"
+                                                ]}</small
                                             >{/if}
                                     </div>
                                     <div class="col-sm-12 col-md-6 mt-3">
-                                        <label class="form-label" for="addressProvince"
+                                        <label
+                                            class="form-label"
+                                            for="addressProvince"
                                             >Province</label
-                                        ><small class="text-danger">&nbsp;*</small>
+                                        ><small class="text-danger"
+                                            >&nbsp;*</small
+                                        >
                                         <select
                                             class="form-select"
                                             name="address.province"
@@ -839,26 +1098,51 @@
                                             bind:value={val.address.province}
                                             required
                                         >
-                                            <option value="" disabled>choose province</option>
-                                            <option value="gauteng">Gauteng</option>
-                                            <option value="free_state">Free State</option>
-                                            <option value="western_cape">Western Cape</option>
-                                            <option value="north_west">North West</option>
-                                            <option value="northern_cape">Northern Cape</option>
-                                            <option value="limpopo">Limpopo</option>
-                                            <option value="kwazulu_natal">KwaZulu-Natal</option>
-                                            <option value="mpumalanga">Mpumalanga</option>
-                                            <option value="eastern_cape">Eastern Cape</option>
+                                            <option value="" disabled
+                                                >choose province</option
+                                            >
+                                            <option value="gauteng"
+                                                >Gauteng</option
+                                            >
+                                            <option value="free_state"
+                                                >Free State</option
+                                            >
+                                            <option value="western_cape"
+                                                >Western Cape</option
+                                            >
+                                            <option value="north_west"
+                                                >North West</option
+                                            >
+                                            <option value="northern_cape"
+                                                >Northern Cape</option
+                                            >
+                                            <option value="limpopo"
+                                                >Limpopo</option
+                                            >
+                                            <option value="kwazulu_natal"
+                                                >KwaZulu-Natal</option
+                                            >
+                                            <option value="mpumalanga"
+                                                >Mpumalanga</option
+                                            >
+                                            <option value="eastern_cape"
+                                                >Eastern Cape</option
+                                            >
                                         </select>
                                         {#if form?.errors?.["address.province"]}<small
                                                 class="text-danger"
-                                                >{form.errors["address.province"]}</small
+                                                >{form.errors[
+                                                    "address.province"
+                                                ]}</small
                                             >{/if}
                                     </div>
                                     <div class="col-sm-12 col-md-6 mt-3">
-                                        <label class="form-label" for="postalCode"
-                                            >Postal Code</label
-                                        ><small class="text-danger">&nbsp;*</small>
+                                        <label
+                                            class="form-label"
+                                            for="postalCode">Postal Code</label
+                                        ><small class="text-danger"
+                                            >&nbsp;*</small
+                                        >
                                         <input
                                             type="text"
                                             name="address.postalCode"
@@ -870,14 +1154,19 @@
                                         />
                                         {#if form?.errors?.["address.postalCode"]}<small
                                                 class="text-danger"
-                                                >{form.errors["address.postalCode"]}</small
+                                                >{form.errors[
+                                                    "address.postalCode"
+                                                ]}</small
                                             >{/if}
                                     </div>
 
                                     <!-- Cell Number -->
                                     <div class="col-sm-12 col-md-6 mt-3">
-                                        <label class="form-label" for="cell">Cell Number</label
-                                        ><small class="text-danger">&nbsp;*</small>
+                                        <label class="form-label" for="cell"
+                                            >Cell Number</label
+                                        ><small class="text-danger"
+                                            >&nbsp;*</small
+                                        >
                                         <input
                                             type="tel"
                                             name="cell"
@@ -887,16 +1176,20 @@
                                             bind:value={val.cell}
                                             required
                                         />
-                                        {#if cellErr && val.cell}<small class="text-warning"
+                                        {#if cellErr && val.cell}<small
+                                                class="text-warning"
                                                 >{cellErr}</small
                                             >{/if}
-                                        {#if form?.errors?.cell}<small class="text-danger"
+                                        {#if form?.errors?.cell}<small
+                                                class="text-danger"
                                                 >{form.errors.cell}</small
                                             >{/if}
                                     </div>
 
                                     <!-- Terms and Conditions -->
-                                    <div class="form-check text-center mt-3 col-12">
+                                    <div
+                                        class="form-check text-center mt-3 col-12"
+                                    >
                                         <label for="terms">
                                             Terms and Conditions, available <a
                                                 target="_blank"
@@ -923,7 +1216,9 @@
                                 </div>
 
                                 {#if loadingForm}
-                                    <div class="d-flex justify-content-center mt-5 mb-5">
+                                    <div
+                                        class="d-flex justify-content-center mt-5 mb-5"
+                                    >
                                         <Jumper
                                             size="150"
                                             color="#5C677D"
@@ -935,7 +1230,9 @@
                                     <button
                                         class="btn btn-outline-light btn-lg px-4 mt-3"
                                         type="submit"
-                                        disabled={loadingForm || !val.terms || cellErr}
+                                        disabled={loadingForm ||
+                                            !val.terms ||
+                                            cellErr}
                                     >
                                         Submit
                                     </button>

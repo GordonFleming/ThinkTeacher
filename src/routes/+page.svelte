@@ -93,7 +93,9 @@
             </div>
         </div>
         <p class="text-center fw-bold mt-3 mb-4 fs-4">
-            No cost. Just 5 minutes of your time. Join today!
+            Join for free in minutes — to become a ThinkTeacher member all you
+            need to do is complete your teacher profile, unlock our partner
+            benefits, and get noticed for new teaching posts right away!
         </p>
 
         <div class="row mt-5">
