@@ -1194,7 +1194,7 @@
                                             Terms and Conditions, available <a
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                href="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/Think_Teacher_Member_Terms_and_Conditions_Final_draft_34d3c8193b_5cba9e92f3.pdf"
+                                                href="ThinkTeacher_Member_Terms_ 2025.pdf"
                                                 >here</a
                                             >.
                                         </label>

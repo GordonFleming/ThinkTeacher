@@ -110,7 +110,7 @@
                     <a
                         target="_blank"
                         rel="noopener noreferrer"
-                        href="https://strapi-upload-s3.glass.thinkteacher.co.za/strapi/cms/Think_Teacher_Member_Terms_and_Conditions_Final_draft_34d3c8193b_5cba9e92f3.pdf"
+                        href="ThinkTeacher_Member_Terms_ 2025.pdf"
                         class="text-white">Terms & Conditions</a
                     >
                 </li>
@@ -142,8 +142,12 @@
 
     <!-- Copyright -->
     <div class="text-center p-2" style="background-color: var(--logo-gold);">
-        © 2025 Copyright: ThinkTeacher | 
-        Built by: <a class="text-white" target="_blank" rel="noreferrer" href="https://splyce.dev">Splyce</a>
+        © 2025 Copyright: ThinkTeacher | Built by: <a
+            class="text-white"
+            target="_blank"
+            rel="noreferrer"
+            href="https://splyce.dev">Splyce</a
+        >
     </div>
 </footer>
 
